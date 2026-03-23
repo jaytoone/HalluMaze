@@ -572,9 +572,9 @@ kbd {
   border-radius: 3px;
   padding: 1px 4px;
 }
-/* ── Layout fix: maze grid fully visible ── */
-#main { overflow-y: auto; }
-body { overflow: auto; }
+/* ── Layout fix: maze grid fully visible, scroll allowed ── */
+html, body { overflow: auto !important; }
+#main { overflow-y: visible; height: auto; }
 
 /* Grid row: take remaining space, minimum 320px for canvas visibility */
 #grid-row { min-height: 320px; flex: 1 1 auto; }
