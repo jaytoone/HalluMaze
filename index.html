@@ -440,12 +440,32 @@ canvas#overlay-canvas {
 }
 
 /* ── METRICS PANEL ── */
+/* Radar standalone panel */
+#radar-panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#radar-panel h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 10px;
+  font-weight: 700;
+  align-self: flex-start;
+}
+/* Performance comparison panel (grid tab only) */
 #metrics-panel {
   background: var(--bg2);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 14px 16px;
-  margin-top: 12px;
 }
 #metrics-panel h3 {
   font-family: 'Syne', sans-serif;
@@ -456,14 +476,8 @@ canvas#overlay-canvas {
   margin-bottom: 12px;
   font-weight: 700;
 }
-.metrics-layout {
-  display: flex;
-  gap: 20px;
-  align-items: flex-start;
-}
 .metrics-bars-section {
-  flex: 1;
-  min-width: 0;
+  width: 100%;
 }
 .metric-group {
   margin-bottom: 10px;
@@ -586,22 +600,9 @@ body { height: auto !important; min-height: 100vh; overflow: auto !important; }
 /* Leaderboard: compact, scrollable */
 #leaderboard { max-height: 180px; overflow-y: auto; flex-shrink: 0; }
 
-/* Metrics panel: collapsible */
+/* Panels inside grid tab */
+#radar-panel { flex-shrink: 0; }
 #metrics-panel { flex-shrink: 0; }
-#metrics-panel.collapsed .metrics-layout { display: none; }
-#metrics-toggle-btn {
-  background: none;
-  border: 1px solid var(--border2);
-  color: var(--text2);
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-left: 8px;
-  transition: all 0.15s;
-}
-#metrics-toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
 
 /* Canvas wraps: ensure minimum height */
 .card-canvas-wrap { min-height: 120px; }
@@ -662,34 +663,32 @@ body { height: auto !important; min-height: 100vh; overflow: auto !important; }
         <tbody id="lb-body"></tbody>
       </table>
     </div>
-  </div>
 
-  <!-- METRICS COMPARISON PANEL (always visible) -->
-  <div id="metrics-panel">
-    <h3>Performance Metrics Comparison <button id="metrics-toggle-btn" onclick="toggleMetrics()">Hide</button></h3>
-    <div class="metrics-layout">
+    <!-- RADAR PANEL — standalone, above comparison -->
+    <div id="radar-panel">
+      <h3>5-Dimension Radar</h3>
+      <canvas id="radar-canvas" width="240" height="240"></canvas>
+    </div>
+
+    <!-- PERFORMANCE COMPARISON — bars only, grid tab only -->
+    <div id="metrics-panel">
+      <h3>Performance Metrics Comparison</h3>
       <div class="metrics-bars-section">
-        <!-- MEI -->
         <div class="metric-group">
           <div class="metric-label">MEI — Metacognitive Escape Index</div>
           <div id="metric-mei-rows"></div>
         </div>
-        <!-- SR -->
         <div class="metric-group">
           <div class="metric-label">Efficiency — Steps vs Optimal</div>
           <div id="metric-eff-rows"></div>
         </div>
-        <!-- HRR -->
         <div class="metric-group">
           <div class="metric-label">Hallucinations &amp; Backtracks (lower=better)</div>
           <div id="metric-err-rows"></div>
         </div>
       </div>
-      <div class="radar-section">
-        <h4>Radar: 5 Dimensions</h4>
-        <canvas id="radar-canvas" width="200" height="200"></canvas>
-      </div>
     </div>
+
   </div>
 
   <!-- OVERLAY VIEW -->
@@ -1483,16 +1482,6 @@ function drawRadar() {
     ctx.textAlign = 'left';
     ctx.fillText(shortName, 15, y);
   });
-}
-
-// ── TOGGLE METRICS PANEL ──
-function toggleMetrics() {
-  const panel = document.getElementById('metrics-panel');
-  const btn = document.getElementById('metrics-toggle-btn');
-  panel.classList.toggle('collapsed');
-  btn.textContent = panel.classList.contains('collapsed') ? 'Show' : 'Hide';
-  // Re-layout canvases after toggle and redraw
-  requestAnimationFrame(() => { resizeGridCanvases(); updateAll(); });
 }
 
 // ── INIT ──
