@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>HalluMaze — Model Escape Comparison</title>
+<style>
+:root{--bg:#0f1117;--card:#161926;--border:#252840;--text:#e2e8f0;--muted:#566;
+  --green:#10b981;--red:#ef4444;--orange:#f97316;--yellow:#eab308;
+  --blue:#3b82f6;--purple:#8b5cf6;--teal:#14b8a6;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;padding:20px 16px;}
+h1{text-align:center;font-size:1.5rem;margin-bottom:4px;}
+.sub{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:20px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1100px;margin:0 auto 20px;}
+@media(max-width:680px){.grid{grid-template-columns:1fr;}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;}
+.card-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.card-hd h2{font-size:1rem;font-weight:700;}
+.badge{font-size:.7rem;padding:2px 8px;border-radius:99px;background:var(--border);font-weight:600;}
+canvas{display:block;margin:0 auto;max-width:100%;}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px;}
+.m-box{background:#0d0f1a;border-radius:8px;padding:8px 4px;text-align:center;}
+.m-val{font-size:1.1rem;font-weight:700;}
+.m-lbl{font-size:.65rem;color:var(--muted);margin-top:2px;}
+.controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
+  margin:12px auto 8px;max-width:1100px;}
+button{background:var(--border);color:var(--text);border:1px solid #353858;
+  border-radius:8px;padding:6px 16px;cursor:pointer;font-size:.82rem;}
+button:hover{background:#252840;}
+button.active{background:var(--blue);border-color:var(--blue);}
+.speed-row{display:flex;align-items:center;gap:6px;font-size:.8rem;}
+.speed-row input{width:90px;}
+.legend{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
+  font-size:.75rem;margin:8px 0 16px;}
+.ld{display:flex;align-items:center;gap:4px;}
+.ld span{width:11px;height:11px;border-radius:3px;display:inline-block;}
+.log-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:14px;max-width:1100px;margin:0 auto 16px;}
+.log-box h3{font-size:.9rem;margin-bottom:8px;}
+.log-scroll{max-height:160px;overflow-y:auto;font-size:.75rem;font-family:monospace;}
+.lr{padding:2px 0;border-bottom:1px solid #1a1d2e;}
+.lr.hall{color:var(--red);}
+.lr.back{color:var(--orange);}
+.lr.loop{color:var(--yellow);}
+.lr.ok{color:var(--muted);}
+.lr.solve{color:var(--green);font-weight:700;}
+.cmp-box{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:16px;max-width:1100px;margin:0 auto;}
+.cmp-box h3{font-size:.9rem;margin-bottom:10px;}
+table{width:100%;border-collapse:collapse;font-size:.82rem;}
+th{color:var(--muted);font-weight:600;padding:7px 10px;border-bottom:1px solid var(--border);text-align:left;}
+td{padding:8px 10px;border-bottom:1px solid #1a1d2e;}
+.win{color:var(--green);font-weight:700;}
+.lose{color:var(--muted);}
+</style>
+</head>
+<body>
+<h1>HalluMaze — Metacognition Escape Visualization</h1>
+<div class="sub" id="sub"></div>
+<div class="controls">
+  <button id="btnPlay">&#9654; Play</button>
+  <button id="btnPause">&#10074;&#10074; Pause</button>
+  <button id="btnReset">&#10226; Reset</button>
+  <label><input type="checkbox" id="chkSolution" checked> Show solution</label>
+  <div class="speed-row">Speed: <input type="range" id="spd" min="1" max="20" value="6">
+    <span id="spdLbl">6x</span></div>
+</div>
+<div class="legend">
+  <div class="ld"><span style="background:#10b981"></span>Path</div>
+  <div class="ld"><span style="background:#ef4444"></span>Hallucination</div>
+  <div class="ld"><span style="background:#f97316"></span>Backtrack</div>
+  <div class="ld"><span style="background:#eab308"></span>Loop</div>
+  <div class="ld"><span style="background:#1e3a5f"></span>Solution</div>
+  <div class="ld"><span style="background:#2d1f4e"></span>Mirage zone</div>
+  <div class="ld"><span style="background:#34d399"></span>Start</div>
+  <div class="ld"><span style="background:#f43f5e"></span>End</div>
+</div>
+<div class="grid" id="grid"></div>
+<div class="log-box"><h3>Step Log</h3><div class="log-scroll" id="log"></div></div>
+<div class="cmp-box"><h3>Model Comparison</h3><table id="cmp"></table></div>
+
+<script>
+(function(){
+var D = {"seed": 4004, "size": 5, "timestamp": "2026-03-22 22:12", "maze": {"N": 5, "walls": [[{"N": true, "S": true, "E": false, "W": true}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": false, "E": true, "W": false}, {"N": true, "S": false, "E": true, "W": true}], [{"N": true, "S": false, "E": false, "W": true}, {"N": true, "S": false, "E": true, "W": false}, {"N": true, "S": false, "E": true, "W": true}, {"N": false, "S": true, "E": false, "W": true}, {"N": false, "S": false, "E": true, "W": false}], [{"N": false, "S": false, "E": true, "W": true}, {"N": false, "S": true, "E": false, "W": true}, {"N": false, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": true, "W": false}, {"N": false, "S": false, "E": true, "W": true}], [{"N": false, "S": false, "E": false, "W": true}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": false, "W": false}, {"N": false, "S": true, "E": true, "W": false}], [{"N": false, "S": true, "E": false, "W": true}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": true, "W": false}]], "start": [0, 0], "end": [4, 4], "solution": [[0, 0], [0, 1], [0, 2], [0, 3], [1, 3], [1, 4], [2, 4], [3, 4], [3, 3], [3, 2], [3, 1], [3, 0], [4, 0], [4, 1], [4, 2], [4, 3], [4, 4]], "mirage_positions": [[1, 4], [3, 0]]}, "results": [{"model": "MiniMax-M2.5", "provider": "minimax", "solved": false, "mei": 0.03, "score": 0.365, "hallucination_count": 0, "backtrack_count": 5, "loop_count": 0, "brs": 1.0, "latency_s": 69.3, "path": [], "steps": [{"step": 1, "r": 0, "c": 0, "direction": "→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": null}]}, {"model": "glm-4.7", "provider": "glm", "solved": false, "mei": 0.806, "score": 0.677, "hallucination_count": 1, "backtrack_count": 5, "loop_count": 6, "brs": 0.833, "latency_s": 22.93, "path": [], "steps": [{"step": 1, "r": 0, "c": 0, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 2, "r": 0, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 3, "r": 0, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 4, "r": 0, "c": 3, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 5, "r": 1, "c": 3, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 6, "r": 1, "c": 4, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 7, "r": 1, "c": 3, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 8, "r": 2, "c": 3, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 9, "r": 2, "c": 2, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 10, "r": 2, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 11, "r": 2, "c": 1, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 12, "r": 1, "c": 1, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 13, "r": 1, "c": 0, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 14, "r": 2, "c": 0, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 40}, {"step": 15, "r": 3, "c": 0, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 30}, {"step": 16, "r": 3, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 20}, {"step": 17, "r": 3, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 20}, {"step": 18, "r": 3, "c": 3, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 20}, {"step": 19, "r": 3, "c": 4, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 20, "r": 1, "c": 3, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 21, "r": 1, "c": 4, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 22, "r": 2, "c": 4, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 23, "r": 3, "c": 4, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}]}]};
+var M = D.maze, N = M.N;
+var CELL = Math.min(Math.floor(460/N), 64), PAD = 20;
+var W = N*CELL+PAD*2, H = N*CELL+PAD*2;
+
+function mkCanvas(r, idx){
+  var card=document.createElement('div'); card.className='card';
+  var hd=document.createElement('div'); hd.className='card-hd';
+  var h2=document.createElement('h2'); h2.textContent=r.model+' ('+r.provider+')';
+  var badge=document.createElement('span'); badge.className='badge';
+  badge.id='badge'+idx; badge.textContent='Step 0/'+r.steps.length;
+  hd.appendChild(h2); hd.appendChild(badge); card.appendChild(hd);
+  var cv=document.createElement('canvas');
+  cv.id='cv'+idx; cv.width=W; cv.height=H; cv.style.width='100%';
+  card.appendChild(cv);
+  var mx=document.createElement('div'); mx.className='metrics';
+  [['MEI','mei'],['Solved','solved'],['Hall.','hallucination_count'],['BT','backtrack_count']].forEach(function(x){
+    var b=document.createElement('div'); b.className='m-box';
+    var v=document.createElement('div'); v.className='m-val'; v.id='mv_'+x[0]+'_'+idx;
+    var l=document.createElement('div'); l.className='m-lbl'; l.textContent=x[0];
+    b.appendChild(v); b.appendChild(l); mx.appendChild(b);
+  });
+  card.appendChild(mx); return card;
+}
+
+var grid=document.getElementById('grid');
+D.results.forEach(function(r,i){ grid.appendChild(mkCanvas(r,i)); });
+
+// ── Maze draw ──
+function drawBase(ctx, showSol){
+  ctx.fillStyle='#09090f'; ctx.fillRect(0,0,W,H);
+  // cells bg
+  for(var r=0;r<N;r++) for(var c=0;c<N;c++){
+    var x=PAD+c*CELL, y=PAD+r*CELL;
+    ctx.fillStyle='#141627'; ctx.fillRect(x+1,y+1,CELL-2,CELL-2);
+  }
+  // solution overlay
+  if(showSol && M.solution){
+    ctx.fillStyle='#0d2a4a';
+    M.solution.forEach(function(p){ ctx.fillRect(PAD+p[1]*CELL+2,PAD+p[0]*CELL+2,CELL-4,CELL-4); });
+  }
+  // mirage
+  if(M.mirage_positions){
+    ctx.fillStyle='#1e1040';
+    M.mirage_positions.forEach(function(p){ ctx.fillRect(PAD+p[1]*CELL+4,PAD+p[0]*CELL+4,CELL-8,CELL-8); });
+  }
+  // walls
+  ctx.strokeStyle='#4a5080'; ctx.lineWidth=2;
+  for(var r=0;r<N;r++) for(var c=0;c<N;c++){
+    var w=M.walls[r][c];
+    var x=PAD+c*CELL, y=PAD+r*CELL;
+    ctx.beginPath();
+    if(w.N){ctx.moveTo(x,y);ctx.lineTo(x+CELL,y);}
+    if(w.S){ctx.moveTo(x,y+CELL);ctx.lineTo(x+CELL,y+CELL);}
+    if(w.W){ctx.moveTo(x,y);ctx.lineTo(x,y+CELL);}
+    if(w.E){ctx.moveTo(x+CELL,y);ctx.lineTo(x+CELL,y+CELL);}
+    ctx.stroke();
+  }
+  // border
+  ctx.strokeStyle='#6070a0'; ctx.lineWidth=2.5;
+  ctx.strokeRect(PAD,PAD,N*CELL,N*CELL);
+  // start / end
+  function dot(r,c,col,lbl){
+    var cx=PAD+c*CELL+CELL/2, cy=PAD+r*CELL+CELL/2;
+    ctx.fillStyle=col; ctx.beginPath(); ctx.arc(cx,cy,CELL*0.32,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#fff'; ctx.font='bold '+Math.max(9,CELL*0.28)+'px sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(lbl,cx,cy);
+  }
+  dot(0,0,'#34d399','S'); dot(N-1,N-1,'#f43f5e','E');
+}
+
+function colorOf(s){
+  if(s.is_hallucination) return '#ef4444';
+  if(s.is_loop)          return '#eab308';
+  if(s.is_backtrack)     return '#f97316';
+  return '#10b981';
+}
+
+function drawPath(ctx, steps, upTo){
+  for(var i=0;i<=upTo&&i<steps.length;i++){
+    var s=steps[i];
+    var alpha=0.35+0.65*(i/Math.max(upTo,1));
+    ctx.globalAlpha=alpha;
+    ctx.fillStyle=colorOf(s);
+    ctx.fillRect(PAD+s.c*CELL+3,PAD+s.r*CELL+3,CELL-6,CELL-6);
+  }
+  ctx.globalAlpha=1;
+  if(upTo>=0&&upTo<steps.length){
+    var s=steps[upTo];
+    ctx.fillStyle='#93c5fd';
+    ctx.beginPath();
+    ctx.arc(PAD+s.c*CELL+CELL/2,PAD+s.r*CELL+CELL/2,CELL*0.3,0,Math.PI*2);
+    ctx.fill();
+  }
+}
+
+function setMetric(key,idx,val,isGood){
+  var el=document.getElementById('mv_'+key+'_'+idx);
+  if(!el)return; el.textContent=val;
+  if(isGood!==undefined) el.style.color=isGood?'#10b981':'#ef4444';
+}
+
+function updateMetrics(idx, result, upTo){
+  var steps=result.steps.slice(0,upTo+1);
+  var halls=steps.filter(function(s){return s.is_hallucination;}).length;
+  var backs=steps.filter(function(s){return s.is_backtrack||s.is_loop;}).length;
+  var solved=steps.some(function(s){return s.r===N-1&&s.c===N-1;});
+  setMetric('MEI',idx,result.mei.toFixed(3));
+  setMetric('Solved',idx,solved?'YES':'NO',solved);
+  setMetric('Hall.',idx,halls,halls===0);
+  setMetric('BT',idx,backs);
+  var badge=document.getElementById('badge'+idx);
+  badge.textContent='Step '+(Math.min(upTo+1,result.steps.length))+'/'+result.steps.length;
+  if(solved){badge.style.background='#064e3b';badge.style.color='#34d399';}
+}
+
+// ── Animation ──
+var frame=0, playing=false, timer=null, showSol=true;
+var maxFrames=Math.max.apply(null,D.results.map(function(r){return r.steps.length;}));
+function speed(){return parseInt(document.getElementById('spd').value);}
+function delay(){return Math.max(40,1200-speed()*55);}
+
+function render(){
+  var showSolNow=document.getElementById('chkSolution').checked;
+  D.results.forEach(function(r,idx){
+    var cv=document.getElementById('cv'+idx);
+    var ctx=cv.getContext('2d');
+    drawBase(ctx,showSolNow);
+    var f=Math.min(frame,r.steps.length-1);
+    if(f>=0) drawPath(ctx,r.steps,f);
+    updateMetrics(idx,r,f);
+  });
+  // log: longest model
+  var li=0,mx=0; D.results.forEach(function(r,i){if(r.steps.length>mx){mx=r.steps.length;li=i;}});
+  updateLog(li,Math.min(frame,D.results[li].steps.length-1));
+}
+
+function updateLog(idx,upTo){
+  var log=document.getElementById('log'); log.textContent='';
+  var steps=D.results[idx].steps;
+  var start=Math.max(0,upTo-40);
+  for(var i=start;i<=upTo&&i<steps.length;i++){
+    var s=steps[i];
+    var row=document.createElement('div'); row.className='lr';
+    var cls='ok';
+    if(s.is_hallucination) cls='hall';
+    else if(s.is_loop) cls='loop';
+    else if(s.is_backtrack) cls='back';
+    else if(s.r===N-1&&s.c===N-1) cls='solve';
+    row.className='lr '+cls;
+    var tag=D.results[idx].model.split('-')[0];
+    var pos='('+s.r+','+s.c+')';
+    var evt=s.is_hallucination?'HALL':s.is_loop?'LOOP':s.is_backtrack?'BACK':'MOVE';
+    if(s.r===N-1&&s.c===N-1) evt='SOLVED!';
+    var conf=s.confidence!==null?' ['+s.confidence+'%]':'';
+    row.textContent='['+tag+' #'+i+'] '+pos+' '+evt+' '+s.direction+conf;
+    log.appendChild(row);
+  }
+  log.scrollTop=log.scrollHeight;
+}
+
+function tick(){
+  if(frame<maxFrames-1){frame++;render();timer=setTimeout(tick,delay());}
+  else{playing=false;document.getElementById('btnPlay').classList.remove('active');}
+}
+
+document.getElementById('btnPlay').addEventListener('click',function(){
+  if(!playing){playing=true;this.classList.add('active');tick();}
+});
+document.getElementById('btnPause').addEventListener('click',function(){
+  playing=false;clearTimeout(timer);document.getElementById('btnPlay').classList.remove('active');
+});
+document.getElementById('btnReset').addEventListener('click',function(){
+  playing=false;clearTimeout(timer);
+  document.getElementById('btnPlay').classList.remove('active');
+  frame=0;render();
+});
+document.getElementById('spd').addEventListener('input',function(){
+  document.getElementById('spdLbl').textContent=this.value+'x';
+});
+document.getElementById('chkSolution').addEventListener('change',function(){render();});
+
+// ── Comparison table ──
+function buildTable(){
+  var tbl=document.getElementById('cmp');
+  var thead=document.createElement('thead');
+  var hr=document.createElement('tr');
+  ['Metric','Winner'].concat(D.results.map(function(r){return r.model;})).forEach(function(h){
+    var th=document.createElement('th'); th.textContent=h; hr.appendChild(th);
+  });
+  thead.appendChild(hr); tbl.appendChild(thead);
+  var tbody=document.createElement('tbody');
+  var rows=[
+    {l:'MEI',k:'mei',hi:true},
+    {l:'HalluScore',k:'score',hi:true},
+    {l:'Solved',k:'solved',hi:true,fmt:function(v){return v?'YES':'NO';}},
+    {l:'Hallucinations',k:'hallucination_count',hi:false},
+    {l:'Backtracks',k:'backtrack_count',hi:false},
+    {l:'BRS (Bias Resist)',k:'brs',hi:true},
+    {l:'Latency (s)',k:'latency_s',hi:false},
+  ];
+  rows.forEach(function(row){
+    var vals=D.results.map(function(r){return r[row.k];});
+    var best=row.hi?Math.max.apply(null,vals):Math.min.apply(null,vals);
+    var wi=vals.indexOf(best);
+    var tr=document.createElement('tr');
+    var tl=document.createElement('td'); tl.textContent=row.l; tr.appendChild(tl);
+    var tw=document.createElement('td'); tw.textContent=D.results[wi].model;
+    tw.className='win'; tr.appendChild(tw);
+    vals.forEach(function(v,i){
+      var td=document.createElement('td');
+      td.textContent=row.fmt?row.fmt(v):(typeof v==='number'?v.toFixed(3):v);
+      td.className=i===wi?'win':'lose'; tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  tbl.appendChild(tbody);
+}
+
+// ── Init ──
+document.getElementById('sub').textContent=
+  'Seed '+D.seed+' | '+N+'x'+N+' maze | '+D.timestamp;
+buildTable();
+render();
+})();
+</script>
+</body>
+</html>

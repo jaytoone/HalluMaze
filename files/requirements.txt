@@ -1,0 +1,17 @@
+# HalluMaze Benchmark v1.1
+# Python >= 3.10 required
+
+# Core (required)
+requests>=2.31.0
+
+# LLM SDKs (install for each provider you use)
+anthropic>=0.40.0           # Anthropic / Claude
+openai>=1.50.0              # OpenAI + DeepSeek (same client, different base_url)
+google-generativeai>=0.8.0  # Google / Gemini
+
+# CLI enhancement (optional but recommended)
+rich>=13.7.0
+
+# Analysis & export (optional)
+pandas>=2.0.0
+matplotlib>=3.8.0

@@ -1,0 +1,981 @@
+{
+  "hallumaze_version": "1.1",
+  "experiment": "multi_model_comparison",
+  "seed": 5005,
+  "size": 5,
+  "timestamp": "2026-03-23 10:04:04",
+  "maze": {
+    "N": 5,
+    "walls": [
+      [
+        {
+          "N": true,
+          "S": false,
+          "E": true,
+          "W": true
+        },
+        {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": true
+        },
+        {
+          "N": true,
+          "S": false,
+          "E": true,
+          "W": false
+        },
+        {
+          "N": true,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        {
+          "N": true,
+          "S": false,
+          "E": true,
+          "W": false
+        }
+      ],
+      [
+        {
+          "N": false,
+          "S": false,
+          "E": true,
+          "W": true
+        },
+        {
+          "N": true,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": false
+        },
+        {
+          "N": false,
+          "S": false,
+          "E": true,
+          "W": true
+        },
+        {
+          "N": false,
+          "S": false,
+          "E": true,
+          "W": true
+        }
+      ],
+      [
+        {
+          "N": false,
+          "S": false,
+          "E": true,
+          "W": true
+        },
+        {
+          "N": false,
+          "S": false,
+          "E": false,
+          "W": true
+        },
+        {
+          "N": true,
+          "S": false,
+          "E": true,
+          "W": false
+        },
+        {
+          "N": false,
+          "S": false,
+          "E": true,
+          "W": true
+        },
+        {
+          "N": false,
+          "S": false,
+          "E": true,
+          "W": true
+        }
+      ],
+      [
+        {
+          "N": false,
+          "S": false,
+          "E": true,
+          "W": true
+        },
+        {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": true
+        },
+        {
+          "N": false,
+          "S": true,
+          "E": false,
+          "W": true
+        },
+        {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": false
+        },
+        {
+          "N": false,
+          "S": false,
+          "E": true,
+          "W": true
+        }
+      ],
+      [
+        {
+          "N": false,
+          "S": true,
+          "E": false,
+          "W": true
+        },
+        {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": false
+        },
+        {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": false
+        },
+        {
+          "N": true,
+          "S": true,
+          "E": false,
+          "W": false
+        },
+        {
+          "N": false,
+          "S": true,
+          "E": true,
+          "W": false
+        }
+      ]
+    ],
+    "start": [
+      0,
+      0
+    ],
+    "end": [
+      4,
+      4
+    ],
+    "solution": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        3,
+        0
+      ],
+      [
+        4,
+        0
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "mirage_positions": [
+      [
+        4,
+        4
+      ]
+    ]
+  },
+  "results": [
+    {
+      "model": "MiniMax-M2.5",
+      "provider": "minimax",
+      "solved": true,
+      "mei": 0.9,
+      "sr": 1.0,
+      "score": 0.65,
+      "hallucination_count": 0,
+      "backtrack_count": 0,
+      "loop_count": 0,
+      "brs": 1.0,
+      "latency_s": 105.12,
+      "path_efficiency": 1.125,
+      "hall_resistance": 1.0,
+      "backtrack_rate": 0.0,
+      "total_steps": 8,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "r": 0,
+          "c": 0,
+          "direction": "S",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 2,
+          "r": 1,
+          "c": 0,
+          "direction": "S",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 3,
+          "r": 2,
+          "c": 0,
+          "direction": "S",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 4,
+          "r": 3,
+          "c": 0,
+          "direction": "S",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 5,
+          "r": 4,
+          "c": 0,
+          "direction": "E",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 6,
+          "r": 4,
+          "c": 1,
+          "direction": "E",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 7,
+          "r": 4,
+          "c": 2,
+          "direction": "E",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 8,
+          "r": 4,
+          "c": 3,
+          "direction": "E",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        }
+      ],
+      "error": null
+    },
+    {
+      "model": "glm-4.5-flash",
+      "provider": "glm",
+      "solved": true,
+      "mei": 0.9,
+      "sr": 1.0,
+      "score": 0.65,
+      "hallucination_count": 0,
+      "backtrack_count": 0,
+      "loop_count": 0,
+      "brs": 1.0,
+      "latency_s": 52.89,
+      "path_efficiency": 1.0,
+      "hall_resistance": 1.0,
+      "backtrack_rate": 0.0,
+      "total_steps": 9,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "r": 0,
+          "c": 0,
+          "direction": "S↓",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 2,
+          "r": 1,
+          "c": 0,
+          "direction": "S↓",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 3,
+          "r": 2,
+          "c": 0,
+          "direction": "S↓",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 4,
+          "r": 3,
+          "c": 0,
+          "direction": "S↓",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 5,
+          "r": 4,
+          "c": 0,
+          "direction": "E→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 6,
+          "r": 4,
+          "c": 1,
+          "direction": "E→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 7,
+          "r": 4,
+          "c": 2,
+          "direction": "E→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 8,
+          "r": 4,
+          "c": 3,
+          "direction": "E→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 9,
+          "r": 4,
+          "c": 4,
+          "direction": "→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "model": "glm-4.5",
+      "provider": "glm",
+      "solved": true,
+      "mei": 0.89,
+      "sr": 1.0,
+      "score": 0.574,
+      "hallucination_count": 1,
+      "backtrack_count": 1,
+      "loop_count": 3,
+      "brs": 0.5,
+      "latency_s": 6.19,
+      "path_efficiency": 0.9,
+      "hall_resistance": 0.9,
+      "backtrack_rate": 0.1,
+      "total_steps": 10,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "r": 0,
+          "c": 0,
+          "direction": "S↓",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 2,
+          "r": 1,
+          "c": 0,
+          "direction": "S↓",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 3,
+          "r": 2,
+          "c": 0,
+          "direction": "S↓",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 4,
+          "r": 3,
+          "c": 0,
+          "direction": "S↓",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 5,
+          "r": 4,
+          "c": 0,
+          "direction": "E→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 6,
+          "r": 4,
+          "c": 1,
+          "direction": "W←",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 5
+        },
+        {
+          "step": 7,
+          "r": 4,
+          "c": 0,
+          "direction": "E→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 8,
+          "r": 4,
+          "c": 1,
+          "direction": "E→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 9,
+          "r": 4,
+          "c": 2,
+          "direction": "E→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 10,
+          "r": 4,
+          "c": 3,
+          "direction": "E→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        }
+      ],
+      "error": null
+    },
+    {
+      "model": "glm-4.6",
+      "provider": "glm",
+      "solved": true,
+      "mei": 0.9,
+      "sr": 1.0,
+      "score": 0.657,
+      "hallucination_count": 0,
+      "backtrack_count": 0,
+      "loop_count": 0,
+      "brs": 1.0,
+      "latency_s": 6.46,
+      "path_efficiency": 1.0,
+      "hall_resistance": 1.0,
+      "backtrack_rate": 0.0,
+      "total_steps": 9,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "r": 0,
+          "c": 0,
+          "direction": "S↓",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 2,
+          "r": 1,
+          "c": 0,
+          "direction": "S↓",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 3,
+          "r": 2,
+          "c": 0,
+          "direction": "S↓",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 4,
+          "r": 3,
+          "c": 0,
+          "direction": "S↓",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 5,
+          "r": 4,
+          "c": 0,
+          "direction": "E→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 6,
+          "r": 4,
+          "c": 1,
+          "direction": "E→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 90
+        },
+        {
+          "step": 7,
+          "r": 4,
+          "c": 2,
+          "direction": "E→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 90
+        },
+        {
+          "step": 8,
+          "r": 4,
+          "c": 3,
+          "direction": "E→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 9,
+          "r": 4,
+          "c": 4,
+          "direction": "E",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": null
+        }
+      ],
+      "error": null
+    },
+    {
+      "model": "glm-4.7",
+      "provider": "glm",
+      "solved": true,
+      "mei": 0.9,
+      "sr": 1.0,
+      "score": 0.657,
+      "hallucination_count": 0,
+      "backtrack_count": 0,
+      "loop_count": 0,
+      "brs": 1.0,
+      "latency_s": 7.89,
+      "path_efficiency": 1.0,
+      "hall_resistance": 1.0,
+      "backtrack_rate": 0.0,
+      "total_steps": 9,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "r": 0,
+          "c": 0,
+          "direction": "S↓",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 2,
+          "r": 1,
+          "c": 0,
+          "direction": "S↓",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 3,
+          "r": 2,
+          "c": 0,
+          "direction": "S↓",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 4,
+          "r": 3,
+          "c": 0,
+          "direction": "S↓",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 5,
+          "r": 4,
+          "c": 0,
+          "direction": "E→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 6,
+          "r": 4,
+          "c": 1,
+          "direction": "E→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 90
+        },
+        {
+          "step": 7,
+          "r": 4,
+          "c": 2,
+          "direction": "E→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 90
+        },
+        {
+          "step": 8,
+          "r": 4,
+          "c": 3,
+          "direction": "E→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": 100
+        },
+        {
+          "step": 9,
+          "r": 4,
+          "c": 4,
+          "direction": "→",
+          "is_hallucination": false,
+          "is_backtrack": false,
+          "is_loop": false,
+          "confidence": null
+        }
+      ],
+      "error": null
+    }
+  ],
+  "failed_models": [],
+  "config": {
+    "ariadne_mode": "A",
+    "use_mirage": true,
+    "use_confidence": true,
+    "max_tokens": 3000
+  }
+}

@@ -14,7 +14,9 @@
       "Gemini-2.0-Flash-Lite",
       "Claude-3-Haiku",
       "GPT-4o-mini"
-    ]
+    ],
+    "effect_size_method": "Glass delta (|mu_baseline - mu_llm| / sd_llm); baseline is deterministic constant, so pooled Cohen's d not applicable",
+    "statistical_test": "One-sample Wilcoxon signed-rank test vs mu0=0.9 (random walk MEI), Bonferroni k=8"
   },
   "summary": {
     "Claude-3-Haiku": {
@@ -290,56 +292,56 @@
       "n": 60,
       "p_raw": 0.0,
       "p_bonferroni": 0.0,
-      "cohens_d": 1.559,
+      "cohens_d": 1.102,
       "significant_bonf": true
     },
     "MiniMax-M2.5": {
       "n": 60,
-      "p_raw": 1e-05,
-      "p_bonferroni": 8.3e-05,
-      "cohens_d": 1.197,
+      "p_raw": 4e-06,
+      "p_bonferroni": 3e-05,
+      "cohens_d": 0.847,
       "significant_bonf": true
     },
     "Llama-4-Scout": {
       "n": 60,
       "p_raw": 0.0,
       "p_bonferroni": 0.0,
-      "cohens_d": 1.739,
+      "cohens_d": 1.23,
       "significant_bonf": true
     },
     "Gemini-2.0-Flash-Lite": {
       "n": 60,
       "p_raw": 0.0,
       "p_bonferroni": 0.0,
-      "cohens_d": 2.202,
+      "cohens_d": 1.557,
       "significant_bonf": true
     },
     "Claude-3-Haiku": {
       "n": 60,
       "p_raw": 0.0,
       "p_bonferroni": 0.0,
-      "cohens_d": 3.011,
+      "cohens_d": 2.129,
       "significant_bonf": true
     },
     "GPT-4o-mini": {
       "n": 60,
       "p_raw": 0.0,
       "p_bonferroni": 0.0,
-      "cohens_d": 2.291,
+      "cohens_d": 1.62,
       "significant_bonf": true
     },
     "Llama-4-Maverick": {
       "n": 60,
       "p_raw": 0.0,
       "p_bonferroni": 0.0,
-      "cohens_d": 1.774,
+      "cohens_d": 1.254,
       "significant_bonf": true
     },
     "Qwen-2.5-72B": {
       "n": 60,
       "p_raw": 0.0,
       "p_bonferroni": 0.0,
-      "cohens_d": 1.73,
+      "cohens_d": 1.223,
       "significant_bonf": true
     }
   }

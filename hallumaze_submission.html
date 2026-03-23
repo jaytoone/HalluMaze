@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HalluMaze: A Maze Navigation Benchmark for LLM Metacognitive Error Recovery</title>
+<style>
+:root{
+  --bg:#07090f;--surface:#0d1018;--card:#111520;--border:#1e2340;
+  --text:#e8edf5;--muted:#7a8499;--dim:#3a4155;
+  --blue:#3b82f6;--indigo:#6366f1;--purple:#8b5cf6;
+  --green:#10b981;--yellow:#f59e0b;--red:#ef4444;--orange:#f97316;
+  --cyan:#06b6d4;--teal:#14b8a6;
+  --gradient:linear-gradient(135deg,#3b82f6 0%,#8b5cf6 100%);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;line-height:1.65;font-size:15px;}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:#07090fdd;backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;height:54px;
+}
+.nav-brand{font-weight:800;font-size:1rem;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-links{display:flex;gap:20px;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.82rem;font-weight:500;transition:.15s;}
+.nav-links a:hover{color:var(--text);}
+@media(max-width:600px){.nav-links{display:none;}}
+
+/* ── HERO ── */
+.hero{
+  padding:80px 24px 64px;text-align:center;
+  background:radial-gradient(ellipse 80% 60% at 50% -10%,#1e2d6020,transparent),
+             radial-gradient(ellipse 60% 40% at 80% 50%,#6366f110,transparent);
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#1e2d60;border:1px solid #3b82f640;border-radius:99px;
+  padding:4px 14px;font-size:.72rem;color:#93bbfd;font-weight:600;
+  margin-bottom:20px;letter-spacing:.3px;
+}
+.hero-tag .dot{width:6px;height:6px;border-radius:50%;background:#3b82f6;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+h1{font-size:clamp(1.6rem,3.5vw,2.5rem);font-weight:800;line-height:1.25;letter-spacing:-.5px;max-width:760px;margin:0 auto 16px;}
+h1 .em{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-meta{color:var(--muted);font-size:.82rem;margin-bottom:28px;}
+.hero-meta span{color:var(--text);font-weight:600;}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 22px;border-radius:8px;font-size:.83rem;font-weight:600;text-decoration:none;transition:.15s;cursor:pointer;border:none;}
+.btn-primary{background:var(--gradient);color:#fff;}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px);}
+.btn-ghost{background:var(--card);color:var(--text);border:1px solid var(--border);}
+.btn-ghost:hover{border-color:var(--blue);color:var(--blue);}
+
+/* ── SECTION ── */
+.wrap{max-width:960px;margin:0 auto;padding:0 20px;}
+section{padding:56px 0;}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:1.5px;color:var(--blue);text-transform:uppercase;margin-bottom:10px;}
+h2{font-size:1.5rem;font-weight:800;margin-bottom:6px;letter-spacing:-.3px;}
+.section-desc{color:var(--muted);font-size:.88rem;max-width:600px;margin-bottom:32px;}
+hr.divider{border:none;border-top:1px solid var(--border);margin:0;}
+
+/* ── ABSTRACT ── */
+.abstract-box{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:28px 32px;font-size:.88rem;color:#c8d0e0;line-height:1.8;
+  max-width:800px;margin:0 auto;
+}
+.abstract-box strong{color:var(--text);}
+
+/* ── STATS ROW ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:40px;}
+@media(max-width:580px){.stats-row{grid-template-columns:repeat(2,1fr);}}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;}
+.stat-val{font-size:1.6rem;font-weight:800;line-height:1;}
+.stat-lbl{font-size:.7rem;color:var(--muted);margin-top:5px;}
+
+/* ── LEADERBOARD ── */
+.lb-wrap{overflow-x:auto;}
+.lb-table{width:100%;border-collapse:collapse;min-width:560px;}
+.lb-table th{
+  background:var(--surface);color:var(--muted);font-size:.7rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.5px;
+  padding:11px 14px;border-bottom:2px solid var(--border);text-align:left;
+}
+.lb-table th.r,.lb-table td.r{text-align:right;}
+.lb-table th.c,.lb-table td.c{text-align:center;}
+.lb-table td{padding:11px 14px;border-bottom:1px solid #161924;vertical-align:middle;}
+.lb-table tbody tr:hover td{background:#0f1320;}
+.lb-table tbody tr.baseline td{background:#0c0e18;opacity:.55;}
+.rank-pip{display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;border-radius:50%;font-size:.72rem;font-weight:800;}
+.pip-gold{background:#f59e0b22;color:#f59e0b;border:1px solid #f59e0b60;}
+.pip-silver{background:#9ca3af22;color:#9ca3af;border:1px solid #9ca3af60;}
+.pip-bronze{background:#b4530922;color:#cd7c40;border:1px solid #cd7c4060;}
+.pip-n{background:var(--border);color:var(--muted);}
+.pip-base{color:var(--dim);font-size:.75rem;}
+.model-cell .mname{font-weight:700;font-size:.85rem;}
+.model-cell .mprov{font-size:.7rem;color:var(--muted);}
+.model-cell .mnote{font-size:.67rem;color:var(--red);}
+.mei-cell{font-size:.9rem;font-weight:800;}
+.ci-small{display:block;font-size:.62rem;color:var(--dim);font-weight:400;}
+.bar-row{display:flex;align-items:center;gap:7px;}
+.bar-bg{flex:1;height:4px;background:#161924;border-radius:2px;overflow:hidden;min-width:40px;}
+.bar-f{height:100%;border-radius:2px;}
+.pval{min-width:34px;font-size:.77rem;font-weight:700;}
+.tag{font-size:.67rem;font-weight:700;padding:2px 7px;border-radius:4px;}
+.tag-a{background:#10b98122;color:#10b981;}
+.tag-b{background:#3b82f622;color:#3b82f6;}
+.tag-c{background:#f97316 22;color:#f97316;}
+.tag-d{background:#ef444422;color:#ef4444;}
+.tag-base{background:#3a415522;color:#3a4155;}
+.baseline-sep td{border-bottom:2px dashed var(--border);}
+
+/* ── METHOD ── */
+.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media(max-width:600px){.method-grid{grid-template-columns:1fr;}}
+.method-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;}
+.method-icon{font-size:1.6rem;margin-bottom:10px;}
+.method-title{font-weight:700;margin-bottom:6px;font-size:.92rem;}
+.method-body{font-size:.82rem;color:var(--muted);line-height:1.65;}
+.method-body code{background:#1a1d2e;border-radius:4px;padding:1px 5px;font-size:.8rem;color:var(--cyan);}
+
+/* ── MEI FORMULA ── */
+.formula-section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:20px;}
+.formula-eq{font-family:monospace;font-size:1.05rem;text-align:center;color:var(--cyan);padding:16px;background:#0a0c18;border-radius:10px;margin:16px 0;border:1px solid #06b6d420;}
+.weight-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px;}
+@media(max-width:500px){.weight-row{grid-template-columns:repeat(2,1fr);}}
+.weight-item{background:#0a0c18;border-radius:8px;padding:12px;text-align:center;}
+.weight-val{font-size:1.1rem;font-weight:800;font-family:monospace;}
+.weight-key{font-size:.7rem;color:var(--muted);margin-top:3px;}
+.weight-note{font-size:.65rem;color:var(--dim);margin-top:2px;}
+
+/* ── FINDING CARDS ── */
+.finding-row{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+@media(max-width:560px){.finding-row{grid-template-columns:1fr;}}
+.finding-card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;
+  position:relative;overflow:hidden;
+}
+.finding-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gradient);}
+.finding-n{font-size:.65rem;font-weight:700;color:var(--blue);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.finding-title{font-size:.9rem;font-weight:700;margin-bottom:5px;}
+.finding-body{font-size:.79rem;color:var(--muted);line-height:1.6;}
+.finding-stat{font-size:.85rem;font-weight:700;color:var(--yellow);margin-top:8px;}
+
+/* ── DISSOCIATION ── */
+.diss-figure{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;
+  background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;
+}
+@media(max-width:540px){.diss-figure{grid-template-columns:1fr;}}
+.diss-model{padding:14px;background:var(--surface);border-radius:10px;}
+.diss-name{font-weight:700;font-size:.88rem;margin-bottom:10px;}
+.diss-metric{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
+.diss-metric-name{font-size:.78rem;color:var(--muted);}
+.diss-chip{font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:99px;}
+.chip-hi{background:#10b98120;color:#10b981;border:1px solid #10b98140;}
+.chip-lo{background:#ef444420;color:#ef4444;border:1px solid #ef444440;}
+.chip-mid{background:#f59e0b20;color:#f59e0b;border:1px solid #f59e0b40;}
+
+/* ── MAZE ASCII ── */
+.maze-fig{
+  background:#080a12;border:1px solid var(--border);border-radius:12px;
+  padding:20px 24px;font-family:monospace;font-size:.78rem;color:#4a6380;
+  line-height:1.4;overflow-x:auto;
+}
+.maze-fig .s{color:#10b981;font-weight:700;}
+.maze-fig .g{color:#f59e0b;font-weight:700;}
+.maze-fig .m{color:#ef4444;font-weight:700;}
+.maze-fig .w{color:#1e2d60;}
+.maze-fig .p{color:#3b82f6;}
+.maze-caption{font-size:.73rem;color:var(--muted);margin-top:8px;text-align:center;}
+
+/* ── TRACE BOX ── */
+.trace-box{
+  background:#080a12;border:1px solid var(--border);border-radius:12px;
+  padding:18px 22px;font-family:monospace;font-size:.76rem;line-height:1.7;
+  overflow-x:auto;
+}
+.trace-step{color:#3a4155;}
+.trace-model{color:#8892a4;}
+.trace-env-ok{color:#10b981;}
+.trace-env-fail{color:#ef4444;}
+.trace-hall{color:#f59e0b;font-weight:700;}
+.trace-recover{color:#06b6d4;font-weight:700;}
+.trace-comment{color:#4a5568;font-style:italic;}
+
+/* ── CITATION ── */
+.cite-box{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:18px 22px;font-family:monospace;font-size:.77rem;color:#8892a4;line-height:1.8;
+  overflow-x:auto;white-space:pre;
+}
+
+/* ── BADGES ROW ── */
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:6px;font-size:.72rem;font-weight:600;border:1px solid;}
+.badge-blue{color:#3b82f6;border-color:#3b82f640;background:#3b82f610;}
+.badge-green{color:#10b981;border-color:#10b98140;background:#10b98110;}
+.badge-yellow{color:#f59e0b;border-color:#f59e0b40;background:#f59e0b10;}
+.badge-purple{color:#8b5cf6;border-color:#8b5cf640;background:#8b5cf610;}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:32px 20px;text-align:center;color:var(--dim);font-size:.75rem;}
+footer a{color:var(--muted);text-decoration:none;}
+footer a:hover{color:var(--text);}
+.scroll-hint{text-align:center;color:var(--dim);font-size:.7rem;margin-top:5px;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-brand">HalluMaze</span>
+  <ul class="nav-links">
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#leaderboard">Leaderboard</a></li>
+    <li><a href="#method">Method</a></li>
+    <li><a href="#findings">Findings</a></li>
+    <li><a href="#maze">Maze</a></li>
+    <li><a href="#cite">Cite</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">
+    <span class="dot"></span>
+    NeurIPS 2026 Datasets &amp; Benchmarks · Under Review
+  </div>
+  <h1>HalluMaze: A Maze Navigation Benchmark for<br><span class="em">LLM Metacognitive Error Recovery</span></h1>
+  <p class="hero-meta" style="max-width:620px;margin:0 auto 20px;font-size:.86rem;color:#8892a4;line-height:1.7;">
+    We benchmark <strong>6 large language models</strong> on real-time error detection and correction in navigable maze environments.
+    All tested models score significantly below a random walk baseline (<span style="color:#f59e0b">p&lt;0.001</span>, d=1.2–4.1),
+    revealing a systematic deficit in metacognitive updating.
+  </p>
+  <div class="hero-btns">
+    <a href="#leaderboard" class="btn btn-primary">View Leaderboard</a>
+    <a href="#method" class="btn btn-ghost">Method</a>
+    <a href="experiment_results/analysis_combined.json" class="btn btn-ghost">Data (JSON)</a>
+    <a href="docs/research/20260323-hallumaze-paper-draft.md" class="btn btn-ghost">Paper Draft</a>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ABSTRACT -->
+<section id="abstract">
+  <div class="wrap">
+    <div class="section-label">Abstract</div>
+    <h2>Overview</h2>
+    <p class="section-desc">Measuring real-time metacognitive recovery — not just final-answer accuracy.</p>
+    <div class="abstract-box">
+      We introduce <strong>HalluMaze</strong>, a benchmark that measures large language model (LLM) metacognitive error recovery through maze navigation.
+      Unlike existing hallucination benchmarks that evaluate final-answer accuracy, HalluMaze captures <strong>real-time error detection and corrective action</strong>
+      by exposing models to navigable environments containing "mirage" walls — passages that appear blocked but are traversable.
+      We evaluate <strong>6 LLMs</strong> (MiniMax-M2.5, GLM-4.7, Llama-4-Scout, Llama-4-Maverick, Gemini-2.0-Flash-Lite, GPT-4o-mini)
+      across <strong>n=30 seeds × 5×5 and 7×7</strong> maze sizes.
+      We introduce the <strong>Metacognitive Escape Index (MEI)</strong>, grounded in Nelson &amp; Narens' (1990) metamemory framework,
+      which decomposes metacognitive performance into recovery rate (HRR), efficiency (ETR), awareness (AW), and error rate (HR).
+      <strong>All tested LLMs score significantly below a random walk baseline</strong> (p&lt;0.001 Bonferroni-corrected, d&gt;1.2 for all),
+      revealing a systematic deficit in real-time metacognitive recovery.
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- STATS -->
+<section>
+  <div class="wrap">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-val" style="background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">6</div>
+        <div class="stat-lbl">LLMs Evaluated</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--green);">377</div>
+        <div class="stat-lbl">Valid Trials</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--yellow);">100%</div>
+        <div class="stat-lbl">Below Random Walk</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" style="color:var(--cyan);">625</div>
+        <div class="stat-lbl">Sensitivity Configs</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- LEADERBOARD -->
+<section id="leaderboard">
+  <div class="wrap">
+    <div class="section-label">Results</div>
+    <h2>Leaderboard</h2>
+    <p class="section-desc">Bootstrap 95% CI · Wilcoxon rank-sum · Bonferroni k=6 · All vs Random Walk baseline</p>
+    <div class="badges">
+      <span class="badge badge-blue">MEI = 0.4×HRR + 0.3×ETR + 0.2×AW − 0.1×HR</span>
+      <span class="badge badge-green">n=30 seeds/model × 2 sizes (5×5, 7×7)</span>
+      <span class="badge badge-yellow">★ = deterministic oracle baseline</span>
+      <span class="badge badge-purple">† = incomplete (credit exhaustion)</span>
+    </div>
+    <div class="lb-wrap">
+      <table class="lb-table">
+        <thead>
+          <tr>
+            <th class="c">#</th>
+            <th>Model</th>
+            <th class="c">MEI ↑<br><span style="font-weight:400;text-transform:none;font-size:.65rem">[95% CI]</span></th>
+            <th>SR ↑</th>
+            <th>HRR ↑</th>
+            <th>BRS ↑</th>
+            <th class="c">n</th>
+            <th class="c">Grade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Baselines -->
+          <tr class="baseline">
+            <td class="c"><span class="pip-base">★</span></td>
+            <td class="model-cell"><div class="mname">Random Walk</div><div class="mprov">Stochastic baseline</div></td>
+            <td class="c"><span class="mei-cell" style="color:var(--dim)">0.900</span><span class="ci-small">[0.900, 0.900]</span></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:100%;background:#2a3050"></div></div><span class="pval" style="color:var(--dim)">100%</span></div></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:100%;background:#2a3050"></div></div><span class="pval" style="color:var(--dim)">100%</span></div></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:100%;background:#2a3050"></div></div><span class="pval" style="color:var(--dim)">100%</span></div></td>
+            <td class="c" style="color:var(--dim)">60</td>
+            <td class="c"><span class="tag tag-base">BASE</span></td>
+          </tr>
+          <tr class="baseline baseline-sep">
+            <td class="c"><span class="pip-base">★</span></td>
+            <td class="model-cell"><div class="mname">A* Oracle</div><div class="mprov">Optimal path</div></td>
+            <td class="c"><span class="mei-cell" style="color:var(--dim)">0.900</span><span class="ci-small">[0.900, 0.900]</span></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:100%;background:#2a3050"></div></div><span class="pval" style="color:var(--dim)">100%</span></div></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:100%;background:#2a3050"></div></div><span class="pval" style="color:var(--dim)">100%</span></div></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:100%;background:#2a3050"></div></div><span class="pval" style="color:var(--dim)">100%</span></div></td>
+            <td class="c" style="color:var(--dim)">60</td>
+            <td class="c"><span class="tag tag-base">BASE</span></td>
+          </tr>
+          <!-- LLMs -->
+          <tr>
+            <td class="c"><span class="rank-pip pip-gold">1</span></td>
+            <td class="model-cell"><div class="mname">Llama-4-Maverick</div><div class="mprov">Meta · OpenRouter</div></td>
+            <td class="c"><span class="mei-cell" style="color:var(--green)">0.617</span><span class="ci-small">[0.547, 0.686]</span></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:17%;background:#3b82f6"></div></div><span class="pval" style="color:var(--yellow)">17%</span></div></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:83%;background:#8b5cf6"></div></div><span class="pval" style="color:var(--green)">83%</span></div></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:68%;background:#f97316"></div></div><span class="pval" style="color:var(--green)">68%</span></div></td>
+            <td class="c">47</td>
+            <td class="c"><span class="tag tag-a">A</span></td>
+          </tr>
+          <tr>
+            <td class="c"><span class="rank-pip pip-silver">2</span></td>
+            <td class="model-cell"><div class="mname">GLM-4.7</div><div class="mprov">Zhipu AI · Local</div></td>
+            <td class="c"><span class="mei-cell" style="color:var(--green)">0.615</span><span class="ci-small">[0.551, 0.681]</span></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:8%;background:#3b82f6"></div></div><span class="pval" style="color:var(--red)"> 8%</span></div></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:72%;background:#8b5cf6"></div></div><span class="pval" style="color:var(--green)">72%</span></div></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:71%;background:#f97316"></div></div><span class="pval" style="color:var(--green)">71%</span></div></td>
+            <td class="c">60</td>
+            <td class="c"><span class="tag tag-a">A</span></td>
+          </tr>
+          <tr>
+            <td class="c"><span class="rank-pip pip-bronze">3</span></td>
+            <td class="model-cell"><div class="mname">MiniMax-M2.5</div><div class="mprov">MiniMax · Local</div></td>
+            <td class="c"><span class="mei-cell" style="color:var(--blue)">0.593</span><span class="ci-small">[0.500, 0.682]</span></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:53%;background:#3b82f6"></div></div><span class="pval" style="color:var(--green)">53%</span></div></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:60%;background:#8b5cf6"></div></div><span class="pval" style="color:var(--yellow)">60%</span></div></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:100%;background:#f97316"></div></div><span class="pval" style="color:var(--green)">100%</span></div></td>
+            <td class="c">60</td>
+            <td class="c"><span class="tag tag-b">B+</span></td>
+          </tr>
+          <tr>
+            <td class="c"><span class="rank-pip pip-n">4</span></td>
+            <td class="model-cell"><div class="mname">Llama-4-Scout</div><div class="mprov">Meta · OpenRouter</div></td>
+            <td class="c"><span class="mei-cell" style="color:var(--blue)">0.589</span><span class="ci-small">[0.525, 0.650]</span></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:8%;background:#3b82f6"></div></div><span class="pval" style="color:var(--red)"> 8%</span></div></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:81%;background:#8b5cf6"></div></div><span class="pval" style="color:var(--green)">81%</span></div></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:71%;background:#f97316"></div></div><span class="pval" style="color:var(--green)">71%</span></div></td>
+            <td class="c">60</td>
+            <td class="c"><span class="tag tag-b">B+</span></td>
+          </tr>
+          <tr>
+            <td class="c"><span class="rank-pip pip-n">5</span></td>
+            <td class="model-cell"><div class="mname">Gemini 2.0 Flash-Lite</div><div class="mprov">Google · OpenRouter</div></td>
+            <td class="c"><span class="mei-cell" style="color:var(--orange)">0.432</span><span class="ci-small">[0.352, 0.507]</span></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:8%;background:#3b82f6"></div></div><span class="pval" style="color:var(--red)"> 8%</span></div></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:40%;background:#8b5cf6"></div></div><span class="pval" style="color:var(--yellow)">40%</span></div></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:56%;background:#f97316"></div></div><span class="pval" style="color:var(--yellow)">56%</span></div></td>
+            <td class="c">60</td>
+            <td class="c"><span class="tag tag-c">C</span></td>
+          </tr>
+          <tr>
+            <td class="c"><span class="rank-pip pip-n">6</span></td>
+            <td class="model-cell">
+              <div class="mname">GPT-4o-mini</div>
+              <div class="mprov">OpenAI · OpenRouter</div>
+              <div class="mnote">† 44/60 credit exhaustion errors</div>
+            </td>
+            <td class="c"><span class="mei-cell" style="color:var(--red)">0.345</span><span class="ci-small">[0.210, 0.488]</span></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:13%;background:#3b82f6"></div></div><span class="pval" style="color:var(--red)">13%</span></div></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:31%;background:#8b5cf6"></div></div><span class="pval" style="color:var(--red)">31%</span></div></td>
+            <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:77%;background:#f97316"></div></div><span class="pval" style="color:var(--green)">77%</span></div></td>
+            <td class="c" style="color:var(--red)">16†</td>
+            <td class="c"><span class="tag tag-d">D</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scroll-hint">← scroll →  |  MEI = Metacognitive Escape Index (higher = better)  |  SR = Solve Rate  |  HRR = Hallucination Recovery Rate</div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- METHOD -->
+<section id="method">
+  <div class="wrap">
+    <div class="section-label">Method</div>
+    <h2>Benchmark Design</h2>
+    <p class="section-desc">Text-based maze navigation with injected mirage walls for controlled hallucination induction.</p>
+    <div class="method-grid" style="margin-bottom:24px;">
+      <div class="method-card">
+        <div class="method-icon">🧩</div>
+        <div class="method-title">Task</div>
+        <div class="method-body">Models navigate an N×N text maze from <code>[0,0]</code> to <code>[N-1,N-1]</code>. Each step: current position + wall state + 5-step history → output <code>direction</code> + <code>confidence 0–100</code> + <code>reasoning</code>.</div>
+      </div>
+      <div class="method-card">
+        <div class="method-icon">🌫️</div>
+        <div class="method-title">Mirage Walls</div>
+        <div class="method-body">2 mirage positions per maze, injected at generation time. A mirage reports <code>wall=1</code> in the model's context but is actually passable. Environment contradiction is the detection signal.</div>
+      </div>
+      <div class="method-card">
+        <div class="method-icon">📐</div>
+        <div class="method-title">Maze Generation</div>
+        <div class="method-body">Randomized DFS. Sizes: <strong>5×5</strong> (optimal 17 steps) and <strong>7×7</strong> (optimal 25 steps). Step budget: N²×3. n=30 independent seeds per condition.</div>
+      </div>
+      <div class="method-card">
+        <div class="method-icon">🎲</div>
+        <div class="method-title">Baselines</div>
+        <div class="method-body"><strong>Random Walk</strong>: uniform random direction (HRR=1.0 by construction). <strong>A*</strong> and <strong>BFS</strong>: oracle algorithms with perfect world model. Both score MEI=0.900.</div>
+      </div>
+    </div>
+
+    <!-- MEI Formula -->
+    <div class="formula-section">
+      <div class="section-label" style="margin-bottom:6px;">Metacognitive Escape Index (MEI)</div>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:0;">Grounded in Nelson &amp; Narens (1990) metamemory framework — object level (task) + meta level (monitoring + control).</p>
+      <div class="formula-eq">MEI = 0.4 × HRR + 0.3 × ETR + 0.2 × AW − 0.1 × HR</div>
+      <div class="weight-row">
+        <div class="weight-item">
+          <div class="weight-val" style="color:#8b5cf6">0.40</div>
+          <div class="weight-key">HRR</div>
+          <div class="weight-note">Hallucination Recovery Rate — Control process</div>
+        </div>
+        <div class="weight-item">
+          <div class="weight-val" style="color:#3b82f6">0.30</div>
+          <div class="weight-key">ETR</div>
+          <div class="weight-note">Efficiency-to-Random — Monitoring accuracy</div>
+        </div>
+        <div class="weight-item">
+          <div class="weight-val" style="color:#06b6d4">0.20</div>
+          <div class="weight-key">AW</div>
+          <div class="weight-note">Awareness (loop detection) — JOL proxy</div>
+        </div>
+        <div class="weight-item">
+          <div class="weight-val" style="color:#ef4444">−0.10</div>
+          <div class="weight-key">HR</div>
+          <div class="weight-note">Hallucination Rate — Object-level penalty</div>
+        </div>
+      </div>
+      <p style="font-size:.73rem;color:var(--dim);margin-top:12px;">Sensitivity: 625-configuration grid search (±50% per weight, 5 levels each) → ranking stable in <strong style="color:var(--green)">100%</strong> of configurations.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- FINDINGS -->
+<section id="findings">
+  <div class="wrap">
+    <div class="section-label">Analysis</div>
+    <h2>Key Findings</h2>
+    <p class="section-desc">Four structural results that reveal properties of current LLM metacognition.</p>
+    <div class="finding-row" style="margin-bottom:24px;">
+      <div class="finding-card">
+        <div class="finding-n">F1 — Universal Deficit</div>
+        <div class="finding-title">All LLMs below random walk</div>
+        <div class="finding-body">Every tested model scores significantly below a random walk agent (p&lt;0.001, Bonferroni-corrected). A random agent that simply retries recovers from hallucinations trivially; LLMs anchor on incorrect beliefs.</div>
+        <div class="finding-stat">d = 1.198 – 4.054 across all models</div>
+      </div>
+      <div class="finding-card">
+        <div class="finding-n">F2 — SR–HRR Dissociation</div>
+        <div class="finding-title">Task success ≠ metacognitive competence</div>
+        <div class="finding-body">MiniMax-M2.5 achieves the highest solve rate (53.3%) but mid-range HRR (60%). GLM-4.7 has the lowest SR (8.3%) but high HRR (71.8%). Two orthogonal failure modes: poor world model vs. poor error recovery.</div>
+        <div class="finding-stat">Δ(SR) = 45pp, Δ(HRR) = −11pp between the two</div>
+      </div>
+      <div class="finding-card">
+        <div class="finding-n">F3 — Scale Independence</div>
+        <div class="finding-title">Larger models do not recover better</div>
+        <div class="finding-body">Llama-4-Scout (smaller, cheaper) achieves HRR=81% vs. GPT-4o-mini HRR=31%, despite GPT-4o-mini outperforming on standard benchmarks. Metacognitive recovery appears orthogonal to general capability.</div>
+        <div class="finding-stat">Scout HRR ↑50pp vs GPT-4o-mini</div>
+      </div>
+      <div class="finding-card">
+        <div class="finding-n">F4 — Metacognitive Anchoring</div>
+        <div class="finding-title">LLMs anchor on incorrect beliefs</div>
+        <div class="finding-body">Random walk achieves MEI=0.900 because it holds no beliefs. LLMs trained on confident text prediction learn to maintain world models rather than update them under environmental contradiction — a metacognitive anchoring bias.</div>
+        <div class="finding-stat">Random Walk MEI − best LLM MEI = 0.283</div>
+      </div>
+    </div>
+
+    <!-- Dissociation Figure -->
+    <div style="margin-top:8px;">
+      <div style="font-size:.78rem;color:var(--muted);margin-bottom:10px;">Figure 1 · SR–HRR Dissociation: Two models, two opposite failure profiles</div>
+      <div class="diss-figure">
+        <div class="diss-model">
+          <div class="diss-name">MiniMax-M2.5</div>
+          <div style="font-size:.75rem;color:var(--muted);margin-bottom:10px;">High SR / Mid HRR — "Navigates well, poor self-correction"</div>
+          <div class="diss-metric"><span class="diss-metric-name">Solve Rate (SR)</span><span class="diss-chip chip-hi">53.3% ↑ #1</span></div>
+          <div class="diss-metric"><span class="diss-metric-name">Recovery Rate (HRR)</span><span class="diss-chip chip-mid">60.0% — mid</span></div>
+          <div class="diss-metric"><span class="diss-metric-name">MEI (composite)</span><span class="diss-chip chip-mid">0.593 — 3rd</span></div>
+        </div>
+        <div class="diss-model">
+          <div class="diss-name">GLM-4.7</div>
+          <div style="font-size:.75rem;color:var(--muted);margin-bottom:10px;">Low SR / High HRR — "Poor navigation, strong self-correction"</div>
+          <div class="diss-metric"><span class="diss-metric-name">Solve Rate (SR)</span><span class="diss-chip chip-lo"> 8.3% ↓ last</span></div>
+          <div class="diss-metric"><span class="diss-metric-name">Recovery Rate (HRR)</span><span class="diss-chip chip-hi">71.8% ↑ high</span></div>
+          <div class="diss-metric"><span class="diss-metric-name">MEI (composite)</span><span class="diss-chip chip-hi">0.615 — 2nd</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- MAZE -->
+<section id="maze">
+  <div class="wrap">
+    <div class="section-label">Appendix D</div>
+    <h2>Maze Design</h2>
+    <p class="section-desc">Randomized DFS generation with injected mirage positions. Text representation delivered per step.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div>
+        <div style="font-size:.75rem;color:var(--muted);margin-bottom:8px;">5×5 maze — seed 1001 (S=start, G=goal, M=mirage)</div>
+        <div class="maze-fig"><span class="w">+--+--+--+--+--+
+</span><span class="s">|S</span><span class="w">    |     |  |
++  +--+  +  +  +
+|  |</span> <span class="m">M</span><span class="w">   |     |
++  +  +--+--+  +
+|     |        |
++--+  +  +--+  +
+|  |</span>  <span class="m">M</span><span class="w">  |  |  |
++  +--+--+  +  +
+|           |</span><span class="g">G</span><span class="w"> |
++--+--+--+--+--+</span></div>
+        <div class="maze-caption">Optimal path = 17 steps · Step budget = 75</div>
+      </div>
+      <div>
+        <div style="font-size:.75rem;color:var(--muted);margin-bottom:8px;">Example hallucination trace — GLM-4.7, seed 2002</div>
+        <div class="trace-box"><span class="trace-step">Step 12</span> <span class="trace-model">pos=[2,1] walls:N=0 S=1 E=1 W=0</span>
+<span class="trace-model">Model → {"dir":"E","conf":78,"reason":"E passage open"}</span>
+<span class="trace-env-fail">Env   → REJECTED — East wall present</span>
+<span class="trace-hall">⚡ Hallucination (false-open, conf=78)</span>
+
+<span class="trace-step">Step 13</span> <span class="trace-model">Model → {"dir":"N","conf":65}</span>
+<span class="trace-env-ok">Env   → ACCEPTED → [1,1]</span>
+<span class="trace-recover">↩ Recovery attempt (1 step after hall.)</span>
+
+<span class="trace-step">Step 14</span> <span class="trace-comment"># Mirage cell</span>
+<span class="trace-model">Model → {"dir":"E","conf":82,"reason":"E blocked (saw wall)"}</span>
+<span class="trace-env-ok">Env   → ACCEPTED — mirage (passable!)</span>
+<span class="trace-hall">⚡ Hallucination (false-wall, conf=82)</span>
+<span class="trace-recover">↩ HRR credit: traversed mirage step 15</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- RELATED WORK -->
+<section>
+  <div class="wrap">
+    <div class="section-label">Related Work</div>
+    <h2>Comparison to Prior Benchmarks</h2>
+    <p class="section-desc">HalluMaze is the first benchmark targeting metacognitive <em>recovery</em> (detecting + correcting errors mid-task).</p>
+    <div class="lb-wrap">
+      <table class="lb-table">
+        <thead>
+          <tr><th>Benchmark</th><th>Task</th><th>Primary Metric</th><th class="c">Recovery?</th><th class="c">Human Baseline?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>TruthfulQA [Lin+22]</td><td>Factual QA</td><td>% Truthful</td><td class="c" style="color:var(--red)">✗</td><td class="c" style="color:var(--green)">✓</td></tr>
+          <tr><td>HaluEval [Ji+23]</td><td>QA / Dialog</td><td>Hallucination rate</td><td class="c" style="color:var(--red)">✗</td><td class="c" style="color:var(--red)">✗</td></tr>
+          <tr><td>FActScoring [Min+23]</td><td>Biography generation</td><td>Atomic fact precision</td><td class="c" style="color:var(--red)">✗</td><td class="c" style="color:var(--green)">✓</td></tr>
+          <tr><td>MMLU [Hendrycks+21]</td><td>57-subject MCQ</td><td>Accuracy</td><td class="c" style="color:var(--red)">✗</td><td class="c" style="color:var(--green)">✓</td></tr>
+          <tr><td>BabyAI [Chevalier+19]</td><td>Grid-world nav.</td><td>Task success rate</td><td class="c" style="color:var(--red)">✗</td><td class="c" style="color:var(--red)">✗</td></tr>
+          <tr style="border-top:1px solid var(--blue)">
+            <td style="color:var(--blue);font-weight:700">HalluMaze (ours)</td>
+            <td>Maze navigation</td>
+            <td style="color:var(--blue)">MEI, HRR, SR</td>
+            <td class="c" style="color:var(--green);font-weight:700">✓ First</td>
+            <td class="c" style="color:var(--yellow)">Planned</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- STATISTICAL TESTS -->
+<section>
+  <div class="wrap">
+    <div class="section-label">Statistics</div>
+    <h2>Significance Tests</h2>
+    <p class="section-desc">All models vs. Random Walk baseline. Wilcoxon rank-sum, Bonferroni k=6. BH-FDR (q=0.05): all confirmed.</p>
+    <div class="lb-wrap">
+      <table class="lb-table">
+        <thead>
+          <tr><th>Model</th><th class="c">Cohen's d</th><th class="c">p (Bonferroni)</th><th class="c">Effect size</th><th class="c">Reject H₀</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="mname" style="font-weight:700">Llama-4-Maverick</td><td class="c">1.756</td><td class="c">&lt;0.001</td><td class="c" style="color:var(--orange)">Large</td><td class="c" style="color:var(--green);font-weight:700">✓</td></tr>
+          <tr><td class="mname" style="font-weight:700">GLM-4.7</td><td class="c">1.559</td><td class="c">&lt;0.001</td><td class="c" style="color:var(--orange)">Large</td><td class="c" style="color:var(--green);font-weight:700">✓</td></tr>
+          <tr><td class="mname" style="font-weight:700">MiniMax-M2.5</td><td class="c">1.198</td><td class="c">&lt;0.001</td><td class="c" style="color:var(--orange)">Large</td><td class="c" style="color:var(--green);font-weight:700">✓</td></tr>
+          <tr><td class="mname" style="font-weight:700">Llama-4-Scout</td><td class="c">1.739</td><td class="c">&lt;0.001</td><td class="c" style="color:var(--orange)">Large</td><td class="c" style="color:var(--green);font-weight:700">✓</td></tr>
+          <tr><td class="mname" style="font-weight:700">Gemini 2.0 Flash-Lite</td><td class="c">2.202</td><td class="c">&lt;0.001</td><td class="c" style="color:var(--red)">Very large</td><td class="c" style="color:var(--green);font-weight:700">✓</td></tr>
+          <tr><td class="mname" style="font-weight:700">GPT-4o-mini <span style="font-size:.68rem;color:var(--red)">†n=16</span></td><td class="c">4.054</td><td class="c">&lt;0.001</td><td class="c" style="color:var(--red)">Huge (low n)</td><td class="c" style="color:var(--green);font-weight:700">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- LIMITATIONS -->
+<section>
+  <div class="wrap">
+    <div class="section-label">Limitations &amp; Future Work</div>
+    <h2>Current Limitations</h2>
+    <div class="method-grid">
+      <div class="method-card">
+        <div class="method-title" style="color:var(--red)">P0 — Missing Human Baseline</div>
+        <div class="method-body">No human participants to establish absolute performance scale. Planned: Prolific study, n≥25, identical protocol.</div>
+      </div>
+      <div class="method-card">
+        <div class="method-title" style="color:var(--red)">P0 — Incomplete GPT-4o-mini</div>
+        <div class="method-body">44/60 trials failed with OpenRouter credit exhaustion. n=16 results reported with caution; rerun pending.</div>
+      </div>
+      <div class="method-card">
+        <div class="method-title" style="color:var(--yellow)">P1 — DFS Maze Bias</div>
+        <div class="method-body">DFS generates long corridors. Kruskal and Wilson's algorithm alternatives planned for structural diversity validation.</div>
+      </div>
+      <div class="method-card">
+        <div class="method-title" style="color:var(--yellow)">P1 — Temperature / ICC</div>
+        <div class="method-body">Test-retest reliability (ICC) not yet measured. Target: 3 models × 10 seeds × 2 runs, ICC &gt; 0.8 required.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CITATION -->
+<section id="cite">
+  <div class="wrap">
+    <div class="section-label">Citation</div>
+    <h2>BibTeX</h2>
+    <p class="section-desc" style="margin-bottom:16px;">If you use HalluMaze in your research, please cite:</p>
+    <div class="cite-box">@article{hallumaze2026,
+  title     = {HalluMaze: A Maze Navigation Benchmark for
+               LLM Metacognitive Error Recovery},
+  year      = {2026},
+  note      = {Under review, NeurIPS 2026 Datasets \&amp; Benchmarks},
+  url       = {https://github.com/hallumaze/hallumaze},
+}</div>
+    <p style="font-size:.73rem;color:var(--muted);margin-top:12px;">
+      Reproducibility: <code style="background:#1a1d2e;border-radius:4px;padding:2px 6px;color:var(--cyan)">run_hallumaze.py</code>
+      &nbsp;·&nbsp; Raw data: <code style="background:#1a1d2e;border-radius:4px;padding:2px 6px;color:var(--cyan)">experiment_results/analysis_combined.json</code>
+      &nbsp;·&nbsp; Seeds: 1001–5005 (30 per model)
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div style="margin-bottom:8px;">
+    <strong style="color:var(--text)">HalluMaze</strong> · 2026 · NeurIPS Datasets &amp; Benchmarks submission
+  </div>
+  <div>
+    Evaluation: <a href="run_hallumaze.py">run_hallumaze.py</a> ·
+    Analysis: <a href="experiment_results/analysis_combined.json">analysis_combined.json</a> ·
+    Paper draft: <a href="docs/research/20260323-hallumaze-paper-draft.md">paper-draft.md</a> ·
+    Guide: <a href="hallumaze_guide.html">hallumaze_guide.html</a>
+  </div>
+</footer>
+
+<script>
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    var target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  });
+});
+</script>
+</body>
+</html>

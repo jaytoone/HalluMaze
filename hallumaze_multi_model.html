@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HalluMaze Multi-Model Comparison</title>
+<style>
+:root{
+  --bg:#0f1117;--card:#161926;--border:#252840;--text:#e2e8f0;--muted:#6b7280;
+  --green:#10b981;--red:#ef4444;--orange:#f97316;--yellow:#eab308;
+  --blue:#3b82f6;--purple:#8b5cf6;--teal:#14b8a6;--pink:#ec4899;--cyan:#06b6d4;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  padding:24px 16px;line-height:1.5;}
+h1{text-align:center;font-size:1.6rem;margin-bottom:4px;font-weight:700;}
+h2{font-size:1.15rem;font-weight:700;margin-bottom:12px;}
+h3{font-size:0.95rem;font-weight:600;margin-bottom:8px;color:var(--muted);}
+.sub{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:24px;}
+.section{max-width:1200px;margin:0 auto 28px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;}
+
+/* Radar */
+.radar-wrap{display:flex;justify-content:center;align-items:flex-start;gap:24px;flex-wrap:wrap;}
+.radar-legend{display:flex;flex-direction:column;gap:6px;padding-top:20px;}
+.radar-legend-item{display:flex;align-items:center;gap:8px;font-size:.82rem;}
+.radar-legend-swatch{width:14px;height:14px;border-radius:3px;flex-shrink:0;}
+
+/* Timeline */
+.timeline-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.timeline-label{width:130px;font-size:.82rem;font-weight:600;text-align:right;flex-shrink:0;}
+.timeline-bar-wrap{flex:1;height:28px;background:#0d0f1a;border-radius:6px;overflow:hidden;position:relative;}
+.timeline-score{width:70px;font-size:.82rem;text-align:left;flex-shrink:0;}
+.timeline-tooltip{position:absolute;background:#1e2035;border:1px solid var(--border);border-radius:6px;
+  padding:6px 10px;font-size:.72rem;pointer-events:none;z-index:10;white-space:nowrap;display:none;}
+
+/* Maze grid */
+.maze-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:16px;}
+@media(max-width:500px){.maze-grid{grid-template-columns:1fr;}}
+.maze-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;}
+.maze-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.maze-hd h3{margin:0;font-size:.95rem;color:var(--text);}
+.badge{font-size:.7rem;padding:2px 8px;border-radius:99px;font-weight:600;}
+.badge-solved{background:#064e3b;color:#34d399;}
+.badge-failed{background:#451a1a;color:#ef4444;}
+canvas{display:block;margin:0 auto;max-width:100%;}
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px;}
+.m-box{background:#0d0f1a;border-radius:8px;padding:8px 4px;text-align:center;}
+.m-val{font-size:1.05rem;font-weight:700;}
+.m-lbl{font-size:.65rem;color:var(--muted);margin-top:2px;}
+
+/* Story overlay */
+.story-overlay{margin-top:10px;max-height:120px;overflow-y:auto;font-size:.75rem;
+  font-family:monospace;background:#0a0c14;border-radius:6px;padding:8px 10px;}
+.story-line{padding:2px 0;border-bottom:1px solid #151828;}
+.story-hall{color:var(--red);}
+.story-back{color:var(--orange);}
+.story-loop{color:var(--yellow);}
+.story-ok{color:#64748b;}
+.story-solve{color:var(--green);font-weight:700;}
+
+/* Controls */
+.controls{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:16px auto;}
+button{background:var(--border);color:var(--text);border:1px solid #353858;
+  border-radius:8px;padding:6px 16px;cursor:pointer;font-size:.82rem;transition:background .15s;}
+button:hover{background:#2a2e52;}
+button.active{background:var(--blue);border-color:var(--blue);}
+.speed-row{display:flex;align-items:center;gap:6px;font-size:.8rem;}
+.speed-row input{width:90px;}
+
+/* Legend */
+.legend{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;font-size:.75rem;margin:10px 0;}
+.ld{display:flex;align-items:center;gap:4px;}
+.ld span{width:11px;height:11px;border-radius:3px;display:inline-block;}
+
+/* Comparison table */
+table{width:100%;border-collapse:collapse;font-size:.82rem;}
+th{color:var(--muted);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--border);text-align:left;}
+td{padding:8px 10px;border-bottom:1px solid #1a1d2e;}
+.win{color:var(--green);font-weight:700;}
+.lose{color:var(--muted);}
+</style>
+</head>
+<body>
+
+<h1>HalluMaze Multi-Model Comparison</h1>
+<div class="sub" id="sub"></div>
+
+<!-- Section A: Radar Chart -->
+<div class="section">
+  <div class="card">
+    <h2>A. Radar Chart -- 6-Axis Metacognition Profile</h2>
+    <div class="radar-wrap">
+      <canvas id="radarCanvas" width="500" height="500"></canvas>
+      <div class="radar-legend" id="radarLegend"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Section C: Timeline Bar -->
+<div class="section">
+  <div class="card">
+    <h2>C. Timeline Bar -- Step-by-Step Comparison</h2>
+    <div class="legend">
+      <div class="ld"><span style="background:#10b981"></span>Normal</div>
+      <div class="ld"><span style="background:#ef4444"></span>Hallucination</div>
+      <div class="ld"><span style="background:#f97316"></span>Backtrack</div>
+      <div class="ld"><span style="background:#eab308"></span>Loop</div>
+    </div>
+    <div id="timelineContainer"></div>
+  </div>
+</div>
+
+<!-- Controls -->
+<div class="controls">
+  <button id="btnPlay">Play</button>
+  <button id="btnPause">Pause</button>
+  <button id="btnReset">Reset</button>
+  <label style="font-size:.82rem;"><input type="checkbox" id="chkSolution" checked> Show solution</label>
+  <div class="speed-row">Speed: <input type="range" id="spd" min="1" max="20" value="6">
+    <span id="spdLbl">6x</span></div>
+</div>
+
+<!-- Section B: Maze Visualizations with Story Mode -->
+<div class="section">
+  <h2>B. Maze Escape Visualization with Story Mode</h2>
+  <div class="maze-grid" id="mazeGrid"></div>
+</div>
+
+<!-- Comparison Table -->
+<div class="section">
+  <div class="card">
+    <h2>Model Comparison Table</h2>
+    <table id="cmpTable"></table>
+  </div>
+</div>
+
+<script>
+(function(){
+
+/* ──────────────────────────────────────────────────── */
+/*  DATA INJECTION                                      */
+/* ──────────────────────────────────────────────────── */
+var D = {"hallumaze_version": "1.1", "experiment": "multi_model_comparison", "seed": 4004, "size": 5, "timestamp": "2026-03-22 23:18:28", "maze": {"N": 5, "walls": [[{"N": true, "S": true, "E": false, "W": true}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": false, "E": true, "W": false}, {"N": true, "S": false, "E": true, "W": true}], [{"N": true, "S": false, "E": false, "W": true}, {"N": true, "S": false, "E": true, "W": false}, {"N": true, "S": false, "E": true, "W": true}, {"N": false, "S": true, "E": false, "W": true}, {"N": false, "S": false, "E": true, "W": false}], [{"N": false, "S": false, "E": true, "W": true}, {"N": false, "S": true, "E": false, "W": true}, {"N": false, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": true, "W": false}, {"N": false, "S": false, "E": true, "W": true}], [{"N": false, "S": false, "E": false, "W": true}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": false, "W": false}, {"N": false, "S": true, "E": true, "W": false}], [{"N": false, "S": true, "E": false, "W": true}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": true, "W": false}]], "start": [0, 0], "end": [4, 4], "solution": [[0, 0], [0, 1], [0, 2], [0, 3], [1, 3], [1, 4], [2, 4], [3, 4], [3, 3], [3, 2], [3, 1], [3, 0], [4, 0], [4, 1], [4, 2], [4, 3], [4, 4]], "mirage_positions": [[1, 4], [3, 0]]}, "results": [{"model": "MiniMax-M2.5", "provider": "minimax", "solved": true, "mei": 0.9, "sr": 1.0, "score": 0.65, "hallucination_count": 0, "backtrack_count": 0, "loop_count": 0, "brs": 1.0, "latency_s": 141.78, "path_efficiency": 1.062, "hall_resistance": 1.0, "backtrack_rate": 0.0, "total_steps": 16, "path": [[0, 0], [0, 1], [0, 2], [0, 3], [1, 3], [1, 4], [2, 4], [3, 4], [3, 3], [3, 2], [3, 1], [3, 0], [4, 0], [4, 1], [4, 2], [4, 3], [4, 4]], "steps": [{"step": 1, "r": 0, "c": 0, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 2, "r": 0, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 3, "r": 0, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 4, "r": 0, "c": 3, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 5, "r": 1, "c": 3, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 6, "r": 1, "c": 4, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 7, "r": 2, "c": 4, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 8, "r": 3, "c": 4, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 9, "r": 3, "c": 3, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 10, "r": 3, "c": 2, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 11, "r": 3, "c": 1, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 12, "r": 3, "c": 0, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 13, "r": 4, "c": 0, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 14, "r": 4, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 15, "r": 4, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 16, "r": 4, "c": 3, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}], "error": null}, {"model": "glm-4.5-flash", "provider": "glm", "solved": false, "mei": 0.03, "sr": 0.0, "score": 0.339, "hallucination_count": 0, "backtrack_count": 0, "loop_count": 14, "brs": 1.0, "latency_s": 187.86, "path_efficiency": 0.262, "hall_resistance": 1.0, "backtrack_rate": 0.0, "total_steps": 65, "path": [], "steps": [{"step": 1, "r": 0, "c": 0, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 2, "r": 0, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 3, "r": 0, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 4, "r": 0, "c": 3, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 5, "r": 1, "c": 3, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 6, "r": 1, "c": 4, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 7, "r": 0, "c": 4, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 8, "r": 1, "c": 4, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 9, "r": 2, "c": 4, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 10, "r": 1, "c": 4, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 11, "r": 2, "c": 4, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 12, "r": 3, "c": 4, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 13, "r": 3, "c": 3, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 14, "r": 3, "c": 4, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 15, "r": 3, "c": 3, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 16, "r": 3, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 17, "r": 3, "c": 3, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 18, "r": 3, "c": 2, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 19, "r": 3, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 20, "r": 3, "c": 2, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 21, "r": 3, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 40}, {"step": 22, "r": 3, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 40}, {"step": 23, "r": 3, "c": 3, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 40}, {"step": 24, "r": 3, "c": 4, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 40}, {"step": 25, "r": 2, "c": 4, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 40}, {"step": 26, "r": 3, "c": 4, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 40}, {"step": 27, "r": 3, "c": 4, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 28, "r": 3, "c": 3, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 29, "r": 3, "c": 2, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 30, "r": 3, "c": 1, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 31, "r": 3, "c": 0, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 32, "r": 2, "c": 0, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 33, "r": 1, "c": 0, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 34, "r": 0, "c": 0, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 35, "r": 1, "c": 0, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 36, "r": 1, "c": 1, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 37, "r": 2, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 38, "r": 2, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 39, "r": 2, "c": 3, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 40, "r": 2, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 41, "r": 2, "c": 2, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 42, "r": 2, "c": 1, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 43, "r": 1, "c": 1, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 44, "r": 0, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 45, "r": 0, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 46, "r": 0, "c": 3, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 47, "r": 1, "c": 3, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 48, "r": 2, "c": 3, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 49, "r": 2, "c": 2, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 50, "r": 1, "c": 2, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 51, "r": 2, "c": 2, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 52, "r": 1, "c": 2, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 53, "r": 0, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 54, "r": 1, "c": 2, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 55, "r": 2, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 56, "r": 2, "c": 3, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 57, "r": 2, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 58, "r": 2, "c": 2, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 59, "r": 2, "c": 1, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 60, "r": 3, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 61, "r": 3, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 62, "r": 3, "c": 3, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 63, "r": 3, "c": 4, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 64, "r": 2, "c": 4, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 65, "r": 3, "c": 4, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}], "error": null}, {"model": "glm-4.5", "provider": "glm", "solved": false, "mei": 0.652, "sr": 0.0, "score": 0.519, "hallucination_count": 2, "backtrack_count": 6, "loop_count": 2, "brs": 0.75, "latency_s": 9.43, "path_efficiency": 0.548, "hall_resistance": 0.935, "backtrack_rate": 0.194, "total_steps": 31, "path": [[0, 0], [0, 1], [0, 2], [0, 3], [1, 3], [1, 4], [0, 4], [1, 4], [2, 4], [1, 4], [1, 3], [0, 3], [0, 2], [0, 1], [0, 0], [0, 1], [0, 2], [0, 3], [1, 3], [1, 2], [2, 2], [2, 1], [1, 1], [1, 0], [2, 0], [3, 0], [4, 0], [4, 1], [4, 2], [4, 3], [4, 4]], "steps": [{"step": 1, "r": 0, "c": 0, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 2, "r": 0, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 3, "r": 0, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 4, "r": 0, "c": 3, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 5, "r": 1, "c": 3, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 6, "r": 1, "c": 4, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 7, "r": 0, "c": 4, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 0}, {"step": 8, "r": 1, "c": 4, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 40}, {"step": 9, "r": 2, "c": 4, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 0}, {"step": 10, "r": 1, "c": 4, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 11, "r": 1, "c": 3, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 12, "r": 0, "c": 3, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 13, "r": 0, "c": 2, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 14, "r": 0, "c": 1, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 15, "r": 0, "c": 0, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 16, "r": 0, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 17, "r": 0, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 18, "r": 0, "c": 3, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 19, "r": 1, "c": 3, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 20, "r": 1, "c": 2, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 21, "r": 2, "c": 2, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 22, "r": 2, "c": 1, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 23, "r": 1, "c": 1, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 24, "r": 1, "c": 0, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 25, "r": 2, "c": 0, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 26, "r": 3, "c": 0, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 27, "r": 4, "c": 0, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 28, "r": 4, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 29, "r": 4, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 30, "r": 4, "c": 3, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 31, "r": 4, "c": 4, "direction": "→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": null}], "error": null}, {"model": "glm-4.6", "provider": "glm", "solved": false, "mei": 0.854, "sr": 0.0, "score": 0.615, "hallucination_count": 1, "backtrack_count": 15, "loop_count": 11, "brs": 0.938, "latency_s": 24.88, "path_efficiency": 0.654, "hall_resistance": 0.962, "backtrack_rate": 0.577, "total_steps": 26, "path": [[0, 0], [0, 1], [0, 2], [1, 2], [2, 2], [2, 1], [1, 1], [1, 0], [2, 0], [3, 0], [4, 0], [4, 1], [4, 2], [4, 3], [4, 4]], "steps": [{"step": 1, "r": 0, "c": 0, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 2, "r": 0, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 3, "r": 0, "c": 2, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 4, "r": 1, "c": 2, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 5, "r": 2, "c": 2, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 6, "r": 2, "c": 1, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 7, "r": 1, "c": 1, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 8, "r": 1, "c": 0, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 9, "r": 2, "c": 0, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 10, "r": 3, "c": 0, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 11, "r": 3, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 12, "r": 3, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 13, "r": 3, "c": 3, "direction": "→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": null}, {"step": 14, "r": 3, "c": 2, "direction": "→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": null}, {"step": 15, "r": 3, "c": 1, "direction": "→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": null}, {"step": 16, "r": 3, "c": 0, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 17, "r": 4, "c": 0, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 18, "r": 4, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 19, "r": 4, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 20, "r": 4, "c": 3, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 13, "r": 3, "c": 3, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": null}, {"step": 16, "r": 3, "c": 0, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": null}, {"step": 13, "r": 3, "c": 3, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 13, "r": 3, "c": 3, "direction": "→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": null}, {"step": 14, "r": 3, "c": 3, "direction": "→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": null}, {"step": 1, "r": 0, "c": 0, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}], "error": null}, {"model": "glm-4.7", "provider": "glm", "solved": false, "mei": 0.23, "sr": 0.0, "score": 0.383, "hallucination_count": 0, "backtrack_count": 5, "loop_count": 19, "brs": 1.0, "latency_s": 16.66, "path_efficiency": 0.395, "hall_resistance": 1.0, "backtrack_rate": 0.116, "total_steps": 43, "path": [[0, 0], [0, 1], [0, 2], [0, 3], [1, 3], [1, 4], [0, 4]], "steps": [{"step": 1, "r": 0, "c": 0, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 2, "r": 0, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 3, "r": 0, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 4, "r": 0, "c": 3, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 85}, {"step": 5, "r": 1, "c": 3, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 6, "r": 1, "c": 4, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 20}, {"step": 7, "r": 1, "c": 4, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 8, "r": 2, "c": 4, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 9, "r": 2, "c": 4, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 10, "r": 3, "c": 4, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 11, "r": 3, "c": 3, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 12, "r": 3, "c": 2, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 13, "r": 3, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 14, "r": 3, "c": 1, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 40}, {"step": 15, "r": 2, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 30}, {"step": 16, "r": 2, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 30}, {"step": 17, "r": 2, "c": 3, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 18, "r": 0, "c": 0, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 19, "r": 0, "c": 1, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 20, "r": 0, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 21, "r": 0, "c": 2, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 22, "r": 0, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 23, "r": 0, "c": 3, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 24, "r": 0, "c": 3, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 25, "r": 1, "c": 3, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 26, "r": 1, "c": 3, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 27, "r": 1, "c": 4, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 28, "r": 1, "c": 4, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 29, "r": 2, "c": 4, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 30, "r": 2, "c": 4, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 31, "r": 3, "c": 4, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 32, "r": 3, "c": 4, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 33, "r": 3, "c": 3, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 34, "r": 3, "c": 3, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 35, "r": 3, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 36, "r": 3, "c": 2, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 37, "r": 3, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 38, "r": 3, "c": 1, "direction": "N↑", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 39, "r": 2, "c": 1, "direction": "S↓", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 40, "r": 2, "c": 1, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 41, "r": 2, "c": 2, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 42, "r": 2, "c": 2, "direction": "E→", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 43, "r": 2, "c": 3, "direction": "W←", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}], "error": null}], "failed_models": [], "config": {"ariadne_mode": "A", "use_mirage": true, "use_confidence": true, "max_tokens": 3000}};
+var M = D.maze, N = M.N;
+var COLORS = ['#3b82f6','#10b981','#f97316','#ec4899','#8b5cf6','#06b6d4','#eab308','#ef4444'];
+
+document.getElementById('sub').textContent =
+  'Seed ' + D.seed + ' | ' + N + 'x' + N + ' maze | ' + D.timestamp +
+  ' | ' + D.results.length + ' models';
+
+/* ──────────────────────────────────────────────────── */
+/*  A. RADAR CHART (pure Canvas, no library)            */
+/* ──────────────────────────────────────────────────── */
+(function drawRadar(){
+  var canvas = document.getElementById('radarCanvas');
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var cx = W/2, cy = H/2, R = Math.min(W,H)*0.38;
+
+  var axes = ['MEI','SR','BRS','Hall Resist','Path Eff','1-BT Rate'];
+
+  function getAxes(r){
+    return [
+      r.mei,
+      r.sr,
+      r.brs,
+      r.hall_resistance,
+      Math.min(r.path_efficiency, 1.0),
+      1.0 - r.backtrack_rate
+    ];
+  }
+
+  function angleFor(i){ return (Math.PI*2*i/axes.length) - Math.PI/2; }
+
+  // Background
+  ctx.fillStyle = '#0d0f1a';
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid rings
+  for(var ring = 1; ring <= 5; ring++){
+    var rr = R * ring / 5;
+    ctx.beginPath();
+    for(var i = 0; i <= axes.length; i++){
+      var a = angleFor(i % axes.length);
+      var px = cx + rr * Math.cos(a);
+      var py = cy + rr * Math.sin(a);
+      if(i === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = 'rgba(100,120,180,0.15)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // Axis lines + labels
+  ctx.font = '12px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  for(var i = 0; i < axes.length; i++){
+    var a = angleFor(i);
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + R * Math.cos(a), cy + R * Math.sin(a));
+    ctx.strokeStyle = 'rgba(100,120,180,0.3)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    var lx = cx + (R + 28) * Math.cos(a);
+    var ly = cy + (R + 28) * Math.sin(a);
+    ctx.fillStyle = '#94a3b8';
+    ctx.fillText(axes[i], lx, ly);
+  }
+
+  // Draw each model polygon
+  D.results.forEach(function(r, idx){
+    var vals = getAxes(r);
+    var color = COLORS[idx % COLORS.length];
+
+    ctx.beginPath();
+    for(var i = 0; i <= axes.length; i++){
+      var vi = i % axes.length;
+      var a = angleFor(vi);
+      var v = Math.max(0, Math.min(1, vals[vi]));
+      var px = cx + R * v * Math.cos(a);
+      var py = cy + R * v * Math.sin(a);
+      if(i === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.fillStyle = color + '30';
+    ctx.fill();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Dots at vertices
+    for(var i = 0; i < axes.length; i++){
+      var a = angleFor(i);
+      var v = Math.max(0, Math.min(1, vals[i]));
+      var px = cx + R * v * Math.cos(a);
+      var py = cy + R * v * Math.sin(a);
+      ctx.beginPath();
+      ctx.arc(px, py, 4, 0, Math.PI * 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+    }
+  });
+
+  // Legend
+  var legendEl = document.getElementById('radarLegend');
+  D.results.forEach(function(r, idx){
+    var item = document.createElement('div');
+    item.className = 'radar-legend-item';
+    var swatch = document.createElement('div');
+    swatch.className = 'radar-legend-swatch';
+    swatch.style.backgroundColor = COLORS[idx % COLORS.length];
+    item.appendChild(swatch);
+    var label = document.createElement('span');
+    label.textContent = r.model + ' (' + r.provider + ')';
+    item.appendChild(label);
+    legendEl.appendChild(item);
+  });
+})();
+
+
+/* ──────────────────────────────────────────────────── */
+/*  C. TIMELINE BAR                                     */
+/* ──────────────────────────────────────────────────── */
+(function drawTimeline(){
+  var container = document.getElementById('timelineContainer');
+  var maxSteps = 0;
+  D.results.forEach(function(r){ if(r.total_steps > maxSteps) maxSteps = r.total_steps; });
+  if(maxSteps === 0) maxSteps = 1;
+
+  D.results.forEach(function(r, idx){
+    var row = document.createElement('div');
+    row.className = 'timeline-row';
+
+    var label = document.createElement('div');
+    label.className = 'timeline-label';
+    label.textContent = r.model;
+    label.style.color = COLORS[idx % COLORS.length];
+    row.appendChild(label);
+
+    var barWrap = document.createElement('div');
+    barWrap.className = 'timeline-bar-wrap';
+
+    var steps = r.steps || [];
+    var totalW = steps.length;
+    for(var i = 0; i < steps.length; i++){
+      var seg = document.createElement('div');
+      var pct = (1 / maxSteps) * 100;
+      seg.style.cssText = 'position:absolute;top:0;height:100%;width:' + pct + '%;left:' +
+        (i / maxSteps * 100) + '%;';
+      var s = steps[i];
+      if(s.is_hallucination) seg.style.backgroundColor = '#ef4444';
+      else if(s.is_loop) seg.style.backgroundColor = '#eab308';
+      else if(s.is_backtrack) seg.style.backgroundColor = '#f97316';
+      else seg.style.backgroundColor = '#10b981';
+      seg.style.opacity = '0.85';
+      barWrap.appendChild(seg);
+    }
+
+    // Solved marker
+    if(r.solved){
+      var marker = document.createElement('div');
+      var solPct = (steps.length / maxSteps * 100);
+      marker.style.cssText = 'position:absolute;top:0;height:100%;width:3px;left:' +
+        solPct + '%;background:#fff;opacity:0.8;';
+      barWrap.appendChild(marker);
+    }
+
+    row.appendChild(barWrap);
+
+    var score = document.createElement('div');
+    score.className = 'timeline-score';
+    score.textContent = 'MEI ' + r.mei.toFixed(2);
+    score.style.color = r.mei >= 0.6 ? '#10b981' : (r.mei >= 0.3 ? '#eab308' : '#ef4444');
+    row.appendChild(score);
+
+    container.appendChild(row);
+  });
+})();
+
+
+/* ──────────────────────────────────────────────────── */
+/*  B. MAZE CANVAS + STORY MODE                        */
+/* ──────────────────────────────────────────────────── */
+var CELL = Math.min(Math.floor(400/N), 64), PAD = 20;
+var CW = N*CELL+PAD*2, CH = N*CELL+PAD*2;
+
+var STORY_MESSAGES = {
+  hallucination: [
+    'Imagined a path through a solid wall',
+    'Hallucinated an opening that does not exist',
+    'Perceived a non-existent passage',
+  ],
+  backtrack: [
+    'Recognized dead end, reversing course',
+    'Returning to previous position',
+    'Correcting path -- metacognitive recovery',
+  ],
+  loop: [
+    'Caught in a cycle -- revisiting same cells',
+    'Loop detected, spatial reasoning failing',
+    'Stuck in repetitive movement pattern',
+  ],
+  solved: [
+    'ESCAPED! Successfully reached the exit',
+  ],
+};
+
+function storyMsg(type, step){
+  var msgs = STORY_MESSAGES[type] || ['Moving...'];
+  return msgs[step % msgs.length];
+}
+
+var mazeGrid = document.getElementById('mazeGrid');
+var canvases = [];
+var storyBoxes = [];
+
+D.results.forEach(function(r, idx){
+  var card = document.createElement('div');
+  card.className = 'maze-card';
+
+  var hd = document.createElement('div');
+  hd.className = 'maze-hd';
+  var h3 = document.createElement('h3');
+  h3.textContent = r.model;
+  h3.style.color = COLORS[idx % COLORS.length];
+  hd.appendChild(h3);
+  var badge = document.createElement('span');
+  badge.className = 'badge ' + (r.solved ? 'badge-solved' : 'badge-failed');
+  badge.id = 'badge' + idx;
+  badge.textContent = 'Step 0/' + r.steps.length;
+  hd.appendChild(badge);
+  card.appendChild(hd);
+
+  var cv = document.createElement('canvas');
+  cv.id = 'cv' + idx;
+  cv.width = CW;
+  cv.height = CH;
+  cv.style.width = '100%';
+  card.appendChild(cv);
+  canvases.push(cv);
+
+  // Metrics
+  var mx = document.createElement('div');
+  mx.className = 'metrics-row';
+  var metricDefs = [['MEI','mei'],['Solved','solved'],['Hall','hallucination_count'],['BT','backtrack_count']];
+  metricDefs.forEach(function(md){
+    var b = document.createElement('div');
+    b.className = 'm-box';
+    var v = document.createElement('div');
+    v.className = 'm-val';
+    v.id = 'mv_' + md[0] + '_' + idx;
+    var l = document.createElement('div');
+    l.className = 'm-lbl';
+    l.textContent = md[0];
+    b.appendChild(v);
+    b.appendChild(l);
+    mx.appendChild(b);
+  });
+  card.appendChild(mx);
+
+  // Story overlay
+  var story = document.createElement('div');
+  story.className = 'story-overlay';
+  story.id = 'story' + idx;
+  card.appendChild(story);
+  storyBoxes.push(story);
+
+  mazeGrid.appendChild(card);
+});
+
+
+/* ── Maze Drawing ── */
+
+function drawBase(ctx, showSol){
+  ctx.fillStyle = '#09090f';
+  ctx.fillRect(0, 0, CW, CH);
+
+  for(var r = 0; r < N; r++){
+    for(var c = 0; c < N; c++){
+      ctx.fillStyle = '#141627';
+      ctx.fillRect(PAD + c*CELL + 1, PAD + r*CELL + 1, CELL - 2, CELL - 2);
+    }
+  }
+
+  if(showSol && M.solution){
+    ctx.fillStyle = '#0d2a4a';
+    M.solution.forEach(function(p){
+      ctx.fillRect(PAD + p[1]*CELL + 2, PAD + p[0]*CELL + 2, CELL - 4, CELL - 4);
+    });
+  }
+
+  if(M.mirage_positions){
+    ctx.fillStyle = '#1e1040';
+    M.mirage_positions.forEach(function(p){
+      ctx.fillRect(PAD + p[1]*CELL + 4, PAD + p[0]*CELL + 4, CELL - 8, CELL - 8);
+    });
+  }
+
+  ctx.strokeStyle = '#4a5080';
+  ctx.lineWidth = 2;
+  for(var r = 0; r < N; r++){
+    for(var c = 0; c < N; c++){
+      var w = M.walls[r][c];
+      var x = PAD + c*CELL, y = PAD + r*CELL;
+      ctx.beginPath();
+      if(w.N){ ctx.moveTo(x, y); ctx.lineTo(x + CELL, y); }
+      if(w.S){ ctx.moveTo(x, y + CELL); ctx.lineTo(x + CELL, y + CELL); }
+      if(w.W){ ctx.moveTo(x, y); ctx.lineTo(x, y + CELL); }
+      if(w.E){ ctx.moveTo(x + CELL, y); ctx.lineTo(x + CELL, y + CELL); }
+      ctx.stroke();
+    }
+  }
+
+  ctx.strokeStyle = '#6070a0';
+  ctx.lineWidth = 2.5;
+  ctx.strokeRect(PAD, PAD, N*CELL, N*CELL);
+
+  // Start / End dots
+  function dot(row, col, color, lbl){
+    var dx = PAD + col*CELL + CELL/2, dy = PAD + row*CELL + CELL/2;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(dx, dy, CELL*0.32, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold ' + Math.max(9, CELL*0.28) + 'px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(lbl, dx, dy);
+  }
+  dot(0, 0, '#34d399', 'S');
+  dot(N-1, N-1, '#f43f5e', 'E');
+}
+
+function colorOf(s){
+  if(s.is_hallucination) return '#ef4444';
+  if(s.is_loop) return '#eab308';
+  if(s.is_backtrack) return '#f97316';
+  return '#10b981';
+}
+
+function drawPath(ctx, steps, upTo){
+  for(var i = 0; i <= upTo && i < steps.length; i++){
+    var s = steps[i];
+    var alpha = 0.35 + 0.65 * (i / Math.max(upTo, 1));
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = colorOf(s);
+    ctx.fillRect(PAD + s.c*CELL + 3, PAD + s.r*CELL + 3, CELL - 6, CELL - 6);
+  }
+  ctx.globalAlpha = 1;
+  if(upTo >= 0 && upTo < steps.length){
+    var s = steps[upTo];
+    ctx.fillStyle = '#93c5fd';
+    ctx.beginPath();
+    ctx.arc(PAD + s.c*CELL + CELL/2, PAD + s.r*CELL + CELL/2, CELL*0.28, 0, Math.PI*2);
+    ctx.fill();
+  }
+}
+
+function setMetric(key, idx, val, isGood){
+  var el = document.getElementById('mv_' + key + '_' + idx);
+  if(!el) return;
+  el.textContent = val;
+  if(isGood !== undefined) el.style.color = isGood ? '#10b981' : '#ef4444';
+}
+
+function updateMetrics(idx, result, upTo){
+  var steps = result.steps.slice(0, upTo + 1);
+  var halls = steps.filter(function(s){ return s.is_hallucination; }).length;
+  var backs = steps.filter(function(s){ return s.is_backtrack || s.is_loop; }).length;
+  var solved = steps.some(function(s){ return s.r === N-1 && s.c === N-1; });
+  setMetric('MEI', idx, result.mei.toFixed(3));
+  setMetric('Solved', idx, solved ? 'YES' : 'NO', solved);
+  setMetric('Hall', idx, halls, halls === 0);
+  setMetric('BT', idx, backs);
+  var badge = document.getElementById('badge' + idx);
+  badge.textContent = 'Step ' + Math.min(upTo + 1, result.steps.length) + '/' + result.steps.length;
+  if(solved){
+    badge.className = 'badge badge-solved';
+  }
+}
+
+function updateStory(idx, result, upTo){
+  var story = storyBoxes[idx];
+  // Clear existing
+  while(story.firstChild) story.removeChild(story.firstChild);
+
+  var steps = result.steps;
+  var start = Math.max(0, upTo - 8);
+  for(var i = start; i <= upTo && i < steps.length; i++){
+    var s = steps[i];
+    var line = document.createElement('div');
+    line.className = 'story-line';
+
+    var type = 'ok';
+    var msg = 'Move ' + s.direction + ' -> (' + s.r + ',' + s.c + ')';
+
+    if(s.is_hallucination){
+      type = 'hall';
+      msg = '[HALLUCINATED at step ' + i + '] ' + storyMsg('hallucination', i);
+    } else if(s.is_loop){
+      type = 'loop';
+      msg = '[STUCK in loop at step ' + i + '] ' + storyMsg('loop', i);
+    } else if(s.is_backtrack){
+      type = 'back';
+      msg = '[BACKTRACK at step ' + i + '] ' + storyMsg('backtrack', i);
+    } else if(s.r === N-1 && s.c === N-1){
+      type = 'solve';
+      msg = '[ESCAPED! step ' + i + '] ' + storyMsg('solved', 0);
+    }
+
+    line.className = 'story-line story-' + type;
+    line.textContent = '#' + i + ' ' + msg;
+    story.appendChild(line);
+  }
+  story.scrollTop = story.scrollHeight;
+}
+
+
+/* ── Animation ── */
+var frame = 0, playing = false, timer = null;
+var maxFrames = Math.max.apply(null, D.results.map(function(r){ return r.steps.length; }));
+
+function speed(){ return parseInt(document.getElementById('spd').value); }
+function delay(){ return Math.max(40, 1200 - speed() * 55); }
+
+function render(){
+  var showSol = document.getElementById('chkSolution').checked;
+  D.results.forEach(function(r, idx){
+    var cv = document.getElementById('cv' + idx);
+    var ctx = cv.getContext('2d');
+    drawBase(ctx, showSol);
+    var f = Math.min(frame, r.steps.length - 1);
+    if(f >= 0){
+      drawPath(ctx, r.steps, f);
+      updateMetrics(idx, r, f);
+      updateStory(idx, r, f);
+    }
+  });
+}
+
+function tick(){
+  if(frame < maxFrames - 1){
+    frame++;
+    render();
+    timer = setTimeout(tick, delay());
+  } else {
+    playing = false;
+    document.getElementById('btnPlay').classList.remove('active');
+  }
+}
+
+document.getElementById('btnPlay').addEventListener('click', function(){
+  if(!playing){ playing = true; this.classList.add('active'); tick(); }
+});
+document.getElementById('btnPause').addEventListener('click', function(){
+  playing = false; clearTimeout(timer);
+  document.getElementById('btnPlay').classList.remove('active');
+});
+document.getElementById('btnReset').addEventListener('click', function(){
+  playing = false; clearTimeout(timer);
+  document.getElementById('btnPlay').classList.remove('active');
+  frame = 0; render();
+});
+document.getElementById('spd').addEventListener('input', function(){
+  document.getElementById('spdLbl').textContent = this.value + 'x';
+});
+document.getElementById('chkSolution').addEventListener('change', function(){ render(); });
+
+
+/* ──────────────────────────────────────────────────── */
+/*  COMPARISON TABLE                                    */
+/* ──────────────────────────────────────────────────── */
+(function buildTable(){
+  var tbl = document.getElementById('cmpTable');
+  var thead = document.createElement('thead');
+  var hr = document.createElement('tr');
+  var headers = ['Metric', 'Winner'].concat(D.results.map(function(r){ return r.model; }));
+  headers.forEach(function(h){
+    var th = document.createElement('th');
+    th.textContent = h;
+    hr.appendChild(th);
+  });
+  thead.appendChild(hr);
+  tbl.appendChild(thead);
+
+  var tbody = document.createElement('tbody');
+  var rows = [
+    {l:'MEI', k:'mei', hi:true},
+    {l:'HalluScore', k:'score', hi:true},
+    {l:'Solved', k:'solved', hi:true, fmt:function(v){ return v ? 'YES' : 'NO'; }},
+    {l:'Hallucinations', k:'hallucination_count', hi:false},
+    {l:'Backtracks', k:'backtrack_count', hi:false},
+    {l:'BRS', k:'brs', hi:true},
+    {l:'Hall Resistance', k:'hall_resistance', hi:true},
+    {l:'Path Efficiency', k:'path_efficiency', hi:true},
+    {l:'Backtrack Rate', k:'backtrack_rate', hi:false},
+    {l:'Total Steps', k:'total_steps', hi:false},
+    {l:'Latency (s)', k:'latency_s', hi:false},
+  ];
+
+  rows.forEach(function(row){
+    var vals = D.results.map(function(r){ return r[row.k]; });
+    var best = row.hi ? Math.max.apply(null, vals) : Math.min.apply(null, vals);
+    var wi = vals.indexOf(best);
+    var tr = document.createElement('tr');
+
+    var tl = document.createElement('td');
+    tl.textContent = row.l;
+    tr.appendChild(tl);
+
+    var tw = document.createElement('td');
+    tw.textContent = D.results[wi].model;
+    tw.className = 'win';
+    tr.appendChild(tw);
+
+    vals.forEach(function(v, i){
+      var td = document.createElement('td');
+      td.textContent = row.fmt ? row.fmt(v) : (typeof v === 'number' ? v.toFixed(3) : String(v));
+      td.className = i === wi ? 'win' : 'lose';
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  tbl.appendChild(tbody);
+})();
+
+
+/* ── Init ── */
+render();
+
+})();
+</script>
+</body>
+</html>

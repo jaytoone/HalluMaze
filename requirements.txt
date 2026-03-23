@@ -1,0 +1,13 @@
+# HalluMaze Benchmark — Dependencies
+# Python >= 3.10 required
+
+# Core
+requests>=2.31.0
+
+# LLM SDKs (install for providers you use)
+anthropic>=0.40.0           # Anthropic / Claude (also used for GLM-4.7 via ZAI)
+openai>=1.50.0              # OpenAI, MiniMax, OpenRouter (OpenAI-compatible)
+google-generativeai>=0.8.0  # Google / Gemini
+
+# CLI enhancement (optional but recommended)
+rich>=13.7.0

@@ -7,3 +7,14 @@ __pycache__/
 .DS_Store
 *.tmp
 node_modules/
+files/__pycache__/
+
+# Local experiment result files (not for publication)
+hallumaze_results_*.csv
+hallumaze_results_*.json
+
+# Intermediate checkpoints (not for publication)
+experiment_results/checkpoint.json
+experiment_results/checkpoint_full.json
+experiment_results/analysis_combined.json
+experiment_results/analysis_final.json

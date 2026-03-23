@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HalluMaze Race View</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100vh;overflow:hidden;background:#0f1117;color:#e0e0e0;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;}
+#app{display:flex;flex-direction:column;height:100vh;padding:6px 10px;}
+#header{text-align:center;padding:4px 0;flex-shrink:0;}
+#header h1{font-size:16px;font-weight:600;color:#c8ccd4;letter-spacing:0.5px;}
+#header .meta{font-size:11px;color:#6b7280;margin-top:2px;}
+#main{display:flex;flex:1;gap:8px;min-height:0;}
+#maze-panel{flex:0 0 auto;display:flex;align-items:center;justify-content:center;}
+#maze-canvas{background:#12151e;border:1px solid #2a2d3a;border-radius:6px;}
+#ecg-panel{flex:1;display:flex;flex-direction:column;min-width:0;}
+#ecg-canvas{width:100%;flex:1;background:#12151e;border:1px solid #2a2d3a;border-radius:6px;}
+#controls-bar{display:flex;align-items:center;justify-content:center;gap:12px;padding:5px 0;flex-shrink:0;flex-wrap:wrap;}
+.legend-item{display:inline-flex;align-items:center;gap:4px;cursor:pointer;padding:2px 6px;border-radius:4px;user-select:none;font-size:12px;}
+.legend-item:hover{background:#1e2130;}
+.legend-item.off{opacity:0.35;}
+.legend-item.focused{background:#1e2130;outline:1px solid #4a4d5a;}
+.legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+.legend-cb{width:12px;height:12px;accent-color:#6b7280;}
+.btn{background:#1e2130;color:#c8ccd4;border:1px solid #2a2d3a;border-radius:4px;padding:3px 10px;cursor:pointer;font-size:12px;}
+.btn:hover{background:#2a2d3a;}
+.btn.active{background:#3b3e50;border-color:#5a5d6a;}
+#speed-label{font-size:11px;color:#6b7280;}
+#speed-slider{width:70px;}
+#timeline-bar{flex-shrink:0;padding:4px 0;}
+#density-container{position:relative;height:24px;margin-bottom:2px;border-radius:3px;overflow:hidden;background:#161926;}
+#density-canvas{width:100%;height:100%;display:block;}
+#timeline-row{display:flex;align-items:center;gap:8px;}
+#master-slider{flex:1;accent-color:#6b7280;}
+#step-label{font-size:12px;color:#8b8fa0;white-space:nowrap;min-width:80px;text-align:right;}
+.ecg-no-data{color:#4a4d5a;font-size:11px;text-align:center;}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="header">
+    <h1>HalluMaze Race View</h1>
+    <div class="meta" id="meta-info"></div>
+  </div>
+  <div id="main">
+    <div id="maze-panel">
+      <canvas id="maze-canvas"></canvas>
+    </div>
+    <div id="ecg-panel">
+      <canvas id="ecg-canvas"></canvas>
+    </div>
+  </div>
+  <div id="controls-bar">
+    <div id="legend"></div>
+    <button class="btn" id="btn-play">Play</button>
+    <button class="btn" id="btn-pause">Pause</button>
+    <button class="btn" id="btn-reset">Reset</button>
+    <span id="speed-label">Speed:</span>
+    <input type="range" id="speed-slider" min="1" max="20" value="5">
+  </div>
+  <div id="timeline-bar">
+    <canvas id="density-canvas" height="24"></canvas>
+    <div id="timeline-row">
+      <input type="range" id="master-slider" min="0" max="100" value="0">
+      <span id="step-label">Step: 0 / 0</span>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+"use strict";
+var DATA = {"hallumaze_version": "1.1", "experiment": "multi_model_comparison", "seed": 4004, "size": 5, "timestamp": "2026-03-22 23:18:28", "maze": {"N": 5, "walls": [[{"N": true, "S": true, "E": false, "W": true}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": false, "E": true, "W": false}, {"N": true, "S": false, "E": true, "W": true}], [{"N": true, "S": false, "E": false, "W": true}, {"N": true, "S": false, "E": true, "W": false}, {"N": true, "S": false, "E": true, "W": true}, {"N": false, "S": true, "E": false, "W": true}, {"N": false, "S": false, "E": true, "W": false}], [{"N": false, "S": false, "E": true, "W": true}, {"N": false, "S": true, "E": false, "W": true}, {"N": false, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": true, "W": false}, {"N": false, "S": false, "E": true, "W": true}], [{"N": false, "S": false, "E": false, "W": true}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": false, "W": false}, {"N": false, "S": true, "E": true, "W": false}], [{"N": false, "S": true, "E": false, "W": true}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": false, "W": false}, {"N": true, "S": true, "E": true, "W": false}]], "start": [0, 0], "end": [4, 4], "solution": [[0, 0], [0, 1], [0, 2], [0, 3], [1, 3], [1, 4], [2, 4], [3, 4], [3, 3], [3, 2], [3, 1], [3, 0], [4, 0], [4, 1], [4, 2], [4, 3], [4, 4]], "mirage_positions": [[1, 4], [3, 0]]}, "results": [{"model": "MiniMax-M2.5", "provider": "minimax", "solved": true, "mei": 0.9, "sr": 1.0, "score": 0.65, "hallucination_count": 0, "backtrack_count": 0, "loop_count": 0, "brs": 1.0, "latency_s": 141.78, "path_efficiency": 1.062, "hall_resistance": 1.0, "backtrack_rate": 0.0, "total_steps": 16, "path": [[0, 0], [0, 1], [0, 2], [0, 3], [1, 3], [1, 4], [2, 4], [3, 4], [3, 3], [3, 2], [3, 1], [3, 0], [4, 0], [4, 1], [4, 2], [4, 3], [4, 4]], "steps": [{"step": 1, "r": 0, "c": 0, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 2, "r": 0, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 3, "r": 0, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 4, "r": 0, "c": 3, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 5, "r": 1, "c": 3, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 6, "r": 1, "c": 4, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 7, "r": 2, "c": 4, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 8, "r": 3, "c": 4, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 9, "r": 3, "c": 3, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 10, "r": 3, "c": 2, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 11, "r": 3, "c": 1, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 12, "r": 3, "c": 0, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 13, "r": 4, "c": 0, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 14, "r": 4, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 15, "r": 4, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 16, "r": 4, "c": 3, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}], "error": null}, {"model": "glm-4.5-flash", "provider": "glm", "solved": false, "mei": 0.03, "sr": 0.0, "score": 0.339, "hallucination_count": 0, "backtrack_count": 0, "loop_count": 14, "brs": 1.0, "latency_s": 187.86, "path_efficiency": 0.262, "hall_resistance": 1.0, "backtrack_rate": 0.0, "total_steps": 65, "path": [], "steps": [{"step": 1, "r": 0, "c": 0, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 2, "r": 0, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 3, "r": 0, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 4, "r": 0, "c": 3, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 5, "r": 1, "c": 3, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 6, "r": 1, "c": 4, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 7, "r": 0, "c": 4, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 8, "r": 1, "c": 4, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 9, "r": 2, "c": 4, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 10, "r": 1, "c": 4, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 11, "r": 2, "c": 4, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 12, "r": 3, "c": 4, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 13, "r": 3, "c": 3, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 14, "r": 3, "c": 4, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 15, "r": 3, "c": 3, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 16, "r": 3, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 17, "r": 3, "c": 3, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 18, "r": 3, "c": 2, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 19, "r": 3, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 20, "r": 3, "c": 2, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 21, "r": 3, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 40}, {"step": 22, "r": 3, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 40}, {"step": 23, "r": 3, "c": 3, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 40}, {"step": 24, "r": 3, "c": 4, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 40}, {"step": 25, "r": 2, "c": 4, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 40}, {"step": 26, "r": 3, "c": 4, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 40}, {"step": 27, "r": 3, "c": 4, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 28, "r": 3, "c": 3, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 29, "r": 3, "c": 2, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 30, "r": 3, "c": 1, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 31, "r": 3, "c": 0, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 32, "r": 2, "c": 0, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 33, "r": 1, "c": 0, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 34, "r": 0, "c": 0, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 35, "r": 1, "c": 0, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 36, "r": 1, "c": 1, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 37, "r": 2, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 38, "r": 2, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 39, "r": 2, "c": 3, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 40, "r": 2, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 41, "r": 2, "c": 2, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 42, "r": 2, "c": 1, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 43, "r": 1, "c": 1, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 44, "r": 0, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 45, "r": 0, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 46, "r": 0, "c": 3, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 47, "r": 1, "c": 3, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 48, "r": 2, "c": 3, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 49, "r": 2, "c": 2, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 50, "r": 1, "c": 2, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 51, "r": 2, "c": 2, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 52, "r": 1, "c": 2, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 53, "r": 0, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 54, "r": 1, "c": 2, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 55, "r": 2, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 56, "r": 2, "c": 3, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 57, "r": 2, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 58, "r": 2, "c": 2, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 59, "r": 2, "c": 1, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 60, "r": 3, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 61, "r": 3, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 62, "r": 3, "c": 3, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 63, "r": 3, "c": 4, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 64, "r": 2, "c": 4, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 65, "r": 3, "c": 4, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}], "error": null}, {"model": "glm-4.5", "provider": "glm", "solved": false, "mei": 0.652, "sr": 0.0, "score": 0.519, "hallucination_count": 2, "backtrack_count": 6, "loop_count": 2, "brs": 0.75, "latency_s": 9.43, "path_efficiency": 0.548, "hall_resistance": 0.935, "backtrack_rate": 0.194, "total_steps": 31, "path": [[0, 0], [0, 1], [0, 2], [0, 3], [1, 3], [1, 4], [0, 4], [1, 4], [2, 4], [1, 4], [1, 3], [0, 3], [0, 2], [0, 1], [0, 0], [0, 1], [0, 2], [0, 3], [1, 3], [1, 2], [2, 2], [2, 1], [1, 1], [1, 0], [2, 0], [3, 0], [4, 0], [4, 1], [4, 2], [4, 3], [4, 4]], "steps": [{"step": 1, "r": 0, "c": 0, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 2, "r": 0, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 3, "r": 0, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 4, "r": 0, "c": 3, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 60}, {"step": 5, "r": 1, "c": 3, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 50}, {"step": 6, "r": 1, "c": 4, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 70}, {"step": 7, "r": 0, "c": 4, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 0}, {"step": 8, "r": 1, "c": 4, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 40}, {"step": 9, "r": 2, "c": 4, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 0}, {"step": 10, "r": 1, "c": 4, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 11, "r": 1, "c": 3, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 12, "r": 0, "c": 3, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 13, "r": 0, "c": 2, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 14, "r": 0, "c": 1, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 15, "r": 0, "c": 0, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 16, "r": 0, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 17, "r": 0, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 18, "r": 0, "c": 3, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 19, "r": 1, "c": 3, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 20, "r": 1, "c": 2, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 21, "r": 2, "c": 2, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 22, "r": 2, "c": 1, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 23, "r": 1, "c": 1, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 24, "r": 1, "c": 0, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 25, "r": 2, "c": 0, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 26, "r": 3, "c": 0, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 27, "r": 4, "c": 0, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 28, "r": 4, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 29, "r": 4, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 30, "r": 4, "c": 3, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 31, "r": 4, "c": 4, "direction": "\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": null}], "error": null}, {"model": "glm-4.6", "provider": "glm", "solved": false, "mei": 0.854, "sr": 0.0, "score": 0.615, "hallucination_count": 1, "backtrack_count": 15, "loop_count": 11, "brs": 0.938, "latency_s": 24.88, "path_efficiency": 0.654, "hall_resistance": 0.962, "backtrack_rate": 0.577, "total_steps": 26, "path": [[0, 0], [0, 1], [0, 2], [1, 2], [2, 2], [2, 1], [1, 1], [1, 0], [2, 0], [3, 0], [4, 0], [4, 1], [4, 2], [4, 3], [4, 4]], "steps": [{"step": 1, "r": 0, "c": 0, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 2, "r": 0, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 3, "r": 0, "c": 2, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 4, "r": 1, "c": 2, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 5, "r": 2, "c": 2, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 6, "r": 2, "c": 1, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 7, "r": 1, "c": 1, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 8, "r": 1, "c": 0, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 9, "r": 2, "c": 0, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 10, "r": 3, "c": 0, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 11, "r": 3, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 12, "r": 3, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 13, "r": 3, "c": 3, "direction": "\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": null}, {"step": 14, "r": 3, "c": 2, "direction": "\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": null}, {"step": 15, "r": 3, "c": 1, "direction": "\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": null}, {"step": 16, "r": 3, "c": 0, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 17, "r": 4, "c": 0, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 18, "r": 4, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 19, "r": 4, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 20, "r": 4, "c": 3, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 13, "r": 3, "c": 3, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": null}, {"step": 16, "r": 3, "c": 0, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": null}, {"step": 13, "r": 3, "c": 3, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 13, "r": 3, "c": 3, "direction": "\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": null}, {"step": 14, "r": 3, "c": 3, "direction": "\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": null}, {"step": 1, "r": 0, "c": 0, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}], "error": null}, {"model": "glm-4.7", "provider": "glm", "solved": false, "mei": 0.23, "sr": 0.0, "score": 0.383, "hallucination_count": 0, "backtrack_count": 5, "loop_count": 19, "brs": 1.0, "latency_s": 16.66, "path_efficiency": 0.395, "hall_resistance": 1.0, "backtrack_rate": 0.116, "total_steps": 43, "path": [[0, 0], [0, 1], [0, 2], [0, 3], [1, 3], [1, 4], [0, 4]], "steps": [{"step": 1, "r": 0, "c": 0, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 2, "r": 0, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 3, "r": 0, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 4, "r": 0, "c": 3, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 85}, {"step": 5, "r": 1, "c": 3, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 6, "r": 1, "c": 4, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 20}, {"step": 7, "r": 1, "c": 4, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 8, "r": 2, "c": 4, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 9, "r": 2, "c": 4, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 90}, {"step": 10, "r": 3, "c": 4, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 11, "r": 3, "c": 3, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 12, "r": 3, "c": 2, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 80}, {"step": 13, "r": 3, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 14, "r": 3, "c": 1, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 40}, {"step": 15, "r": 2, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 30}, {"step": 16, "r": 2, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 30}, {"step": 17, "r": 2, "c": 3, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 18, "r": 0, "c": 0, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 19, "r": 0, "c": 1, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 20, "r": 0, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 21, "r": 0, "c": 2, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 22, "r": 0, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 23, "r": 0, "c": 3, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 24, "r": 0, "c": 3, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 25, "r": 1, "c": 3, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 26, "r": 1, "c": 3, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 27, "r": 1, "c": 4, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 28, "r": 1, "c": 4, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 29, "r": 2, "c": 4, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 30, "r": 2, "c": 4, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 31, "r": 3, "c": 4, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 32, "r": 3, "c": 4, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 33, "r": 3, "c": 3, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 34, "r": 3, "c": 3, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 35, "r": 3, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 36, "r": 3, "c": 2, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 37, "r": 3, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 38, "r": 3, "c": 1, "direction": "N\u2191", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 39, "r": 2, "c": 1, "direction": "S\u2193", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 40, "r": 2, "c": 1, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 41, "r": 2, "c": 2, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}, {"step": 42, "r": 2, "c": 2, "direction": "E\u2192", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 100}, {"step": 43, "r": 2, "c": 3, "direction": "W\u2190", "is_hallucination": false, "is_backtrack": false, "is_loop": false, "confidence": 10}], "error": null}], "failed_models": [], "config": {"ariadne_mode": "A", "use_mirage": true, "use_confidence": true, "max_tokens": 3000}};
+
+var maze = DATA.maze;
+var results = DATA.results;
+var N = maze.N;
+var walls = maze.walls;
+var startR = maze.start[0], startC = maze.start[1];
+var endR = maze.end[0], endC = maze.end[1];
+
+var MODEL_STYLES = [
+  {name:"MiniMax-M2.5", color:"#4a9eff", shape:"circle"},
+  {name:"glm-4.6",      color:"#4ade80", shape:"circle"},
+  {name:"glm-4.5",      color:"#fb923c", shape:"circle"},
+  {name:"glm-4.7",      color:"#a78bfa", shape:"circle"},
+  {name:"glm-4.5-flash",color:"#f87171", shape:"circle"}
+];
+
+function getModelStyle(modelName) {
+  for (var i = 0; i < MODEL_STYLES.length; i++) {
+    if (modelName === MODEL_STYLES[i].name) return MODEL_STYLES[i];
+  }
+  return {name:modelName, color:"#888888", shape:"circle"};
+}
+
+var models = [];
+for (var i = 0; i < results.length; i++) {
+  var r = results[i];
+  var st = getModelStyle(r.model);
+  models.push({
+    name: r.model,
+    color: st.color,
+    steps: r.steps || [],
+    solved: r.solved,
+    enabled: true,
+    focused: false
+  });
+}
+
+var maxSteps = 0;
+for (var i = 0; i < models.length; i++) {
+  if (models[i].steps.length > maxSteps) maxSteps = models[i].steps.length;
+}
+if (maxSteps === 0) maxSteps = 1;
+
+var currentStep = 0;
+var playing = false;
+var speed = 5;
+var lastFrameTime = 0;
+
+// --- Meta info ---
+var metaEl = document.getElementById("meta-info");
+metaEl.textContent = "Seed: " + (DATA.seed || "?") + " | Size: " + N + "x" + N +
+  " | " + (DATA.timestamp || "") + " | Models: " + models.length;
+
+// --- Sizing ---
+var MAZE_SIZE = 420;
+var CELL = Math.floor(MAZE_SIZE / N);
+var PAD = 10;
+var mazeW = CELL * N + PAD * 2;
+var mazeH = mazeW;
+
+var mazeCanvas = document.getElementById("maze-canvas");
+mazeCanvas.width = mazeW;
+mazeCanvas.height = mazeH;
+mazeCanvas.style.width = mazeW + "px";
+mazeCanvas.style.height = mazeH + "px";
+var mctx = mazeCanvas.getContext("2d");
+
+var ecgCanvas = document.getElementById("ecg-canvas");
+var ectx = ecgCanvas.getContext("2d");
+
+var densityCanvas = document.getElementById("density-canvas");
+var dctx = densityCanvas.getContext("2d");
+
+var masterSlider = document.getElementById("master-slider");
+masterSlider.max = maxSteps;
+masterSlider.value = 0;
+var stepLabel = document.getElementById("step-label");
+
+// --- Legend ---
+var legendEl = document.getElementById("legend");
+for (var i = 0; i < models.length; i++) {
+  (function(idx){
+    var item = document.createElement("span");
+    item.className = "legend-item";
+    item.dataset.idx = idx;
+
+    var cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.checked = true;
+    cb.className = "legend-cb";
+    cb.addEventListener("change", function(e){
+      models[idx].enabled = cb.checked;
+      if (!cb.checked) {
+        models[idx].focused = false;
+        item.classList.remove("focused");
+      }
+      item.classList.toggle("off", !cb.checked);
+      render();
+    });
+
+    var dot = document.createElement("span");
+    dot.className = "legend-dot";
+    dot.style.backgroundColor = models[idx].color;
+
+    var label = document.createElement("span");
+    label.textContent = models[idx].name;
+    label.style.cursor = "pointer";
+    label.addEventListener("click", function(e){
+      e.stopPropagation();
+      if (!models[idx].enabled) return;
+      var wasFocused = models[idx].focused;
+      for (var j = 0; j < models.length; j++) {
+        models[j].focused = false;
+        legendEl.children[j].classList.remove("focused");
+      }
+      if (!wasFocused) {
+        models[idx].focused = true;
+        item.classList.add("focused");
+      }
+      render();
+    });
+
+    item.appendChild(cb);
+    item.appendChild(dot);
+    item.appendChild(label);
+    legendEl.appendChild(item);
+  })(i);
+}
+
+// --- Controls ---
+document.getElementById("btn-play").addEventListener("click", function(){ playing = true; });
+document.getElementById("btn-pause").addEventListener("click", function(){ playing = false; });
+document.getElementById("btn-reset").addEventListener("click", function(){
+  playing = false;
+  currentStep = 0;
+  masterSlider.value = 0;
+  render();
+});
+var speedSlider = document.getElementById("speed-slider");
+speedSlider.addEventListener("input", function(){ speed = parseInt(speedSlider.value); });
+masterSlider.addEventListener("input", function(){
+  currentStep = parseInt(masterSlider.value);
+  render();
+});
+
+// --- Helpers ---
+function confToHue(conf) {
+  // conf 0..100 => hue 0(red)..210(blue)
+  if (conf == null) conf = 50;
+  return (conf / 100) * 210;
+}
+
+function manhattanDist(r, c) {
+  return Math.abs(r - (N-1)) + Math.abs(c - (N-1));
+}
+
+var maxDist = (N-1) * 2;
+
+// --- Draw Maze ---
+function drawMaze() {
+  mctx.clearRect(0, 0, mazeW, mazeH);
+  mctx.fillStyle = "#12151e";
+  mctx.fillRect(0, 0, mazeW, mazeH);
+
+  // Confidence heat trail
+  var heatMap = new Array(N);
+  for (var r = 0; r < N; r++) {
+    heatMap[r] = new Array(N);
+    for (var c = 0; c < N; c++) {
+      heatMap[r][c] = {sum: 0, count: 0};
+    }
+  }
+  var anyFocused = false;
+  for (var i = 0; i < models.length; i++) {
+    if (models[i].focused) { anyFocused = true; break; }
+  }
+  for (var i = 0; i < models.length; i++) {
+    var m = models[i];
+    if (!m.enabled) continue;
+    if (anyFocused && !m.focused) continue;
+    var limit = Math.min(currentStep, m.steps.length);
+    for (var s = 0; s < limit; s++) {
+      var step = m.steps[s];
+      var conf = step.confidence != null ? step.confidence : 50;
+      heatMap[step.r][step.c].sum += conf;
+      heatMap[step.r][step.c].count += 1;
+    }
+  }
+  mctx.save();
+  mctx.globalAlpha = 0.35;
+  for (var r = 0; r < N; r++) {
+    for (var c = 0; c < N; c++) {
+      if (heatMap[r][c].count > 0) {
+        var avg = heatMap[r][c].sum / heatMap[r][c].count;
+        var hue = confToHue(avg);
+        mctx.fillStyle = "hsl(" + hue + ", 80%, 50%)";
+        mctx.fillRect(PAD + c * CELL, PAD + r * CELL, CELL, CELL);
+      }
+    }
+  }
+  mctx.restore();
+
+  // Walls
+  mctx.strokeStyle = "#5a5d6a";
+  mctx.lineWidth = 2;
+  for (var r = 0; r < N; r++) {
+    for (var c = 0; c < N; c++) {
+      var x = PAD + c * CELL;
+      var y = PAD + r * CELL;
+      var w = walls[r][c];
+      if (w.N) { mctx.beginPath(); mctx.moveTo(x, y); mctx.lineTo(x + CELL, y); mctx.stroke(); }
+      if (w.S) { mctx.beginPath(); mctx.moveTo(x, y + CELL); mctx.lineTo(x + CELL, y + CELL); mctx.stroke(); }
+      if (w.W) { mctx.beginPath(); mctx.moveTo(x, y); mctx.lineTo(x, y + CELL); mctx.stroke(); }
+      if (w.E) { mctx.beginPath(); mctx.moveTo(x + CELL, y); mctx.lineTo(x + CELL, y + CELL); mctx.stroke(); }
+    }
+  }
+
+  // Start and End markers
+  var sr = CELL * 0.25;
+  mctx.fillStyle = "#22c55e";
+  mctx.beginPath();
+  mctx.arc(PAD + startC * CELL + CELL/2, PAD + startR * CELL + CELL/2, sr, 0, Math.PI*2);
+  mctx.fill();
+  mctx.fillStyle = "#ef4444";
+  mctx.beginPath();
+  mctx.arc(PAD + endC * CELL + CELL/2, PAD + endR * CELL + CELL/2, sr, 0, Math.PI*2);
+  mctx.fill();
+
+  // Path trails
+  for (var i = 0; i < models.length; i++) {
+    var m = models[i];
+    if (!m.enabled) continue;
+    var limit = Math.min(currentStep, m.steps.length);
+    if (limit < 2) continue;
+    mctx.save();
+    if (anyFocused && !m.focused) mctx.globalAlpha = 0.2;
+    mctx.strokeStyle = m.color;
+    mctx.lineWidth = 1.5;
+    mctx.beginPath();
+    mctx.moveTo(PAD + m.steps[0].c * CELL + CELL/2, PAD + m.steps[0].r * CELL + CELL/2);
+    for (var s = 1; s < limit; s++) {
+      mctx.lineTo(PAD + m.steps[s].c * CELL + CELL/2, PAD + m.steps[s].r * CELL + CELL/2);
+    }
+    mctx.stroke();
+    mctx.restore();
+  }
+
+  // Model markers (current position)
+  var markerR = CELL * 0.35;
+  for (var i = 0; i < models.length; i++) {
+    var m = models[i];
+    if (!m.enabled) continue;
+    var si = Math.min(currentStep, m.steps.length) - 1;
+    if (si < 0) continue;
+    var step = m.steps[si];
+    mctx.save();
+    var r_size = markerR;
+    if (anyFocused) {
+      if (m.focused) {
+        r_size = markerR * 1.6;
+      } else {
+        mctx.globalAlpha = 0.4;
+      }
+    }
+    mctx.fillStyle = m.color;
+    mctx.beginPath();
+    mctx.arc(PAD + step.c * CELL + CELL/2, PAD + step.r * CELL + CELL/2, r_size, 0, Math.PI*2);
+    mctx.fill();
+    // White border
+    mctx.strokeStyle = "#ffffff";
+    mctx.lineWidth = 1;
+    mctx.stroke();
+    mctx.restore();
+  }
+}
+
+// --- Draw ECG ---
+function drawECG() {
+  var rect = ecgCanvas.getBoundingClientRect();
+  var w = Math.floor(rect.width);
+  var h = Math.floor(rect.height);
+  if (ecgCanvas.width !== w || ecgCanvas.height !== h) {
+    ecgCanvas.width = w;
+    ecgCanvas.height = h;
+  }
+  ectx.clearRect(0, 0, w, h);
+
+  var stripH = h / models.length;
+  var leftMargin = 100;
+  var rightMargin = 10;
+  var topPad = 14;
+  var bottomPad = 4;
+  var chartW = w - leftMargin - rightMargin;
+  var anyFocused = false;
+  for (var i = 0; i < models.length; i++) {
+    if (models[i].focused) { anyFocused = true; break; }
+  }
+
+  for (var i = 0; i < models.length; i++) {
+    var m = models[i];
+    var y0 = i * stripH;
+
+    // Background
+    ectx.fillStyle = "#161926";
+    ectx.fillRect(0, y0, w, stripH);
+    // Separator
+    if (i > 0) {
+      ectx.strokeStyle = "#2a2d3a";
+      ectx.lineWidth = 1;
+      ectx.beginPath();
+      ectx.moveTo(0, y0);
+      ectx.lineTo(w, y0);
+      ectx.stroke();
+    }
+
+    // Label
+    ectx.save();
+    if (anyFocused && !m.focused) ectx.globalAlpha = 0.3;
+    ectx.fillStyle = m.color;
+    ectx.font = "bold 11px 'Segoe UI', system-ui, sans-serif";
+    ectx.textBaseline = "top";
+    ectx.fillText(m.name, 6, y0 + 4);
+    // Stats
+    ectx.fillStyle = "#6b7280";
+    ectx.font = "10px 'Segoe UI', system-ui, sans-serif";
+    var statsText = m.steps.length + " steps";
+    if (m.solved) statsText += " [SOLVED]";
+    if (m.steps.length === 0) statsText = "No step data";
+    ectx.fillText(statsText, 6, y0 + 18);
+    ectx.restore();
+
+    if (m.steps.length === 0) continue;
+    if (!m.enabled) continue;
+
+    // Chart area
+    var chartY0 = y0 + topPad;
+    var chartH = stripH - topPad - bottomPad;
+
+    ectx.save();
+    if (anyFocused && !m.focused) ectx.globalAlpha = 0.2;
+
+    // Grid lines (horizontal)
+    ectx.strokeStyle = "#1e2130";
+    ectx.lineWidth = 0.5;
+    for (var g = 0; g <= 4; g++) {
+      var gy = chartY0 + (g / 4) * chartH;
+      ectx.beginPath();
+      ectx.moveTo(leftMargin, gy);
+      ectx.lineTo(leftMargin + chartW, gy);
+      ectx.stroke();
+    }
+
+    // Distance line
+    ectx.strokeStyle = m.color;
+    ectx.lineWidth = 1.5;
+    ectx.beginPath();
+    for (var s = 0; s < m.steps.length; s++) {
+      var step = m.steps[s];
+      var dist = manhattanDist(step.r, step.c);
+      var px = leftMargin + (s / maxSteps) * chartW;
+      var py = chartY0 + (dist / maxDist) * chartH; // top=far, bottom=close
+      if (s === 0) ectx.moveTo(px, py);
+      else ectx.lineTo(px, py);
+    }
+    ectx.stroke();
+
+    // Event markers
+    for (var s = 0; s < m.steps.length; s++) {
+      var step = m.steps[s];
+      var px = leftMargin + (s / maxSteps) * chartW;
+      var dist = manhattanDist(step.r, step.c);
+      var py = chartY0 + (dist / maxDist) * chartH;
+
+      if (step.is_hallucination) {
+        // Red triangle
+        ectx.fillStyle = "#ef4444";
+        ectx.beginPath();
+        ectx.moveTo(px, py - 6);
+        ectx.lineTo(px - 4, py + 2);
+        ectx.lineTo(px + 4, py + 2);
+        ectx.closePath();
+        ectx.fill();
+      }
+      if (step.is_backtrack) {
+        ectx.fillStyle = "#fb923c";
+        ectx.fillRect(px - 3, py - 3, 6, 6);
+      }
+      if (step.is_loop) {
+        ectx.fillStyle = "#facc15";
+        ectx.beginPath();
+        ectx.arc(px, py, 3, 0, Math.PI * 2);
+        ectx.fill();
+      }
+    }
+
+    // Solved star
+    if (m.solved && m.steps.length > 0) {
+      var lastStep = m.steps[m.steps.length - 1];
+      var lx = leftMargin + ((m.steps.length - 1) / maxSteps) * chartW;
+      var ld = manhattanDist(lastStep.r, lastStep.c);
+      var ly = chartY0 + (ld / maxDist) * chartH;
+      drawStar(ectx, lx, ly, 5, 8, 4, "#22c55e");
+    }
+
+    ectx.restore();
+
+    // Current step line (always visible)
+    var curX = leftMargin + (currentStep / maxSteps) * chartW;
+    ectx.save();
+    ectx.strokeStyle = "rgba(255,255,255,0.6)";
+    ectx.lineWidth = 1;
+    ectx.setLineDash([3, 3]);
+    ectx.beginPath();
+    ectx.moveTo(curX, y0 + topPad);
+    ectx.lineTo(curX, y0 + stripH - bottomPad);
+    ectx.stroke();
+    ectx.setLineDash([]);
+    ectx.restore();
+  }
+}
+
+function drawStar(ctx, cx, cy, spikes, outerR, innerR, color) {
+  ctx.save();
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  var rot = -Math.PI / 2;
+  for (var i = 0; i < spikes * 2; i++) {
+    var r = (i % 2 === 0) ? outerR : innerR;
+    var angle = rot + (i * Math.PI / spikes);
+    var x = cx + Math.cos(angle) * r;
+    var y = cy + Math.sin(angle) * r;
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+// --- Density bar ---
+function drawDensity() {
+  var rect = densityCanvas.parentElement.getBoundingClientRect();
+  var w = Math.floor(rect.width);
+  densityCanvas.width = w;
+  densityCanvas.height = 24;
+  dctx.clearRect(0, 0, w, 24);
+
+  var barH = Math.floor(24 / models.length);
+  for (var i = 0; i < models.length; i++) {
+    var m = models[i];
+    if (!m.enabled) continue;
+    var y = i * barH;
+    for (var s = 0; s < m.steps.length; s++) {
+      var step = m.steps[s];
+      var x = Math.floor((s / maxSteps) * w);
+      var color;
+      if (step.is_hallucination) color = "#ef4444";
+      else if (step.is_backtrack) color = "#fb923c";
+      else if (step.is_loop) color = "#facc15";
+      else color = m.color;
+      dctx.fillStyle = color;
+      dctx.globalAlpha = 0.7;
+      dctx.fillRect(x, y, Math.max(1, Math.ceil(w / maxSteps)), barH - 1);
+    }
+  }
+  dctx.globalAlpha = 1.0;
+
+  // Current step indicator
+  var curX = Math.floor((currentStep / maxSteps) * w);
+  dctx.fillStyle = "rgba(255,255,255,0.8)";
+  dctx.fillRect(curX, 0, 2, 24);
+}
+
+// --- Render all ---
+function render() {
+  drawMaze();
+  drawECG();
+  drawDensity();
+  stepLabel.textContent = "Step: " + currentStep + " / " + maxSteps;
+  masterSlider.value = currentStep;
+}
+
+// --- Animation loop ---
+function tick(ts) {
+  if (playing) {
+    if (ts - lastFrameTime > (1000 / (speed * 3))) {
+      lastFrameTime = ts;
+      if (currentStep < maxSteps) {
+        currentStep++;
+        render();
+      } else {
+        playing = false;
+      }
+    }
+  }
+  requestAnimationFrame(tick);
+}
+
+// --- Resize handler ---
+function onResize() {
+  render();
+}
+window.addEventListener("resize", onResize);
+
+// --- Init ---
+render();
+requestAnimationFrame(tick);
+
+})();
+</script>
+</body>
+</html>

@@ -118,46 +118,52 @@ def bootstrap_ci(values: list[float], n_boot: int = 2000, ci: float = 0.95) -> t
     return mean, lo, hi
 
 
-def wilcoxon_rank_sum(x: list[float], y: list[float]) -> float:
-    """Approximated two-sided p-value using normal approximation of Wilcoxon"""
-    n1, n2 = len(x), len(y)
-    if n1 == 0 or n2 == 0:
-        return 1.0
-    combined = sorted([(v, 1) for v in x] + [(v, 2) for v in y])
-    ranks = {}
-    i = 0
-    while i < len(combined):
-        j = i
-        while j < len(combined) and combined[j][0] == combined[i][0]:
-            j += 1
-        avg_rank = (i + j + 1) / 2
-        for k in range(i, j):
-            ranks[k] = avg_rank
-        i = j
-    W = sum(ranks[k] for k, (v, g) in enumerate(combined) if g == 1)
-    mu_W = n1 * (n1 + n2 + 1) / 2
-    sigma_W = math.sqrt(n1 * n2 * (n1 + n2 + 1) / 12)
-    if sigma_W == 0:
-        return 1.0
-    z = (W - mu_W) / sigma_W
-    # Two-sided p-value using normal CDF approximation
-    p = 2 * (1 - _norm_cdf(abs(z)))
-    return p
-
-
 def _norm_cdf(x: float) -> float:
     """Standard normal CDF via error function"""
     return 0.5 * (1 + math.erf(x / math.sqrt(2)))
 
 
-def cohens_d(x: list[float], y: list[float]) -> float:
-    if len(x) < 2 or len(y) < 2:
+def one_sample_wilcoxon(values: list[float], mu0: float = 0.9) -> float:
+    """One-sample Wilcoxon signed-rank test against constant mu0.
+    Appropriate when comparing LLM MEI values against a deterministic baseline
+    with zero variance. Normal approximation (n>=10).
+    Returns two-sided p-value.
+    """
+    diffs = [v - mu0 for v in values if v != mu0]
+    n = len(diffs)
+    if n == 0:
+        return 1.0
+    abs_diffs_sorted = sorted(range(n), key=lambda i: abs(diffs[i]))
+    # Average ranks for ties
+    ranks = [0.0] * n
+    i = 0
+    while i < n:
+        j = i
+        while j < n and abs(diffs[abs_diffs_sorted[j]]) == abs(diffs[abs_diffs_sorted[i]]):
+            j += 1
+        avg_rank = (i + j + 1) / 2
+        for k in range(i, j):
+            ranks[abs_diffs_sorted[k]] = avg_rank
+        i = j
+    W_plus = sum(ranks[i] for i in range(n) if diffs[i] > 0)
+    mu_W = n * (n + 1) / 4
+    sigma_W = math.sqrt(n * (n + 1) * (2 * n + 1) / 24)
+    if sigma_W == 0:
+        return 1.0
+    z = (W_plus - mu_W) / sigma_W
+    return 2 * (1 - _norm_cdf(abs(z)))
+
+
+def glass_delta(constant_mu: float, values: list[float]) -> float:
+    """Glass's delta: (mu_constant - mu_values) / sd_values.
+    Use when one group is a constant (zero-variance baseline).
+    Standard pooled Cohen's d inflates effect size by sqrt(2) in this case.
+    """
+    if len(values) < 2:
         return 0.0
-    mx, my = sum(x)/len(x), sum(y)/len(y)
-    sx = math.sqrt(sum((v-mx)**2 for v in x)/(len(x)-1)) if len(x)>1 else 0
-    sy = math.sqrt(sum((v-my)**2 for v in y)/(len(y)-1)) if len(y)>1 else 0
-    pooled = math.sqrt((sx**2 + sy**2) / 2) if (sx or sy) else 1e-9
-    return abs(mx - my) / pooled
+    my = sum(values) / len(values)
+    sy = math.sqrt(sum((v - my) ** 2 for v in values) / (len(values) - 1))
+    return abs(constant_mu - my) / sy if sy > 1e-9 else 0.0
 
 
 def build_analysis(partial: bool = False):
@@ -212,14 +218,16 @@ def build_analysis(partial: bool = False):
     pairwise = {}
     for model, recs in records.items():
         mei_vals = [r.get("mei", r.get("hallumaze_score", 0)) for r in recs]
-        p_raw = wilcoxon_rank_sum(mei_vals, rw_mei)
+        # One-sample Wilcoxon signed-rank test vs constant baseline mu0=0.9
+        p_raw = one_sample_wilcoxon(mei_vals, mu0=BASELINES["random_walk"]["mei"])
         p_bonf = min(p_raw * k, 1.0)
-        d = cohens_d(rw_mei, mei_vals)
+        # Glass's delta (appropriate when baseline has zero variance)
+        d = glass_delta(BASELINES["random_walk"]["mei"], mei_vals)
         pairwise[model] = {
             "n": len(recs),
             "p_raw": round(p_raw, 6),
             "p_bonferroni": round(p_bonf, 6),
-            "cohens_d": round(d, 3),
+            "cohens_d": round(d, 3),  # Glass's delta (one-sample, constant baseline)
             "significant_bonf": p_bonf < 0.05,
         }
 

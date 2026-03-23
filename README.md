@@ -1,3 +1,13 @@
+---
+title: HalluMaze
+emoji: 🧩
+colorFrom: blue
+colorTo: purple
+sdk: static
+app_file: index.html
+pinned: true
+---
+
 # HalluMaze: A Maze Navigation Benchmark for LLM Metacognitive Error Recovery
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -21,16 +31,16 @@ HalluMaze measures **metacognitive error recovery** in LLMs through maze navigat
 | Rank | Model | n | MEI [95% CI] | SR | HRR | Cohen's d |
 |------|-------|---|--------------|-----|-----|-----------|
 | — | Random Walk ★ | — | 0.900 | 1.000 | 1.000 | — |
-| 1 | **GLM-4.7** | 60 | 0.615 [0.551, 0.681] | 8.3% | 71.8% | 1.559 |
-| 2 | **Llama-4-Maverick** | 60 | 0.600 [0.541, 0.659] | 13.3% | 81.1% | 1.774 |
-| 3 | **MiniMax-M2.5** | 60 | 0.593 [0.500, 0.682] | 53.3% | 60.0% | 1.197 |
-| 4 | **Llama-4-Scout** | 60 | 0.589 [0.525, 0.649] | 8.3% | 81.0% | 1.739 |
-| 5 | **Qwen-2.5-72B** | 60 | 0.559 [0.487, 0.629] | 10.0% | 60.7% | 1.730 |
-| 6 | **Gemini-2.0-Flash-Lite** | 60 | 0.432 [0.352, 0.507] | 8.3% | 40.3% | 2.202 |
-| 7 | **Claude-3-Haiku** | 60 | 0.398 [0.341, 0.457] | 5.0% | 36.3% | 3.011 |
-| 8 | **GPT-4o-mini** | 60 | 0.391 [0.310, 0.468] | 5.0% | 38.2% | 2.291 |
+| 1 | **GLM-4.7** | 60 | 0.615 [0.551, 0.681] | 8.3% | 71.8% | 1.102 |
+| 2 | **Llama-4-Maverick** | 60 | 0.600 [0.541, 0.660] | 13.3% | 81.1% | 1.254 |
+| 3 | **MiniMax-M2.5** | 60 | 0.593 [0.500, 0.682] | 53.3% | 60.0% | 0.847 |
+| 4 | **Llama-4-Scout** | 60 | 0.589 [0.525, 0.649] | 8.3% | 81.0% | 1.230 |
+| 5 | **Qwen-2.5-72B** | 60 | 0.559 [0.488, 0.629] | 10.0% | 60.7% | 1.223 |
+| 6 | **Gemini-2.0-Flash-Lite** | 60 | 0.432 [0.352, 0.507] | 8.3% | 40.3% | 1.557 |
+| 7 | **Claude-3-Haiku** | 60 | 0.398 [0.341, 0.457] | 5.0% | 36.3% | 2.129 |
+| 8 | **GPT-4o-mini** | 60 | 0.391 [0.310, 0.467] | 5.0% | 38.2% | 1.620 |
 
-★ = deterministic baseline. All LLMs vs Random Walk: Wilcoxon rank-sum, Bonferroni k=8, all p<0.001.
+★ = deterministic baseline. All LLMs vs Random Walk: one-sample Wilcoxon signed-rank test, Bonferroni k=8, all p<0.001. Effect size: Glass's delta (constant baseline).
 
 ---
 
@@ -60,7 +70,7 @@ Theoretical grounding: Nelson & Narens (1990) metamemory framework — HRR maps 
 
 ### Local API (MiniMax / GLM-4.7)
 ```bash
-pip install openai python-dotenv
+pip install -r requirements.txt
 
 # Set API keys
 export MINIMAX_API_KEY=...
@@ -91,6 +101,8 @@ python scripts/build_final_analysis.py
 
 ```
 hallumaze/
+├── files/
+│   └── hallumaze.py             # Core benchmark library (maze, metrics, runners)
 ├── run_hallumaze.py              # Local API runner (MiniMax, GLM)
 ├── run_openrouter_experiment.py  # OpenRouter runner (7 providers)
 ├── analyze_results.py            # Per-run analysis
@@ -106,6 +118,7 @@ hallumaze/
 │   ├── or_qwen.json             # Qwen-2.5-72B (n=60)
 │   ├── or_phaseB.json           # Llama-4-Scout + Gemini (n=60 each)
 │   └── mei_sensitivity.json     # 625-config weight sensitivity
+├── requirements.txt             # Python dependencies
 ├── hallumaze_final.html         # Paper landing page
 └── hallumaze_guide.html         # Korean public guide
 ```
@@ -131,10 +144,13 @@ Choose your next move. Output JSON:
 
 ## Reproducibility
 
-- Seeds: 1001–5005 (30 seeds × 2 maze sizes = 60 trials per model)
-- Maze algorithm: Recursive DFS with 2 mirage positions per maze
-- Bootstrap CI: n_boot=2000, ci=0.95, seed=42
-- Statistical test: Wilcoxon rank-sum, Bonferroni k=8
+- **Evaluation design**: Single-call — LLMs generate the complete navigation path in one API call. No step-by-step interaction.
+- **Random walk baseline**: N²×100 step budget (2500 for 5×5, 4900 for 7×7); ETR normalization uses N² (25 or 49).
+- **Seeds**: 1001–5005 (30 seeds × 2 maze sizes = 60 trials per model)
+- **Maze algorithm**: Recursive DFS with 2 mirage positions per maze
+- **Temperature**: API default (not explicitly set; see `files/hallumaze.py` `LLMProvider.call`)
+- **Bootstrap CI**: n_boot=2000, ci=0.95, seed=42
+- **Statistical test**: Wilcoxon rank-sum, Bonferroni k=8
 
 All raw trial data in `experiment_results/or_*.json` and `experiment_results/checkpoint_rerun.json`.
 
@@ -147,7 +163,7 @@ All raw trial data in `experiment_results/or_*.json` and `experiment_results/che
   title   = {HalluMaze: A Maze Navigation Benchmark for LLM Metacognitive Error Recovery},
   author  = {Jayone},
   year    = {2026},
-  url     = {https://github.com/jaytoone/hallumaze}
+  url     = {https://github.com/jaytoone/HalluMaze}
 }
 ```
 

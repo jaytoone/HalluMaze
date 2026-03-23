@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HalluMaze Paper Figure v2</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#09090f;color:#e2e2ef;font-family:"Segoe UI",system-ui,sans-serif;padding:24px}
+h2{font-size:.95rem;letter-spacing:1.5px;text-transform:uppercase;color:#9b8fff;margin-bottom:4px}
+.fig-title{text-align:center;font-size:1.1rem;font-weight:700;color:#e2e2ef;margin-bottom:4px}
+.fig-subtitle{text-align:center;font-size:.75rem;color:#666;margin-bottom:24px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:1100px;margin:0 auto}
+.panel{background:#111118;border:1px solid #1e1e30;border-radius:10px;padding:16px}
+.panel.wide{grid-column:1/-1}
+.note{font-size:.68rem;color:#555;margin-top:8px;text-align:center;font-style:italic}
+canvas{display:block;width:100%;height:auto}
+table{width:100%;border-collapse:collapse;font-size:.75rem}
+th{text-align:left;padding:6px 8px;border-bottom:1px solid #1e1e30;color:#666;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+td{padding:5px 8px;border-bottom:1px solid #111}
+tr:last-child td{border-bottom:none}
+.sig{font-weight:700;color:#4ade80}
+.sig.ns{color:#666}
+.legend-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:.7rem;color:#888}
+.leg{display:flex;align-items:center;gap:5px}
+.leg-sq{width:10px;height:10px;border-radius:2px}
+</style>
+</head>
+<body>
+<div class="fig-title">Figure 1: HalluMaze Benchmark — Multi-Model Metacognitive Navigation Performance</div>
+<div class="fig-subtitle">Bootstrap 95% CI · Wilcoxon rank-sum + Bonferroni + BH-FDR · Primary metrics: SR and MEI (calibration-adjusted score shown separately)</div>
+
+<div class="grid">
+
+  <!-- Panel A: SR comparison -->
+  <div class="panel">
+    <h2>A — Success Rate (SR)</h2>
+    <canvas id="srChart" height="220"></canvas>
+    <div class="note">MiniMax: preliminary n=18/60 — re-run in progress</div>
+  </div>
+
+  <!-- Panel B: MEI comparison -->
+  <div class="panel">
+    <h2>B — Metacognitive Escape Index (MEI)</h2>
+    <canvas id="meiChart" height="220"></canvas>
+  </div>
+
+  <!-- Panel C: GLM version comparison -->
+  <div class="panel">
+    <h2>C — GLM Version Comparison (n=4 seeds each)</h2>
+    <canvas id="glmChart" height="220"></canvas>
+    <div class="note">5×5 mazes only · Same seed pool · Lower n → wider CIs</div>
+  </div>
+
+  <!-- Panel D: Statistical tests -->
+  <div class="panel">
+    <h2>D — Statistical Tests (LLM vs Random Walk)</h2>
+    <table id="statsTable">
+      <tr><th>Model</th><th>n</th><th>U</th><th>p (raw)</th><th>Bonf.</th><th>BH-FDR</th><th>Sig.</th></tr>
+    </table>
+    <div style="margin-top:16px">
+      <h2>Key Statistics</h2>
+      <div id="keyStats" style="font-size:.75rem;line-height:1.8;color:#aaa;margin-top:8px"></div>
+    </div>
+  </div>
+
+  <!-- Panel E: HalluMaze Score (composite) -->
+  <div class="panel wide">
+    <h2>E — HalluMaze Score (composite: 0.5×MEI + 0.3×(1−CE) + 0.2×BRS) — Secondary Metric</h2>
+    <canvas id="scoreChart" height="160"></canvas>
+    <div class="note">CE=None imputed as 0.5 for baselines (no confidence expressed) → systematic +0.15 advantage for baselines. Use SR & MEI (panels A–B) as primary comparison metrics.</div>
+    <div class="legend-row" id="legendRow"></div>
+  </div>
+
+</div>
+
+<script>
+const MAIN = [{"key": "A*/BFS", "label": "A* / BFS", "color": "#6366f1", "n": 120, "sr": 1.0, "sr_lo": 1.0, "sr_hi": 1.0, "mei": 0.9, "mei_lo": 0.9, "mei_hi": 0.9, "score": 0.8, "score_lo": 0.8, "score_hi": 0.8}, {"key": "random_walk", "label": "Random Walk", "color": "#22d3ee", "n": 60, "sr": 1.0, "sr_lo": 1.0, "sr_hi": 1.0, "mei": 0.9, "mei_lo": 0.9, "mei_hi": 0.9, "score": 0.8, "score_lo": 0.8, "score_hi": 0.8}, {"key": "MiniMax-M2.5", "label": "MiniMax-M2.5", "color": "#f59e0b", "n": 18, "sr": 0.8889, "sr_lo": 0.7222, "sr_hi": 1.0, "mei": 0.8361, "mei_lo": 0.7239, "mei_hi": 0.9, "score": 0.6301, "score_lo": 0.5717, "score_hi": 0.6698}, {"key": "glm-4.7", "label": "GLM-4.7", "color": "#f87171", "n": 60, "sr": 0.0833, "sr_lo": 0.0167, "sr_hi": 0.1667, "mei": 0.6145, "mei_lo": 0.5473, "mei_hi": 0.6785, "score": 0.5126, "score_lo": 0.4751, "score_hi": 0.5471}];
+const GLM = [{"key": "glm-4.5", "label": "glm-4.5", "color": "#818cf8", "n": 4, "sr": 0.0, "sr_lo": 0.0, "sr_hi": 0.0, "mei": 0.478, "mei_lo": 0.23, "mei_hi": 0.726, "score": 0.4655, "score_lo": 0.318, "score_hi": 0.613}, {"key": "glm-4.5-flash", "label": "glm-4.5-flash", "color": "#34d399", "n": 4, "sr": 0.0, "sr_lo": 0.0, "sr_hi": 0.0, "mei": 0.432, "mei_lo": 0.13, "mei_hi": 0.734, "score": 0.4875, "score_lo": 0.3535, "score_hi": 0.6215}, {"key": "glm-4.6", "label": "glm-4.6", "color": "#4ade80", "n": 4, "sr": 0.25, "sr_lo": 0.0, "sr_hi": 0.75, "mei": 0.851, "mei_lo": 0.825, "mei_hi": 0.8825, "score": 0.6407, "score_lo": 0.6145, "score_hi": 0.6735}, {"key": "glm-4.7", "label": "glm-4.7", "color": "#f87171", "n": 4, "sr": 0.0, "sr_lo": 0.0, "sr_hi": 0.0, "mei": 0.4805, "mei_lo": 0.23, "mei_hi": 0.731, "score": 0.4808, "score_lo": 0.3685, "score_hi": 0.593}];
+const STATS = [{"model": "MiniMax-M2.5", "U": 30.0, "p": 0.0, "sig": "***", "n": 18}, {"model": "GLM-4.7", "U": 0.0, "p": 0.0, "sig": "***", "n": 60}];
+
+function drawBarChart(canvasId, data, metric, metricLo, metricHi, yMax, yLabel) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.offsetWidth * dpr, H = canvas.offsetHeight * dpr;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const w = canvas.offsetWidth, h = canvas.offsetHeight;
+
+  const pad = {l:44, r:16, t:16, b:48};
+  const chartW = w - pad.l - pad.r;
+  const chartH = h - pad.t - pad.b;
+  const barW = Math.min(55, (chartW / data.length) * 0.55);
+  const gap = chartW / data.length;
+
+  ctx.fillStyle = '#09090f';
+  ctx.fillRect(0, 0, w, h);
+
+  // Grid lines
+  const ticks = 5;
+  ctx.strokeStyle = '#1a1a2e'; ctx.lineWidth = 1;
+  ctx.font = '9px sans-serif'; ctx.fillStyle = '#444'; ctx.textAlign = 'right';
+  for (let i = 0; i <= ticks; i++) {
+    const y = pad.t + chartH * (1 - i/ticks);
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(w-pad.r, y); ctx.stroke();
+    ctx.fillText((yMax * i/ticks).toFixed(1), pad.l-4, y+3);
+  }
+
+  // Bars
+  data.forEach((d, i) => {
+    const x = pad.l + gap * (i + 0.5) - barW/2;
+    const val = d[metric] || 0;
+    const lo = d[metricLo] || 0;
+    const hi = d[metricHi] || 0;
+    const barH = (val / yMax) * chartH;
+    const barY = pad.t + chartH - barH;
+
+    // Bar with gradient
+    const grad = ctx.createLinearGradient(x, barY, x, barY + barH);
+    grad.addColorStop(0, d.color + 'ff');
+    grad.addColorStop(1, d.color + '88');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.roundRect(x, barY, barW, barH, 3);
+    ctx.fill();
+
+    // CI error bar
+    const ciLoY = pad.t + chartH - (lo/yMax)*chartH;
+    const ciHiY = pad.t + chartH - (hi/yMax)*chartH;
+    const cx = x + barW/2;
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(cx, ciLoY); ctx.lineTo(cx, ciHiY);
+    ctx.moveTo(cx-4, ciLoY); ctx.lineTo(cx+4, ciLoY);
+    ctx.moveTo(cx-4, ciHiY); ctx.lineTo(cx+4, ciHiY);
+    ctx.stroke();
+
+    // Value label
+    ctx.fillStyle = '#ccc'; ctx.font = 'bold 10px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(val.toFixed(2), cx, barY - 4);
+
+    // X label
+    ctx.fillStyle = '#666'; ctx.font = '9px sans-serif';
+    const lbl = d.label.replace('glm-', 'GLM-');
+    ctx.save(); ctx.translate(cx, pad.t + chartH + 8); ctx.rotate(-0.4);
+    ctx.textAlign = 'right'; ctx.fillText(lbl, 0, 0); ctx.restore();
+  });
+
+  // Reference line at 1.0 if applicable
+  if (metric === 'sr') {
+    const y = pad.t; // y at 1.0
+    ctx.strokeStyle = '#666'; ctx.lineWidth = 1; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(w-pad.r, y); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+}
+
+function buildStatsTable() {
+  const tbody = document.querySelector('#statsTable');
+  const rw_n = MAIN.find(d=>d.key==='random_walk')?.n || 60;
+  STATS.forEach(row => {
+    const bonf = Math.min(1, row.p * STATS.length).toFixed(4);
+    const bh = row.p < 0.05 ? 'reject' : 'retain';
+    const tr = document.createElement('tr');
+    const sigClass = row.sig === 'ns' ? 'sig ns' : 'sig';
+    tr.innerHTML = `<td>${row.model}</td><td>${row.n}</td><td>${row.U}</td><td>${row.p.toFixed(4)}</td><td>${bonf}</td><td>${bh}</td><td class="${sigClass}">${row.sig}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function buildKeyStats() {
+  const el = document.getElementById('keyStats');
+  const mm = MAIN.find(d=>d.key==='MiniMax-M2.5');
+  const glm = MAIN.find(d=>d.key==='glm-4.7');
+  const rw = MAIN.find(d=>d.key==='random_walk');
+  const lines = [
+    `Random Walk SR: <b style="color:#22d3ee">100%</b> (budget N²×100)`,
+    `MiniMax-M2.5 SR: <b style="color:#f59e0b">${(mm?.sr*100||0).toFixed(0)}%</b> [n=${mm?.n||0}, prelim] vs RW p&lt;0.001***`,
+    `GLM-4.7 SR: <b style="color:#f87171">${(glm?.sr*100||0).toFixed(1)}%</b> [n=${glm?.n||0}] vs RW p&lt;0.001***`,
+    `GLM-4.6 (5×5 seeds): MEI=<b style="color:#4ade80">0.851</b> (best among GLM versions)`,
+    `Both LLMs score <i>below</i> memoryless Random Walk (p&lt;0.001 Bonf. + BH-FDR)`,
+  ];
+  el.innerHTML = lines.map(l=>`<div>• ${l}</div>`).join('');
+}
+
+function buildLegend() {
+  const row = document.getElementById('legendRow');
+  MAIN.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'leg';
+    el.innerHTML = `<div class="leg-sq" style="background:${d.color}"></div>${d.label} (n=${d.n})`;
+    row.appendChild(el);
+  });
+}
+
+// Render on load
+window.addEventListener('load', () => {
+  drawBarChart('srChart', MAIN, 'sr', 'sr_lo', 'sr_hi', 1.0, 'Success Rate');
+  drawBarChart('meiChart', MAIN, 'mei', 'mei_lo', 'mei_hi', 1.0, 'MEI');
+  drawBarChart('glmChart', GLM, 'mei', 'mei_lo', 'mei_hi', 1.0, 'MEI');
+  drawBarChart('scoreChart', MAIN, 'score', 'score_lo', 'score_hi', 1.0, 'Score');
+  buildStatsTable();
+  buildKeyStats();
+  buildLegend();
+});
+</script>
+</body>
+</html>
