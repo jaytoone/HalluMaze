@@ -1,0 +1,10 @@
+v1.1 20260323 — Add core library, fix statistics, HF Space ready
+
+- Add files/hallumaze.py (core benchmark library, 951 lines)
+- Add requirements.txt
+- Add index.html for HuggingFace Space (self-contained, HF YAML frontmatter)
+- Fix anonymous GitHub URLs → jaytoone/HalluMaze
+- Fix statistics: Glass's delta + one-sample Wilcoxon (corrected d=0.8-2.1)
+- Add docs/research/ (paper draft + extension TODO analysis)
+- Add experiment_results/ full dataset (20 JSON files)
+- Fix README: pip install requirements.txt, reproducibility notes

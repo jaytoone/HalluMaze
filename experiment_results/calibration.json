@@ -1,0 +1,98 @@
+{
+  "Claude-3-Haiku": {
+    "n_total": 60,
+    "n_with_confidence": 60,
+    "coverage": 1.0,
+    "mean_ce": 0.9574,
+    "median_ce": 0.9948,
+    "std_ce": 0.0684,
+    "ece_trial_level": 0.0284,
+    "brier_proxy": 0.9212,
+    "mean_hrr": 0.3634,
+    "mean_sr": 0.05
+  },
+  "GLM-4.7": {
+    "n_total": 60,
+    "n_with_confidence": 60,
+    "coverage": 1.0,
+    "mean_ce": 0.7855,
+    "median_ce": 0.8027,
+    "std_ce": 0.1304,
+    "ece_trial_level": 0.0089,
+    "brier_proxy": 0.6338,
+    "mean_hrr": 0.7181,
+    "mean_sr": 0.0833
+  },
+  "GPT-4o-mini": {
+    "n_total": 60,
+    "n_with_confidence": 36,
+    "coverage": 0.6,
+    "mean_ce": 0.893,
+    "median_ce": 0.9313,
+    "std_ce": 0.1712,
+    "ece_trial_level": 0.0195,
+    "brier_proxy": 0.8259,
+    "mean_hrr": 0.3819,
+    "mean_sr": 0.05
+  },
+  "Gemini-2.0-Flash-Lite": {
+    "n_total": 60,
+    "n_with_confidence": 59,
+    "coverage": 0.9833,
+    "mean_ce": 0.8651,
+    "median_ce": 0.875,
+    "std_ce": 0.091,
+    "ece_trial_level": 0.0045,
+    "brier_proxy": 0.7566,
+    "mean_hrr": 0.4028,
+    "mean_sr": 0.0833
+  },
+  "Llama-4-Maverick": {
+    "n_total": 60,
+    "n_with_confidence": 39,
+    "coverage": 0.65,
+    "mean_ce": 0.8478,
+    "median_ce": 0.8421,
+    "std_ce": 0.0972,
+    "ece_trial_level": 0.0068,
+    "brier_proxy": 0.7279,
+    "mean_hrr": 0.8111,
+    "mean_sr": 0.1333
+  },
+  "Llama-4-Scout": {
+    "n_total": 60,
+    "n_with_confidence": 57,
+    "coverage": 0.95,
+    "mean_ce": 0.8182,
+    "median_ce": 0.8196,
+    "std_ce": 0.1354,
+    "ece_trial_level": 0.0094,
+    "brier_proxy": 0.6875,
+    "mean_hrr": 0.81,
+    "mean_sr": 0.0833
+  },
+  "MiniMax-M2.5": {
+    "n_total": 60,
+    "n_with_confidence": 44,
+    "coverage": 0.7333,
+    "mean_ce": 0.9708,
+    "median_ce": 1.0,
+    "std_ce": 0.0724,
+    "ece_trial_level": 0.0367,
+    "brier_proxy": 0.9476,
+    "mean_hrr": 0.6,
+    "mean_sr": 0.5333
+  },
+  "Qwen-2.5-72B": {
+    "n_total": 60,
+    "n_with_confidence": 59,
+    "coverage": 0.9833,
+    "mean_ce": 0.8936,
+    "median_ce": 0.9062,
+    "std_ce": 0.1002,
+    "ece_trial_level": 0.0116,
+    "brier_proxy": 0.8083,
+    "mean_hrr": 0.607,
+    "mean_sr": 0.1
+  }
+}
