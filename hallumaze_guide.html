@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HalluMaze — 지표 쉽게 이해하기</title>
+<style>
+:root{
+  --bg:#0a0c14;--card:#12151f;--card2:#181c2a;--border:#252840;
+  --text:#e2e8f0;--muted:#8892a4;--dim:#4a5568;
+  --green:#10b981;--red:#ef4444;--orange:#f97316;--yellow:#eab308;
+  --blue:#3b82f6;--purple:#8b5cf6;--teal:#14b8a6;--cyan:#06b6d4;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.6;}
+
+/* HERO */
+.hero{
+  background:linear-gradient(135deg,#0d0f1e 0%,#11152b 50%,#0d1220 100%);
+  border-bottom:1px solid var(--border);padding:48px 20px 40px;text-align:center;
+}
+.hero h1{font-size:clamp(1.5rem,3.5vw,2.2rem);font-weight:800;letter-spacing:-.5px;margin-bottom:8px;}
+.hero h1 .accent{background:linear-gradient(90deg,#3b82f6,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{color:var(--muted);font-size:.92rem;max-width:520px;margin:0 auto 24px;}
+.mode-toggle{display:inline-flex;background:var(--card2);border:1px solid var(--border);border-radius:99px;padding:4px;gap:4px;}
+.mode-toggle button{
+  background:none;color:var(--muted);border:none;padding:6px 20px;
+  border-radius:99px;cursor:pointer;font-size:.85rem;font-weight:600;transition:.2s;
+}
+.mode-toggle button.active{background:var(--blue);color:#fff;}
+
+/* LAYOUT */
+.wrap{max-width:1040px;margin:0 auto;padding:32px 16px;}
+section{margin-bottom:40px;}
+.section-title{font-size:1.05rem;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.section-title .dot{width:7px;height:7px;border-radius:50%;background:var(--blue);flex-shrink:0;}
+
+/* CONCEPT CARDS */
+.concept-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:600px){.concept-row{grid-template-columns:1fr;}}
+.concept-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;transition:.2s;}
+.concept-card:hover{border-color:var(--blue);transform:translateY(-2px);}
+.concept-icon{font-size:1.8rem;margin-bottom:10px;}
+.concept-name{font-size:.95rem;font-weight:700;margin-bottom:6px;}
+.concept-desc{font-size:.83rem;color:var(--muted);}
+.analogy-box{margin-top:10px;background:var(--card2);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:8px 12px;font-size:.78rem;color:var(--cyan);}
+
+/* METRIC CARDS */
+.metric-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;}
+.metric-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;}
+.metric-label{font-size:.8rem;font-weight:700;margin-bottom:2px;}
+.metric-en{font-size:.65rem;color:var(--dim);margin-bottom:10px;font-family:monospace;}
+.metric-icon{font-size:1.5rem;margin-bottom:6px;}
+.metric-bar{height:8px;background:#1a1d2e;border-radius:4px;overflow:hidden;margin:8px 0;}
+.metric-bar-fill{height:100%;border-radius:4px;}
+.metric-pct{font-size:1.1rem;font-weight:800;margin-bottom:4px;}
+.metric-desc{font-size:.72rem;color:var(--muted);line-height:1.5;}
+.metric-analogy{margin-top:8px;background:var(--card2);border-radius:6px;padding:6px 10px;font-size:.72rem;color:var(--cyan);}
+.intuitive-stars{margin-top:6px;font-size:.68rem;color:var(--muted);}
+
+/* RANDOM WALK BANNER */
+.rw-banner{
+  background:linear-gradient(90deg,#1a2040,#12182e);
+  border:1px solid #3b82f640;border-radius:12px;padding:18px;
+  display:flex;align-items:flex-start;gap:14px;
+}
+.rw-icon{font-size:2rem;flex-shrink:0;margin-top:2px;}
+.rw-title{font-size:.9rem;font-weight:700;margin-bottom:5px;}
+.rw-body{font-size:.82rem;color:var(--muted);}
+.highlight{color:var(--yellow);font-weight:700;}
+
+/* RESULTS TABLE */
+.table-wrap{overflow-x:auto;}
+.result-table{width:100%;border-collapse:collapse;min-width:580px;}
+.result-table th{
+  background:var(--card2);color:var(--muted);font-size:.72rem;font-weight:600;
+  padding:10px 12px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;
+}
+.result-table th.c,.result-table td.c{text-align:center;}
+.result-table td{padding:10px 12px;border-bottom:1px solid #1a1d2e;font-size:.82rem;vertical-align:middle;}
+.result-table tr:hover td{background:#141726;}
+.rank-num{display:inline-flex;width:22px;height:22px;border-radius:50%;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;background:var(--border);color:var(--muted);}
+.rank-num.gold{background:#f59e0b;color:#000;}
+.rank-num.silver{background:#9ca3af;color:#000;}
+.rank-num.bronze{background:#b45309;color:#fff;}
+.model-name{font-weight:700;}
+.grade-tag{font-size:.7rem;font-weight:700;margin-left:5px;}
+.bar-row{display:flex;align-items:center;gap:6px;}
+.bar-bg{flex:1;height:5px;background:#1a1d2e;border-radius:3px;overflow:hidden;min-width:40px;}
+.bar-f{height:100%;border-radius:3px;}
+.val-txt{min-width:36px;text-align:right;font-size:.78rem;font-weight:700;}
+.g{color:var(--green)}.y{color:var(--yellow)}.r{color:var(--red)}.d{color:var(--dim);}
+.ci-txt{font-size:.65rem;color:var(--dim);}
+.baseline-row td{opacity:.6;}
+.note-txt{font-size:.68rem;color:var(--dim);}
+.scroll-hint{text-align:center;color:var(--dim);font-size:.72rem;margin-top:5px;}
+
+/* FINDING CARDS */
+.finding-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+@media(max-width:520px){.finding-grid{grid-template-columns:1fr;}}
+.finding-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;}
+.finding-num{font-size:.68rem;color:var(--blue);font-weight:700;letter-spacing:.8px;margin-bottom:6px;}
+.finding-title{font-size:.9rem;font-weight:700;margin-bottom:6px;}
+.finding-body{font-size:.79rem;color:var(--muted);}
+
+/* DISSOCIATION */
+.diss-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:560px){.diss-grid{grid-template-columns:1fr;}}
+.diss-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;}
+.diss-card h4{font-size:.9rem;font-weight:700;margin-bottom:4px;}
+.diss-sub{font-size:.76rem;color:var(--muted);margin-bottom:12px;}
+.diss-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
+.diss-name{font-size:.8rem;font-weight:600;}
+.diss-chip{font-size:.72rem;padding:3px 10px;border-radius:99px;font-weight:700;}
+.chip-up{background:#10b98120;color:var(--green);border:1px solid #10b98140;}
+.chip-dn{background:#ef444420;color:var(--red);border:1px solid #ef444440;}
+.diss-note{font-size:.73rem;color:var(--muted);margin-top:6px;}
+
+/* FAQ */
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden;}
+.faq-q{padding:14px 16px;cursor:pointer;font-size:.87rem;font-weight:600;display:flex;justify-content:space-between;align-items:center;user-select:none;}
+.faq-q:hover{background:var(--card2);}
+.faq-arr{color:var(--muted);transition:.25s;font-size:.75rem;}
+.faq-a{padding:0 16px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s;font-size:.82rem;color:var(--muted);line-height:1.7;}
+.faq-item.open .faq-a{max-height:200px;padding:0 16px 14px;}
+.faq-item.open .faq-arr{transform:rotate(180deg);}
+
+/* EXPERT */
+.expert-only{display:none;}
+body.expert .expert-only{display:block;}
+body.expert .general-only{display:block;}
+
+/* FORMULA */
+.formula-box{background:#0d0f1e;border:1px solid #3b82f630;border-radius:12px;padding:18px;font-family:monospace;font-size:.9rem;text-align:center;color:var(--cyan);margin-bottom:12px;}
+.w-table{width:100%;border-collapse:collapse;font-size:.8rem;}
+.w-table td{padding:7px 10px;border-bottom:1px solid #1a1d2e;color:var(--muted);}
+.w-table td:first-child{font-weight:600;color:var(--text);}
+
+/* FOOTER */
+footer{text-align:center;color:var(--dim);font-size:.73rem;padding:28px 16px;border-top:1px solid var(--border);margin-top:20px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>HalluMaze<br><span class="accent">AI의 "실수 인식 능력"을 측정합니다</span></h1>
+  <p>AI가 미로를 탈출하면서 스스로의 오류를 얼마나 잘 발견하고 수정하는지 측정하는 벤치마크</p>
+  <div class="mode-toggle">
+    <button class="active" id="btn-general" onclick="setMode('general')">일반인 모드</button>
+    <button id="btn-expert" onclick="setMode('expert')">전문가 모드</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- 1. 개념 설명 -->
+<section class="general-only">
+  <div class="section-title"><div class="dot"></div>HalluMaze가 뭔가요?</div>
+  <div class="concept-row">
+    <div class="concept-card">
+      <div class="concept-icon">🧩</div>
+      <div class="concept-name">미로 탈출 게임</div>
+      <div class="concept-desc">AI에게 텍스트로 된 미로를 줍니다. AI는 북(N) / 남(S) / 동(E) / 서(W)로 이동하며 출구를 찾아야 합니다. 이 과정에서 AI가 "있지도 않은 벽"을 상상하거나 틀린 판단을 내릴 때, 얼마나 빨리 스스로 알아채고 방향을 바꾸는지 측정합니다.</div>
+      <div class="analogy-box">눈을 가리고 방에서 출구 찾기 — 벽에 부딪히면 다른 방향으로 가면 되는데, 어떤 AI는 같은 벽에 계속 부딪힙니다.</div>
+    </div>
+    <div class="concept-card">
+      <div class="concept-icon">🌫️</div>
+      <div class="concept-name">환각(Hallucination)이란?</div>
+      <div class="concept-desc">AI가 실제로 없는 것을 "있다"고 확신하는 현상입니다. HalluMaze에서는 실제로는 통과할 수 있는 통로를 "막혀 있다"고 잘못 판단하거나, 막힌 곳을 "열려 있다"고 착각하는 것이 환각입니다.</div>
+      <div class="analogy-box">GPS가 실제로 없는 공사 차단을 표시해 잘못된 길로 안내하는 것과 같습니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. 측정 지표 -->
+<section class="general-only">
+  <div class="section-title"><div class="dot"></div>측정 지표 — 쉽게 이해하기</div>
+  <div class="metric-grid">
+
+    <div class="metric-card">
+      <div class="metric-icon">🏁</div>
+      <div class="metric-label">탈출 성공률</div>
+      <div class="metric-en">Solve Rate (SR)</div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width:19%;background:#10b981"></div></div>
+      <div class="metric-pct" style="color:#10b981">LLM 평균 19%</div>
+      <div class="metric-desc">AI가 제한된 걸음 안에 미로 출구에 도달한 비율. 낮을수록 미로 탐색 능력이 약함.</div>
+      <div class="metric-analogy">100명이 미로에 들어갔을 때 실제로 탈출한 사람 수</div>
+      <div class="intuitive-stars">직관성: ★★★★★</div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon">↩️</div>
+      <div class="metric-label">실수 회복률</div>
+      <div class="metric-en">Hallucination Recovery Rate (HRR)</div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width:61%;background:#8b5cf6"></div></div>
+      <div class="metric-pct" style="color:#8b5cf6">LLM 평균 61%</div>
+      <div class="metric-desc">AI가 환각을 저지른 후 스스로 인식하고 올바른 방향으로 돌아간 비율. 이 벤치마크의 핵심 지표.</div>
+      <div class="metric-analogy">길을 잘못 들었을 때 "아, 이상하다" 하고 다시 확인하는 능력</div>
+      <div class="intuitive-stars">직관성: ★★★★☆</div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon">🧠</div>
+      <div class="metric-label">자기수정 지능</div>
+      <div class="metric-en">Metacognitive Escape Index (MEI)</div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width:53%;background:#3b82f6"></div></div>
+      <div class="metric-pct" style="color:#3b82f6">LLM 평균 53%</div>
+      <div class="metric-desc">실수 회복률·효율성·자기인식·환각 횟수를 종합한 점수. 회복 능력에 가장 높은 비중(40%)을 둠.</div>
+      <div class="metric-analogy">운전 종합 점수 — 목적지 도달 외에 차선 변경·신호 준수·사고 회피 모두 반영</div>
+      <div class="intuitive-stars">직관성: ★★★☆☆</div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon">🔄</div>
+      <div class="metric-label">판단 합리성</div>
+      <div class="metric-en">Backtrack Rationality Score (BRS)</div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width:74%;background:#f97316"></div></div>
+      <div class="metric-pct" style="color:#f97316">LLM 평균 74%</div>
+      <div class="metric-desc">AI가 방향을 바꿀 때 그 결정이 얼마나 합리적이었는지. 무작위로 돌아가는 게 아니라 논리적으로 판단했는지.</div>
+      <div class="metric-analogy">GPS가 유턴 명령 시 단순 되돌아가기가 아닌 더 나은 경로를 제시하는 능력</div>
+      <div class="intuitive-stars">직관성: ★★★☆☆</div>
+    </div>
+
+    <div class="metric-card">
+      <div class="metric-icon">👻</div>
+      <div class="metric-label">환각 횟수</div>
+      <div class="metric-en">Hallucination Count (HC)</div>
+      <div class="metric-bar"><div class="metric-bar-fill" style="width:35%;background:#ef4444"></div></div>
+      <div class="metric-pct" style="color:#ef4444">낮을수록 좋음</div>
+      <div class="metric-desc">AI가 실제 미로 상태와 다른 판단을 내린 횟수. 낮을수록 좋음. 단, 중요한 건 횟수보다 회복 여부.</div>
+      <div class="metric-analogy">운전 중 착각 수 — 없을수록 좋지만 착각 후 빠른 수정이 더 중요</div>
+      <div class="intuitive-stars">직관성: ★★★★★</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 3. 무작위 기준점 -->
+<section class="general-only">
+  <div class="section-title"><div class="dot"></div>기준점: 무작위 탐색 AI</div>
+  <div class="rw-banner">
+    <div class="rw-icon">🎲</div>
+    <div>
+      <div class="rw-title">무작위 AI가 모든 LLM을 이겼습니다</div>
+      <div class="rw-body">
+        아무 생각 없이 랜덤으로 방향을 고르는 AI가 실수 회복 종합 점수에서
+        <span class="highlight">GPT · Gemini · Llama 전부보다 높은 점수(0.900)</span>를 받았습니다.<br><br>
+        이유: 무작위 AI는 "틀릴 것 같다"는 믿음이 없어서 막힌 곳에선 자연히 다시 시도합니다.
+        반면 LLM은 잘못된 믿음에 집착해 같은 실수를 반복하는 경향이 있습니다.
+        이것이 이번 연구의 핵심 발견입니다.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. 결과 테이블 -->
+<section>
+  <div class="section-title"><div class="dot"></div>AI 모델별 성적표</div>
+  <div class="table-wrap">
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>모델</th>
+          <th class="c">자기수정 지능<br><span style="font-weight:400;color:var(--dim)">MEI</span></th>
+          <th class="c">탈출 성공률<br><span style="font-weight:400;color:var(--dim)">SR</span></th>
+          <th class="c">실수 회복률<br><span style="font-weight:400;color:var(--dim)">HRR</span></th>
+          <th class="c">판단 합리성<br><span style="font-weight:400;color:var(--dim)">BRS</span></th>
+          <th class="c">n</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Baselines -->
+        <tr class="baseline-row">
+          <td><span style="font-size:.7rem;color:var(--dim)">★</span></td>
+          <td><span class="model-name d">무작위 탐색 (Random Walk)</span></td>
+          <td class="c">
+            <div>90.0%</div><div class="ci-txt">[90.0, 90.0]</div>
+          </td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:100%;background:#4a5568"></div></div><span class="val-txt d">100%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:100%;background:#4a5568"></div></div><span class="val-txt d">100%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:100%;background:#4a5568"></div></div><span class="val-txt d">100%</span></div></td>
+          <td class="c d">—</td>
+        </tr>
+        <tr class="baseline-row">
+          <td><span style="font-size:.7rem;color:var(--dim)">★</span></td>
+          <td><span class="model-name d">최적 경로 (A*)</span></td>
+          <td class="c">
+            <div>90.0%</div><div class="ci-txt">[90.0, 90.0]</div>
+          </td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:100%;background:#4a5568"></div></div><span class="val-txt d">100%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:100%;background:#4a5568"></div></div><span class="val-txt d">100%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:100%;background:#4a5568"></div></div><span class="val-txt d">100%</span></div></td>
+          <td class="c d">—</td>
+        </tr>
+        <!-- LLMs (n=60 each, ranked by MEI) -->
+        <tr>
+          <td><span class="rank-num gold">1</span></td>
+          <td><span class="model-name">GLM-4.7</span><span class="grade-tag" style="color:#10b981">B</span></td>
+          <td class="c">
+            <div style="font-weight:700;color:#10b981">61.5%</div>
+            <div class="ci-txt">[55.1, 68.1]</div>
+          </td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:8%;background:#3b82f6"></div></div><span class="val-txt r"> 8%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:72%;background:#8b5cf6"></div></div><span class="val-txt g">72%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:71%;background:#f97316"></div></div><span class="val-txt g">71%</span></div></td>
+          <td class="c">60</td>
+        </tr>
+        <tr>
+          <td><span class="rank-num silver">2</span></td>
+          <td><span class="model-name">Llama-4-Maverick</span><span class="grade-tag" style="color:#10b981">B</span></td>
+          <td class="c">
+            <div style="font-weight:700;color:#10b981">60.0%</div>
+            <div class="ci-txt">[54.1, 66.0]</div>
+          </td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:13%;background:#3b82f6"></div></div><span class="val-txt y">13%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:81%;background:#8b5cf6"></div></div><span class="val-txt g">81%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:65%;background:#f97316"></div></div><span class="val-txt g">65%</span></div></td>
+          <td class="c">60</td>
+        </tr>
+        <tr>
+          <td><span class="rank-num bronze">3</span></td>
+          <td><span class="model-name">MiniMax-M2.5</span><span class="grade-tag" style="color:#3b82f6">B</span></td>
+          <td class="c">
+            <div style="font-weight:700;color:#3b82f6">59.3%</div>
+            <div class="ci-txt">[50.0, 68.2]</div>
+          </td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:53%;background:#3b82f6"></div></div><span class="val-txt g">53%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:60%;background:#8b5cf6"></div></div><span class="val-txt y">60%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:100%;background:#f97316"></div></div><span class="val-txt g">100%</span></div></td>
+          <td class="c">60</td>
+        </tr>
+        <tr>
+          <td><span class="rank-num">4</span></td>
+          <td><span class="model-name">Llama-4-Scout</span><span class="grade-tag" style="color:#3b82f6">B</span></td>
+          <td class="c">
+            <div style="font-weight:700;color:#3b82f6">58.9%</div>
+            <div class="ci-txt">[52.5, 64.9]</div>
+          </td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:8%;background:#3b82f6"></div></div><span class="val-txt r"> 8%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:81%;background:#8b5cf6"></div></div><span class="val-txt g">81%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:71%;background:#f97316"></div></div><span class="val-txt g">71%</span></div></td>
+          <td class="c">60</td>
+        </tr>
+        <tr>
+          <td><span class="rank-num">5</span></td>
+          <td><span class="model-name">Qwen-2.5-72B</span><span class="grade-tag" style="color:#3b82f6">B</span></td>
+          <td class="c">
+            <div style="font-weight:700;color:#3b82f6">55.9%</div>
+            <div class="ci-txt">[48.8, 62.9]</div>
+          </td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:10%;background:#3b82f6"></div></div><span class="val-txt r">10%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:61%;background:#8b5cf6"></div></div><span class="val-txt y">61%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:60%;background:#f97316"></div></div><span class="val-txt y">60%</span></div></td>
+          <td class="c">60</td>
+        </tr>
+        <tr>
+          <td><span class="rank-num">6</span></td>
+          <td><span class="model-name">Gemini 2.0 Flash-Lite</span><span class="grade-tag" style="color:#f97316">D</span></td>
+          <td class="c">
+            <div style="font-weight:700;color:#f97316">43.2%</div>
+            <div class="ci-txt">[35.2, 50.7]</div>
+          </td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:8%;background:#3b82f6"></div></div><span class="val-txt r"> 8%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:40%;background:#8b5cf6"></div></div><span class="val-txt y">40%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:56%;background:#f97316"></div></div><span class="val-txt y">56%</span></div></td>
+          <td class="c">60</td>
+        </tr>
+        <tr>
+          <td><span class="rank-num">7</span></td>
+          <td><span class="model-name">Claude-3-Haiku</span><span class="grade-tag" style="color:#ef4444">D</span></td>
+          <td class="c">
+            <div style="font-weight:700;color:#ef4444">39.8%</div>
+            <div class="ci-txt">[34.1, 45.7]</div>
+          </td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:5%;background:#3b82f6"></div></div><span class="val-txt r"> 5%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:36%;background:#8b5cf6"></div></div><span class="val-txt r">36%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:26%;background:#f97316"></div></div><span class="val-txt r">26%</span></div></td>
+          <td class="c">60</td>
+        </tr>
+        <tr>
+          <td><span class="rank-num">8</span></td>
+          <td><span class="model-name">GPT-4o-mini</span><span class="grade-tag" style="color:#ef4444">D</span></td>
+          <td class="c">
+            <div style="font-weight:700;color:#ef4444">39.1%</div>
+            <div class="ci-txt">[31.0, 46.7]</div>
+          </td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:5%;background:#3b82f6"></div></div><span class="val-txt r"> 5%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:38%;background:#8b5cf6"></div></div><span class="val-txt r">38%</span></div></td>
+          <td><div class="bar-row"><div class="bar-bg"><div class="bar-f" style="width:60%;background:#f97316"></div></div><span class="val-txt y">60%</span></div></td>
+          <td class="c">60</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">← 좌우 스크롤 가능 &nbsp;|&nbsp; ★ = 기준 알고리즘 &nbsp;|&nbsp; 전 모델 n=60 (각 30 시드 × 2 미로 크기)</div>
+</section>
+
+<!-- 5. 핵심 발견 -->
+<section>
+  <div class="section-title"><div class="dot"></div>핵심 발견</div>
+  <div class="finding-grid">
+    <div class="finding-card">
+      <div class="finding-num">FINDING 1</div>
+      <div class="finding-title">모든 AI가 무작위보다 낮은 점수</div>
+      <div class="finding-body">테스트한 8개 AI 모두 "아무 생각 없이 랜덤 탐색하는 AI"보다 실수 회복 점수가 낮았습니다. 7개 제공업체(Meta·Zhipu·MiniMax·Google·OpenAI·Anthropic·Alibaba) 전부에서 동일한 패턴이 확인됐습니다 (p&lt;0.001, 효과크기 d=1.2~3.0).</div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-num">FINDING 2</div>
+      <div class="finding-title">탈출 성공 ≠ 실수 회복 능력</div>
+      <div class="finding-body">MiniMax는 탈출 성공률이 가장 높지만(53%) 실수 회복률은 중간(60%). GLM-4.7은 탈출 성공률이 낮지만(8%) 실수 인식 능력은 더 뛰어납니다(72%).</div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-num">FINDING 3</div>
+      <div class="finding-title">모델 크기 ≠ 실수 회복 능력</div>
+      <div class="finding-body">더 크고 비싼 모델이라고 실수를 더 잘 인식하지 않습니다. Llama-4-Scout(경량 모델)이 HRR 81%로 GPT-4o-mini의 38%보다 훨씬 높았습니다. Claude-3-Haiku(36%)는 전체 최저 HRR를 기록했습니다.</div>
+    </div>
+    <div class="finding-card">
+      <div class="finding-num">FINDING 4</div>
+      <div class="finding-title">실수 인식이 AI 안전성의 핵심</div>
+      <div class="finding-body">MEI는 회복 능력에 더 높은 비중을 둡니다. 실수를 피하는 것보다 실수를 인식하고 수정하는 능력이 AI 안전성에 더 중요하기 때문입니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. SR-HRR 해리 -->
+<section class="general-only">
+  <div class="section-title"><div class="dot"></div>흥미로운 대조: 두 가지 다른 실패 방식</div>
+  <div class="diss-grid">
+    <div class="diss-card">
+      <h4>MiniMax-M2.5</h4>
+      <div class="diss-sub">탈출은 잘하지만 실수 인식은 보통</div>
+      <div class="diss-row">
+        <span class="diss-name">탈출 성공률 (SR)</span>
+        <span class="diss-chip chip-up">53.3% ↑ 1위</span>
+      </div>
+      <div class="diss-row">
+        <span class="diss-name">실수 회복률 (HRR)</span>
+        <span class="diss-chip chip-dn">60.0% — 중간</span>
+      </div>
+      <div class="diss-note">→ 길을 잘 찾지만, 실수를 했을 때 그걸 빠르게 인식하는 능력은 평균 수준</div>
+    </div>
+    <div class="diss-card">
+      <h4>GLM-4.7</h4>
+      <div class="diss-sub">탈출은 못해도 실수는 빠르게 인식</div>
+      <div class="diss-row">
+        <span class="diss-name">탈출 성공률 (SR)</span>
+        <span class="diss-chip chip-dn">8.3% ↓ 최하</span>
+      </div>
+      <div class="diss-row">
+        <span class="diss-name">실수 회복률 (HRR)</span>
+        <span class="diss-chip chip-up">71.8% ↑ 높음</span>
+      </div>
+      <div class="diss-note">→ 미로 탈출은 힘들지만, 실수했다는 걸 빠르게 인식하고 방향을 전환</div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. FAQ -->
+<section class="general-only">
+  <div class="section-title"><div class="dot"></div>자주 묻는 질문</div>
+
+  <div class="faq-item" id="faq0">
+    <div class="faq-q" onclick="toggleFaq('faq0')">
+      <span>왜 무작위 AI가 GPT·Gemini보다 높은 점수를 받나요?</span>
+      <span class="faq-arr">▼</span>
+    </div>
+    <div class="faq-a">무작위 AI는 항상 여러 방향을 "시도"하므로 막힌 곳에서 자연히 다른 방향을 고릅니다. 이것이 HRR=100%로 계산됩니다. 반면 LLM은 "이 방향이 맞을 것이다"는 확신을 갖고 같은 실수를 반복하는 경향이 있습니다. 이것이 이번 연구의 핵심 발견입니다 — 현재 AI들은 틀린 믿음에 집착하는 "메타인지 고착" 현상을 보입니다.</div>
+  </div>
+
+  <div class="faq-item" id="faq1">
+    <div class="faq-q" onclick="toggleFaq('faq1')">
+      <span>점수가 낮으면 그 AI를 사용하면 안 되나요?</span>
+      <span class="faq-arr">▼</span>
+    </div>
+    <div class="faq-a">반드시 그런 건 아닙니다. 이 벤치마크는 "실시간 오류 인식"이라는 특정 능력만 측정합니다. AI는 문서 작성, 코드 생성 등 다른 많은 작업에서 뛰어날 수 있습니다. 다만 AI가 스스로의 실수를 얼마나 잘 인식하는지는 안전성 관점에서 중요한 능력입니다.</div>
+  </div>
+
+  <div class="faq-item" id="faq2">
+    <div class="faq-q" onclick="toggleFaq('faq2')">
+      <span>MEI 점수 0.615이 실제로 어느 정도 수준인가요?</span>
+      <span class="faq-arr">▼</span>
+    </div>
+    <div class="faq-a">기준점인 무작위 탐색 AI가 0.900이므로, 1위 GLM-4.7(0.615)도 기준 대비 약 31% 낮습니다. 이는 현재 LLM들이 "실시간 오류 인식" 능력에서 상당한 개선 여지가 있음을 의미합니다. 백분율로 표현하면 "무작위 AI가 90점일 때 최고 LLM은 62점"입니다.</div>
+  </div>
+
+  <div class="faq-item" id="faq3">
+    <div class="faq-q" onclick="toggleFaq('faq3')">
+      <span>MiniMax가 탈출을 제일 잘하는데 왜 MEI 순위는 3위인가요?</span>
+      <span class="faq-arr">▼</span>
+    </div>
+    <div class="faq-a">MEI는 탈출 성공(SR, 비중 낮음)보다 실수 회복(HRR, 비중 40%)을 더 중요하게 봅니다. MiniMax는 길을 잘 찾지만, 실수를 했을 때 그걸 인식하고 수정하는 능력은 상대적으로 낮기 때문입니다. 이 벤치마크의 목적 자체가 "탈출 성공"이 아닌 "메타인지 능력" 측정이기 때문입니다.</div>
+  </div>
+
+  <div class="faq-item" id="faq4">
+    <div class="faq-q" onclick="toggleFaq('faq4')">
+      <span>이 벤치마크에서 좋은 점수를 받으면 실제 서비스에서도 더 신뢰할 수 있나요?</span>
+      <span class="faq-arr">▼</span>
+    </div>
+    <div class="faq-a">직접적인 연관성은 아직 연구 중입니다. 향후 TruthfulQA 등 기존 벤치마크와의 상관관계를 측정할 계획입니다. 다만 실시간 오류 인식 능력이 더 안전한 AI를 만드는 데 중요한 요소 중 하나임은 분명하며, 현재 학습 방식(RLHF)이 이 능력을 충분히 향상시키지 못하고 있음을 시사합니다.</div>
+  </div>
+
+</section>
+
+<!-- 8. 전문가: 수식 -->
+<section class="expert-only">
+  <div class="section-title"><div class="dot"></div>MEI 수식 및 이론적 근거</div>
+  <div class="formula-box">MEI = 0.4 × HRR + 0.3 × ETR + 0.2 × AW − 0.1 × HR</div>
+  <table class="w-table">
+    <tr style="background:var(--card2)">
+      <td style="font-weight:700;color:var(--muted)">구성요소</td>
+      <td style="color:var(--muted)">약어</td>
+      <td style="color:var(--muted)">가중치</td>
+      <td style="color:var(--muted)">이론적 근거 (Nelson &amp; Narens 1990)</td>
+    </tr>
+    <tr><td>Hallucination Recovery Rate</td><td style="font-family:monospace;color:var(--cyan)">HRR</td><td>0.40</td><td>Control process — 주요 메타인지 기능</td></tr>
+    <tr><td>Efficiency-to-Random Ratio</td><td style="font-family:monospace;color:var(--cyan)">ETR</td><td>0.30</td><td>Monitoring accuracy — FOK → path quality</td></tr>
+    <tr><td>Awareness (loop detection)</td><td style="font-family:monospace;color:var(--cyan)">AW</td><td>0.20</td><td>JOL operationalization</td></tr>
+    <tr><td>Hallucination Rate (penalty)</td><td style="font-family:monospace;color:var(--cyan)">HR</td><td>−0.10</td><td>Object-level penalty (mild)</td></tr>
+  </table>
+  <div style="margin-top:10px;font-size:.78rem;color:var(--muted);">
+    민감도 분석: 625개 가중치 조합 (±50%, 5단계 × 4가중치) 테스트 → 100% 구성에서 기준선 &gt; LLM 순위 안정 (experiment_results/mei_sensitivity.json)
+  </div>
+</section>
+
+<!-- 9. 전문가: 통계 -->
+<section class="expert-only">
+  <div class="section-title"><div class="dot"></div>통계 검증 — vs Random Walk Baseline</div>
+  <div style="font-size:.78rem;color:var(--muted);margin-bottom:12px;">Wilcoxon rank-sum test, Bonferroni correction k=8, BH-FDR q=0.05 (all confirmed). 효과크기 범위: d=1.197–3.011</div>
+  <div class="table-wrap">
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th>모델</th>
+          <th class="c">Cohen's d</th>
+          <th class="c">p값 (Bonferroni)</th>
+          <th class="c">유의성</th>
+          <th class="c">해석</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="model-name">GLM-4.7</td><td class="c">1.559</td><td class="c">&lt;0.001</td><td class="c" style="color:var(--red);font-weight:700">✓</td><td class="c" style="font-size:.75rem;color:var(--muted)">Large effect</td></tr>
+        <tr><td class="model-name">Llama-4-Maverick</td><td class="c">1.774</td><td class="c">&lt;0.001</td><td class="c" style="color:var(--red);font-weight:700">✓</td><td class="c" style="font-size:.75rem;color:var(--muted)">Large effect</td></tr>
+        <tr><td class="model-name">MiniMax-M2.5</td><td class="c">1.197</td><td class="c">&lt;0.001</td><td class="c" style="color:var(--red);font-weight:700">✓</td><td class="c" style="font-size:.75rem;color:var(--muted)">Large effect</td></tr>
+        <tr><td class="model-name">Llama-4-Scout</td><td class="c">1.739</td><td class="c">&lt;0.001</td><td class="c" style="color:var(--red);font-weight:700">✓</td><td class="c" style="font-size:.75rem;color:var(--muted)">Large effect</td></tr>
+        <tr><td class="model-name">Qwen-2.5-72B</td><td class="c">1.730</td><td class="c">&lt;0.001</td><td class="c" style="color:var(--red);font-weight:700">✓</td><td class="c" style="font-size:.75rem;color:var(--muted)">Large effect</td></tr>
+        <tr><td class="model-name">Gemini-2.0-Flash-Lite</td><td class="c">2.202</td><td class="c">&lt;0.001</td><td class="c" style="color:var(--red);font-weight:700">✓</td><td class="c" style="font-size:.75rem;color:var(--muted)">Very large</td></tr>
+        <tr><td class="model-name">Claude-3-Haiku</td><td class="c">3.011</td><td class="c">&lt;0.001</td><td class="c" style="color:var(--red);font-weight:700">✓</td><td class="c" style="font-size:.75rem;color:var(--muted)">Very large</td></tr>
+        <tr><td class="model-name">GPT-4o-mini</td><td class="c">2.291</td><td class="c">&lt;0.001</td><td class="c" style="color:var(--red);font-weight:700">✓</td><td class="c" style="font-size:.75rem;color:var(--muted)">Very large</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</div><!-- /wrap -->
+
+<footer>
+  HalluMaze Benchmark · 2026 ·
+  재현 코드: <code>run_hallumaze.py</code> ·
+  데이터: <code>experiment_results/analysis_combined.json</code> ·
+  논문 초안: <code>docs/research/20260323-hallumaze-paper-draft.md</code>
+</footer>
+
+<script>
+function setMode(m) {
+  document.body.className = m === 'expert' ? 'expert' : '';
+  document.getElementById('btn-general').className = m === 'general' ? 'active' : '';
+  document.getElementById('btn-expert').className = m === 'expert' ? 'active' : '';
+}
+
+function toggleFaq(id) {
+  var el = document.getElementById(id);
+  if (el) {
+    var isOpen = el.classList.contains('open');
+    el.classList.toggle('open', !isOpen);
+  }
+}
+</script>
+</body>
+</html>

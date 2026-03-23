@@ -1,0 +1,23 @@
+{
+  "base_weights": {
+    "w_hrr": 0.4,
+    "w_etr": 0.3,
+    "w_aw": 0.2,
+    "w_hr": 0.1
+  },
+  "n_configurations": 625,
+  "n_stable": 625,
+  "stability_pct": 100.0,
+  "conclusion": "Baseline > LLM ranking stable in 100.0% of 625 configurations",
+  "unstable_count": 0,
+  "base_ranking": [
+    "random_walk",
+    "astar",
+    "bfs",
+    "llama-4-maverick",
+    "llama-4-scout",
+    "MiniMax-M2.5",
+    "glm-4.7",
+    "gemini-2.0-flash-lite-001"
+  ]
+}
