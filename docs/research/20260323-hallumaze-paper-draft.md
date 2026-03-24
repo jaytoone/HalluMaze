@@ -5,7 +5,7 @@
 
 ## Abstract
 
-We introduce HalluMaze, a benchmark that measures large language model (LLM) metacognitive error recovery through maze navigation. Unlike existing hallucination benchmarks that evaluate final-answer accuracy, HalluMaze captures real-time error detection and corrective action by exposing models to navigable environments containing "mirage" walls — passages that appear blocked but are traversable. We evaluate 8 LLMs (MiniMax-M2.5, GLM-4.7, Llama-4-Scout, Llama-4-Maverick, Gemini-2.0-Flash-Lite, GPT-4o-mini, Claude-3-Haiku, and Qwen-2.5-72B) across n=60 seeds × 5×5 and 7×7 maze sizes. We introduce the Metacognitive Escape Index (MEI), grounded in Nelson & Narens' (1990) metamemory framework, which decomposes metacognitive performance into recovery rate (HRR), efficiency (ETR), awareness (AW), and error rate (HR). All 8 tested LLMs score significantly below a random walk baseline (p<0.001 Bonferroni-corrected, d=1.2–3.0), revealing a systematic deficit in real-time metacognitive recovery. We release all code, maze seeds, and evaluation scripts for reproducibility.
+We introduce HalluMaze, a benchmark that measures large language model (LLM) metacognitive error recovery through maze navigation. Unlike existing hallucination benchmarks that evaluate final-answer accuracy, HalluMaze captures real-time error detection and corrective action by exposing models to navigable environments containing "mirage" walls — passages that appear blocked but are traversable. We evaluate 10 LLMs (Claude-3.7-Sonnet, GLM-4.7, Llama-4-Maverick, MiniMax-M2.5, Llama-4-Scout, Qwen-2.5-72B, Gemini-2.0-Flash-Lite, Claude-3-Haiku, GPT-4o-mini, GPT-4o) across n=60 seeds × 5×5 and 7×7 maze sizes (600 total trials). We introduce the Metacognitive Escape Index (MEI), grounded in Nelson & Narens' (1990) metamemory framework, which decomposes metacognitive performance into recovery rate (HRR), efficiency (ETR), awareness (AW), and error rate (HR). All 10 tested LLMs score significantly below a random walk baseline (p<0.001 Bonferroni-corrected, d=0.6–2.1), revealing a systematic deficit in real-time metacognitive recovery. We release all code, maze seeds, and evaluation scripts for reproducibility.
 
 **Keywords**: hallucination, metacognition, benchmark, LLM evaluation, maze navigation
 
@@ -23,11 +23,11 @@ Consider a model navigating a maze. It may hallucinate the existence of a wall, 
 3. Multiple metrics capture distinct metacognitive functions (monitoring vs control)
 
 Our main findings:
-- **All 8 tested LLMs score below random walk** on MEI (p<0.001, d=1.2–3.0)
-- **HRR varies widely**: Llama-4-Maverick (81%) > Llama-4-Scout (81%) > GLM-4.7 (72%) >> Claude-3-Haiku (36%) > GPT-4o-mini (38%)
-- **SR dissociates from MEI**: MiniMax-M2.5 has highest solve rate (53%) but mid-range MEI (0.593); GLM-4.7 ranks #1 on MEI despite SR=8.3%
-- **Newer ≠ better**: GLM-4.7 outperforms expected hierarchy in metacognitive recovery
-- **Claude-3-Haiku**: MEI=0.398, HRR=0.363 — lowest HRR among fully-sampled models, confirming that Anthropic's smaller model shares the universal metacognitive deficit
+- **All 10 tested LLMs score below random walk** on MEI (p<0.001, d=0.6–2.1)
+- **Claude-3.7-Sonnet leads** with MEI=0.774, SR=56.7%, HRR=87.5% (d=0.554) — best overall metacognitive performance
+- **Frontier cost ≠ metacognition**: GPT-4o ranks last (MEI=0.315, HRR=35.3%), below GPT-4o-mini (0.391) — higher API cost does not predict recovery
+- **HRR varies widely**: Claude-3.7-Sonnet (87.5%) >> Llama-4-Maverick (81%) > Llama-4-Scout (81%) > GLM-4.7 (72%) >> GPT-4o (35.3%) ≈ Claude-3-Haiku (36.3%)
+- **SR dissociates from MEI**: MiniMax-M2.5 has 2nd highest SR (53.3%) but ranks #4 on MEI; GLM-4.7 ranks #2 despite SR=8.3%
 
 ---
 
@@ -105,12 +105,14 @@ Grid search over 625 configurations (±50% per weight, 5 levels each) confirms:
 
 | Model | Provider | n (valid) | Source |
 |-------|----------|-----------|--------|
+| Claude-3.7-Sonnet | Anthropic (OpenRouter) | 60 | OpenRouter |
 | MiniMax-M2.5 | MiniMax | 60 | Local API |
 | GLM-4.7 | Zhipu AI | 60 | Local API |
 | Llama-4-Scout | Meta (OpenRouter) | 60 | OpenRouter |
 | Llama-4-Maverick | Meta (OpenRouter) | 60 | OpenRouter |
 | Gemini-2.0-Flash-Lite | Google (OpenRouter) | 60 | OpenRouter |
 | GPT-4o-mini | OpenAI (OpenRouter) | 60 | OpenRouter |
+| GPT-4o | OpenAI (OpenRouter) | 60 | OpenRouter |
 | Claude-3-Haiku | Anthropic (OpenRouter) | 60 | OpenRouter |
 | Qwen-2.5-72B | Alibaba (OpenRouter) | 60 | OpenRouter |
 
@@ -121,45 +123,49 @@ Grid search over 625 configurations (±50% per weight, 5 levels each) confirms:
 |------|-------|---|--------------|-----|-----|-----|
 | — | Random Walk ★ | — | 0.900 [0.900,0.900] | 1.000 | 1.000 | 1.000 |
 | — | A* ★ | — | 0.900 [0.900,0.900] | 1.000 | 1.000 | 1.000 |
-| 1 | **GLM-4.7** | 60 | 0.615 [0.551,0.681] | 0.083 | 0.718 | 0.705 |
-| 2 | **Llama-4-Maverick** | 60 | 0.600 [0.541,0.659] | 0.133 | 0.811 | 0.651 |
-| 3 | **MiniMax-M2.5** | 60 | 0.593 [0.500,0.682] | 0.533 | 0.600 | 0.998 |
-| 4 | **Llama-4-Scout** | 60 | 0.589 [0.525,0.649] | 0.083 | 0.810 | 0.708 |
-| 5 | **Qwen-2.5-72B** | 60 | 0.559 [0.487,0.629] | 0.100 | 0.607 | 0.595 |
-| 6 | **Gemini-2.0-Flash-Lite** | 60 | 0.432 [0.352,0.507] | 0.083 | 0.403 | 0.561 |
-| 7 | **Claude-3-Haiku** | 60 | 0.398 [0.341,0.457] | 0.050 | 0.363 | 0.262 |
-| 8 | **GPT-4o-mini** | 60 | 0.391 [0.310,0.468] | 0.050 | 0.382 | 0.600 |
+| 1 | **Claude-3.7-Sonnet** | 60 | 0.774 [0.715,0.830] | 0.567 | 0.875 | — |
+| 2 | **GLM-4.7** | 60 | 0.615 [0.551,0.681] | 0.083 | 0.718 | 0.705 |
+| 3 | **Llama-4-Maverick** | 60 | 0.600 [0.541,0.660] | 0.133 | 0.811 | 0.651 |
+| 4 | **MiniMax-M2.5** | 60 | 0.593 [0.500,0.682] | 0.533 | 0.600 | 0.998 |
+| 5 | **Llama-4-Scout** | 60 | 0.589 [0.525,0.649] | 0.083 | 0.810 | 0.708 |
+| 6 | **Qwen-2.5-72B** | 60 | 0.559 [0.488,0.629] | 0.100 | 0.607 | 0.595 |
+| 7 | **Gemini-2.0-Flash-Lite** | 60 | 0.432 [0.352,0.507] | 0.083 | 0.403 | 0.561 |
+| 8 | **Claude-3-Haiku** | 60 | 0.398 [0.341,0.457] | 0.050 | 0.363 | 0.262 |
+| 9 | **GPT-4o-mini** | 60 | 0.391 [0.310,0.467] | 0.050 | 0.382 | 0.600 |
+| 10 | **GPT-4o** | 60 | 0.315 [0.239,0.394] | 0.067 | 0.353 | — |
 
 ★ = deterministic baseline
 
 ### 4.3 Statistical Tests
 
-All models vs Random Walk baseline (Wilcoxon rank-sum, Bonferroni k=8):
+All models vs Random Walk baseline (Wilcoxon signed-rank, Bonferroni k=10):
 
-| Model | n | d (Cohen's) | p (Bonferroni) | Reject H₀ |
-|-------|---|-------------|----------------|-----------|
-| GLM-4.7 | 60 | 1.559 | <0.001 | ✓ |
-| Llama-4-Maverick | 60 | 1.774 | <0.001 | ✓ |
-| MiniMax-M2.5 | 60 | 1.197 | <0.001 | ✓ |
-| Llama-4-Scout | 60 | 1.739 | <0.001 | ✓ |
-| Qwen-2.5-72B | 60 | 1.730 | <0.001 | ✓ |
-| Gemini-2.0-Flash-Lite | 60 | 2.202 | <0.001 | ✓ |
-| Claude-3-Haiku | 60 | 3.011 | <0.001 | ✓ |
-| GPT-4o-mini | 60 | 2.291 | <0.001 | ✓ |
+| Model | n | Glass's δ | p (Bonferroni) | Reject H₀ |
+|-------|---|-----------|----------------|-----------|
+| Claude-3.7-Sonnet | 60 | 0.554 | <0.001 | ✓ |
+| GLM-4.7 | 60 | 1.102 | <0.001 | ✓ |
+| Llama-4-Maverick | 60 | 1.254 | <0.001 | ✓ |
+| MiniMax-M2.5 | 60 | 0.847 | <0.001 | ✓ |
+| Llama-4-Scout | 60 | 1.230 | <0.001 | ✓ |
+| Qwen-2.5-72B | 60 | 1.223 | <0.001 | ✓ |
+| Gemini-2.0-Flash-Lite | 60 | 1.557 | <0.001 | ✓ |
+| Claude-3-Haiku | 60 | 2.129 | <0.001 | ✓ |
+| GPT-4o-mini | 60 | 1.620 | <0.001 | ✓ |
+| GPT-4o | 60 | 1.917 | <0.001 | ✓ |
 
-Cohen's d range: 1.197–3.011. BH-FDR (q=0.05): all 8 models confirmed significant.
+Glass's δ range: 0.554–2.129. BH-FDR (q=0.05): all 10 models confirmed significant.
 
 ### 4.4 Key Findings
 
-**F1 — Universal metacognitive deficit**: All 8 LLMs score significantly below random walk (p<0.001, d=1.2–3.0). A random agent that simply tries directions until one works outperforms LLMs on metacognitive recovery. This suggests LLMs learn to predict confident paths but fail to update beliefs when predictions fail.
+**F1 — Universal metacognitive deficit**: All 10 LLMs score significantly below random walk (p<0.001, δ=0.6–2.1). A random agent that simply tries directions until one works outperforms all LLMs — including frontier models — on metacognitive recovery. This suggests current training objectives do not target real-time belief updating.
 
-**F2 — HRR–SR dissociation**: MiniMax-M2.5 achieves highest SR (53.3%) but mid-range HRR (60%). GLM-4.7 shows opposite: SR=8.3% but HRR=71.8%, yet ranks #1 on MEI. This implies two distinct failure modes: (a) poor world model leading to navigation errors (low SR), and (b) poor error recovery despite task completion (low HRR).
+**F2 — HRR–SR dissociation**: MiniMax-M2.5 achieves 2nd highest SR (53.3%) but ranks #4 on MEI. Claude-3.7-Sonnet leads in MEI (0.774) with SR=56.7% and HRR=87.5%, demonstrating that recovery capacity and task completion can co-occur. GLM-4.7 ranks #2 on MEI with SR=8.3%, confirming that solving the maze and recovering from errors remain partially orthogonal.
 
-**F3 — Model scale ≠ metacognition**: Llama-4-Scout (smaller, cheaper) achieves HRR=81% vs GPT-4o-mini HRR=38%, despite GPT-4o-mini being a substantially larger and more capable model on standard benchmarks. Claude-3-Haiku (HRR=36.3%) — Anthropic's cost-optimized model — exhibits the lowest HRR among all fully-sampled models, further demonstrating that metacognitive recovery is orthogonal to standard capability rankings.
+**F3 — Frontier cost inversion**: GPT-4o (the most expensive tested model) ranks last at MEI=0.315, below its smaller sibling GPT-4o-mini (0.391) and all other tested models. Claude-3.7-Sonnet (same provider family as Claude-3-Haiku, which ranks 8th) leads overall. API cost does not predict metacognitive recovery capacity.
 
-**F4 — Recovery > Accuracy for MEI**: GLM-4.7 ranks #1 in MEI despite the joint-lowest SR (8.3%), because MEI weights recovery capacity (HRR, ETR) more heavily than task success, consistent with Nelson & Narens' emphasis on control processes.
+**F4 — Recovery > Accuracy for MEI**: Claude-3.7-Sonnet ranks #1 (MEI=0.774, HRR=87.5%); MEI rewards models that correctly backtrack after mirage collisions rather than those that merely reach the goal. Consistent with Nelson & Narens' emphasis on control processes over object-level performance.
 
-**F5 — Cross-provider consistency**: The metacognitive deficit is universal across providers (Meta, Zhipu AI, MiniMax, Google, OpenAI, Anthropic, Alibaba), ruling out provider-specific training artifacts as an explanation.
+**F5 — Cross-provider consistency**: The metacognitive deficit is universal across providers (Anthropic, Meta, Zhipu AI, MiniMax, Google, OpenAI, Alibaba), ruling out provider-specific training artifacts as an explanation.
 
 ---
 
@@ -221,7 +227,7 @@ Result: **MEI=0.803 vs baseline 0.593 (+35.4%)**. This is the first configuratio
 
 ## 7. Conclusion
 
-HalluMaze introduces metacognitive recovery as a measurable, benchmarkable LLM capability. Our evaluation of 8 LLMs across 7 providers reveals a universal and statistically significant deficit: all models fall below random walk on MEI (d=1.2–3.0, p<0.001 Bonferroni-corrected). This deficit is consistent across model scales, architectures, and training paradigms, suggesting that current RLHF/instruction-tuning optimization does not target metacognitive updating. The SR-MEI dissociation (GLM-4.7 ranks #1 on MEI with lowest SR; MiniMax-M2.5 ranks #3 despite highest SR) further reveals that task completion does not imply metacognitive competence. We release all code, maze seeds, and evaluation scripts to enable reproducible evaluation and invite the community to build on this benchmark.
+HalluMaze introduces metacognitive recovery as a measurable, benchmarkable LLM capability. Our evaluation of 10 LLMs across 7 providers (600 total trials) reveals a universal and statistically significant deficit: all models fall below random walk on MEI (δ=0.6–2.1, p<0.001 Bonferroni-corrected). The frontier cost inversion is striking: GPT-4o ranks last (MEI=0.315) while Claude-3.7-Sonnet leads (MEI=0.774), demonstrating that neither API cost nor provider predict metacognitive recovery. The SR-MEI partial dissociation (Claude-3.7-Sonnet: both high SR and MEI; GLM-4.7: low SR but high MEI; GPT-4o: low SR and low MEI) suggests these are separable capabilities that may require distinct training targets. We release all code, maze seeds, and evaluation scripts to enable reproducible evaluation and invite the community to build on this benchmark.
 
 ---
 
@@ -392,3 +398,6 @@ Step 14 | pos=[1,1] | MIRAGE CELL
 This trace illustrates the two hallucination types captured by HalluMaze:
 - **False-open** (Step 12): model believes passage exists, wall blocks it
 - **False-wall** (Step 14): model believes wall exists, passage is traversable
+
+## Related
+- [[projects/Miro/research/20260324-hallumaze-ecological-validity|20260324-hallumaze-ecological-validity]]

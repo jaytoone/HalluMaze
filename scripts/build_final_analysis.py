@@ -35,6 +35,8 @@ SOURCES = {
     "or_gptmini":  {"file": BASE / "or_gptmini.json",  "model_key": "or_model_id", "format": "list"},
     "or_maverick": {"file": BASE / "or_maverick.json", "model_key": "or_model_id", "format": "list"},
     "or_qwen":     {"file": BASE / "or_qwen.json",     "model_key": "or_model_id", "format": "list"},
+    # Phase C (SOTA frontier models)
+    "or_phaseC":   {"file": BASE / "or_phaseC.json",  "model_key": "or_model_id", "format": "list"},
 }
 
 # ── 모델 정규화 이름 ───────────────────────────────────────────
@@ -47,6 +49,8 @@ MODEL_DISPLAY = {
     "openai/gpt-4o-mini": "GPT-4o-mini",
     "anthropic/claude-3-haiku": "Claude-3-Haiku",
     "qwen/qwen-2.5-72b-instruct": "Qwen-2.5-72B",
+    "openai/gpt-4o": "GPT-4o",
+    "anthropic/claude-3.7-sonnet": "Claude-3.7-Sonnet",
 }
 
 BASELINES = {
