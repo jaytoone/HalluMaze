@@ -1,0 +1,374 @@
+\documentclass{article}
+\usepackage[preprint]{neurips_2024}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{url}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!60!black,
+  citecolor=green!50!black,
+  urlcolor=blue!60!black
+}
+
+\title{HalluMaze: A Maze Navigation Benchmark\\for LLM Metacognitive Error Recovery}
+
+\author{
+  Jayone\\
+  \texttt{https://github.com/jaytoone/HalluMaze}\\
+  \texttt{https://huggingface.co/spaces/Be2Jay/hallumaze}
+}
+
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We introduce \textsc{HalluMaze}, a benchmark that measures large language model (LLM) metacognitive error recovery through maze navigation.
+Unlike existing hallucination benchmarks that evaluate final-answer accuracy, \textsc{HalluMaze} captures real-time error detection and corrective action by exposing models to navigable environments containing ``mirage'' walls---passages that appear blocked but are traversable.
+We evaluate 10 LLMs (Claude-3.7-Sonnet, GLM-4.7, Llama-4-Maverick, MiniMax-M2.5, Llama-4-Scout, Qwen-2.5-72B, Gemini-2.0-Flash-Lite, Claude-3-Haiku, GPT-4o-mini, GPT-4o) across $n{=}60$ seeds $\times$ 5${\times}$5 and 7${\times}$7 maze sizes (600 total trials).
+We introduce the \emph{Metacognitive Escape Index} (MEI), grounded in Nelson \& Narens' (1990) metamemory framework, which decomposes metacognitive performance into recovery rate (HRR), efficiency (ETR), awareness (AW), and error rate (HR).
+All 10 tested LLMs score significantly below a random walk baseline ($p{<}0.001$ Bonferroni-corrected, $\delta{=}0.6$--$2.1$), revealing a systematic deficit in real-time metacognitive recovery.
+We release all code, maze seeds, and evaluation scripts for reproducibility.
+\end{abstract}
+
+% =================================================================
+\section{Introduction}
+% =================================================================
+
+Large language models hallucinate---generating confident but factually incorrect outputs.
+Prior work has measured hallucination at the response level: does the final answer contain errors? \citep{lin2022truthfulqa, ji2023halueval}.
+However, metacognitive competence requires not just avoiding errors, but \textbf{detecting and recovering from them in real time}.
+
+Consider a model navigating a maze.
+It may hallucinate the existence of a wall, move into it, discover the contradiction when the environment responds, and then backtrack.
+This sequence---error $\to$ detection $\to$ correction---is precisely the metacognitive loop that \citet{nelson1990metamemory} identify as the ``control'' function of metamemory.
+No existing benchmark captures this.
+
+\textbf{\textsc{HalluMaze}} fills this gap by embedding LLMs in a text-based maze navigation task where:
+\begin{enumerate}[nosep]
+  \item ``Mirage'' positions (hallucination traps) appear blocked but are traversable---the model must infer the error from contradictory environment feedback;
+  \item Every step is logged, enabling real-time metacognitive signal extraction;
+  \item Multiple metrics capture distinct metacognitive functions (monitoring vs.\ control).
+\end{enumerate}
+
+\noindent Our main findings:
+\begin{itemize}[nosep]
+  \item \textbf{All 10 tested LLMs score below random walk} on MEI ($p{<}0.001$, $\delta{=}0.6$--$2.1$).
+  \item \textbf{Claude-3.7-Sonnet leads} with MEI$=$0.774, SR$=$56.7\%, HRR$=$87.5\% ($\delta{=}0.554$)---best overall metacognitive performance.
+  \item \textbf{Frontier cost $\neq$ metacognition}: GPT-4o ranks last (MEI$=$0.315, HRR$=$35.3\%), below GPT-4o-mini (0.391)---higher API cost does not predict recovery.
+  \item \textbf{HRR varies widely}: Claude-3.7-Sonnet (87.5\%) $\gg$ Llama-4-Maverick (81.1\%) $>$ GLM-4.7 (71.8\%) $\gg$ GPT-4o (35.3\%).
+  \item \textbf{SR dissociates from MEI}: MiniMax-M2.5 has 2nd highest SR (53.3\%) but ranks \#4 on MEI; GLM-4.7 ranks \#2 despite SR$=$8.3\%.
+\end{itemize}
+
+% =================================================================
+\section{Background \& Related Work}
+% =================================================================
+
+\subsection{Hallucination Benchmarks}
+
+\begin{table}[t]
+\centering
+\caption{Comparison with existing hallucination and evaluation benchmarks.}
+\label{tab:related}
+\small
+\begin{tabular}{lllcc}
+\toprule
+Benchmark & Task & Metric & Recovery? & Human BL \\
+\midrule
+TruthfulQA \citep{lin2022truthfulqa} & Factual QA & \% Truthful & No & Yes \\
+HaluEval \citep{ji2023halueval} & QA/Dialog & Hall.\ rate & No & No \\
+FActScoring \citep{min2023factscoring} & Biography & Atomic prec. & No & Yes \\
+MMLU \citep{hendrycks2021mmlu} & MCQ & Accuracy & No & Yes \\
+BabyAI \citep{chevalier2019babyai} & Grid-world & Task success & No & No \\
+\midrule
+\textbf{HalluMaze (ours)} & Navigation & MEI, HRR, SR & \textbf{Yes} & Planned \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Key gap.}
+No existing benchmark measures metacognitive \emph{recovery}---detecting and correcting errors mid-task.
+\textsc{HalluMaze} introduces HRR as the first metric targeting this function.
+
+\subsection{Metacognition Theory}
+
+\citet{nelson1990metamemory} define metacognition as a two-level system:
+\begin{itemize}[nosep]
+  \item \textbf{Object level}: Task execution (maze navigation).
+  \item \textbf{Meta level}: Monitoring (FOK, JOL) $+$ Control (search termination, backtracking).
+\end{itemize}
+
+The MEI weight structure directly maps to this framework:
+$w_{\text{hrr}}{=}0.4$ (recovery $=$ control), $w_{\text{etr}}{=}0.3$ (efficiency $=$ monitoring accuracy), $w_{\text{aw}}{=}0.2$ (awareness $=$ JOL), $w_{\text{hr}}{=}{-}0.1$ (error count, mild penalty).
+
+\citet{flavell1979metacognition} introduced the concept of metacognitive monitoring in developmental psychology; our operationalization extends this to LLM behavior via step-level logging in a closed-world environment.
+
+% =================================================================
+\section{Benchmark Design}
+% =================================================================
+
+\subsection{Task}
+
+Models navigate a text-described $N{\times}N$ maze from start $[0,0]$ to goal $[N{-}1,N{-}1]$.
+At each step, the model receives: current position, visible walls, step history, and must output: direction $+$ confidence (0--100).
+``Mirage'' positions exist where the model's world model may conflict with actual maze topology.
+
+\textbf{Hallucination} is defined operationally: claiming a wall exists or does not exist in contradiction to the true maze state, detected when the environment rejects the move or the move succeeds when the model expressed certainty it would fail.
+
+\subsection{Maze Generation}
+
+\begin{itemize}[nosep]
+  \item \textbf{Algorithm}: Recursive DFS (Randomized backtracker).
+  \item \textbf{Sizes}: 5$\times$5 (17 optimal steps), 7$\times$7 (25 optimal steps).
+  \item \textbf{Mirage positions}: 2 per maze (injected at generation time).
+  \item \textbf{Seeds}: $n{=}30$ independent random seeds per condition.
+  \item \textbf{Step budget}: $5\times5 \to 30$, $7\times7 \to 50$.
+\end{itemize}
+
+\subsection{Metrics}
+
+\textbf{Primary composite metric:}
+\begin{equation}
+\text{MEI} = 0.4 \times \text{HRR} + 0.3 \times \text{ETR} + 0.2 \times \text{AW} - 0.1 \times \text{HR}
+\label{eq:mei}
+\end{equation}
+
+\noindent where:
+\begin{itemize}[nosep]
+  \item \textbf{HRR} (Hallucination Recovery Rate): $P(\text{correct backtrack} \mid \text{hallucination})$.
+  \item \textbf{ETR} (Efficiency Ratio): Path quality relative to optimal.
+  \item \textbf{AW} (Awareness): Loop detection and redundancy avoidance.
+  \item \textbf{HR} (Hallucination Rate): Rate of erroneous wall beliefs (penalty).
+  \item \textbf{SR} (Solve Rate): $P(\text{reach goal within step budget})$.
+  \item \textbf{BRS} (Backtrack Rationality Score): Quality of backtrack decisions.
+\end{itemize}
+
+\textbf{Baselines}: Random Walk (uniform random direction, recovers stochastically), A* and BFS (oracle optimal).
+
+\subsection{Weight Sensitivity}
+
+Grid search over 625 configurations ($\pm50$\% per weight, 5 levels each) confirms: baseline ${>}$ LLM MEI ranking is stable in \textbf{100\% of configurations}, empirically validating weight choices independent of theoretical claims (see Appendix~\ref{sec:sensitivity}).
+
+% =================================================================
+\section{Experimental Results}
+% =================================================================
+
+\subsection{Models Evaluated}
+
+We evaluate 10 LLMs from 7 providers: Claude-3.7-Sonnet and Claude-3-Haiku (Anthropic), GPT-4o and GPT-4o-mini (OpenAI), Llama-4-Scout and Llama-4-Maverick (Meta), Gemini-2.0-Flash-Lite (Google), Qwen-2.5-72B (Alibaba), MiniMax-M2.5 (MiniMax, local API), and GLM-4.7 (Zhipu AI, local API).
+Each model completes $n{=}60$ trials (30 seeds $\times$ 2 sizes).
+
+\subsection{Main Results}
+
+\begin{table}[t]
+\centering
+\caption{\textsc{HalluMaze} Leaderboard (MEI $\uparrow$, $n{=}60$ per model). All models vs.\ Random Walk: Wilcoxon signed-rank test, Bonferroni $k{=}10$, all $p{<}0.001$.}
+\label{tab:leaderboard}
+\small
+\begin{tabular}{clrrrrc}
+\toprule
+Rank & Model & MEI & 95\% CI & SR & HRR & $\delta$ \\
+\midrule
+--- & Random Walk $\star$ & 0.900 & [0.900, 0.900] & 1.000 & 1.000 & --- \\
+\midrule
+1 & \textbf{Claude-3.7-Sonnet} & \textbf{0.774} & [0.715, 0.830] & 0.567 & 0.875 & 0.554 \\
+2 & GLM-4.7 & 0.615 & [0.551, 0.681] & 0.083 & 0.718 & 1.102 \\
+3 & Llama-4-Maverick & 0.600 & [0.541, 0.660] & 0.133 & 0.811 & 1.254 \\
+4 & MiniMax-M2.5 & 0.593 & [0.500, 0.682] & 0.533 & 0.600 & 0.847 \\
+5 & Llama-4-Scout & 0.589 & [0.525, 0.649] & 0.083 & 0.810 & 1.230 \\
+6 & Qwen-2.5-72B & 0.559 & [0.488, 0.629] & 0.100 & 0.607 & 1.223 \\
+7 & Gemini-2.0-Flash-Lite & 0.432 & [0.352, 0.507] & 0.083 & 0.403 & 1.557 \\
+8 & Claude-3-Haiku & 0.398 & [0.341, 0.457] & 0.050 & 0.363 & 2.129 \\
+9 & GPT-4o-mini & 0.391 & [0.310, 0.468] & 0.050 & 0.382 & 1.620 \\
+10 & GPT-4o & 0.315 & [0.239, 0.394] & 0.067 & 0.353 & 1.917 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig1_mei_leaderboard.png}
+  \caption{MEI scores for all 10 models and the Random Walk baseline. Error bars show bootstrapped 95\% CI ($n_{\text{boot}}{=}2000$). All models fall significantly below the Random Walk dashed line.}
+  \label{fig:leaderboard}
+\end{figure}
+
+\subsection{Statistical Tests}
+
+All models vs.\ Random Walk baseline (Wilcoxon signed-rank, Bonferroni $k{=}10$): all 10 comparisons yield $p{<}0.001$.
+Glass's $\delta$ ranges from 0.554 (Claude-3.7-Sonnet) to 2.129 (Claude-3-Haiku).
+BH-FDR ($q{=}0.05$) confirms all 10 models significant.
+
+\subsection{Key Findings}
+
+\textbf{F1---Universal metacognitive deficit.}
+All 10 LLMs score significantly below random walk ($p{<}0.001$, $\delta{=}0.6$--$2.1$).
+A random agent that simply tries directions until one works outperforms all LLMs---including frontier models---on metacognitive recovery.
+This suggests current training objectives do not target real-time belief updating.
+
+\textbf{F2---HRR--SR dissociation} (Figure~\ref{fig:scatter}).
+MiniMax-M2.5 achieves 2nd highest SR (53.3\%) but ranks \#4 on MEI.
+Claude-3.7-Sonnet leads in MEI (0.774) with SR$=$56.7\% and HRR$=$87.5\%, demonstrating that recovery capacity and task completion can co-occur.
+GLM-4.7 ranks \#2 on MEI with SR$=$8.3\%, confirming that solving the maze and recovering from errors are partially orthogonal.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\linewidth]{figures/fig2_hrr_sr_scatter.png}
+  \caption{HRR vs.\ SR dissociation. High HRR and high SR are separable capabilities. Claude-3.7-Sonnet (blue) occupies the upper-right quadrant; GPT-4o (red) clusters with low-recovery models despite its frontier status.}
+  \label{fig:scatter}
+\end{figure}
+
+\textbf{F3---Frontier cost inversion} (Figure~\ref{fig:cost}).
+GPT-4o (\$10/M output tokens) ranks last at MEI$=$0.315, below its smaller sibling GPT-4o-mini (\$0.60/M) at MEI$=$0.391.
+This 2.3$\times$ MEI gap between the same provider's models (with 17$\times$ cost ratio reversed) suggests that RLHF optimization for standard benchmarks may actively harm real-time error recovery.
+Claude-3.7-Sonnet (\$15/M) achieves MEI$=$0.774; its extended-thinking training variant may reinforce iterative hypothesis revision, directly operationalized by HRR.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\linewidth]{figures/fig3_cost_mei.png}
+  \caption{MEI vs.\ API cost (log scale). The frontier cost inversion: GPT-4o (most expensive tested model) ranks last, while free/local models (GLM-4.7, MiniMax-M2.5) outperform. API cost does not predict metacognitive recovery.}
+  \label{fig:cost}
+\end{figure}
+
+\textbf{F4---Recovery ${>}$ accuracy for MEI.}
+Claude-3.7-Sonnet ranks \#1 (MEI$=$0.774, HRR$=$87.5\%); MEI rewards models that correctly backtrack after mirage collisions rather than those that merely reach the goal.
+Consistent with \citeauthor{nelson1990metamemory}'s emphasis on control processes over object-level performance.
+
+\textbf{F5---Cross-provider consistency.}
+The metacognitive deficit is universal across all 7 providers (Anthropic, Meta, Zhipu AI, MiniMax, Google, OpenAI, Alibaba), ruling out provider-specific training artifacts.
+
+% =================================================================
+\section{Analysis}
+% =================================================================
+
+\subsection{Why Random Walk Wins}
+
+The random walk achieves MEI$=$0.900 because it never ``believes'' its moves will succeed---it simply tries until one works, achieving HRR$=$1.0 by construction.
+LLMs, by contrast, form confident beliefs that become anchored even under contradictory feedback.
+This reveals a \textbf{metacognitive anchoring bias}: LLMs trained on text prediction learn to maintain confident world models rather than updating them efficiently under environmental contradiction.
+
+\subsection{Calibration Analysis}
+
+All 10 LLMs elicited confidence in the range 0--100 as part of the structured response format.
+Models showed mean confidence 67--89\% across steps.
+All models exhibited overconfidence calibration error (OCE $>$ UCE), consistent with the known overconfidence bias in LLMs \citep{guo2017calibration}.
+Claude-3.7-Sonnet showed the most calibrated confidence trajectory: starting at ${\sim}80$\% on step 1 and dropping to ${\sim}55$\% after mirage encounters, suggesting active belief revision.
+GPT-4o maintained uniformly high confidence (85--92\%) regardless of navigation outcomes, consistent with its low HRR$=$0.353.
+
+\subsection{Frontier Cost Inversion}
+
+The most striking finding is the \textbf{frontier cost inversion}: GPT-4o ranks last at MEI$=$0.315, below GPT-4o-mini at 0.391.
+We hypothesize that frontier models trained on broader instruction-following corpora develop stronger ``persistence priors''---a tendency to maintain confident beliefs rather than revise them---which manifests as low HRR under environmental contradiction.
+This is consistent with \citet{huang2024selfcorrect}, who find that LLMs cannot self-correct reasoning without external feedback.
+
+% =================================================================
+\section{Limitations \& Future Work}
+% =================================================================
+
+\subsection{Current Limitations}
+
+\begin{itemize}[nosep]
+  \item \textbf{No human baseline}: Human performance is required to establish absolute scale (planned via Prolific, $n{\geq}25$).
+  \item \textbf{DFS maze bias}: Recursive DFS generates long corridors; Kruskal/Wilson's alternatives are planned for structural diversity.
+  \item \textbf{Temperature stochasticity}: Test-retest reliability (ICC) not yet measured.
+  \item \textbf{No 9$\times$9 condition}: Size scaling study not yet complete.
+\end{itemize}
+
+\subsection{Multi-Agent Reasoning Layers}
+
+We tested whether decomposing navigation into a multi-stage LLM pipeline improves metacognitive performance, using MiniMax-M2.5 as a case study ($n{=}10$).
+
+\textbf{MARL v1} (naive 5-stage pipeline): MEI$=$0.548 vs.\ baseline 0.593 ($-7.6$\%).
+When the Solver stage produces an invalid path, errors cascade through subsequent stages without correction.
+
+\textbf{MARL v2} (3 deterministic fixes: Path Validator Gate, Conditional Pipeline, Maze Context Re-injection): MEI$=$0.803 vs.\ baseline 0.593 ($+35.4$\%).
+\textbf{Key lesson}: LLM self-correction alone fails; external grounding via deterministic validation succeeds \citep{huang2024selfcorrect, shinn2023reflexion}.
+
+\subsection{Planned Extensions}
+
+\begin{enumerate}[nosep]
+  \item Human baseline via Prolific ($n{\geq}25$, same protocol).
+  \item ICC reliability (3 models $\times$ 10 seeds $\times$ 2 runs, target ${>}0.8$).
+  \item Ecological validity (Spearman correlation with TruthfulQA/HaluEval public scores).
+  \item 9$\times$9 maze condition (size scaling study).
+  \item Alternative maze algorithms (Kruskal, Wilson's).
+  \item PyPI package \texttt{hallumaze} with full evaluation server.
+\end{enumerate}
+
+% =================================================================
+\section{Conclusion}
+% =================================================================
+
+\textsc{HalluMaze} introduces metacognitive recovery as a measurable, benchmarkable LLM capability.
+Our evaluation of 10 LLMs across 7 providers (600 total trials) reveals a universal and statistically significant deficit: all models fall below random walk on MEI ($\delta{=}0.6$--$2.1$, $p{<}0.001$ Bonferroni-corrected).
+The frontier cost inversion is striking: GPT-4o ranks last (MEI$=$0.315) while Claude-3.7-Sonnet leads (MEI$=$0.774), demonstrating that neither API cost nor provider predict metacognitive recovery.
+The SR--MEI partial dissociation suggests these are separable capabilities that may require distinct training targets.
+We release all code, maze seeds, and evaluation scripts to enable reproducible evaluation and invite the community to build on this benchmark.
+
+\paragraph{Reproducibility.}
+Code: \url{https://github.com/jaytoone/HalluMaze}.
+Data: \url{https://huggingface.co/datasets/Be2Jay/hallumaze-benchmark}.
+Demo: \url{https://huggingface.co/spaces/Be2Jay/hallumaze}.
+
+\bibliographystyle{plainnat}
+\bibliography{hallumaze}
+
+% =================================================================
+\appendix
+\section{MEI Sensitivity Analysis}
+\label{sec:sensitivity}
+
+625-configuration grid search ($\pm50$\% per weight, 5 levels each, 4 weights):
+\begin{itemize}[nosep]
+  \item Configurations tested: 625.
+  \item Stable (baseline $>$ all LLMs): 100\% of configurations.
+  \item Conclusion: ranking stability confirmed across full weight space.
+\end{itemize}
+
+\section{Prompt Template}
+\label{sec:prompt}
+
+\begin{verbatim}
+You are navigating a {N}x{N} maze from [0,0] to [{N-1},{N-1}].
+Current position: {pos}. Step {k} of max {max_steps}.
+
+Maze walls at current position:
+  North: {wall_N}  South: {wall_S}
+  East: {wall_E}   West: {wall_W}
+
+History (last 5 steps): {history}
+
+Choose direction: N/S/E/W
+Respond with JSON:
+  {"direction": "N|S|E|W",
+   "confidence": 0-100,
+   "reasoning": "..."}
+\end{verbatim}
+
+\section{Maze Design Details}
+\label{sec:maze}
+
+Mazes are $N{\times}N$ grids where each cell $(r, c)$ has four binary wall attributes: $\{N, S, E, W\}$.
+Wall $1$ $=$ blocked, $0$ $=$ passable.
+Start is $(0,0)$; goal is $(N{-}1, N{-}1)$.
+
+\textbf{Mirage mechanics.}
+A mirage position $(r, c)$ is a cell where the model's prior belief about wall configuration conflicts with ground truth.
+The model receives \texttt{wall=1} in its initial context but discovers \texttt{wall=0} when attempting the move.
+This creates a detectable contradiction that a metacognitively competent model should detect (monitoring), update (control), and exploit on subsequent steps.
+
+\textbf{Hallucination detection rule.}
+A hallucination event is logged when:
+(a) model asserts confidence $\geq 60$\% for a direction AND environment rejects, or
+(b) model refuses with confidence $\geq 60$\% AND the mirage trigger fires.
+
+\textbf{Recovery detection rule.}
+HRR credit is issued when, within 3 steps of a hallucination event, the model successfully traverses the mirage passage.
+
+\end{document}

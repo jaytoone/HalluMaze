@@ -7,6 +7,11 @@
 | docs/research/20260324-marl5stage-fix-solutions.md | MARL 5-stage 성능 저하 해결책 연구 (expert-research-v2) | 2026-03-24 |
 | docs/research/20260324-hallumaze-ecological-validity.md | HalluMaze 생태학적 타당성 확장 방향 | 2026-03-24 |
 | docs/hf_post.md | HuggingFace community blog post about HalluMaze benchmark | 2026-03-24 |
+| docs/hallumaze_arxiv.tex | arXiv LaTeX paper draft (NeurIPS 2026 format) | 2026-03-24 |
+| docs/hallumaze.bib | BibTeX references for arXiv paper | 2026-03-24 |
+| docs/figures/fig1_mei_leaderboard.png | Figure 1: MEI leaderboard bar chart (600dpi) | 2026-03-24 |
+| docs/figures/fig2_hrr_sr_scatter.png | Figure 2: HRR vs SR dissociation scatter (600dpi) | 2026-03-24 |
+| docs/figures/fig3_cost_mei.png | Figure 3: MEI vs API cost scatter (600dpi) | 2026-03-24 |
 
 ## Related
 - [[projects/Miro/research/20260323-hallumaze-extension-todos|20260323-hallumaze-extension-todos]]

@@ -1,3 +1,10 @@
+v1.5 20260324 1650 — arXiv figures + LaTeX draft + index.html update
+    - arXiv figures: fig1 MEI leaderboard, fig2 HRR-SR scatter, fig3 cost-MEI scatter (600dpi)
+    - LaTeX paper draft (docs/hallumaze_arxiv.tex) + BibTeX (docs/hallumaze.bib)
+    - index.html replaced with hallumaze_final.html (leaderboard landing page)
+    - hf_post.md updated to v1.4 (10 models, 600 trials, frontier cost inversion)
+    - scripts/generate_arxiv_figures.py added
+
 v1.4 20260324 1625 — Phase C frontier models: Claude-3.7-Sonnet (#1) + GPT-4o (#10)
     - Claude-3.7-Sonnet: MEI=0.774 SR=56.7% HRR=87.5% d=0.554 (NEW #1)
     - GPT-4o: MEI=0.315 SR=6.7% HRR=35.3% d=1.917 (NEW #10, below GPT-4o-mini)

@@ -38,7 +38,7 @@ Maze (5x5):
 +--+--+--+--+--+
 
 Start: (0,0)  Goal: (4,4)
-Mirage walls: (1,2)→E, (3,1)→S
+Mirage walls: (1,2)->E, (3,1)->S
 Step budget: 30
 ```
 
@@ -58,7 +58,7 @@ The question is whether the model *recognizes the contradiction and backtracks*,
 We introduce the **Metacognitive Escape Index (MEI)**:
 
 ```
-MEI = 0.4 × HRR + 0.3 × ETR + 0.2 × AW − 0.1 × HR
+MEI = 0.4 * HRR + 0.3 * ETR + 0.2 * AW - 0.1 * HR
 ```
 
 - **HRR** (Hallucination Recovery Rate): P(correct backtrack | hallucination detected) — the core metacognition signal
@@ -70,58 +70,62 @@ The **Random Walk baseline** (MEI = 0.900) serves as an upper bound for comparis
 
 ---
 
-## Results: All Models Significantly Underperform Random Walk
+## Results: All 10 Models Significantly Underperform Random Walk
 
-We ran 60 trials per model (30 seeds × 2 maze sizes: 5×5 and 7×7), with Bootstrap CI at n_boot=2000. All p<0.001 vs Random Walk (Wilcoxon signed-rank + Bonferroni correction, k=8).
+We evaluated **10 LLMs from 7 providers** across 60 trials each (30 seeds x 2 maze sizes: 5x5 and 7x7) — **600 total trials**. Bootstrap CI at n_boot=2000. All p<0.001 vs Random Walk (Wilcoxon signed-rank + Bonferroni correction, k=10).
 
 | Rank | Model | MEI | SR | HRR | Glass's d |
 |------|-------|-----|-----|-----|-----------|
-| — | Random Walk | 0.900 | 100% | 100% | — |
-| 1 | GLM-4.7 | 0.615 | 8.3% | 71.8% | 1.559 |
-| 2 | Llama-4-Maverick | 0.600 | 13.3% | 81.1% | 1.774 |
-| 3 | MiniMax-M2.5 | 0.593 | 53.3% | 60.0% | 1.197 |
-| 4 | Llama-4-Scout | 0.589 | 8.3% | 81.0% | 1.739 |
-| 5 | Qwen-2.5-72B | 0.559 | 10.0% | 60.7% | 1.730 |
-| 6 | Gemini-2.0-Flash-Lite | 0.432 | 8.3% | 40.3% | 2.202 |
-| 7 | Claude-3-Haiku | 0.398 | 5.0% | 36.3% | 3.011 |
-| 8 | GPT-4o-mini | 0.391 | 5.0% | 38.2% | 2.291 |
+| -- | Random Walk | 0.900 | 100% | 100% | -- |
+| 1 | **Claude-3.7-Sonnet** | **0.774** | 56.7% | 87.5% | 0.554 |
+| 2 | GLM-4.7 | 0.615 | 8.3% | 71.8% | 1.102 |
+| 3 | Llama-4-Maverick | 0.600 | 13.3% | 81.1% | 1.254 |
+| 4 | MiniMax-M2.5 | 0.593 | 53.3% | 60.0% | 0.847 |
+| 5 | Llama-4-Scout | 0.589 | 8.3% | 81.0% | 1.230 |
+| 6 | Qwen-2.5-72B | 0.559 | 10.0% | 60.7% | 1.223 |
+| 7 | Gemini-2.0-Flash-Lite | 0.432 | 8.3% | 40.3% | 1.557 |
+| 8 | Claude-3-Haiku | 0.398 | 5.0% | 36.3% | 2.129 |
+| 9 | GPT-4o-mini | 0.391 | 5.0% | 38.2% | 1.620 |
+| 10 | **GPT-4o** | **0.315** | 6.7% | 35.3% | 1.917 |
 
-Three findings stand out:
+Four findings stand out:
 
-**1. The metacognition gap is large and consistent.** Even the best model (GLM-4.7, MEI=0.615) sits 0.285 points below Random Walk. Effect sizes range from d=1.2 to d=3.0 — these are not marginal differences.
+**1. The metacognition gap is large and consistent.** Even the best model (Claude-3.7-Sonnet, MEI=0.774) sits 0.126 points below Random Walk. Effect sizes range from d=0.6 to d=2.1 — these are not marginal differences.
 
-**2. Solve Rate does not predict metacognitive quality.** MiniMax-M2.5 achieves the highest Solve Rate (53.3%) but only ranks 3rd in MEI. Models that complete the maze often do so despite poor error recovery, not because of it.
+**2. Claude-3.7-Sonnet leads on both MEI and SR.** With MEI=0.774, SR=56.7%, and HRR=87.5%, it demonstrates that metacognitive recovery and task completion can co-occur. Its extended-thinking training variant may reinforce iterative hypothesis revision.
 
-**3. Standard capability rankings don't transfer.** GPT-4o-mini and Claude-3-Haiku — models that perform well on many benchmarks — rank last here. GLM-4.7, which rarely solves the maze (SR=8.3%), leads on metacognition. HalluMaze measures something orthogonal to general capability.
+**3. Frontier cost inversion.** GPT-4o ($10/M output tokens) ranks **last** at MEI=0.315 — below GPT-4o-mini ($0.60/M) at 0.391. This 2.3x MEI gap with a 17x cost ratio reversed suggests RLHF optimization for standard benchmarks may actively harm real-time error recovery. API cost does not predict metacognitive recovery.
+
+**4. SR dissociates from MEI.** MiniMax-M2.5 has the 2nd highest SR (53.3%) but ranks #4 on MEI. GLM-4.7 ranks #2 despite SR=8.3%. Solving the maze and recovering from errors are partially orthogonal capabilities.
 
 ---
 
 ## Pushing MEI Further: Multi-Agent Reasoning
 
-We are exploring structured multi-agent reasoning pipelines applied on top of the base benchmark. Early results on MiniMax-M2.5 show significant improvement over the single-call baseline:
+We explored structured multi-agent reasoning pipelines applied on top of the base benchmark. Results on MiniMax-M2.5:
 
 | Method | MEI | SR | HRR |
 |--------|-----|-----|-----|
 | Single-call baseline | 0.593 | 53.3% | 0.600 |
-| Multi-agent pipeline | **0.803** | **80.0%** | **0.900** |
+| MARL v1 (naive 5-stage) | 0.548 | — | — |
+| **MARL v2 (deterministic gates)** | **0.803** | **80.0%** | **0.900** |
 
-Details are not yet public. For related MARL infrastructure, see [VIDraft/MARL](https://huggingface.co/spaces/VIDraft/MARL).
+Key lesson: LLM self-correction alone (v1) fails. External grounding via deterministic validation gates (v2) succeeds — the critical intervention is non-LLM logic validating inter-stage handoffs.
 
 ---
 
 ## Try It
 
-**Live simulator**: [HuggingFace Space](https://huggingface.co/spaces/Be2Jay/hallumaze) — watch 6 models navigate the same maze in real-time and compare their recovery behavior step by step.
+**Live leaderboard**: [HuggingFace Space](https://huggingface.co/spaces/Be2Jay/hallumaze) — full results with interactive leaderboard and benchmark details.
 
-**Dataset**: All 480 trial records (raw responses, step logs, per-trial metrics) are available at `Be2Jay/hallumaze-benchmark` on HuggingFace.
+**Dataset**: All 600 trial records (raw responses, step logs, per-trial metrics) are available at `Be2Jay/hallumaze-benchmark` on HuggingFace.
 
 **Code**: [github.com/jaytoone/HalluMaze](https://github.com/jaytoone/HalluMaze) — run your own model with one command. New maze seeds are generated on demand, so there is no risk of test set contamination.
+
+**arXiv preprint**: Available in the repository (`docs/hallumaze_arxiv.tex`).
 
 **We are actively extending the leaderboard.** If you want to submit a model or have questions about the evaluation protocol, open an issue on GitHub or leave a comment below.
 
 ---
 
 *HalluMaze is a research benchmark targeting NeurIPS 2026. Methodology details, full statistical appendix, and paper draft are available in the repository.*
-
-## Related
-- [[projects/Miro/research/20260323-hallumaze-paper-draft|20260323-hallumaze-paper-draft]]
