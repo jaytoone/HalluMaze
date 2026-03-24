@@ -1,3 +1,15 @@
+v1.3.1 20260324 — MARL v2 GLM-4.7 extension + paper/docs update
+    - MARL v2 GLM-4.7: MEI=0.694 (+12.9% vs GLM baseline 0.615)
+    - Add run_marl5stage_v2_glm.py + marl5stage_v2_glm.json
+    - Paper draft: add Section 6.2 MARL experiment findings
+    - Update docs/hf_post.md, DOC_INDEX.md
+
+v1.3 20260324 — MARL 5-stage experiment (v1 + v2 with fixes)
+    - MARL v1: naive 5-stage MEI=0.548 (-7.6% vs baseline)
+    - MARL v2: PathValidator+ConditionalPipeline+MazeReinjection MEI=0.803 (+35.4%)
+    - Add HF community post draft (docs/hf_post.md)
+    - Add research docs: fix-solutions, ecological-validity
+
 v1.1 20260323 — Add core library, fix statistics, HF Space ready
 
 - Add files/hallumaze.py (core benchmark library, 951 lines)

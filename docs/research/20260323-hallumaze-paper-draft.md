@@ -190,7 +190,24 @@ OCE/UCE decomposition (Overconfidence vs Underconfidence CE) was computed for mo
 - **Temperature stochasticity**: Test-retest reliability (ICC) not yet measured
 - **No 9×9 condition**: Size scaling study not yet complete
 
-### 6.2 Planned Extensions
+### 6.2 Multi-Agent Reasoning Layers (MARL) Experiment
+
+We tested whether decomposing navigation into a multi-stage LLM pipeline improves metacognitive performance, using MiniMax-M2.5 as a case study (n=10, seeds 1001–5005 × {5×5, 7×7}).
+
+**MARL v1 (naive 5-stage pipeline)**: Hypothesis → Solver → Auditor → Verifier → Refiner. Each stage receives the previous stage's text output. Result: **MEI=0.548 vs baseline 0.593 (−7.6%)**. Root cause: when Stage 2 (Solver) produces an invalid path, the error cascades through S3–S5 without correction. Context drift compounds as later stages lose access to the original maze structure.
+
+**MARL v2 (3 deterministic fixes)**:
+1. **Path Validator Gate** — deterministic validation of S2 output against actual maze walls (no LLM involved)
+2. **Conditional Pipeline** — S2 retries up to 3× on validation failure, selecting the attempt with fewest errors
+3. **Maze Context Re-injection** — original maze text prepended to S3/S4/S5 prompts, preventing context drift
+
+Result: **MEI=0.803 vs baseline 0.593 (+35.4%)**. This is the first configuration to substantially exceed baseline performance, demonstrating that deterministic validation gates can restore multi-stage LLM pipeline performance.
+
+**Key lesson**: LLM self-correction alone (v1) fails; external grounding via deterministic validation (v2) succeeds. The critical intervention is not adding more LLM stages, but ensuring that inter-stage handoffs are validated by non-LLM logic.
+
+**Limitation**: n=10, single model (MiniMax-M2.5). Replication across models and larger sample sizes is needed before generalizing.
+
+### 6.3 Planned Extensions
 
 1. **Human baseline via Prolific** (n≥25, same protocol) → enables absolute comparison
 2. **ICC reliability** (3 models × 10 seeds × 2 runs, ICC target > 0.8)
@@ -198,6 +215,7 @@ OCE/UCE decomposition (Overconfidence vs Underconfidence CE) was computed for mo
 4. **9×9 maze condition** (size scaling study)
 5. **Alternative maze algorithms** (Kruskal, Wilson's) for structural diversity
 6. **PyPI package** `hallumaze` with full evaluation server
+7. **MARL replication** — extend v2 pipeline to GLM-4.7 and other models; increase n to 60
 
 ---
 

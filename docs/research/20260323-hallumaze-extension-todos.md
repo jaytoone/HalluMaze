@@ -79,3 +79,6 @@ NeurIPS 2026 Datasets & Benchmarks Track 투고 목표.
 - https://proceedings.neurips.cc/paper_files/paper/2024/file/877b40688e330a0e2a3fc24084208dfa-Paper-Datasets_and_Benchmarks_Track.pdf
 - https://blog.neurips.cc/2025/09/30/reflecting-on-the-2025-review-process-from-the-datasets-and-benchmarks-chairs/
 - https://arxiv.org/html/2603.06604
+
+## Related
+- [[projects/Miro/research/20260323-hallumaze-paper-draft|20260323-hallumaze-paper-draft]]
