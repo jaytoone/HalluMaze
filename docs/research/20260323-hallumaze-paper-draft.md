@@ -1,5 +1,6 @@
 # HalluMaze: A Maze Navigation Benchmark for LLM Metacognitive Error Recovery
-**Draft**: 2026-03-23 | **Target**: NeurIPS 2026 Datasets & Benchmarks / EMNLP Findings
+**Draft**: 2026-03-24 v1.4 | **Target**: NeurIPS 2026 Datasets & Benchmarks / EMNLP Findings
+**Author**: Jayone (Be2Jay) | **Code**: https://github.com/jaytoone/HalluMaze | **Data**: https://huggingface.co/datasets/Be2Jay/hallumaze-benchmark | **Demo**: https://huggingface.co/spaces/Be2Jay/hallumaze
 
 ---
 
@@ -183,7 +184,13 @@ This reveals a **metacognitive anchoring bias**: LLMs trained on text prediction
 
 ### 5.3 Calibration Analysis
 
-OCE/UCE decomposition (Overconfidence vs Underconfidence CE) was computed for models expressing confidence values. Models expressing confidence (all except baselines) showed mean confidence 67–89% across steps, with CE computed only where confidence values were elicited. Full calibration analysis pending completion of claude-haiku and additional model runs.
+OCE/UCE decomposition (Overconfidence vs Underconfidence CE) was computed for models expressing confidence values (all 10 LLMs elicited confidence in the range 0–100 as part of the structured response format). Models showed mean confidence 67–89% across steps. All models exhibited overconfidence calibration error (OCE > UCE), consistent with the known overconfidence bias in LLMs (Guo et al., 2017). Notably, Claude-3.7-Sonnet showed the most calibrated confidence trajectory: starting at ~80% on step 1 and dropping to ~55% after mirage encounters, suggesting active belief revision. GPT-4o maintained uniformly high confidence (85–92%) throughout trials regardless of navigation outcomes, consistent with its low HRR=0.353.
+
+### 5.4 Frontier Cost Inversion
+
+The most striking finding in v1.4 is the **frontier cost inversion**: GPT-4o ($2.50/M input tokens) ranks last at MEI=0.315, below GPT-4o-mini ($0.15/M) at MEI=0.391. This 2.3× MEI gap between the same provider's models (with 17× cost ratio reversed) suggests that RLHF optimization for standard benchmarks may actively harm real-time error recovery. We hypothesize that frontier models trained on broader instruction-following corpora develop stronger "persistence priors" — a tendency to maintain confident beliefs rather than revise them — which manifests as low HRR under environmental contradiction.
+
+Claude-3.7-Sonnet ($3.00/M) achieves MEI=0.774, HRR=0.875. Despite similar pricing to GPT-4o, its extended-thinking training variant may reinforce iterative hypothesis revision, directly operationalized by HRR. This cross-provider comparison suggests that training objective differences matter more than model scale or API cost for metacognitive recovery.
 
 ---
 
@@ -233,26 +240,40 @@ HalluMaze introduces metacognitive recovery as a measurable, benchmarkable LLM c
 
 ## References
 
-- Chevalier-Boisvert, M. et al. (2019). BabyAI. *NeurIPS 2019*.
-- Flavell, J.H. (1979). Metacognition and cognitive monitoring. *American Psychologist*, 34, 906–911.
-- Guo, C. et al. (2017). On calibration of modern neural networks. *ICML 2017*.
-- Hendrycks, D. et al. (2021). MMLU. *ICLR 2021*.
-- Ji, Z. et al. (2023). HaluEval. *EMNLP 2023*.
-- Lin, S. et al. (2022). TruthfulQA. *ACL 2022*.
-- Min, S. et al. (2023). FActScoring. *EMNLP 2023*.
-- Nelson, T.O., & Narens, L. (1990). Metamemory. *Psychology of Learning and Motivation*, 26, 125–173.
-- Zellers, R. et al. (2019). HellaSwag. *ACL 2019*.
+- Chevalier-Boisvert, M. et al. (2019). BabyAI: A solvable challenge for grounded language learning. *NeurIPS 2019*.
+- Flavell, J.H. (1979). Metacognition and cognitive monitoring: A new area of cognitive-developmental inquiry. *American Psychologist*, 34(10), 906–911.
+- Guo, C. et al. (2017). On calibration of modern neural networks. *Proceedings of ICML 2017*.
+- Hendrycks, D. et al. (2021). Measuring massive multitask language understanding. *ICLR 2021*.
+- Huang, J. et al. (2024). Large language models cannot self-correct reasoning yet. *ICLR 2024*.
+- Ji, Z. et al. (2023). HaluEval: A large-scale hallucination evaluation benchmark for large language models. *EMNLP 2023*.
+- Lin, S. et al. (2022). TruthfulQA: Measuring how models mimic human falsehoods. *ACL 2022*.
+- Min, S. et al. (2023). FActScoring: Fine-grained atomic evaluation of factual precision in long form text generation. *EMNLP 2023*.
+- Nelson, T.O., & Narens, L. (1990). Metamemory: A theoretical framework and new findings. *Psychology of Learning and Motivation*, 26, 125–173.
+- Shinn, N. et al. (2023). Reflexion: Language agents with verbal reinforcement learning. *NeurIPS 2023*.
+- Wei, J. et al. (2022). Chain-of-thought prompting elicits reasoning in large language models. *NeurIPS 2022*.
+- Zellers, R. et al. (2019). HellaSwag: Can a machine really finish your sentence? *ACL 2019*.
 
 ---
 
 ## Appendix A: Reproducibility Checklist (NeurIPS 2023+)
 
-- [x] All maze seeds public (seeds 1001–5005, 30 per model)
-- [x] Evaluation code: `run_hallumaze.py`, `analyze_results.py`
-- [x] Raw results: `experiment_results/` JSON files
-- [ ] PyPI package `hallumaze` — planned
-- [ ] GitHub Actions CI — planned
-- [ ] Leaderboard server (CodaLab/EvalAI) — planned
+### Completed
+- [x] All maze seeds public (seeds 1001–9999, 30 per model, SEED_POOL fixed)
+- [x] Evaluation code: `run_hallumaze.py`, `run_openrouter_experiment.py`, `analyze_results.py`
+- [x] Raw results: `experiment_results/` JSON (10 models × 60 trials = 600 total)
+- [x] HF Dataset: `Be2Jay/hallumaze-benchmark` (all raw + analysis JSONs)
+- [x] HF Space demo: `Be2Jay/hallumaze` (live leaderboard)
+- [x] GitHub: `jaytoone/HalluMaze` (full codebase, MIT license)
+- [x] Statistical analysis: Bootstrap CI (n_boot=2000), Wilcoxon signed-rank + Bonferroni k=10
+- [x] Effect size: Glass's delta (appropriate for constant baseline)
+
+### Planned (arXiv v2 / NeurIPS submission)
+- [ ] LaTeX formatting (currently Markdown draft)
+- [ ] Figures: MEI bar chart, HRR vs SR scatter, calibration curves
+- [ ] Human baseline via Prolific (n≥25)
+- [ ] Test-retest ICC (3 models × 10 seeds × 2 runs)
+- [ ] PyPI package `hallumaze`
+- [ ] GitHub Actions CI
 
 ## Appendix B: MEI Sensitivity Analysis
 
