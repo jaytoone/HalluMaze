@@ -1,0 +1,346 @@
+{
+  "meta": {
+    "size": 9,
+    "created": "2026-03-25T14:22:25.556542"
+  },
+  "summary": {
+    "GLM-4.7": {
+      "n": 30,
+      "mei_mean": 0.4866,
+      "hrr_mean": 0.4472,
+      "sr_mean": 0.0
+    }
+  },
+  "results": [
+    {
+      "model": "GLM-4.7",
+      "seed": 2825,
+      "size": 9,
+      "mei": 0.8678,
+      "hrr": 1.0,
+      "sr": 0.0,
+      "hallucination_count": 1,
+      "backtrack_count": 6,
+      "brs": 0.8571
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 1410,
+      "size": 9,
+      "mei": 0.62,
+      "hrr": 1.0,
+      "sr": 0.0,
+      "hallucination_count": 1,
+      "backtrack_count": 3,
+      "brs": 0.75
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 5507,
+      "size": 9,
+      "mei": 0.8144,
+      "hrr": 1.0,
+      "sr": 0.0,
+      "hallucination_count": 3,
+      "backtrack_count": 8,
+      "brs": 0.7273
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 5013,
+      "size": 9,
+      "mei": 0.23,
+      "hrr": 0.0,
+      "sr": 0.0,
+      "hallucination_count": 0,
+      "backtrack_count": 4,
+      "brs": 1.0
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 4658,
+      "size": 9,
+      "mei": 0.8641,
+      "hrr": 1.0,
+      "sr": 0.0,
+      "hallucination_count": 1,
+      "backtrack_count": 7,
+      "brs": 0.875
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 3287,
+      "size": 9,
+      "mei": 0.6748,
+      "hrr": 0.75,
+      "sr": 0.0,
+      "hallucination_count": 4,
+      "backtrack_count": 3,
+      "brs": 0.4286
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 2680,
+      "size": 9,
+      "mei": 0.8207,
+      "hrr": 1.0,
+      "sr": 0.0,
+      "hallucination_count": 2,
+      "backtrack_count": 6,
+      "brs": 0.75
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 9936,
+      "size": 9,
+      "mei": 0.23,
+      "hrr": 0.0,
+      "sr": 0.0,
+      "hallucination_count": 0,
+      "backtrack_count": 3,
+      "brs": 1.0
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 2425,
+      "size": 9,
+      "mei": 0.23,
+      "hrr": 0.0,
+      "sr": 0.0,
+      "hallucination_count": 0,
+      "backtrack_count": 11,
+      "brs": 1.0
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 7913,
+      "size": 9,
+      "mei": 0.23,
+      "hrr": 0.0,
+      "sr": 0.0,
+      "hallucination_count": 0,
+      "backtrack_count": 1,
+      "brs": 1.0
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 1521,
+      "size": 9,
+      "mei": 0.23,
+      "hrr": 0.0,
+      "sr": 0.0,
+      "hallucination_count": 0,
+      "backtrack_count": 9,
+      "brs": 1.0
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 1489,
+      "size": 9,
+      "mei": 0.7033,
+      "hrr": 0.6667,
+      "sr": 0.0,
+      "hallucination_count": 3,
+      "backtrack_count": 2,
+      "brs": 0.4
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 2536,
+      "size": 9,
+      "mei": 0.62,
+      "hrr": 1.0,
+      "sr": 0.0,
+      "hallucination_count": 1,
+      "backtrack_count": 6,
+      "brs": 0.8571
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 4583,
+      "size": 9,
+      "mei": 0.23,
+      "hrr": 0.0,
+      "sr": 0.0,
+      "hallucination_count": 0,
+      "backtrack_count": 7,
+      "brs": 1.0
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 4812,
+      "size": 9,
+      "mei": 0.8244,
+      "hrr": 1.0,
+      "sr": 0.0,
+      "hallucination_count": 2,
+      "backtrack_count": 9,
+      "brs": 0.8182
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 9280,
+      "size": 9,
+      "mei": 0.23,
+      "hrr": 0.0,
+      "sr": 0.0,
+      "hallucination_count": 0,
+      "backtrack_count": 10,
+      "brs": 1.0
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 1435,
+      "size": 9,
+      "mei": 0.23,
+      "hrr": 0.0,
+      "sr": 0.0,
+      "hallucination_count": 0,
+      "backtrack_count": 5,
+      "brs": 1.0
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 4258,
+      "size": 9,
+      "mei": 0.23,
+      "hrr": 0.0,
+      "sr": 0.0,
+      "hallucination_count": 0,
+      "backtrack_count": 11,
+      "brs": 1.0
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 9929,
+      "size": 9,
+      "mei": 0.23,
+      "hrr": 0.0,
+      "sr": 0.0,
+      "hallucination_count": 0,
+      "backtrack_count": 5,
+      "brs": 1.0
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 7874,
+      "size": 9,
+      "mei": 0.23,
+      "hrr": 0.0,
+      "sr": 0.0,
+      "hallucination_count": 0,
+      "backtrack_count": 7,
+      "brs": 1.0
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 4612,
+      "size": 9,
+      "mei": 0.8048,
+      "hrr": 1.0,
+      "sr": 0.0,
+      "hallucination_count": 1,
+      "backtrack_count": 14,
+      "brs": 0.9333
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 8360,
+      "size": 9,
+      "mei": 0.23,
+      "hrr": 0.0,
+      "sr": 0.0,
+      "hallucination_count": 0,
+      "backtrack_count": 6,
+      "brs": 1.0
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 5558,
+      "size": 9,
+      "mei": 0.8604,
+      "hrr": 1.0,
+      "sr": 0.0,
+      "hallucination_count": 1,
+      "backtrack_count": 7,
+      "brs": 0.875
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 1107,
+      "size": 9,
+      "mei": 0.23,
+      "hrr": 0.0,
+      "sr": 0.0,
+      "hallucination_count": 0,
+      "backtrack_count": 9,
+      "brs": 1.0
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 3616,
+      "size": 9,
+      "mei": 0.23,
+      "hrr": 0.0,
+      "sr": 0.0,
+      "hallucination_count": 0,
+      "backtrack_count": 5,
+      "brs": 1.0
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 7925,
+      "size": 9,
+      "mei": 0.8107,
+      "hrr": 1.0,
+      "sr": 0.0,
+      "hallucination_count": 3,
+      "backtrack_count": 17,
+      "brs": 0.85
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 6575,
+      "size": 9,
+      "mei": 0.23,
+      "hrr": 0.0,
+      "sr": 0.0,
+      "hallucination_count": 0,
+      "backtrack_count": 6,
+      "brs": 1.0
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 5553,
+      "size": 9,
+      "mei": 0.8307,
+      "hrr": 1.0,
+      "sr": 0.0,
+      "hallucination_count": 1,
+      "backtrack_count": 19,
+      "brs": 0.95
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 3548,
+      "size": 9,
+      "mei": 0.23,
+      "hrr": 0.0,
+      "sr": 0.0,
+      "hallucination_count": 0,
+      "backtrack_count": 2,
+      "brs": 1.0
+    },
+    {
+      "model": "GLM-4.7",
+      "seed": 4528,
+      "size": 9,
+      "mei": 0.8011,
+      "hrr": 1.0,
+      "sr": 0.0,
+      "hallucination_count": 1,
+      "backtrack_count": 1,
+      "brs": 0.5
+    }
+  ]
+}
