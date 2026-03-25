@@ -1,3 +1,12 @@
+v1.8 20260325 — residual limitations resolved (maze algos + experiment scripts)
+    - files/hallumaze.py: Kruskal + Wilson's maze algorithms (MazeEngine algo param)
+    - MazeConfig: maze_algo field ("dfs"|"kruskal"|"wilson")
+    - Structural diversity confirmed: DFS sol=13.4 vs Kruskal sol=10.1 (5x5)
+    - scripts/run_9x9_experiment.py: 9x9 크기 스케일링 실험 러너
+    - scripts/run_icc_experiment.py: ICC(2,1) 재현성 측정 (3모델 x 10seed x 2run)
+    - scripts/run_temperature_sweep.py: temperature 0.0/0.3/0.7/1.0 sensitivity sweep
+    - QA: 3 algos x 3 sizes = 9 combinations pass
+
 v1.7 20260325 — paper draft v1.5: expert-review-driven improvements
     - Section 2.1: Add AgentBench, WebArena, Reflexion, Huang+2024 to related work table + paragraph
     - Section 3.3: HRR clarification — threshold-free, fully deterministic (environment-based)

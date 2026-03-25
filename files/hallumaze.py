@@ -63,6 +63,7 @@ class MazeConfig:
     use_confidence: bool = True
     ariadne_mode: str = "A"   # A=Pure, B=Triggered, C=Observe
     max_tokens: int = 2500
+    maze_algo: str = "dfs"    # "dfs" | "kruskal" | "wilson"
 
 @dataclass
 class StepRecord:
@@ -129,9 +130,10 @@ class MazeEngine:
         "이 방향의 공기 흐름이 출구 쪽을 가리키는 것 같습니다.",
     ]
 
-    def __init__(self, size: int, seed: Optional[int] = None):
+    def __init__(self, size: int, seed: Optional[int] = None, algo: str = "dfs"):
         self.N = size
         self.seed = seed or random.randint(0, 99999)
+        self.algo = algo
         random.seed(self.seed)
         self.cells: list[list[Cell]] = [[Cell() for _ in range(size)] for _ in range(size)]
         self._generate()
@@ -139,8 +141,25 @@ class MazeEngine:
         self.mirage_traps = self._find_mirage_positions()
         self.dead_ends = self._count_dead_ends()
 
+    def _remove_wall(self, r: int, c: int, d: str):
+        """(r,c) → direction d 의 벽 제거 (양방향)"""
+        opp = {'N':'S','S':'N','E':'W','W':'E'}
+        dr_map = {'N':(-1,0),'S':(1,0),'E':(0,1),'W':(0,-1)}
+        setattr(self.cells[r][c], d, False)
+        dr, dc = dr_map[d]
+        setattr(self.cells[r+dr][c+dc], opp[d], False)
+
     def _generate(self):
-        """DFS perfect maze — 단일 해 보장"""
+        """알고리즘 선택 후 완전 미로 생성"""
+        if self.algo == "kruskal":
+            self._generate_kruskal()
+        elif self.algo == "wilson":
+            self._generate_wilson()
+        else:
+            self._generate_dfs()
+
+    def _generate_dfs(self):
+        """DFS perfect maze — 단일 해 보장 (기존 알고리즘)"""
         visited = [[False]*self.N for _ in range(self.N)]
         stack = [(0, 0)]
         visited[0][0] = True
@@ -160,6 +179,91 @@ class MazeEngine:
                 stack.append((nr, nc))
             else:
                 stack.pop()
+
+    def _generate_kruskal(self):
+        """Randomized Kruskal — 균일 신장 트리 (DFS 대비 더 짧은 평균 통로)"""
+        # Union-Find
+        parent = {(r, c): (r, c) for r in range(self.N) for c in range(self.N)}
+
+        def find(x):
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+            return x
+
+        def union(a, b):
+            ra, rb = find(a), find(b)
+            if ra == rb:
+                return False
+            parent[ra] = rb
+            return True
+
+        # 모든 내부 엣지 수집 후 셔플
+        edges = []
+        for r in range(self.N):
+            for c in range(self.N):
+                if r + 1 < self.N:
+                    edges.append((r, c, 'S'))
+                if c + 1 < self.N:
+                    edges.append((r, c, 'E'))
+        random.shuffle(edges)
+
+        for r, c, d in edges:
+            dr_map = {'S': (1, 0), 'E': (0, 1)}
+            dr, dc = dr_map[d]
+            nr, nc = r + dr, c + dc
+            if union((r, c), (nr, nc)):
+                self._remove_wall(r, c, d)
+
+    def _generate_wilson(self):
+        """Wilson's loop-erased random walk — 균일 신장 트리 (편향 없음)"""
+        in_maze = [[False] * self.N for _ in range(self.N)]
+        dirs = [(-1,0,'N'),(1,0,'S'),(0,1,'E'),(0,-1,'W')]
+        opp = {'N':'S','S':'N','E':'W','W':'E'}
+
+        # 시작 셀 지정
+        in_maze[0][0] = True
+        remaining = [(r, c) for r in range(self.N) for c in range(self.N) if not in_maze[r][c]]
+
+        while remaining:
+            # 미포함 셀에서 무작위 워크 시작
+            start = random.choice(remaining)
+            path = [start]
+            path_set = {start}
+
+            r, c = start
+            while not in_maze[r][c]:
+                dr, dc, d = random.choice(dirs)
+                nr, nc = r + dr, c + dc
+                if not (0 <= nr < self.N and 0 <= nc < self.N):
+                    continue
+                if (nr, nc) in path_set:
+                    # 루프 제거: 루프 발생 지점까지 경로 자름
+                    idx = path.index((nr, nc))
+                    for cell in path[idx + 1:]:
+                        path_set.discard(cell)
+                    path = path[:idx + 1]
+                else:
+                    path.append((nr, nc))
+                    path_set.add((nr, nc))
+                r, c = nr, nc
+
+            # 경로를 미로에 추가
+            for i in range(len(path) - 1):
+                r1, c1 = path[i]
+                r2, c2 = path[i + 1]
+                if r2 == r1 - 1:
+                    d = 'N'
+                elif r2 == r1 + 1:
+                    d = 'S'
+                elif c2 == c1 + 1:
+                    d = 'E'
+                else:
+                    d = 'W'
+                self._remove_wall(r1, c1, d)
+                in_maze[r1][c1] = True
+            in_maze[path[-1][0]][path[-1][1]] = True
+            remaining = [(r, c) for r in range(self.N) for c in range(self.N) if not in_maze[r][c]]
 
     def _solve(self) -> Optional[list]:
         """BFS — 최단 정답 경로"""
