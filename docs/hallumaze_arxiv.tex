@@ -87,6 +87,9 @@ HaluEval \citep{ji2023halueval} & QA/Dialog & Hall.\ rate & No & No \\
 FActScoring \citep{min2023factscoring} & Biography & Atomic prec. & No & Yes \\
 MMLU \citep{hendrycks2021mmlu} & MCQ & Accuracy & No & Yes \\
 BabyAI \citep{chevalier2019babyai} & Grid-world & Task success & No & No \\
+AgentBench \citep{liu2023agentbench} & Agent tasks & Task success & No & No \\
+WebArena \citep{zhou2023webarena} & Web navigation & Task success & No & No \\
+Reflexion \citep{shinn2023reflexion} & Reasoning & Success (cross-ep.) & Partial & No \\
 \midrule
 \textbf{HalluMaze (ours)} & Navigation & MEI, HRR, SR & \textbf{Yes} & Planned \\
 \bottomrule
@@ -96,6 +99,11 @@ BabyAI \citep{chevalier2019babyai} & Grid-world & Task success & No & No \\
 \textbf{Key gap.}
 No existing benchmark measures metacognitive \emph{recovery}---detecting and correcting errors mid-task.
 \textsc{HalluMaze} introduces HRR as the first metric targeting this function.
+
+Recent agentic benchmarks---AgentBench \citep{liu2023agentbench}, WebArena \citep{zhou2023webarena}, OSWorld---measure task success in interactive environments but do not evaluate \emph{mid-episode} metacognitive recovery.
+Reflexion \citep{shinn2023reflexion} enables verbal self-correction via episodic memory across episodes but does not isolate real-time belief updating within a single episode.
+\citet{huang2024selfcorrect} find that LLMs cannot self-correct reasoning without external feedback, but test cross-turn correction, not step-level environment-grounded recovery.
+\textsc{HalluMaze} is the first benchmark to isolate the recovery sub-process with environment-verified hallucination events---the maze topology provides ground truth, eliminating annotator judgement.
 
 \subsection{Metacognition Theory}
 
@@ -142,7 +150,7 @@ At each step, the model receives: current position, visible walls, step history,
 
 \noindent where:
 \begin{itemize}[nosep]
-  \item \textbf{HRR} (Hallucination Recovery Rate): $P(\text{correct backtrack} \mid \text{hallucination})$.
+  \item \textbf{HRR} (Hallucination Recovery Rate): $\texttt{bt\_count} / \max(\texttt{hallucination\_count}, 1)$, where $\texttt{hallucination\_count}$ counts steps where the environment returned \textsc{blocked} unexpectedly (mirage collision). This definition is \textbf{fully deterministic given the maze topology}---it does not depend on the model's expressed confidence or any threshold.
   \item \textbf{ETR} (Efficiency Ratio): Path quality relative to optimal.
   \item \textbf{AW} (Awareness): Loop detection and redundancy avoidance.
   \item \textbf{HR} (Hallucination Rate): Rate of erroneous wall beliefs (penalty).
@@ -247,11 +255,18 @@ The metacognitive deficit is universal across all 7 providers (Anthropic, Meta, 
 \section{Analysis}
 % =================================================================
 
-\subsection{Why Random Walk Wins}
+\subsection{Metacognitive Overhead vs.\ the Random Walk Baseline}
 
-The random walk achieves MEI$=$0.900 because it never ``believes'' its moves will succeed---it simply tries until one works, achieving HRR$=$1.0 by construction.
-LLMs, by contrast, form confident beliefs that become anchored even under contradictory feedback.
-This reveals a \textbf{metacognitive anchoring bias}: LLMs trained on text prediction learn to maintain confident world models rather than updating them efficiently under environmental contradiction.
+The random walk achieves HRR$=$1.0 \emph{by construction}: it has no prior beliefs to update, so any \textsc{blocked} response is followed by a new random direction.
+This is not metacognitive competence---it is \textbf{belief-free reactivity}.
+A random walk cannot ``fail to recover'' because it never forms the prior belief that would need revising.
+
+LLMs form world models that predict whether a move will succeed.
+When this prediction is contradicted by the environment (a mirage collision), the model must suppress its prior and update its maze representation.
+The gap between LLM MEI and the random walk baseline should therefore be interpreted as \textbf{metacognitive overhead}---the cost of holding and revising beliefs relative to a memoryless agent---not as evidence that random behavior is cognitively superior.
+Concretely, Claude-3.7-Sonnet achieves SR$=$56.7\% vs.\ random walk SR$=$100\%, demonstrating that task completion requires competence beyond random recovery.
+
+This distinction clarifies why \textbf{metacognitive anchoring bias} is the operative failure mode: LLMs trained on text prediction learn to maintain confident world models rather than updating them under environmental contradiction, resulting in persistent mirage re-collision patterns.
 
 \subsection{Calibration Analysis}
 
@@ -276,11 +291,11 @@ This is consistent with \citet{huang2024selfcorrect}, who find that LLMs cannot 
 \begin{itemize}[nosep]
   \item \textbf{No human baseline}: Human performance is required to establish absolute scale (planned via Prolific, $n{\geq}25$).
   \item \textbf{DFS maze bias}: Recursive DFS generates long corridors; Kruskal/Wilson's alternatives are planned for structural diversity.
-  \item \textbf{Temperature stochasticity}: Test-retest reliability (ICC) not yet measured.
-  \item \textbf{No 9$\times$9 condition}: Size scaling study not yet complete.
+  \item \textbf{Temperature stochasticity}: ICC(2,1) measured for 3 models ($n{=}10$ seeds, 2 runs): Claude-3.7-Sonnet ICC$=$0.664 (moderate), Llama-4-Maverick$=$0.330 (poor), GLM-4.7$=$0.156 (poor). Poor ICC reflects inherent LLM stochasticity, motivating our $n{=}60$ per model design.
+  \item \textbf{Size scaling}: 9$\times$9 condition completed for GLM-4.7 ($n{=}30$): MEI$=$0.637 (5$\times$5) $\to$ 0.588 (7$\times$7) $\to$ 0.487 (9$\times$9); HRR monotonically declines; SR$=$0\% at 9$\times$9. Larger mazes amplify metacognitive deficit.
 \end{itemize}
 
-\subsection{Multi-Agent Reasoning Layers}
+\subsection{Multi-Agent Reasoning Layers \textnormal{\small(Preliminary, $n{=}10$, single model)}}
 
 We tested whether decomposing navigation into a multi-stage LLM pipeline improves metacognitive performance, using MiniMax-M2.5 as a case study ($n{=}10$).
 
@@ -294,9 +309,9 @@ When the Solver stage produces an invalid path, errors cascade through subsequen
 
 \begin{enumerate}[nosep]
   \item Human baseline via Prolific ($n{\geq}25$, same protocol).
-  \item ICC reliability (3 models $\times$ 10 seeds $\times$ 2 runs, target ${>}0.8$).
+  \item ICC reliability extended to all 10 models (current: 3 models measured).
   \item Ecological validity (Spearman correlation with TruthfulQA/HaluEval public scores).
-  \item 9$\times$9 maze condition (size scaling study).
+  \item 9$\times$9 scaling extended to all 10 models (current: GLM-4.7 only, $n{=}30$).
   \item Alternative maze algorithms (Kruskal, Wilson's).
   \item PyPI package \texttt{hallumaze} with full evaluation server.
 \end{enumerate}
@@ -364,9 +379,7 @@ The model receives \texttt{wall=1} in its initial context but discovers \texttt{
 This creates a detectable contradiction that a metacognitively competent model should detect (monitoring), update (control), and exploit on subsequent steps.
 
 \textbf{Hallucination detection rule.}
-A hallucination event is logged when:
-(a) model asserts confidence $\geq 60$\% for a direction AND environment rejects, or
-(b) model refuses with confidence $\geq 60$\% AND the mirage trigger fires.
+A hallucination event is logged when the environment returns \textsc{blocked} for a move the model attempted (mirage collision). This definition is \textbf{threshold-free}---it does not depend on the model's expressed confidence. HRR is then computed as $\texttt{bt\_count} / \max(\texttt{hallucination\_count}, 1)$, fully determined by maze topology and model trajectory.
 
 \textbf{Recovery detection rule.}
 HRR credit is issued when, within 3 steps of a hallucination event, the model successfully traverses the mirage passage.

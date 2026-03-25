@@ -1,3 +1,10 @@
+v1.11 20260325 — arXiv package v1.5 ready for submission
+    - docs/hallumaze_arxiv.tex: 9 updates (AgentBench/WebArena table, HRR threshold-free,
+      Random Walk reframe, ICC+9x9 results in limitations, MARL preliminary label,
+      Appendix C hallucination rule fix)
+    - docs/hallumaze.bib: Add liu2023agentbench, zhou2023webarena
+    - hallumaze_arxiv_submit.tar.gz: rebuilt with v1.5 LaTeX
+
 v1.10 20260325 — 9x9 scaling experiment completed (GLM-4.7 n=30)
     - GLM-4.7 크기 스케일링: 5x5 MEI=0.637 → 7x7 MEI=0.588 → 9x9 MEI=0.487
     - HRR도 동일 하강: 5x5 0.744 → 7x7 0.697 → 9x9 0.447
