@@ -1,3 +1,14 @@
+v1.12 20260325 — MARL Phase 1 efficient script + AGGREGATE_STATS fix + efficiency research
+    - scripts/run_marl_efficient_glm.py: Phase 1 adaptive token budgeting (S2/S5 dynamic)
+      - S1 mirage gate: simple(no mirage)=S2:1500/S5:800, complex=S2:3000/S5:1500
+      - Removes 8000-token floor; tracks complexity class + token savings per trial
+      - Expected: 40-55% token reduction vs v2, minimal MEI impact
+    - index.html: AGGREGATE_STATS avg_hc corrected from analysis_final2.json
+      - Claude 0.4→0.85, Maverick 0.0→1.8, Qwen 4.0→2.27, GPT-4o-mini 0.8→1.28, GPT-4o 0.0→0.7
+    - docs/research/20260325-marl-efficiency-research.md: expert-research-v2 result
+      - 3-phase roadmap: token budgeting → objective gate → stage merge
+    - docs/DOC_INDEX.md: updated index
+
 v1.11 20260325 — arXiv package v1.5 ready for submission
     - docs/hallumaze_arxiv.tex: 9 updates (AgentBench/WebArena table, HRR threshold-free,
       Random Walk reframe, ICC+9x9 results in limitations, MARL preliminary label,
