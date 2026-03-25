@@ -1,5 +1,5 @@
 # HalluMaze: A Maze Navigation Benchmark for LLM Metacognitive Error Recovery
-**Draft**: 2026-03-24 v1.4 | **Target**: NeurIPS 2026 Datasets & Benchmarks / EMNLP Findings
+**Draft**: 2026-03-25 v1.5 | **Target**: NeurIPS 2026 Datasets & Benchmarks / EMNLP Findings
 **Author**: Jayone (Be2Jay) | **Code**: https://github.com/jaytoone/HalluMaze | **Data**: https://huggingface.co/datasets/Be2Jay/hallumaze-benchmark | **Demo**: https://huggingface.co/spaces/Be2Jay/hallumaze
 
 ---
@@ -43,9 +43,14 @@ Our main findings:
 | FActScoring [Min+23] | Biography | Atomic fact precision | No | Yes |
 | MMLU [Hendrycks+21] | MCQ | Accuracy | No | Yes |
 | BabyAI [Chevalier+19] | Grid-world | Task success | No | No |
+| AgentBench [Liu+23] | Agent tasks | Task success | No | No |
+| WebArena [Zhou+23] | Web navigation | Task success | No | No |
+| Reflexion [Shinn+23] | Reasoning | Task success (cross-episode) | Partial | No |
 | **HalluMaze (ours)** | Navigation | MEI, HRR, SR | **Yes** | Planned |
 
 **Key gap**: No existing benchmark measures metacognitive *recovery* (detecting + correcting errors mid-task). HalluMaze introduces HRR as the first metric targeting this function.
+
+Recent agentic evaluation benchmarks — AgentBench [Liu+23], WebArena [Zhou+23], OSWorld, τ-bench — measure task success rate in interactive environments but do not evaluate metacognitive recovery: specifically, whether models detect and correct their own errors *mid-task*. Reflexion [Shinn+23] enables verbal self-correction via episodic memory across episodes but does not isolate real-time belief updating from task completion within a single episode. Huang et al. [2024] "LLMs cannot self-correct reasoning yet" tests reasoning self-correction but lacks closed-world verification of the correction signal. HalluMaze is the first benchmark to isolate the recovery sub-process with environment-verified hallucination events — the maze topology provides ground truth, eliminating the need for annotator judgement on whether a correction was warranted.
 
 ### 2.2 Metacognition Theory
 
@@ -83,7 +88,7 @@ Models navigate a text-described NxN maze from start [0,0] to goal [N-1,N-1]. At
 - **MEI (Metacognitive Escape Index)**: `0.4×HRR + 0.3×ETR + 0.2×AW − 0.1×HR`
 
 **Secondary**:
-- **HRR (Hallucination Recovery Rate)**: P(correct backtrack | hallucination)
+- **HRR (Hallucination Recovery Rate)**: P(correct backtrack | hallucination), computed as `bt_count / max(hallucination_count, 1)`. `hallucination_count` is the number of steps where the environment returned BLOCKED unexpectedly (model moved into a mirage wall). This definition is **fully deterministic given the maze topology** — it does not depend on the model's expressed confidence or any threshold, making HRR independent of confidence calibration choices.
 - **BRS (Backtrack Rationality Score)**: quality of backtrack decisions
 - **OCE/UCE**: Overconfidence/Underconfidence Calibration Error (decomposed from CE)
 
@@ -176,11 +181,15 @@ Glass's δ range: 0.554–2.129. BH-FDR (q=0.05): all 10 models confirmed signif
 
 The HRR–SR dissociation (F2) raises a critical question: do standard benchmarks measure what matters for deployed AI safety? A model that frequently hallucinates but always self-corrects (high HRR, low SR) may be preferable to one that rarely hallucinates but never self-corrects when it does (high SR, low HRR). HalluMaze operationalizes this distinction.
 
-### 5.2 Why Random Walk Wins
+### 5.2 Metacognitive Overhead vs. the Random Walk Baseline
 
-The random walk achieves MEI=0.900 because it never "believes" its moves will succeed — it simply tries until one works, achieving HRR=1.0 by construction (every collision is "recovered from" via random selection). LLMs, by contrast, form confident beliefs that become anchored even under contradictory feedback.
+The random walk achieves HRR=1.0 by construction: it has no prior beliefs to update, so any BLOCKED response is simply followed by a new random direction. This is not metacognitive competence — it is *belief-free reactivity*. A random walk cannot "fail to recover" because it never forms the prior belief that would need revising.
 
-This reveals a **metacognitive anchoring bias**: LLMs trained on text prediction learn to maintain confident world models rather than updating them efficiently under environmental contradiction.
+LLMs, by contrast, form world models that predict whether a move will succeed. When this prediction is contradicted by the environment (a mirage collision), the model must suppress its prior and update its representation of the maze. This is the core metacognitive operation. The gap between LLM MEI and the random walk baseline should therefore be interpreted as **metacognitive overhead** — the cost of holding and revising beliefs relative to a memoryless agent — not as evidence that random behavior is cognitively superior.
+
+Concretely: Claude-3.7-Sonnet achieves SR=56.7% vs. random walk SR=100%, demonstrating that task completion requires competence beyond random recovery. The benchmark is designed to measure the recovery sub-process in isolation; interpreting random walk MEI as a "ceiling" or "target" would conflate the navigation task with its metacognitive component.
+
+This distinction also clarifies why **metacognitive anchoring bias** is the operative failure mode: LLMs trained on text prediction learn to maintain confident world models rather than updating them under environmental contradiction, resulting in persistent mirage re-collision patterns documented in the trajectory analysis.
 
 ### 5.3 Calibration Analysis
 
@@ -203,9 +212,9 @@ Claude-3.7-Sonnet ($3.00/M) achieves MEI=0.774, HRR=0.875. Despite similar prici
 - **Temperature stochasticity**: Test-retest reliability (ICC) not yet measured
 - **No 9×9 condition**: Size scaling study not yet complete
 
-### 6.2 Multi-Agent Reasoning Layers (MARL) Experiment
+### 6.2 Multi-Agent Reasoning Layers (MARL) Experiment *(Preliminary, n=10, single model)*
 
-We tested whether decomposing navigation into a multi-stage LLM pipeline improves metacognitive performance, using MiniMax-M2.5 as a case study (n=10, seeds 1001–5005 × {5×5, 7×7}).
+We tested whether decomposing navigation into a multi-stage LLM pipeline improves metacognitive performance, using MiniMax-M2.5 as a case study (n=10, seeds 1001–5005 × {5×5, 7×7}). **Results should be treated as exploratory**: sample size is insufficient for statistical inference, and generalization to other models is untested.
 
 **MARL v1 (naive 5-stage pipeline)**: Hypothesis → Solver → Auditor → Verifier → Refiner. Each stage receives the previous stage's text output. Result: **MEI=0.548 vs baseline 0.593 (−7.6%)**. Root cause: when Stage 2 (Solver) produces an invalid path, the error cascades through S3–S5 without correction. Context drift compounds as later stages lose access to the original maze structure.
 
@@ -241,6 +250,8 @@ HalluMaze introduces metacognitive recovery as a measurable, benchmarkable LLM c
 ## References
 
 - Chevalier-Boisvert, M. et al. (2019). BabyAI: A solvable challenge for grounded language learning. *NeurIPS 2019*.
+- Liu, X. et al. (2023). AgentBench: Evaluating LLMs as agents. *ICLR 2024*.
+- Zhou, S. et al. (2023). WebArena: A realistic web environment for building autonomous agents. *ICLR 2024*.
 - Flavell, J.H. (1979). Metacognition and cognitive monitoring: A new area of cognitive-developmental inquiry. *American Psychologist*, 34(10), 906–911.
 - Guo, C. et al. (2017). On calibration of modern neural networks. *Proceedings of ICML 2017*.
 - Hendrycks, D. et al. (2021). Measuring massive multitask language understanding. *ICLR 2021*.

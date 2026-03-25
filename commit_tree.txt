@@ -1,3 +1,11 @@
+v1.7 20260325 — paper draft v1.5: expert-review-driven improvements
+    - Section 2.1: Add AgentBench, WebArena, Reflexion, Huang+2024 to related work table + paragraph
+    - Section 3.3: HRR clarification — threshold-free, fully deterministic (environment-based)
+    - Section 5.2: Random Walk reframing — metacognitive overhead, not cognitive inferiority
+    - Section 6.2: MARL labeled "(Preliminary, n=10, single model)" with scope caveat
+    - References: Add Liu+23 (AgentBench), Zhou+23 (WebArena)
+    - Draft bumped to v1.5 (2026-03-25)
+
 v1.6 20260325 1114 — race viewer final: n=60 aggregate stats + HF post v2
     - index.html: AGGREGATE_STATS (n=60) — bar charts & radar now use real aggregate stats
     - index.html: buildPerformanceBars + drawRadar patched to use AGGREGATE_STATS
