@@ -97,3 +97,6 @@ MARL 5-stage의 효율화는 3단계로 접근:
 - SelfBudgeter (arxiv 2505.11274)
 - AgentPrune (arxiv 2410.02506)
 - TALE (ACL 2025, aclanthology 2025.findings-acl.1274)
+
+## Related
+- [[projects/Miro/research/20260323-hallumaze-paper-draft|20260323-hallumaze-paper-draft]]

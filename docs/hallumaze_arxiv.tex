@@ -305,6 +305,12 @@ When the Solver stage produces an invalid path, errors cascade through subsequen
 \textbf{MARL v2} (3 deterministic fixes: Path Validator Gate, Conditional Pipeline, Maze Context Re-injection): MEI$=$0.803 vs.\ baseline 0.593 ($+35.4$\%).
 \textbf{Key lesson}: LLM self-correction alone fails; external grounding via deterministic validation succeeds \citep{huang2024selfcorrect, shinn2023reflexion}.
 
+\textbf{MARL Efficiency experiments} (GLM-4.7, $n{=}10$): Having established quality, we pursued dramatic token/time reduction.
+\emph{Efficient v1} (adaptive token budget: S2$=$2{,}500--5{,}000, S5$=$1{,}200--2{,}500 tokens vs.\ 8{,}000 fixed): MEI$=$0.697 ($-13.2$\% vs.\ v2) but \textbf{64\% token reduction}.
+\emph{Efficient v2} (+ S2 PathValidator Early Exit: skip S3--S4 when S2 produces a valid path): MEI$=$0.802 ($-0.1$\% vs.\ v2), SR$=$0.500, \textbf{64\% token reduction}, 20\% early-exit rate (3 API calls vs.\ 5+).
+Early-exit cases reduced per-trial wall-clock time from ${\sim}$417\,s to ${\sim}$80\,s (5$\times$).
+\textbf{Key lesson}: Deterministic path validation provides an objective early-exit gate that maintains quality while achieving dramatic efficiency gains without self-reported confidence gating.
+
 \subsection{Planned Extensions}
 
 \begin{enumerate}[nosep]

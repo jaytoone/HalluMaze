@@ -1,3 +1,14 @@
+v1.13 20260325 — MARL efficiency experiments complete (v1+v2) + paper Section 6 update
+    - experiment_results/marl_efficient_glm.json: Efficient v1 results (n=10)
+      - MEI=0.697 (-13.2% vs v2), 64.2% token savings, all complex
+    - experiment_results/marl_efficient_v2_glm.json: Efficient v2 results (n=10)
+      - MEI=0.8017 (≈v2=0.803, -0.1%), SR=0.500, HRR=0.900
+      - 64.2% token savings, 20% early exit (3 calls vs 5+)
+      - Early exit cases: 80s vs avg 417s (5x faster)
+    - scripts/run_marl_efficient_v2_glm.py: S2 early exit + size-adaptive budget + time tracking
+    - docs/hallumaze_arxiv.tex: Add MARL efficiency paragraph to Section 6.2
+    - docs/DOC_INDEX.md: Add experiment result entries
+
 v1.12 20260325 — MARL Phase 1 efficient script + AGGREGATE_STATS fix + efficiency research
     - scripts/run_marl_efficient_glm.py: Phase 1 adaptive token budgeting (S2/S5 dynamic)
       - S1 mirage gate: simple(no mirage)=S2:1500/S5:800, complex=S2:3000/S5:1500
