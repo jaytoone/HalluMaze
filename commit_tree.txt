@@ -1,3 +1,11 @@
+v1.9 20260325 — ICC + Temperature sweep experiments completed
+    - ICC(2,1) results: Claude=0.664(moderate), GLM=0.156(poor), Llama=0.330(poor)
+    - Temp sweep GLM-4.7: t=0.3 highest MEI=0.683; t=0.0 lowest MEI=0.467
+    - Finding: high stochasticity justifies n=60 per model design
+    - experiment_results/icc_results.json (3 models, 10 seeds, 2 runs)
+    - experiment_results/temperature_sweep.json (GLM-4.7, 10 seeds, 4 temps)
+    - scripts: _openrouter_patch.py (multi-provider), run_icc_experiment.py (merge fix)
+
 v1.8 20260325 — residual limitations resolved (maze algos + experiment scripts)
     - files/hallumaze.py: Kruskal + Wilson's maze algorithms (MazeEngine algo param)
     - MazeConfig: maze_algo field ("dfs"|"kruskal"|"wilson")

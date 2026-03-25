@@ -82,7 +82,7 @@ def make_provider(model_key: str) -> LLMProvider:
 
     class OpenRouterProvider(LLMProvider):
         def __init__(self):
-            super().__init__(provider="openrouter", model=cfg["display"])
+            super().__init__(provider="openrouter", api_key=api_key, model=cfg["display"])
             self._client = client
             self._model_id = cfg["id"]
 
