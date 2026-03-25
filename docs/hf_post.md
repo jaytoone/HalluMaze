@@ -129,3 +129,6 @@ Key lesson: LLM self-correction alone (v1) fails. External grounding via determi
 ---
 
 *HalluMaze is a research benchmark targeting NeurIPS 2026. Methodology details, full statistical appendix, and paper draft are available in the repository.*
+
+## Related
+- [[projects/Miro/research/20260323-hallumaze-paper-draft|20260323-hallumaze-paper-draft]]

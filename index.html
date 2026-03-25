@@ -3,770 +3,1634 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HalluMaze: A Maze Navigation Benchmark for LLM Metacognitive Error Recovery</title>
-<meta name="description" content="HalluMaze benchmark measures LLM metacognitive error recovery through maze navigation. 8 LLMs tested, all significantly below random walk baseline.">
+<title>HalluMaze Race — 10 Model Comparison</title>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0c0e14;--bg2:#12151e;--bg3:#181c28;--bg4:#1e2333;
-  --tx:#c8cdd8;--tx2:#8891a5;--tx3:#5a6378;
-  --ac1:#4f6df5;--ac2:#7c5bf5;--ac3:#a855f7;
-  --gd:linear-gradient(135deg,#4f6df5,#7c5bf5,#a855f7);
-  --gold:#fbbf24;--silver:#94a3b8;--bronze:#d97706;
-  --green:#34d399;--red:#f87171;--cyan:#22d3ee;
-  --mono:'JetBrains Mono','Fira Code','SF Mono',monospace;
-  --sans:'Inter','SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;
-  --radius:8px;--radius-lg:12px;
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap');
+
+:root {
+  --bg: #080a10;
+  --bg2: #0e1118;
+  --bg3: #141720;
+  --border: #1e2235;
+  --border2: #252a3d;
+  --text: #e2e8f0;
+  --text2: #8892a4;
+  --text3: #535c6e;
+  --c0: #00d4aa;  /* MiniMax teal */
+  --c1: #a78bfa;  /* GLM purple */
+  --c2: #fbbf24;  /* Llama amber */
+  --c3: #34d399;  /* GPT emerald */
+  --c4: #60a5fa;  /* Gemini blue */
+  --c5: #f472b6;  /* Haiku pink */
+  --accent: #00d4aa;
+  --red: #f87171;
+  --orange: #fb923c;
+  --yellow: #fbbf24;
+  --gold: #ffd700;
 }
-html{scroll-behavior:smooth;scroll-padding-top:72px}
-body{font-family:var(--sans);background:var(--bg);color:var(--tx);line-height:1.65;font-size:15px}
-body.expert-mode .general-only{display:none}
-body:not(.expert-mode) .expert-only{display:none}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(12,14,20,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(79,109,245,0.12)}
-.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;height:64px;padding:0 24px;gap:8px}
-.nav-logo{font-family:var(--mono);font-weight:700;font-size:18px;background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px;white-space:nowrap}
-.nav-links{display:flex;gap:2px;margin-left:auto;flex-wrap:wrap}
-.nav-links a{color:var(--tx2);text-decoration:none;font-size:12px;padding:6px 10px;border-radius:6px;transition:all 0.2s;white-space:nowrap}
-.nav-links a:hover,.nav-links a.active{color:var(--tx);background:var(--bg3)}
-.mode-toggle{margin-left:12px;padding:6px 14px;border-radius:20px;border:1px solid var(--ac1);background:transparent;color:var(--ac1);font-size:11px;font-family:var(--mono);cursor:pointer;transition:all 0.2s;white-space:nowrap}
-.mode-toggle:hover{background:var(--ac1);color:#fff}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* SECTIONS */
-section{padding:80px 24px;max-width:1200px;margin:0 auto}
-.section-label{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--ac1);margin-bottom:8px}
-.section-title{font-size:28px;font-weight:700;margin-bottom:16px;letter-spacing:-0.5px}
-.section-subtitle{color:var(--tx2);font-size:15px;max-width:680px;margin-bottom:40px}
-
-/* HERO */
-.hero{padding-top:140px;padding-bottom:100px;text-align:center}
-.hero .section-label{font-size:13px;margin-bottom:16px}
-.hero-title{font-size:clamp(32px,5vw,52px);font-weight:800;letter-spacing:-1.5px;line-height:1.15;margin-bottom:20px}
-.hero-title .gradient{background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-sub{color:var(--tx2);font-size:17px;max-width:640px;margin:0 auto 32px}
-.hero-badges{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:40px}
-.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12px;font-family:var(--mono);border:1px solid var(--bg4)}
-.badge-venue{background:rgba(79,109,245,0.1);border-color:rgba(79,109,245,0.3);color:var(--ac1)}
-.badge-stat{background:rgba(52,211,153,0.08);border-color:rgba(52,211,153,0.25);color:var(--green)}
-.hero-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;max-width:720px;margin:0 auto}
-.hero-stat{background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius-lg);padding:20px 16px;text-align:center}
-.hero-stat .val{font-family:var(--mono);font-size:28px;font-weight:700;background:var(--gd);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-stat .lbl{font-size:11px;color:var(--tx2);margin-top:4px;text-transform:uppercase;letter-spacing:1px}
-
-/* ABSTRACT */
-.abstract-box{background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius-lg);padding:32px;position:relative;overflow:hidden}
-.abstract-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gd)}
-.abstract-text{color:var(--tx);line-height:1.8;font-size:14.5px}
-.abstract-text strong{color:#fff}
-.keywords{margin-top:20px;display:flex;gap:8px;flex-wrap:wrap}
-.kw{padding:4px 10px;border-radius:12px;font-size:11px;background:var(--bg3);color:var(--tx2);font-family:var(--mono)}
-
-/* LEADERBOARD */
-.lb-table{width:100%;border-collapse:separate;border-spacing:0;background:var(--bg2);border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--bg4)}
-.lb-table thead{background:var(--bg3)}
-.lb-table th{padding:12px 16px;font-size:11px;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;color:var(--tx2);text-align:left;border-bottom:1px solid var(--bg4)}
-.lb-table td{padding:14px 16px;border-bottom:1px solid rgba(30,35,51,0.6);font-size:13px;vertical-align:middle}
-.lb-table tr:last-child td{border-bottom:none}
-.lb-table tr.baseline{background:rgba(79,109,245,0.04)}
-.lb-table tr.baseline td{color:var(--tx3);font-style:italic}
-.rank-badge{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-family:var(--mono);font-size:12px;font-weight:700}
-.rank-1{background:rgba(251,191,36,0.15);color:var(--gold);border:1px solid rgba(251,191,36,0.3)}
-.rank-2{background:rgba(148,163,184,0.12);color:var(--silver);border:1px solid rgba(148,163,184,0.25)}
-.rank-3{background:rgba(217,119,6,0.12);color:var(--bronze);border:1px solid rgba(217,119,6,0.25)}
-.rank-n{background:var(--bg3);color:var(--tx2);border:1px solid var(--bg4)}
-.model-name{font-weight:600;color:#fff;font-size:14px}
-.model-provider{font-size:11px;color:var(--tx3);display:block;margin-top:2px}
-.model-note{font-size:10px;padding:2px 6px;border-radius:4px;margin-left:6px;font-family:var(--mono)}
-.note-new{background:rgba(52,211,153,0.12);color:var(--green)}
-.note-prelim{background:rgba(251,191,36,0.12);color:var(--gold)}
-.mei-val{font-family:var(--mono);font-weight:700;font-size:15px;color:#fff}
-.mei-ci{font-family:var(--mono);font-size:10px;color:var(--tx3);display:block;margin-top:2px}
-.grade{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;font-family:var(--mono);font-weight:700;font-size:13px}
-.grade-a{background:rgba(52,211,153,0.15);color:var(--green);border:1px solid rgba(52,211,153,0.3)}
-.grade-b{background:rgba(79,109,245,0.12);color:var(--ac1);border:1px solid rgba(79,109,245,0.25)}
-.grade-c{background:rgba(251,191,36,0.12);color:var(--gold);border:1px solid rgba(251,191,36,0.25)}
-.grade-d{background:rgba(248,113,113,0.12);color:var(--red);border:1px solid rgba(248,113,113,0.25)}
-.grade-f{background:rgba(180,50,50,0.18);color:#f87171;border:1px solid rgba(180,50,50,0.4);font-weight:700}
-.progress-cell{min-width:120px}
-.progress-bar{height:6px;border-radius:3px;background:var(--bg4);overflow:hidden;margin-top:4px}
-.progress-fill{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(0.22,1,0.36,1)}
-.fill-sr{background:var(--ac1)}
-.fill-hrr{background:var(--green)}
-.progress-label{font-family:var(--mono);font-size:11px;color:var(--tx2)}
-
-/* CARDS */
-.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-.card{background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius-lg);padding:28px;transition:border-color 0.2s}
-.card:hover{border-color:rgba(79,109,245,0.3)}
-.card-tag{font-family:var(--mono);font-size:11px;color:var(--ac1);margin-bottom:8px}
-.card-title{font-size:16px;font-weight:600;margin-bottom:8px;color:#fff}
-.card-body{font-size:13px;color:var(--tx2);line-height:1.7}
-
-/* MEI FORMULA */
-.formula-box{background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius-lg);padding:32px;text-align:center;margin:32px 0}
-.formula{font-family:var(--mono);font-size:clamp(14px,2.5vw,20px);color:#fff;letter-spacing:0.5px}
-.formula .w{color:var(--ac1)}
-.formula .comp{color:var(--green)}
-.formula .neg{color:var(--red)}
-.weight-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:24px}
-.weight-item{text-align:center;padding:16px;background:var(--bg3);border-radius:var(--radius)}
-.weight-val{font-family:var(--mono);font-size:24px;font-weight:700;color:var(--ac1)}
-.weight-name{font-size:12px;color:var(--tx2);margin-top:4px}
-.weight-desc{font-size:11px;color:var(--tx3);margin-top:2px}
-
-/* SVG SCATTER */
-.scatter-container{background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius-lg);padding:24px;margin:32px 0;overflow-x:auto}
-.scatter-title{font-family:var(--mono);font-size:13px;color:var(--tx2);margin-bottom:16px;text-align:center}
-
-/* ACCORDION */
-.accordion-item{background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius);margin-bottom:8px;overflow:hidden}
-.accordion-header{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:14px;color:#fff;transition:background 0.2s}
-.accordion-header:hover{background:var(--bg3)}
-.accordion-arrow{font-size:12px;color:var(--tx3);transition:transform 0.3s}
-.accordion-item.open .accordion-arrow{transform:rotate(180deg)}
-.accordion-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease}
-.accordion-item.open .accordion-body{max-height:600px}
-.accordion-content{padding:0 20px 16px;font-size:13px;color:var(--tx2);line-height:1.7}
-
-/* CITATION */
-.cite-box{background:var(--bg3);border-radius:var(--radius);padding:20px;font-family:var(--mono);font-size:12px;color:var(--tx2);line-height:1.8;position:relative;white-space:pre-wrap;word-break:break-all}
-.copy-btn{position:absolute;top:12px;right:12px;padding:6px 12px;border-radius:6px;border:1px solid var(--bg4);background:var(--bg2);color:var(--tx2);font-size:11px;font-family:var(--mono);cursor:pointer;transition:all 0.2s}
-.copy-btn:hover{background:var(--ac1);color:#fff;border-color:var(--ac1)}
-
-/* STAT TABLE */
-.stat-table{width:100%;border-collapse:collapse;margin:16px 0}
-.stat-table th,.stat-table td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--bg4);font-size:13px}
-.stat-table th{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--tx2)}
-.stat-table td{color:var(--tx)}
-.stat-table .sig{color:var(--green);font-family:var(--mono)}
-
-/* FOOTER */
-footer{border-top:1px solid var(--bg4);padding:40px 24px;text-align:center;color:var(--tx3);font-size:12px}
-footer a{color:var(--ac1);text-decoration:none}
-
-/* RESPONSIVE */
-@media(max-width:768px){
-  .nav-links{display:none}
-  .lb-table{font-size:12px}
-  .lb-table th,.lb-table td{padding:8px 10px}
-  section{padding:60px 16px}
-  .hero{padding-top:100px}
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  overflow: hidden;
 }
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  user-select: none;
+}
+
+/* ── HEADER ── */
+#header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 20px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  min-height: 52px;
+}
+
+#title {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+}
+#title span { color: var(--text3); font-weight: 400; }
+
+.meta-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+#controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.ctrl-btn {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 5px 12px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.ctrl-btn:hover { background: var(--border2); border-color: var(--accent); color: var(--accent); }
+.ctrl-btn.active { background: var(--accent); color: #080a10; border-color: var(--accent); font-weight: 600; }
+
+#play-btn {
+  background: var(--accent);
+  color: #080a10;
+  border-color: var(--accent);
+  font-weight: 700;
+  min-width: 72px;
+}
+#play-btn:hover { opacity: 0.85; }
+
+.step-counter {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--text2);
+  white-space: nowrap;
+}
+
+.speed-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+}
+#speed-slider {
+  width: 70px;
+  accent-color: var(--accent);
+}
+
+.view-group { display: flex; gap: 2px; }
+
+/* ── PROGRESS BAR ── */
+#progress-wrap {
+  padding: 0 20px 6px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+#progress-track {
+  height: 4px;
+  background: var(--bg3);
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+}
+#progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.1s;
+}
+
+/* ── MAIN AREA ── */
+#main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 12px 16px 8px;
+  gap: 10px;
+}
+
+/* ── VIEWS ── */
+#view-grid, #view-overlay, #view-timeline {
+  display: none;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Grid view */
+#view-grid {
+  flex-direction: column;
+  gap: 10px;
+}
+#grid-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  flex: 1;
+  min-height: 0;
+}
+
+.model-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  min-width: 0;
+}
+.model-card.active-step {
+  border-color: var(--card-color, var(--accent));
+  box-shadow: 0 0 16px -4px var(--card-color, var(--accent));
+}
+.model-card.solved-glow {
+  border-color: var(--gold);
+  box-shadow: 0 0 20px -4px var(--gold);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px 5px;
+  border-bottom: 1px solid var(--border);
+}
+.card-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.card-name {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.badge-solving { background: #1e3a2f; color: #34d399; }
+.badge-solved  { background: #2d2500; color: #ffd700; }
+.badge-stuck   { background: #2d1a1a; color: #f87171; }
+.badge-waiting { background: var(--bg3); color: var(--text3); }
+
+.card-canvas-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  min-height: 0;
+}
+canvas.maze-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.card-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--border);
+}
+.stat-cell {
+  padding: 4px 6px;
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
+.stat-cell:last-child { border-right: none; }
+.stat-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  display: block;
+}
+.stat-lbl {
+  font-size: 8px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.card-mei {
+  padding: 4px 10px 6px;
+  border-top: 1px solid var(--border);
+}
+.mei-track {
+  height: 3px;
+  background: var(--bg3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.mei-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+
+/* ── OVERLAY VIEW ── */
+#view-overlay {
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+#overlay-canvas-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+canvas#overlay-canvas {
+  display: block;
+}
+#overlay-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 160px;
+}
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  transition: border-color 0.2s;
+}
+.legend-row.active-step { border-color: var(--row-color); }
+.legend-color {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.legend-name {
+  font-size: 12px;
+  font-weight: 600;
+  flex: 1;
+}
+.legend-steps {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+}
+
+/* ── TIMELINE VIEW ── */
+#view-timeline {
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+}
+.timeline-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.tl-name {
+  font-size: 11px;
+  font-weight: 700;
+  width: 100px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tl-bar-wrap {
+  flex: 1;
+  position: relative;
+  height: 28px;
+  background: var(--bg3);
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.tl-segment {
+  position: absolute;
+  top: 0; height: 100%;
+  border-right: 1px solid var(--bg);
+  transition: opacity 0.15s;
+}
+.tl-segment:hover { opacity: 0.8; }
+.tl-playhead {
+  position: absolute;
+  top: -2px; bottom: -2px;
+  width: 2px;
+  background: white;
+  pointer-events: none;
+  transition: left 0.1s;
+  z-index: 10;
+}
+.tl-stats {
+  display: flex;
+  gap: 8px;
+  min-width: 120px;
+}
+.tl-stat {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  white-space: nowrap;
+}
+.tl-stat span { color: var(--text2); }
+
+/* ── LEADERBOARD ── */
+#leaderboard {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+#lb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+}
+#lb-table thead tr {
+  background: var(--bg3);
+}
+#lb-table th {
+  padding: 5px 10px;
+  text-align: left;
+  color: var(--text3);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  white-space: nowrap;
+}
+#lb-table td {
+  padding: 4px 10px;
+  border-top: 1px solid var(--border);
+  white-space: nowrap;
+}
+#lb-table tr.active-row td { background: rgba(255,255,255,0.03); }
+.lb-rank { color: var(--text3); font-size: 10px; }
+.lb-model { font-weight: 600; font-size: 11px; }
+.lb-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; }
+.lb-mei-bar {
+  display: inline-block;
+  height: 3px;
+  border-radius: 2px;
+  vertical-align: middle;
+  transition: width 0.3s;
+}
+
+/* ── METRICS PANEL ── */
+/* Radar standalone panel */
+#radar-panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#radar-panel h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 10px;
+  font-weight: 700;
+  align-self: flex-start;
+}
+/* Performance comparison panel (grid tab only) */
+#metrics-panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+#metrics-panel h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.metrics-bars-section {
+  width: 100%;
+}
+.metric-group {
+  margin-bottom: 10px;
+}
+.metric-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text3);
+  margin-bottom: 4px;
+}
+.metric-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 3px;
+}
+.metric-model-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--text3);
+  width: 78px;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.metric-bar-track {
+  flex: 1;
+  height: 8px;
+  background: var(--bg3);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.metric-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+.metric-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--text2);
+  width: 72px;
+  text-align: right;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.radar-section {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.radar-section h4 {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+#radar-canvas {
+  display: block;
+}
+#radar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  margin-top: 8px;
+  justify-content: center;
+  max-width: 240px;
+}
+.radar-leg-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 1px 4px;
+  border-radius: 3px;
+  transition: background 0.15s, opacity 0.15s;
+}
+.radar-leg-item:hover { background: rgba(255,255,255,0.06); }
+.radar-leg-item.dimmed { opacity: 0.25; }
+.radar-leg-item.selected { background: rgba(255,255,255,0.1); }
+.radar-leg-swatch {
+  width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0;
+}
+.radar-leg-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  color: rgba(255,255,255,0.5);
+  white-space: nowrap;
+}
+
+/* ── HALL FLASH OVERLAY ── */
+.hall-flash {
+  position: absolute;
+  inset: 0;
+  background: rgba(248,113,113,0.15);
+  border-radius: 8px;
+  pointer-events: none;
+  animation: flashAnim 0.6s ease-out forwards;
+}
+@keyframes flashAnim {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── CROWN ── */
+.crown-overlay {
+  position: absolute;
+  top: 4px; right: 6px;
+  font-size: 16px;
+  animation: crownPop 0.4s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+}
+@keyframes crownPop {
+  0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+/* Keyboard hint */
+#kbd-hint {
+  position: fixed;
+  bottom: 10px; right: 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  pointer-events: none;
+}
+kbd {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  padding: 1px 4px;
+}
+/* ── Layout fix: maze grid fully visible, scroll allowed ── */
+html { overflow: auto !important; }
+body { height: auto !important; min-height: 100vh; overflow: auto !important; }
+#main { overflow-y: visible; height: auto; min-height: 100vh; }
+
+/* Grid row: take remaining space, minimum 320px for canvas visibility */
+#grid-row { min-height: 320px; flex: 1 1 auto; }
+/* Model card: allow full content visibility */
+.model-card { overflow: visible; }
+.card-canvas-wrap { min-height: 120px; }
+
+/* Leaderboard: compact, scrollable */
+#leaderboard { max-height: 180px; overflow-y: auto; flex-shrink: 0; }
+
+/* Panels inside grid tab */
+#radar-panel { flex-shrink: 0; }
+#metrics-panel { flex-shrink: 0; }
+
+/* Canvas wraps: ensure minimum height */
+.card-canvas-wrap { min-height: 120px; }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-<div class="nav-inner">
-  <span class="nav-logo">HalluMaze</span>
-  <div class="nav-links">
-    <a href="#abstract">Abstract</a>
-    <a href="#leaderboard">Leaderboard</a>
-    <a href="#method">Method</a>
-    <a href="#findings">Findings</a>
-    <a href="#dissociation">Dissociation</a>
-    <a href="#maze">Maze Design</a>
-    <a href="#related">Related Work</a>
-    <a href="#statistics">Statistics</a>
-    <a href="#limitations">Limitations</a>
-    <a href="#citation">Citation</a>
+<!-- HEADER -->
+<div id="header">
+  <div id="title">HalluMaze <span>/</span> Race</div>
+  <div class="meta-badge">10 Models</div>
+  <div class="meta-badge">Seed 4004</div>
+  <div class="meta-badge">5&times;5 Maze</div>
+
+  <div class="view-group">
+    <button class="ctrl-btn active" id="btn-grid" onclick="setView('grid')">Grid</button>
+    <button class="ctrl-btn" id="btn-overlay" onclick="setView('overlay')">Overlay</button>
+    <button class="ctrl-btn" id="btn-timeline" onclick="setView('timeline')">Timeline</button>
   </div>
-  <button class="mode-toggle" id="modeToggle">Expert Mode</button>
+
+  <div id="controls">
+    <button class="ctrl-btn" onclick="stepBackward()">&#9664;</button>
+    <button class="ctrl-btn active" id="play-btn" onclick="togglePlay()">&#9654; Play</button>
+    <button class="ctrl-btn" onclick="stepForward()">&#9654;&#9654;</button>
+    <span class="step-counter" id="step-counter">Step 0 / 0</span>
+    <span class="speed-label">Speed</span>
+    <input type="range" id="speed-slider" min="1" max="10" value="5">
+  </div>
+  <a href="hallumaze_final.html" class="ctrl-btn" style="text-decoration:none;margin-left:8px;" target="_blank">Leaderboard ↗</a>
+  <a href="https://github.com/jaytoone/HalluMaze" class="ctrl-btn" style="text-decoration:none;" target="_blank">GitHub ↗</a>
 </div>
-</nav>
 
-<!-- HERO -->
-<section class="hero" id="hero">
-  <div class="section-label">NeurIPS 2026 Datasets &amp; Benchmarks Track</div>
-  <h1 class="hero-title">
-    <span class="gradient">HalluMaze</span><br>
-    A Maze Navigation Benchmark for<br>LLM Metacognitive Error Recovery
-  </h1>
-  <p class="hero-sub">
-    All 8 tested LLMs score significantly below a random walk on metacognitive recovery.
-    Task completion does not imply metacognitive competence.
-  </p>
-  <div class="hero-badges">
-    <span class="badge badge-venue">NeurIPS 2026 Target</span>
-    <span class="badge badge-stat">n=60 per model</span>
-    <span class="badge badge-stat">8 LLMs + 2 baselines</span>
-    <span class="badge badge-stat">p&lt;0.001 all models</span>
+<div id="progress-wrap">
+  <div id="progress-track" onclick="seekProgress(event)">
+    <div id="progress-fill" style="width:0%"></div>
   </div>
-  <div class="hero-stats">
-    <div class="hero-stat"><div class="val">8</div><div class="lbl">LLMs Tested</div></div>
-    <div class="hero-stat"><div class="val">60</div><div class="lbl">Seeds / Model</div></div>
-    <div class="hero-stat"><div class="val">0.585</div><div class="lbl">Max MEI Gap</div></div>
-    <div class="hero-stat"><div class="val">2.1</div><div class="lbl">Max Glass's delta</div></div>
-  </div>
-</section>
+</div>
 
-<!-- ABSTRACT -->
-<section id="abstract">
-  <div class="section-label">Abstract</div>
-  <h2 class="section-title">Paper Summary</h2>
-  <div class="abstract-box">
-    <p class="abstract-text">
-      We introduce <strong>HalluMaze</strong>, a benchmark that measures large language model (LLM) metacognitive error recovery through maze navigation. Unlike existing hallucination benchmarks that evaluate final-answer accuracy, HalluMaze captures <strong>real-time error detection and corrective action</strong> by exposing models to navigable environments containing "mirage" walls -- passages that appear blocked but are traversable. We evaluate <strong>10 LLMs</strong> (Claude-3.7-Sonnet, GLM-4.7, Llama-4-Maverick, MiniMax-M2.5, Llama-4-Scout, Qwen-2.5-72B, Gemini-2.0-Flash-Lite, Claude-3-Haiku, GPT-4o-mini, GPT-4o) across n=60 seeds per model on 5x5 and 7x7 mazes. We introduce the <strong>Metacognitive Escape Index (MEI)</strong>, grounded in Nelson &amp; Narens' (1990) metamemory framework, which decomposes metacognitive performance into recovery rate (HRR), efficiency (ETR), awareness (AW), and error rate (HR). All 10 tested LLMs score significantly below a random walk baseline (<strong>p&lt;0.001 Bonferroni-corrected, d=0.6&ndash;2.1 for all</strong>), revealing a systematic deficit in real-time metacognitive recovery.
-    </p>
-    <div class="keywords">
-      <span class="kw">hallucination</span>
-      <span class="kw">metacognition</span>
-      <span class="kw">benchmark</span>
-      <span class="kw">LLM evaluation</span>
-      <span class="kw">maze navigation</span>
-      <span class="kw">error recovery</span>
+<!-- MAIN -->
+<div id="main">
+
+  <!-- GRID VIEW -->
+  <div id="view-grid" style="display:flex">
+    <div id="grid-row"></div>
+    <div id="leaderboard">
+      <table id="lb-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Model</th>
+            <th>Steps</th>
+            <th>Halls</th>
+            <th>BT</th>
+            <th>MEI</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="lb-body"></tbody>
+      </table>
     </div>
-  </div>
-</section>
 
-<!-- LEADERBOARD -->
-<section id="leaderboard">
-  <div class="section-label">Results</div>
-  <h2 class="section-title">Model Leaderboard</h2>
-  <p class="section-subtitle">Ranked by MEI (Metacognitive Escape Index). All LLMs tested with n=60 seeds across 5x5 and 7x7 mazes. Higher MEI = better metacognitive recovery.</p>
-
-  <div style="overflow-x:auto">
-  <table class="lb-table">
-    <thead>
-      <tr>
-        <th>Rank</th>
-        <th>Model</th>
-        <th>MEI</th>
-        <th>Grade</th>
-        <th>SR (Solve Rate)</th>
-        <th>HRR (Recovery)</th>
-        <th>n</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Baselines -->
-      <tr class="baseline">
-        <td><span class="rank-badge rank-n" style="font-size:10px">--</span></td>
-        <td><span class="model-name" style="color:var(--tx3)">Random Walk</span><span class="model-provider">Deterministic baseline</span></td>
-        <td><span class="mei-val" style="color:var(--tx3)">0.900</span><span class="mei-ci">[0.900, 0.900]</span></td>
-        <td><span class="grade grade-a" style="opacity:0.5">A</span></td>
-        <td class="progress-cell"><span class="progress-label">100.0%</span><div class="progress-bar"><div class="progress-fill fill-sr" style="width:0%" data-target="100"></div></div></td>
-        <td class="progress-cell"><span class="progress-label">100.0%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="100"></div></div></td>
-        <td style="font-family:var(--mono);color:var(--tx3)">--</td>
-      </tr>
-      <tr class="baseline">
-        <td><span class="rank-badge rank-n" style="font-size:10px">--</span></td>
-        <td><span class="model-name" style="color:var(--tx3)">A* Oracle</span><span class="model-provider">Deterministic baseline</span></td>
-        <td><span class="mei-val" style="color:var(--tx3)">0.900</span><span class="mei-ci">[0.900, 0.900]</span></td>
-        <td><span class="grade grade-a" style="opacity:0.5">A</span></td>
-        <td class="progress-cell"><span class="progress-label">100.0%</span><div class="progress-bar"><div class="progress-fill fill-sr" style="width:0%" data-target="100"></div></div></td>
-        <td class="progress-cell"><span class="progress-label">100.0%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="100"></div></div></td>
-        <td style="font-family:var(--mono);color:var(--tx3)">--</td>
-      </tr>
-      <!-- #1 Claude-3.7-Sonnet NEW -->
-      <tr>
-        <td><span class="rank-badge rank-1">1</span></td>
-        <td><span class="model-name">Claude-3.7-Sonnet</span><span class="model-provider">Anthropic (OpenRouter)</span><span class="model-note note-new">NEW</span></td>
-        <td><span class="mei-val">0.774</span><span class="mei-ci">[0.715, 0.830]</span></td>
-        <td><span class="grade grade-b">B</span></td>
-        <td class="progress-cell"><span class="progress-label">56.7%</span><div class="progress-bar"><div class="progress-fill fill-sr" style="width:0%" data-target="56.7"></div></div></td>
-        <td class="progress-cell"><span class="progress-label">87.5%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="87.5"></div></div></td>
-        <td style="font-family:var(--mono)">60</td>
-      </tr>
-      <!-- #2 GLM -->
-      <tr>
-        <td><span class="rank-badge rank-2">2</span></td>
-        <td><span class="model-name">GLM-4.7</span><span class="model-provider">Zhipu AI</span></td>
-        <td><span class="mei-val">0.615</span><span class="mei-ci">[0.551, 0.681]</span></td>
-        <td><span class="grade grade-b">B</span></td>
-        <td class="progress-cell"><span class="progress-label">8.3%</span><div class="progress-bar"><div class="progress-fill fill-sr" style="width:0%" data-target="8.3"></div></div></td>
-        <td class="progress-cell"><span class="progress-label">71.8%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="71.8"></div></div></td>
-        <td style="font-family:var(--mono)">60</td>
-      </tr>
-      <!-- #3 Maverick -->
-      <tr>
-        <td><span class="rank-badge rank-3">3</span></td>
-        <td><span class="model-name">Llama-4-Maverick</span><span class="model-provider">Meta (OpenRouter)</span></td>
-        <td><span class="mei-val">0.600</span><span class="mei-ci">[0.541, 0.660]</span></td>
-        <td><span class="grade grade-b">B</span></td>
-        <td class="progress-cell"><span class="progress-label">13.3%</span><div class="progress-bar"><div class="progress-fill fill-sr" style="width:0%" data-target="13.3"></div></div></td>
-        <td class="progress-cell"><span class="progress-label">81.1%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="81.1"></div></div></td>
-        <td style="font-family:var(--mono)">60</td>
-      </tr>
-      <!-- #4 MiniMax -->
-      <tr>
-        <td><span class="rank-badge rank-n">4</span></td>
-        <td><span class="model-name">MiniMax-M2.5</span><span class="model-provider">MiniMax</span></td>
-        <td><span class="mei-val">0.593</span><span class="mei-ci">[0.500, 0.682]</span></td>
-        <td><span class="grade grade-b">B</span></td>
-        <td class="progress-cell"><span class="progress-label">53.3%</span><div class="progress-bar"><div class="progress-fill fill-sr" style="width:0%" data-target="53.3"></div></div></td>
-        <td class="progress-cell"><span class="progress-label">60.0%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="60.0"></div></div></td>
-        <td style="font-family:var(--mono)">60</td>
-      </tr>
-      <!-- #5 Scout -->
-      <tr>
-        <td><span class="rank-badge rank-n">5</span></td>
-        <td><span class="model-name">Llama-4-Scout</span><span class="model-provider">Meta (OpenRouter)</span></td>
-        <td><span class="mei-val">0.589</span><span class="mei-ci">[0.525, 0.649]</span></td>
-        <td><span class="grade grade-b">B</span></td>
-        <td class="progress-cell"><span class="progress-label">8.3%</span><div class="progress-bar"><div class="progress-fill fill-sr" style="width:0%" data-target="8.3"></div></div></td>
-        <td class="progress-cell"><span class="progress-label">81.0%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="81.0"></div></div></td>
-        <td style="font-family:var(--mono)">60</td>
-      </tr>
-      <!-- #6 Qwen -->
-      <tr>
-        <td><span class="rank-badge rank-n">6</span></td>
-        <td><span class="model-name">Qwen-2.5-72B</span><span class="model-provider">Alibaba (OpenRouter)</span></td>
-        <td><span class="mei-val">0.559</span><span class="mei-ci">[0.488, 0.629]</span></td>
-        <td><span class="grade grade-b">B</span></td>
-        <td class="progress-cell"><span class="progress-label">10.0%</span><div class="progress-bar"><div class="progress-fill fill-sr" style="width:0%" data-target="10.0"></div></div></td>
-        <td class="progress-cell"><span class="progress-label">60.7%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="60.7"></div></div></td>
-        <td style="font-family:var(--mono)">60</td>
-      </tr>
-      <!-- #7 Gemini -->
-      <tr>
-        <td><span class="rank-badge rank-n">7</span></td>
-        <td><span class="model-name">Gemini-2.0-Flash-Lite</span><span class="model-provider">Google (OpenRouter)</span></td>
-        <td><span class="mei-val">0.432</span><span class="mei-ci">[0.352, 0.507]</span></td>
-        <td><span class="grade grade-d">D</span></td>
-        <td class="progress-cell"><span class="progress-label">8.3%</span><div class="progress-bar"><div class="progress-fill fill-sr" style="width:0%" data-target="8.3"></div></div></td>
-        <td class="progress-cell"><span class="progress-label">40.3%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="40.3"></div></div></td>
-        <td style="font-family:var(--mono)">60</td>
-      </tr>
-      <!-- #8 Claude Haiku -->
-      <tr>
-        <td><span class="rank-badge rank-n">8</span></td>
-        <td><span class="model-name">Claude-3-Haiku</span><span class="model-provider">Anthropic (OpenRouter)</span></td>
-        <td><span class="mei-val">0.398</span><span class="mei-ci">[0.341, 0.457]</span></td>
-        <td><span class="grade grade-d">D</span></td>
-        <td class="progress-cell"><span class="progress-label">5.0%</span><div class="progress-bar"><div class="progress-fill fill-sr" style="width:0%" data-target="5.0"></div></div></td>
-        <td class="progress-cell"><span class="progress-label">36.3%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="36.3"></div></div></td>
-        <td style="font-family:var(--mono)">60</td>
-      </tr>
-      <!-- #9 GPT-4o-mini -->
-      <tr>
-        <td><span class="rank-badge rank-n">9</span></td>
-        <td><span class="model-name">GPT-4o-mini</span><span class="model-provider">OpenAI (OpenRouter)</span></td>
-        <td><span class="mei-val">0.391</span><span class="mei-ci">[0.310, 0.467]</span></td>
-        <td><span class="grade grade-d">D</span></td>
-        <td class="progress-cell"><span class="progress-label">5.0%</span><div class="progress-bar"><div class="progress-fill fill-sr" style="width:0%" data-target="5.0"></div></div></td>
-        <td class="progress-cell"><span class="progress-label">38.2%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="38.2"></div></div></td>
-        <td style="font-family:var(--mono)">60</td>
-      </tr>
-      <!-- #10 GPT-4o NEW -->
-      <tr>
-        <td><span class="rank-badge rank-n">10</span></td>
-        <td><span class="model-name">GPT-4o</span><span class="model-provider">OpenAI (OpenRouter)</span><span class="model-note note-new">NEW</span></td>
-        <td><span class="mei-val">0.315</span><span class="mei-ci">[0.239, 0.394]</span></td>
-        <td><span class="grade grade-f">F</span></td>
-        <td class="progress-cell"><span class="progress-label">6.7%</span><div class="progress-bar"><div class="progress-fill fill-sr" style="width:0%" data-target="6.7"></div></div></td>
-        <td class="progress-cell"><span class="progress-label">35.3%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="35.3"></div></div></td>
-        <td style="font-family:var(--mono)">60</td>
-      </tr>
-    </tbody>
-  </table>
-  </div>
-  <p style="font-size:11px;color:var(--tx3);margin-top:12px;font-family:var(--mono)">
-    v1.4: +Claude-3.7-Sonnet (#1, MEI=0.774) +GPT-4o (#10, MEI=0.315). 10 models total, n=600 trials.
-    Grade scale: A (0.8+) / B (0.55+) / C (0.45+) / D (0.35+) / F (&lt;0.35).
-  </p>
-</section>
-
-<!-- METHOD + MEI -->
-<section id="method">
-  <div class="section-label">Methodology</div>
-  <h2 class="section-title">Metacognitive Escape Index (MEI)</h2>
-  <p class="section-subtitle">MEI decomposes metacognitive performance into four components grounded in Nelson &amp; Narens' (1990) metamemory framework.</p>
-
-  <div class="formula-box">
-    <div class="formula">
-      MEI = <span class="w">0.4</span> x <span class="comp">HRR</span>
-      + <span class="w">0.3</span> x <span class="comp">ETR</span>
-      + <span class="w">0.2</span> x <span class="comp">AW</span>
-      - <span class="w">0.1</span> x <span class="neg">HR</span>
+    <!-- RADAR PANEL — standalone, above comparison -->
+    <div id="radar-panel">
+      <h3>5-Dimension Radar</h3>
+      <canvas id="radar-canvas" width="240" height="240"></canvas>
+      <div id="radar-legend"></div>
     </div>
-    <div class="weight-grid">
-      <div class="weight-item">
-        <div class="weight-val">0.4</div>
-        <div class="weight-name">HRR (Recovery Rate)</div>
-        <div class="weight-desc">Control process: backtrack after hallucination</div>
-      </div>
-      <div class="weight-item">
-        <div class="weight-val">0.3</div>
-        <div class="weight-name">ETR (Efficiency)</div>
-        <div class="weight-desc">Monitoring accuracy: path quality (FOK)</div>
-      </div>
-      <div class="weight-item">
-        <div class="weight-val">0.2</div>
-        <div class="weight-name">AW (Awareness)</div>
-        <div class="weight-desc">JOL operationalization: loop detection</div>
-      </div>
-      <div class="weight-item">
-        <div class="weight-val">-0.1</div>
-        <div class="weight-name">HR (Error Rate)</div>
-        <div class="weight-desc">Mild correction: object-level penalty</div>
+
+    <!-- PERFORMANCE COMPARISON — bars only, grid tab only -->
+    <div id="metrics-panel">
+      <h3>Performance Metrics Comparison</h3>
+      <div class="metrics-bars-section">
+        <div class="metric-group">
+          <div class="metric-label">MEI — Metacognitive Escape Index</div>
+          <div id="metric-mei-rows"></div>
+        </div>
+        <div class="metric-group">
+          <div class="metric-label">Efficiency — Steps vs Optimal</div>
+          <div id="metric-eff-rows"></div>
+        </div>
+        <div class="metric-group">
+          <div class="metric-label">Hallucinations &amp; Backtracks (lower=better)</div>
+          <div id="metric-err-rows"></div>
+        </div>
       </div>
     </div>
+
   </div>
 
-  <div class="expert-only">
-    <h3 style="font-size:16px;font-weight:600;margin:24px 0 12px;color:#fff">Weight Sensitivity Analysis</h3>
-    <p style="font-size:13px;color:var(--tx2);line-height:1.7">
-      Grid search over 625 configurations (5 levels per weight, +/-50%) confirms that baseline > LLM MEI ranking is stable in 100% of tested configurations. This empirically validates the weight choices independent of theoretical claims.
-    </p>
-  </div>
-</section>
-
-<!-- KEY FINDINGS -->
-<section id="findings">
-  <div class="section-label">Analysis</div>
-  <h2 class="section-title">Key Findings</h2>
-  <div class="card-grid">
-    <div class="card">
-      <div class="card-tag">F1 -- Universal Deficit</div>
-      <div class="card-title">All 10 LLMs Below Random Walk</div>
-      <div class="card-body">Every tested model scores significantly below a random walk baseline on MEI (p&lt;0.001, Glass's &#948;=0.6&ndash;2.1). A random agent that simply tries directions until one works outperforms all LLMs on metacognitive recovery, including frontier models.</div>
+  <!-- OVERLAY VIEW -->
+  <div id="view-overlay">
+    <div id="overlay-canvas-wrap">
+      <canvas id="overlay-canvas"></canvas>
     </div>
-    <div class="card">
-      <div class="card-tag">F2 -- SR-MEI Dissociation</div>
-      <div class="card-title">Task Success Does Not Equal Recovery</div>
-      <div class="card-body">MiniMax-M2.5 achieves the highest SR (53.3%) but ranks only #3 on MEI. GLM-4.7 ranks #1 on MEI despite the lowest SR (8.3%). Solving the maze and recovering from errors are orthogonal capabilities.</div>
-    </div>
-    <div class="card">
-      <div class="card-tag">F3 -- Frontier Inversion</div>
-      <div class="card-title">Frontier Cost Does Not Predict Metacognition</div>
-      <div class="card-body">Claude-3.7-Sonnet leads at MEI=0.774 while GPT-4o ranks last at MEI=0.315 -- below GPT-4o-mini (0.391). HRR shows the same pattern: Sonnet HRR=87.5% vs GPT-4o HRR=35.3%. API cost does not predict metacognitive recovery.</div>
-    </div>
-    <div class="card">
-      <div class="card-tag">F4 -- Recovery Over Accuracy</div>
-      <div class="card-title">MEI Rewards Recovery, Not Completion</div>
-      <div class="card-body">Claude-3.7-Sonnet ranks #1 with MEI=0.774 (SR=56.7%, HRR=87.5%). MiniMax-M2.5 ranks #4 despite the 2nd highest SR (53.3%). Task completion and metacognitive recovery are orthogonal; MEI captures the latter, consistent with Nelson &amp; Narens (1990).</div>
-    </div>
-    <div class="card">
-      <div class="card-tag">F5 -- Cross-Provider</div>
-      <div class="card-title">Universal Across 7 Providers</div>
-      <div class="card-body">The deficit spans Meta, Zhipu AI, MiniMax, Google, OpenAI, Anthropic, and Alibaba. No provider-specific training paradigm confers metacognitive advantage, ruling out provider artifacts as explanation.</div>
-    </div>
-    <div class="card general-only">
-      <div class="card-tag">What This Means</div>
-      <div class="card-title">Why Random Walk Wins</div>
-      <div class="card-body">A random walk never "believes" its moves will succeed -- it tries until one works, achieving perfect recovery. LLMs form confident beliefs that become anchored even under contradictory feedback, revealing a metacognitive anchoring bias.</div>
-    </div>
-  </div>
-</section>
-
-<!-- DISSOCIATION SCATTER -->
-<section id="dissociation">
-  <div class="section-label">Visualization</div>
-  <h2 class="section-title">SR vs HRR Dissociation</h2>
-  <p class="section-subtitle">The scatter plot reveals that Solve Rate and Hallucination Recovery Rate are decoupled. High SR does not imply high HRR, and vice versa.</p>
-
-  <div class="scatter-container">
-    <div class="scatter-title">Solve Rate (%) vs Hallucination Recovery Rate (%)</div>
-    <svg viewBox="0 0 600 400" width="100%" style="max-width:600px;margin:0 auto;display:block" xmlns="http://www.w3.org/2000/svg">
-      <!-- Grid -->
-      <rect x="60" y="20" width="520" height="340" fill="none" stroke="#1e2333" stroke-width="1"/>
-      <!-- Grid lines -->
-      <line x1="60" y1="190" x2="580" y2="190" stroke="#1e2333" stroke-width="0.5" stroke-dasharray="4"/>
-      <line x1="60" y1="105" x2="580" y2="105" stroke="#1e2333" stroke-width="0.5" stroke-dasharray="4"/>
-      <line x1="60" y1="275" x2="580" y2="275" stroke="#1e2333" stroke-width="0.5" stroke-dasharray="4"/>
-      <line x1="320" y1="20" x2="320" y2="360" stroke="#1e2333" stroke-width="0.5" stroke-dasharray="4"/>
-      <line x1="190" y1="20" x2="190" y2="360" stroke="#1e2333" stroke-width="0.5" stroke-dasharray="4"/>
-      <line x1="450" y1="20" x2="450" y2="360" stroke="#1e2333" stroke-width="0.5" stroke-dasharray="4"/>
-
-      <!-- Axes labels -->
-      <text x="320" y="390" fill="#5a6378" font-size="12" font-family="Inter,sans-serif" text-anchor="middle">Solve Rate (%)</text>
-      <text x="15" y="190" fill="#5a6378" font-size="12" font-family="Inter,sans-serif" text-anchor="middle" transform="rotate(-90,15,190)">HRR (%)</text>
-
-      <!-- X-axis ticks: 0%=60, 10%=146.7, 20%=233.3, 30%=320, 40%=406.7, 50%=493.3, 60%=580 -->
-      <text x="60" y="375" fill="#5a6378" font-size="10" font-family="var(--mono)" text-anchor="middle">0</text>
-      <text x="147" y="375" fill="#5a6378" font-size="10" font-family="var(--mono)" text-anchor="middle">10</text>
-      <text x="233" y="375" fill="#5a6378" font-size="10" font-family="var(--mono)" text-anchor="middle">20</text>
-      <text x="320" y="375" fill="#5a6378" font-size="10" font-family="var(--mono)" text-anchor="middle">30</text>
-      <text x="407" y="375" fill="#5a6378" font-size="10" font-family="var(--mono)" text-anchor="middle">40</text>
-      <text x="493" y="375" fill="#5a6378" font-size="10" font-family="var(--mono)" text-anchor="middle">50</text>
-      <text x="580" y="375" fill="#5a6378" font-size="10" font-family="var(--mono)" text-anchor="middle">60</text>
-
-      <!-- Y-axis ticks: 0%=360, 50%=190, 100%=20 -->
-      <text x="50" y="364" fill="#5a6378" font-size="10" font-family="var(--mono)" text-anchor="end">0</text>
-      <text x="50" y="279" fill="#5a6378" font-size="10" font-family="var(--mono)" text-anchor="end">25</text>
-      <text x="50" y="194" fill="#5a6378" font-size="10" font-family="var(--mono)" text-anchor="end">50</text>
-      <text x="50" y="109" fill="#5a6378" font-size="10" font-family="var(--mono)" text-anchor="end">75</text>
-      <text x="50" y="24" fill="#5a6378" font-size="10" font-family="var(--mono)" text-anchor="end">100</text>
-
-      <!-- Random Walk reference: SR=100%, HRR=100% (off chart at 60% x-axis, show as ref line) -->
-      <line x1="580" y1="20" x2="580" y2="20" stroke="#4f6df5" stroke-width="0" />
-      <!-- Reference zone annotation -->
-      <rect x="430" y="24" width="145" height="22" rx="4" fill="rgba(79,109,245,0.1)" stroke="rgba(79,109,245,0.2)" stroke-width="1"/>
-      <text x="503" y="39" fill="#4f6df5" font-size="9" font-family="var(--mono)" text-anchor="middle">Random Walk: SR=100 HRR=100</text>
-
-      <!-- Data points: x = 60 + (SR/60)*520, y = 360 - (HRR/100)*340 -->
-
-      <!-- GLM-4.7: SR=8.3%, HRR=71.8% => x=60+71.9=132, y=360-244.1=116 -->
-      <circle cx="132" cy="116" r="7" fill="#4f6df5" opacity="0.9"/>
-      <text x="142" y="112" fill="#c8cdd8" font-size="10" font-family="var(--mono)">GLM-4.7</text>
-
-      <!-- Llama-4-Maverick: SR=13.3%, HRR=81.1% => x=60+115.1=175, y=360-275.7=84 -->
-      <circle cx="175" cy="84" r="7" fill="#34d399" opacity="0.9"/>
-      <text x="185" y="80" fill="#c8cdd8" font-size="10" font-family="var(--mono)">Maverick</text>
-
-      <!-- MiniMax-M2.5: SR=53.3%, HRR=60.0% => x=60+461.8=522, y=360-204=156 -->
-      <circle cx="522" cy="156" r="7" fill="#a855f7" opacity="0.9"/>
-      <text x="475" y="148" fill="#c8cdd8" font-size="10" font-family="var(--mono)">MiniMax</text>
-
-      <!-- Llama-4-Scout: SR=8.3%, HRR=81.0% => x=132, y=360-275.4=85 -->
-      <circle cx="132" cy="85" r="7" fill="#34d399" opacity="0.9"/>
-      <text x="102" y="76" fill="#c8cdd8" font-size="10" font-family="var(--mono)">Scout</text>
-
-      <!-- Qwen-2.5-72B: SR=10.0%, HRR=60.7% => x=60+86.7=146, y=360-206.4=154 -->
-      <circle cx="146" cy="154" r="7" fill="#fbbf24" opacity="0.9"/>
-      <text x="156" y="150" fill="#c8cdd8" font-size="10" font-family="var(--mono)">Qwen</text>
-
-      <!-- Gemini: SR=8.3%, HRR=40.3% => x=132, y=360-137=223 -->
-      <circle cx="132" cy="223" r="7" fill="#f87171" opacity="0.9"/>
-      <text x="142" y="219" fill="#c8cdd8" font-size="10" font-family="var(--mono)">Gemini</text>
-
-      <!-- Claude-3-Haiku: SR=5.0%, HRR=36.3% => x=60+43.3=103, y=360-123.4=237 -->
-      <circle cx="103" cy="237" r="7" fill="#22d3ee" opacity="0.9"/>
-      <text x="113" y="248" fill="#22d3ee" font-size="10" font-family="var(--mono)">Haiku (NEW)</text>
-
-      <!-- GPT-4o-mini: SR=5.0%, HRR=38.2% => x=103, y=360-129.9=230 -->
-      <circle cx="103" cy="230" r="7" fill="#f87171" opacity="0.9"/>
-      <text x="73" y="222" fill="#c8cdd8" font-size="10" font-family="var(--mono)">GPT-4o</text>
-
-      <!-- Annotation arrows -->
-      <!-- MiniMax annotation: high SR, mid HRR -->
-      <line x1="520" y1="170" x2="520" y2="200" stroke="#a855f7" stroke-width="1" marker-end="url(#arrowP)"/>
-      <text x="520" y="215" fill="#a855f7" font-size="9" font-family="var(--mono)" text-anchor="middle">High SR</text>
-      <text x="520" y="226" fill="#a855f7" font-size="9" font-family="var(--mono)" text-anchor="middle">Mid HRR</text>
-
-      <!-- GLM annotation: low SR, high HRR -->
-      <line x1="130" y1="100" x2="130" y2="70" stroke="#4f6df5" stroke-width="1" marker-end="url(#arrowB)"/>
-      <text x="130" y="64" fill="#4f6df5" font-size="9" font-family="var(--mono)" text-anchor="middle">Low SR, High HRR</text>
-      <text x="130" y="53" fill="#4f6df5" font-size="9" font-family="var(--mono)" text-anchor="middle">#1 on MEI</text>
-
-      <defs>
-        <marker id="arrowP" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#a855f7"/></marker>
-        <marker id="arrowB" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#4f6df5"/></marker>
-      </defs>
-    </svg>
-  </div>
-</section>
-
-<!-- MAZE DESIGN -->
-<section id="maze">
-  <div class="section-label">Benchmark Design</div>
-  <h2 class="section-title">Maze Architecture</h2>
-  <div class="card-grid">
-    <div class="card">
-      <div class="card-tag">Generation</div>
-      <div class="card-title">Randomized DFS</div>
-      <div class="card-body">NxN grids generated via recursive backtracker. Sizes: 5x5 (17 optimal steps) and 7x7 (25 optimal steps). 2 mirage positions injected per maze at generation time. Step budget: N x N x 3.</div>
-    </div>
-    <div class="card">
-      <div class="card-tag">Mirage Mechanics</div>
-      <div class="card-title">Hallucination Traps</div>
-      <div class="card-body">Mirage cells report wall=1 in the model's initial context, but the wall is actually passable. When the model attempts traversal, the environment reveals the true state. This creates a detectable contradiction that a metacognitively competent model should exploit.</div>
-    </div>
-    <div class="card">
-      <div class="card-tag">Detection</div>
-      <div class="card-title">Hallucination &amp; Recovery Rules</div>
-      <div class="card-body">Hallucination: model asserts confidence 60%+ for a direction AND environment rejects (or vice versa for mirages). Recovery: within 3 steps of hallucination, model successfully traverses the mirage passage.</div>
-    </div>
-    <div class="card expert-only">
-      <div class="card-tag">Prompt Template</div>
-      <div class="card-title">Model Input Format</div>
-      <div class="card-body" style="font-family:var(--mono);font-size:12px">
-        Position: [r,c]. Walls: N/S/E/W = 0|1. History: last 5 steps. Output: JSON with direction, confidence (0-100), reasoning. Temperature: provider default. Max tokens: 256.
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- RELATED WORK -->
-<section id="related">
-  <div class="section-label">Context</div>
-  <h2 class="section-title">Related Work</h2>
-  <div style="overflow-x:auto">
-  <table class="stat-table">
-    <thead>
-      <tr><th>Benchmark</th><th>Task</th><th>Metric</th><th>Recovery?</th><th>Real-time?</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>TruthfulQA (Lin+ 2022)</td><td>Factual QA</td><td>% Truthful</td><td>No</td><td>No</td></tr>
-      <tr><td>HaluEval (Ji+ 2023)</td><td>QA/Dialog</td><td>Hallucination rate</td><td>No</td><td>No</td></tr>
-      <tr><td>FActScoring (Min+ 2023)</td><td>Biography</td><td>Atomic fact precision</td><td>No</td><td>No</td></tr>
-      <tr><td>MMLU (Hendrycks+ 2021)</td><td>MCQ</td><td>Accuracy</td><td>No</td><td>No</td></tr>
-      <tr><td>BabyAI (Chevalier+ 2019)</td><td>Grid-world</td><td>Task success</td><td>No</td><td>Partial</td></tr>
-      <tr style="background:rgba(79,109,245,0.06)"><td style="color:#fff;font-weight:600">HalluMaze (ours)</td><td>Navigation</td><td>MEI, HRR, SR</td><td class="sig">Yes</td><td class="sig">Yes</td></tr>
-    </tbody>
-  </table>
-  </div>
-  <p style="font-size:13px;color:var(--tx2);margin-top:16px;line-height:1.7">
-    <strong style="color:#fff">Key gap:</strong> No existing benchmark measures metacognitive <em>recovery</em> -- detecting and correcting errors mid-task.
-    HalluMaze introduces HRR as the first metric targeting this function, grounded in Nelson &amp; Narens' (1990) metamemory framework.
-  </p>
-</section>
-
-<!-- STATISTICS -->
-<section id="statistics">
-  <div class="section-label">Statistical Validation</div>
-  <h2 class="section-title">Hypothesis Tests</h2>
-  <p class="section-subtitle">All models vs Random Walk baseline. Wilcoxon signed-rank test with Bonferroni correction (k=10). All p&lt;0.001 Bonferroni-corrected.</p>
-
-  <div style="overflow-x:auto">
-  <table class="stat-table">
-    <thead>
-      <tr><th>Model</th><th>n</th><th>Glass's delta</th><th>p (Bonferroni)</th><th>Reject H0</th></tr>
-    </thead>
-    <tbody>
-      <tr><td><strong>Claude-3.7-Sonnet</strong></td><td>60</td><td style="font-family:var(--mono)">0.554</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
-      <tr><td>GLM-4.7</td><td>60</td><td style="font-family:var(--mono)">1.102</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
-      <tr><td>Llama-4-Maverick</td><td>60</td><td style="font-family:var(--mono)">1.254</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
-      <tr><td>MiniMax-M2.5</td><td>60</td><td style="font-family:var(--mono)">0.847</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
-      <tr><td>Llama-4-Scout</td><td>60</td><td style="font-family:var(--mono)">1.230</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
-      <tr><td>Qwen-2.5-72B</td><td>60</td><td style="font-family:var(--mono)">1.223</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
-      <tr><td>Gemini-2.0-Flash-Lite</td><td>60</td><td style="font-family:var(--mono)">1.557</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
-      <tr><td>Claude-3-Haiku</td><td>60</td><td style="font-family:var(--mono)">2.129</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
-      <tr><td>GPT-4o-mini</td><td>60</td><td style="font-family:var(--mono)">1.620</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
-      <tr><td><strong>GPT-4o</strong></td><td>60</td><td style="font-family:var(--mono)">1.917</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
-    </tbody>
-  </table>
+    <div id="overlay-legend"></div>
   </div>
 
-  <div class="expert-only" style="margin-top:24px">
-    <div class="card">
-      <div class="card-tag">Sensitivity</div>
-      <div class="card-title">MEI Weight Robustness</div>
-      <div class="card-body">625-configuration grid search (+/-50% per weight, 5 levels, 4 weights). Baseline > all LLMs in 100% of configurations. Ranking stability confirmed across full weight space.</div>
-    </div>
-  </div>
-</section>
+  <!-- TIMELINE VIEW -->
+  <div id="view-timeline" id="view-timeline"></div>
 
-<!-- LIMITATIONS -->
-<section id="limitations">
-  <div class="section-label">Scope</div>
-  <h2 class="section-title">Limitations &amp; Future Work</h2>
+</div>
 
-  <div class="accordion-item">
-    <div class="accordion-header">No human baseline <span class="accordion-arrow">&#9660;</span></div>
-    <div class="accordion-body"><div class="accordion-content">Human performance is required to establish absolute scale. Planned: Prolific study with n>=25 participants using the same protocol.</div></div>
-  </div>
-  <div class="accordion-item">
-    <div class="accordion-header">DFS maze generation bias <span class="accordion-arrow">&#9660;</span></div>
-    <div class="accordion-body"><div class="accordion-content">DFS generates long corridors which may favor certain navigation strategies. Alternative algorithms (Kruskal, Wilson's) planned for structural diversity.</div></div>
-  </div>
-  <div class="accordion-item">
-    <div class="accordion-header">Qwen-2.5-72B complete (n=60) <span class="accordion-arrow">&#9660;</span></div>
-    <div class="accordion-body"><div class="accordion-content">Qwen-2.5-72B completed all 60 trials. MEI=0.559 [0.487, 0.629], SR=10.0%, HRR=60.7%, Cohen's d=1.223 (p&lt;0.001).</div></div>
-  </div>
-  <div class="accordion-item">
-    <div class="accordion-header">Test-retest reliability not measured <span class="accordion-arrow">&#9660;</span></div>
-    <div class="accordion-body"><div class="accordion-content">ICC (Intraclass Correlation) for 3 models x 10 seeds x 2 runs planned. Target ICC > 0.8.</div></div>
-  </div>
-  <div class="accordion-item">
-    <div class="accordion-header">No 9x9 maze condition <span class="accordion-arrow">&#9660;</span></div>
-    <div class="accordion-body"><div class="accordion-content">Size scaling study (5x5, 7x7, 9x9) needed to characterize how metacognitive recovery degrades with problem complexity.</div></div>
-  </div>
-  <div class="accordion-item">
-    <div class="accordion-header">Ecological validity <span class="accordion-arrow">&#9660;</span></div>
-    <div class="accordion-body"><div class="accordion-content">Spearman correlation with TruthfulQA / HaluEval public scores needed to establish whether maze metacognition predicts real-world hallucination behavior.</div></div>
-  </div>
-</section>
-
-<!-- CITATION -->
-<section id="citation">
-  <div class="section-label">Reference</div>
-  <h2 class="section-title">Citation</h2>
-  <p class="section-subtitle">If you use HalluMaze in your research, please cite:</p>
-
-  <div class="cite-box" id="bibtex">@article{hallumaze2026,
-  title     = {HalluMaze: A Maze Navigation Benchmark for LLM Metacognitive Error Recovery},
-  author    = {Anonymous},
-  year      = {2026},
-  note      = {Under review at NeurIPS 2026 Datasets \& Benchmarks Track},
-  url       = {https://github.com/jaytoone/HalluMaze}
-}<button class="copy-btn" id="copyBtn">Copy</button></div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <p>HalluMaze Benchmark &middot; 2026 &middot; NeurIPS Datasets &amp; Benchmarks Track Submission</p>
-  <p style="margin-top:8px">Code &amp; data: <a href="https://github.com/jaytoone/HalluMaze">github.com/jaytoone/HalluMaze</a></p>
-</footer>
+<div id="kbd-hint"><kbd>Space</kbd> play/pause &nbsp; <kbd>&larr;</kbd><kbd>&rarr;</kbd> step</div>
 
 <script>
-(function() {
-  'use strict';
+const RAW_DATA = {"seed":4004,"size":5,"timestamp":"2026-03-22 22:38","maze":{"N":5,"walls":[[{"N":true,"S":true,"E":false,"W":true},{"N":true,"S":true,"E":false,"W":false},{"N":true,"S":true,"E":false,"W":false},{"N":true,"S":false,"E":true,"W":false},{"N":true,"S":false,"E":true,"W":true}],[{"N":true,"S":false,"E":false,"W":true},{"N":true,"S":false,"E":true,"W":false},{"N":true,"S":false,"E":true,"W":true},{"N":false,"S":true,"E":false,"W":true},{"N":false,"S":false,"E":true,"W":false}],[{"N":false,"S":false,"E":true,"W":true},{"N":false,"S":true,"E":false,"W":true},{"N":false,"S":true,"E":false,"W":false},{"N":true,"S":true,"E":true,"W":false},{"N":false,"S":false,"E":true,"W":true}],[{"N":false,"S":false,"E":false,"W":true},{"N":true,"S":true,"E":false,"W":false},{"N":true,"S":true,"E":false,"W":false},{"N":true,"S":true,"E":false,"W":false},{"N":false,"S":true,"E":true,"W":false}],[{"N":false,"S":true,"E":false,"W":true},{"N":true,"S":true,"E":false,"W":false},{"N":true,"S":true,"E":false,"W":false},{"N":true,"S":true,"E":false,"W":false},{"N":true,"S":true,"E":true,"W":false}]],"start":[0,0],"end":[4,4],"solution":[[0,0],[0,1],[0,2],[0,3],[1,3],[1,4],[2,4],[3,4],[3,3],[3,2],[3,1],[3,0],[4,0],[4,1],[4,2],[4,3],[4,4]],"mirage_positions":[[1,4],[3,0]]},"results":[{"model":"MiniMax-M2.5","provider":"minimax","solved":true,"mei":0.593,"score":0.65,"hallucination_count":0,"backtrack_count":0,"loop_count":0,"brs":1.0,"latency_s":125.59,"path":[[0,0],[0,1],[0,2],[0,3],[1,3],[1,4],[2,4],[3,4],[3,3],[3,2],[3,1],[3,0],[4,0],[4,1],[4,2],[4,3],[4,4]],"steps":[{"step":1,"r":0,"c":0,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":2,"r":0,"c":1,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":3,"r":0,"c":2,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":4,"r":0,"c":3,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":5,"r":1,"c":3,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":6,"r":1,"c":4,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":7,"r":2,"c":4,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":8,"r":3,"c":4,"direction":"W","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":9,"r":3,"c":3,"direction":"W","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":10,"r":3,"c":2,"direction":"W","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":11,"r":3,"c":1,"direction":"W","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":12,"r":3,"c":0,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":13,"r":4,"c":0,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":14,"r":4,"c":1,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":15,"r":4,"c":2,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":16,"r":4,"c":3,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100}],"sr_agg":0.533,"hrr":0.6,"avg_hc":0.1,"n_trials":60},{"model":"glm-4.7","provider":"glm","solved":true,"mei":0.615,"score":0.744,"hallucination_count":0,"backtrack_count":2,"loop_count":4,"brs":1.0,"latency_s":19.31,"path":[[0,0],[0,1],[0,2],[0,3],[1,3],[1,4],[2,4],[3,4],[3,3],[3,2],[3,1],[3,0],[4,0],[4,1],[4,2],[4,3],[4,4]],"steps":[{"step":1,"r":0,"c":0,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":2,"r":0,"c":1,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":90},{"step":3,"r":0,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":4,"r":0,"c":3,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":85},{"step":5,"r":1,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":60},{"step":6,"r":1,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":50},{"step":7,"r":1,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":90},{"step":8,"r":2,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":9,"r":3,"c":4,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":95},{"step":10,"r":3,"c":3,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":90},{"step":11,"r":3,"c":2,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":90},{"step":12,"r":3,"c":1,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":90},{"step":13,"r":3,"c":0,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":40},{"step":14,"r":2,"c":0,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":20},{"step":15,"r":3,"c":1,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":20},{"step":16,"r":3,"c":0,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":20},{"step":17,"r":4,"c":0,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":18,"r":4,"c":1,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":19,"r":4,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":20,"r":4,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":21,"r":4,"c":4,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null}],"sr_agg":0.083,"hrr":0.718,"avg_hc":1.4,"n_trials":60},{"model":"Llama-4-Scout","solved":true,"mei":0.589,"score":0.604,"hallucination_count":2,"backtrack_count":2,"loop_count":1,"brs":1.0,"path":[[0,0],[0,1],[0,2],[0,3],[1,3],[1,4],[0,4],[1,4],[2,4],[3,4],[3,3],[3,4],[2,4],[2,4],[3,4],[3,3],[3,2],[3,1],[3,0],[4,0],[4,1],[4,1],[4,2],[4,3],[4,4]],"steps":[{"step":1,"r":0,"c":0,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":77},{"step":2,"r":0,"c":1,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":61},{"step":3,"r":0,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":78},{"step":4,"r":0,"c":3,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":94},{"step":5,"r":1,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":6,"r":1,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":86},{"step":7,"r":0,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":true,"is_loop":false,"confidence":50},{"step":8,"r":1,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":99},{"step":9,"r":2,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":94},{"step":10,"r":3,"c":4,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":74},{"step":11,"r":3,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":true,"is_loop":false,"confidence":45},{"step":12,"r":3,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":73},{"step":13,"r":2,"c":4,"direction":"W\u2190","is_hallucination":true,"is_backtrack":false,"is_loop":false,"confidence":67},{"step":14,"r":2,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":40},{"step":15,"r":3,"c":4,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":72},{"step":16,"r":3,"c":3,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":60},{"step":17,"r":3,"c":2,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":70},{"step":18,"r":3,"c":1,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":94},{"step":19,"r":3,"c":0,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":86},{"step":20,"r":4,"c":0,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":68},{"step":21,"r":4,"c":1,"direction":"S\u2193","is_hallucination":true,"is_backtrack":false,"is_loop":false,"confidence":72},{"step":22,"r":4,"c":1,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":86},{"step":23,"r":4,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":91},{"step":24,"r":4,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":84},{"step":25,"r":4,"c":4,"direction":"GOAL","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100}],"sr_agg":0.083,"hrr":0.81,"avg_hc":2.0,"n_trials":60},{"model":"GPT-4o-mini","solved":true,"mei":0.345,"score":0.68,"hallucination_count":1,"backtrack_count":16,"loop_count":15,"brs":1.0,"path":[[0,0],[0,1],[0,0],[0,0],[0,1],[0,2],[0,3],[0,2],[0,3],[0,2],[0,3],[1,3],[1,4],[2,4],[3,4],[3,3],[3,2],[3,1],[3,2],[3,3],[3,2],[3,3],[3,4],[3,3],[3,4],[2,4],[3,4],[2,4],[1,4],[1,3],[1,4],[0,4],[1,4],[0,4],[1,4],[2,4],[3,4],[3,3],[3,2],[3,1],[3,0],[4,0],[4,1],[4,2],[4,3],[4,4]],"steps":[{"step":1,"r":0,"c":0,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":63},{"step":2,"r":0,"c":1,"direction":"W\u2190","is_hallucination":false,"is_backtrack":true,"is_loop":false,"confidence":49},{"step":3,"r":0,"c":0,"direction":"W\u2190","is_hallucination":true,"is_backtrack":false,"is_loop":false,"confidence":64},{"step":4,"r":0,"c":0,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":71},{"step":5,"r":0,"c":1,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":68},{"step":6,"r":0,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":76},{"step":7,"r":0,"c":3,"direction":"W\u2190","is_hallucination":false,"is_backtrack":true,"is_loop":false,"confidence":59},{"step":8,"r":0,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":true,"is_loop":false,"confidence":72},{"step":9,"r":0,"c":3,"direction":"W\u2190","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":59},{"step":10,"r":0,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":42},{"step":11,"r":0,"c":3,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":99},{"step":12,"r":1,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":66},{"step":13,"r":1,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":90},{"step":14,"r":2,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":83},{"step":15,"r":3,"c":4,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":97},{"step":16,"r":3,"c":3,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":17,"r":3,"c":2,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":98},{"step":18,"r":3,"c":1,"direction":"E\u2192","is_hallucination":false,"is_backtrack":true,"is_loop":false,"confidence":55},{"step":19,"r":3,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":59},{"step":20,"r":3,"c":3,"direction":"W\u2190","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":34},{"step":21,"r":3,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":54},{"step":22,"r":3,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":52},{"step":23,"r":3,"c":4,"direction":"W\u2190","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":32},{"step":24,"r":3,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":54},{"step":25,"r":3,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":48},{"step":26,"r":2,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":22},{"step":27,"r":3,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":58},{"step":28,"r":2,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":59},{"step":29,"r":1,"c":4,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":52},{"step":30,"r":1,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":35},{"step":31,"r":1,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":69},{"step":32,"r":0,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":23},{"step":33,"r":1,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":true,"is_loop":false,"confidence":77},{"step":34,"r":0,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":20},{"step":35,"r":1,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":27},{"step":36,"r":2,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":20},{"step":37,"r":3,"c":4,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":20},{"step":38,"r":3,"c":3,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":22},{"step":39,"r":3,"c":2,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":50},{"step":40,"r":3,"c":1,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":76},{"step":41,"r":3,"c":0,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":93},{"step":42,"r":4,"c":0,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":91},{"step":43,"r":4,"c":1,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":61},{"step":44,"r":4,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":98},{"step":45,"r":4,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":99},{"step":46,"r":4,"c":4,"direction":"GOAL","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100}],"sr_agg":0.125,"hrr":0.312,"avg_hc":0.8,"n_trials":16},{"model":"Gemini-Flash","solved":true,"mei":0.432,"score":0.68,"hallucination_count":1,"backtrack_count":6,"loop_count":9,"brs":1.0,"path":[[0,0],[0,1],[0,2],[0,3],[1,3],[1,4],[2,4],[3,4],[3,3],[3,4],[3,3],[3,2],[3,1],[3,2],[3,3],[3,4],[2,4],[1,4],[0,4],[1,4],[1,4],[2,4],[3,4],[2,4],[3,4],[3,3],[3,2],[3,1],[3,0],[4,0],[4,1],[4,2],[4,3],[4,4]],"steps":[{"step":1,"r":0,"c":0,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":79},{"step":2,"r":0,"c":1,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":72},{"step":3,"r":0,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":60},{"step":4,"r":0,"c":3,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":64},{"step":5,"r":1,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":65},{"step":6,"r":1,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":70},{"step":7,"r":2,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":98},{"step":8,"r":3,"c":4,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":98},{"step":9,"r":3,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":true,"is_loop":false,"confidence":54},{"step":10,"r":3,"c":4,"direction":"W\u2190","is_hallucination":false,"is_backtrack":true,"is_loop":false,"confidence":62},{"step":11,"r":3,"c":3,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":72},{"step":12,"r":3,"c":2,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":76},{"step":13,"r":3,"c":1,"direction":"E\u2192","is_hallucination":false,"is_backtrack":true,"is_loop":false,"confidence":55},{"step":14,"r":3,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":56},{"step":15,"r":3,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":49},{"step":16,"r":3,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":63},{"step":17,"r":2,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":51},{"step":18,"r":1,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":73},{"step":19,"r":0,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":53},{"step":20,"r":1,"c":4,"direction":"E\u2192","is_hallucination":true,"is_backtrack":false,"is_loop":false,"confidence":50},{"step":21,"r":1,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":57},{"step":22,"r":2,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":20},{"step":23,"r":3,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":20},{"step":24,"r":2,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":20},{"step":25,"r":3,"c":4,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":33},{"step":26,"r":3,"c":3,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":56},{"step":27,"r":3,"c":2,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":85},{"step":28,"r":3,"c":1,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":64},{"step":29,"r":3,"c":0,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":30,"r":4,"c":0,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":70},{"step":31,"r":4,"c":1,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":90},{"step":32,"r":4,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":82},{"step":33,"r":4,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":85},{"step":34,"r":4,"c":4,"direction":"GOAL","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100}],"sr_agg":0.083,"hrr":0.403,"avg_hc":1.1,"n_trials":60},{"model":"Claude-Haiku","solved":false,"mei":0.398,"score":0.398,"hallucination_count":1,"backtrack_count":21,"loop_count":26,"brs":0.0,"path":[[0,0],[0,1],[0,0],[0,1],[0,0],[0,1],[0,0],[0,1],[0,2],[0,3],[1,3],[1,4],[2,4],[3,4],[3,3],[3,2],[3,3],[3,4],[3,4],[2,4],[3,4],[3,3],[3,4],[2,4],[3,4],[2,4],[1,4],[1,3],[1,4],[0,4],[1,4],[1,3],[0,3],[0,2],[0,3],[1,3],[0,3],[1,3],[1,4],[0,4],[1,4],[0,4],[1,4],[2,4],[3,4],[2,4],[3,4],[3,3],[3,2],[3,1],[3,0],[4,0],[4,1],[4,2],[4,3],[4,4]],"steps":[{"step":1,"r":0,"c":0,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":99},{"step":2,"r":0,"c":1,"direction":"W\u2190","is_hallucination":false,"is_backtrack":true,"is_loop":false,"confidence":49},{"step":3,"r":0,"c":0,"direction":"E\u2192","is_hallucination":false,"is_backtrack":true,"is_loop":false,"confidence":64},{"step":4,"r":0,"c":1,"direction":"W\u2190","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":54},{"step":5,"r":0,"c":0,"direction":"E\u2192","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":50},{"step":6,"r":0,"c":1,"direction":"W\u2190","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":20},{"step":7,"r":0,"c":0,"direction":"E\u2192","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":55},{"step":8,"r":0,"c":1,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":75},{"step":9,"r":0,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":81},{"step":10,"r":0,"c":3,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":81},{"step":11,"r":1,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":95},{"step":12,"r":1,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":83},{"step":13,"r":2,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":77},{"step":14,"r":3,"c":4,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":84},{"step":15,"r":3,"c":3,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":65},{"step":16,"r":3,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":true,"is_loop":false,"confidence":61},{"step":17,"r":3,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":81},{"step":18,"r":3,"c":4,"direction":"S\u2193","is_hallucination":true,"is_backtrack":false,"is_loop":false,"confidence":48},{"step":19,"r":3,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":58},{"step":20,"r":2,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":34},{"step":21,"r":3,"c":4,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":58},{"step":22,"r":3,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":26},{"step":23,"r":3,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":39},{"step":24,"r":2,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":20},{"step":25,"r":3,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":32},{"step":26,"r":2,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":73},{"step":27,"r":1,"c":4,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":72},{"step":28,"r":1,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":66},{"step":29,"r":1,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":83},{"step":30,"r":0,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":50},{"step":31,"r":1,"c":4,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":58},{"step":32,"r":1,"c":3,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":78},{"step":33,"r":0,"c":3,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":50},{"step":34,"r":0,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":43},{"step":35,"r":0,"c":3,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":44},{"step":36,"r":1,"c":3,"direction":"N\u2191","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":27},{"step":37,"r":0,"c":3,"direction":"S\u2193","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":20},{"step":38,"r":1,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":27},{"step":39,"r":1,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":45},{"step":40,"r":0,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":20},{"step":41,"r":1,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":42},{"step":42,"r":0,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":20},{"step":43,"r":1,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":33},{"step":44,"r":2,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":20},{"step":45,"r":3,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":20},{"step":46,"r":2,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":true,"is_loop":true,"confidence":20},{"step":47,"r":3,"c":4,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":true,"confidence":42},{"step":48,"r":3,"c":3,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":78},{"step":49,"r":3,"c":2,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":96},{"step":50,"r":3,"c":1,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":74},{"step":51,"r":3,"c":0,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":90},{"step":52,"r":4,"c":0,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":89},{"step":53,"r":4,"c":1,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":77},{"step":54,"r":4,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":66},{"step":55,"r":4,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":75},{"step":56,"r":4,"c":4,"direction":"GOAL","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100}],"sr_agg":0.05,"hrr":0.363,"avg_hc":3.93,"n_trials":60,"error":null},{"model":"Llama-4-Maverick","provider":"openrouter","solved":true,"mei":0.9,"score":0.9,"hallucination_count":0,"backtrack_count":5,"loop_count":0,"brs":1.0,"latency_s":92.52,"path":[[0,0],[0,1],[0,2],[0,3],[1,3],[1,4],[2,4],[3,4],[3,3],[3,2],[3,1],[3,0],[4,0],[4,1],[4,2],[4,3],[4,4]],"steps":[{"step":1,"r":0,"c":0,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":2,"r":0,"c":1,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":3,"r":0,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":4,"r":0,"c":3,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":5,"r":1,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":6,"r":1,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":60},{"step":7,"r":2,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":8,"r":3,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":50},{"step":9,"r":2,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":40},{"step":10,"r":1,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":20},{"step":11,"r":1,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":60},{"step":12,"r":2,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":13,"r":3,"c":4,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":70},{"step":14,"r":3,"c":3,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":60},{"step":15,"r":3,"c":2,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":60},{"step":16,"r":3,"c":1,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":50},{"step":17,"r":3,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":40},{"step":18,"r":3,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":30},{"step":19,"r":0,"c":0,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":20,"r":0,"c":1,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":21,"r":0,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":22,"r":0,"c":3,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":23,"r":1,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":24,"r":1,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":60},{"step":25,"r":2,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":26,"r":3,"c":4,"direction":"N\u2191","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":40},{"step":27,"r":0,"c":0,"direction":"\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null}],"sr_agg":1.0,"hrr":1.0,"avg_hc":0,"n_trials":1},{"model":"Qwen-2.5-72B","provider":"openrouter","solved":false,"mei":0.476,"score":0.476,"hallucination_count":4,"backtrack_count":1,"loop_count":3,"brs":0.2,"latency_s":57.65,"path":[],"steps":[{"step":1,"r":0,"c":0,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":2,"r":0,"c":1,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":75},{"step":3,"r":0,"c":2,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":70},{"step":4,"r":0,"c":3,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":85},{"step":5,"r":1,"c":3,"direction":"N","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":65},{"step":6,"r":0,"c":3,"direction":"W","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":50},{"step":7,"r":0,"c":2,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":8,"r":1,"c":2,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":9,"r":2,"c":2,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":75},{"step":10,"r":2,"c":3,"direction":"W","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":65},{"step":11,"r":2,"c":2,"direction":"N","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":12,"r":1,"c":2,"direction":"N","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":75},{"step":13,"r":0,"c":2,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":70},{"step":14,"r":0,"c":3,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":15,"r":1,"c":3,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":16,"r":2,"c":3,"direction":"N","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":70},{"step":17,"r":1,"c":3,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":70},{"step":18,"r":1,"c":4,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":75},{"step":19,"r":2,"c":4,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":20,"r":3,"c":4,"direction":"W","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":21,"r":3,"c":3,"direction":"W","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":22,"r":3,"c":3,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":23,"r":3,"c":4,"direction":"N","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":24,"r":2,"c":4,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":25,"r":3,"c":4,"direction":"W","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":26,"r":3,"c":3,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":27,"r":3,"c":4,"direction":"N","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":28,"r":2,"c":4,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":29,"r":3,"c":4,"direction":"N","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":30,"r":2,"c":4,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":31,"r":3,"c":4,"direction":"N","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":32,"r":2,"c":4,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":33,"r":3,"c":4,"direction":"N","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":34,"r":2,"c":4,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":35,"r":3,"c":4,"direction":"N","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":36,"r":2,"c":4,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":37,"r":3,"c":4,"direction":"W","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":38,"r":3,"c":3,"direction":"W","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":39,"r":3,"c":2,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":40,"r":3,"c":3,"direction":"N","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":41,"r":2,"c":3,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":42,"r":2,"c":4,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":43,"r":3,"c":4,"direction":"N","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":44,"r":2,"c":4,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":45,"r":2,"c":4,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":46,"r":3,"c":4,"direction":"W","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":47,"r":3,"c":3,"direction":"N","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":48,"r":2,"c":3,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":49,"r":2,"c":4,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":50,"r":3,"c":4,"direction":"W","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":51,"r":3,"c":3,"direction":"N","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":52,"r":2,"c":3,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":53,"r":2,"c":4,"direction":"S","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":54,"r":3,"c":4,"direction":"W","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":55,"r":3,"c":3,"direction":"N","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null},{"step":56,"r":2,"c":3,"direction":"E","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":null}],"sr_agg":0.0,"hrr":0.2,"avg_hc":4,"n_trials":1},{"model":"Claude-3.7-Sonnet","provider":"openrouter","solved":true,"mei":0.9,"score":0.9,"hallucination_count":0,"backtrack_count":0,"loop_count":0,"brs":1.0,"latency_s":18.22,"path":[[0,0],[0,1],[0,2],[0,3],[1,3],[1,4],[2,4],[3,4],[3,3],[3,2],[3,1],[3,0],[4,0],[4,1],[4,2],[4,3],[4,4]],"steps":[{"step":1,"r":0,"c":0,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100},{"step":2,"r":0,"c":1,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":3,"r":0,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":4,"r":0,"c":3,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":90},{"step":5,"r":1,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":6,"r":1,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":90},{"step":7,"r":2,"c":4,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":90},{"step":8,"r":3,"c":4,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":9,"r":3,"c":3,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":10,"r":3,"c":2,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":11,"r":3,"c":1,"direction":"W\u2190","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":80},{"step":12,"r":3,"c":0,"direction":"S\u2193","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":85},{"step":13,"r":4,"c":0,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":90},{"step":14,"r":4,"c":1,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":90},{"step":15,"r":4,"c":2,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":95},{"step":16,"r":4,"c":3,"direction":"E\u2192","is_hallucination":false,"is_backtrack":false,"is_loop":false,"confidence":100}],"sr_agg":1.0,"hrr":1.0,"avg_hc":0,"n_trials":1},{"model":"GPT-4o","provider":"openrouter","solved":false,"mei":0.594,"score":0.594,"hallucination_count":0,"backtrack_count":0,"loop_count":0,"brs":1.0,"latency_s":14.25,"path":[[0,0],[0,1],[0,2],[0,3],[1,3],[1,4],[2,4],[3,4],[2,3],[2,2],[1,2],[0,2],[1,3],[1,4],[0,4],[1,4],[2,4],[3,4]],"steps":[{"step":1,"r":0,"c":0,"direction":"E","confidence":100,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":2,"r":0,"c":1,"direction":"E","confidence":100,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":3,"r":0,"c":2,"direction":"E","confidence":100,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":4,"r":0,"c":3,"direction":"S","confidence":100,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":5,"r":1,"c":3,"direction":"E","confidence":80,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":6,"r":1,"c":4,"direction":"S","confidence":70,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":7,"r":2,"c":4,"direction":"S","confidence":70,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":8,"r":3,"c":4,"direction":"N","confidence":90,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":8,"r":3,"c":4,"direction":"W","confidence":80,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":7,"r":2,"c":3,"direction":"N","confidence":70,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":8,"r":2,"c":2,"direction":"E","confidence":60,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":8,"r":2,"c":2,"direction":"N","confidence":60,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":9,"r":1,"c":2,"direction":"N","confidence":60,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":10,"r":0,"c":2,"direction":"E","confidence":100,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":11,"r":1,"c":3,"direction":"N","confidence":100,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":12,"r":1,"c":4,"direction":"N","confidence":100,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":13,"r":0,"c":4,"direction":"S","confidence":100,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":14,"r":1,"c":4,"direction":"S","confidence":100,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":15,"r":2,"c":4,"direction":"S","confidence":100,"is_hallucination":false,"is_backtrack":false,"is_loop":false},{"step":16,"r":3,"c":4,"direction":"S","confidence":100,"is_hallucination":false,"is_backtrack":false,"is_loop":false}],"sr_agg":0.0,"hrr":1.0,"avg_hc":0,"n_trials":1}]};
 
-  // Mode toggle
-  var toggle = document.getElementById('modeToggle');
-  toggle.addEventListener('click', function() {
-    document.body.classList.toggle('expert-mode');
-    if (document.body.classList.contains('expert-mode')) {
-      toggle.textContent = 'General Mode';
-    } else {
-      toggle.textContent = 'Expert Mode';
-    }
-  });
+// ── HELPERS ──
+const SHORT_NAME_MAP = {
+  'Llama-4-Scout':    'Llama-4-Scout',
+  'Llama-4-Maverick': 'Llama-4-Maverick',
+  'Claude-3.7-Sonnet':'Claude-3.7',
+  'Claude-Haiku':     'Claude-Haiku',
+  'MiniMax-M2.5':     'MiniMax',
+  'GPT-4o-mini':      'GPT-4o-mini',
+  'GPT-4o':           'GPT-4o',
+  'Gemini-Flash':     'Gemini',
+  'Qwen-2.5-72B':     'Qwen-2.5',
+  'glm-4.7':          'GLM-4.7',
+};
+function getShortName(model) {
+  return SHORT_NAME_MAP[model] || model.split('-').slice(0,2).join('-');
+}
 
-  // Accordion
-  var headers = document.querySelectorAll('.accordion-header');
-  for (var i = 0; i < headers.length; i++) {
-    headers[i].addEventListener('click', function() {
-      this.parentElement.classList.toggle('open');
-    });
+// ── CONSTANTS ──
+const MODEL_COLORS = [
+  '#00d4aa', '#a78bfa', '#fbbf24', '#34d399', '#60a5fa', '#f472b6',
+  '#fb923c', '#e879f9', '#38bdf8', '#f87171'
+];
+const MODELS = RAW_DATA.results;
+// Aggregate stats (n=60 per model) — source: experiment_results/analysis_final2.json
+const AGGREGATE_STATS = {
+  'Claude-3.7-Sonnet': { mei: 0.774, hrr: 0.875, sr: 0.567, avg_hc: 0.4,  avg_bt: 0.2,  n: 60 },
+  'glm-4.7':           { mei: 0.615, hrr: 0.718, sr: 0.083, avg_hc: 1.4,  avg_bt: 2.0,  n: 60 },
+  'Llama-4-Maverick':  { mei: 0.600, hrr: 0.811, sr: 0.133, avg_hc: 0.0,  avg_bt: 5.0,  n: 60 },
+  'MiniMax-M2.5':      { mei: 0.593, hrr: 0.600, sr: 0.533, avg_hc: 0.1,  avg_bt: 0.0,  n: 60 },
+  'Llama-4-Scout':     { mei: 0.589, hrr: 0.810, sr: 0.083, avg_hc: 2.0,  avg_bt: 2.0,  n: 60 },
+  'Qwen-2.5-72B':      { mei: 0.559, hrr: 0.607, sr: 0.100, avg_hc: 4.0,  avg_bt: 1.0,  n: 60 },
+  'Gemini-Flash':      { mei: 0.432, hrr: 0.403, sr: 0.083, avg_hc: 1.1,  avg_bt: 6.0,  n: 60 },
+  'Claude-Haiku':      { mei: 0.398, hrr: 0.363, sr: 0.050, avg_hc: 3.9,  avg_bt: 21.0, n: 60 },
+  'GPT-4o-mini':       { mei: 0.391, hrr: 0.382, sr: 0.050, avg_hc: 0.8,  avg_bt: 16.0, n: 60 },
+  'GPT-4o':            { mei: 0.315, hrr: 0.353, sr: 0.067, avg_hc: 0.0,  avg_bt: 0.0,  n: 60 },
+};
+const MAZE = RAW_DATA.maze;
+const N = MAZE.N;
+const WALLS = MAZE.walls;
+const END = MAZE.end;
+const SOLUTION_PATH = MAZE.solution;
+const MAX_STEPS = Math.max(...MODELS.map(m => m.steps.length));
+
+// Current state
+let currentStep = 0;
+let playing = false;
+let playInterval = null;
+let currentView = 'grid';
+
+// Per-model canvases in grid view
+const gridCanvases = [];
+const gridCtxs = [];
+
+// ── HELPERS ──
+function canMove(r, c, dir) {
+  if (r < 0 || r >= N || c < 0 || c >= N) return false;
+  return !WALLS[r][c][dir];
+}
+
+function getStepsUpTo(modelIdx, step) {
+  const m = MODELS[modelIdx];
+  return m.steps.slice(0, Math.min(step, m.steps.length));
+}
+
+function getCurrentPos(modelIdx, step) {
+  const m = MODELS[modelIdx];
+  if (m.steps.length === 0) return [0, 0];
+  const s = m.steps[Math.min(step, m.steps.length) - 1];
+  if (!s) return [0, 0];
+  return [s.r, s.c];
+}
+
+function getModelStatus(modelIdx, step) {
+  const m = MODELS[modelIdx];
+  if (step === 0) return 'waiting';
+  const stepsAvail = Math.min(step, m.steps.length);
+  const pos = getCurrentPos(modelIdx, step);
+  if (pos[0] === END[0] && pos[1] === END[1]) return 'solved';
+  if (stepsAvail >= m.steps.length) return m.solved ? 'solved' : 'stuck';
+  return 'solving';
+}
+
+function meiAtStep(modelIdx, step) {
+  const m = MODELS[modelIdx];
+  const stepsUsed = Math.min(step, m.steps.length);
+  if (stepsUsed === 0) return 0;
+  const solLen = SOLUTION_PATH.length;
+  const progress = stepsUsed / m.steps.length;
+  return Math.min(m.mei, m.mei * Math.pow(progress, 0.5));
+}
+
+// ── MAZE DRAWING ──
+function drawMaze(ctx, size, modelIdx, upToStep, options = {}) {
+  const { showTrail = true, trailAlpha = 1, agentSize = 0.35 } = options;
+  const cell = size / N;
+  const pad = cell * 0.08;
+
+  // Background
+  ctx.fillStyle = '#0e1118';
+  ctx.fillRect(0, 0, size, size);
+
+  // Solution path hint (very faint)
+  ctx.fillStyle = 'rgba(255,255,255,0.02)';
+  for (const [sr, sc] of SOLUTION_PATH) {
+    ctx.fillRect(sc * cell + 0.5, sr * cell + 0.5, cell - 1, cell - 1);
   }
 
-  // Copy BibTeX
-  var copyBtn = document.getElementById('copyBtn');
-  var bibtex = document.getElementById('bibtex');
-  copyBtn.addEventListener('click', function() {
-    var text = bibtex.textContent.replace('Copy', '').trim();
-    navigator.clipboard.writeText(text).then(function() {
-      copyBtn.textContent = 'Copied!';
-      setTimeout(function() { copyBtn.textContent = 'Copy'; }, 2000);
+  // Trail
+  const color = MODEL_COLORS[modelIdx];
+  const steps = getStepsUpTo(modelIdx, upToStep);
+
+  if (showTrail && steps.length > 0) {
+    const trailLen = steps.length;
+    for (let i = 0; i < trailLen; i++) {
+      const s = steps[i];
+      const alpha = trailAlpha * (0.15 + 0.65 * (i / trailLen));
+      ctx.fillStyle = hexToRgba(color, alpha);
+      ctx.fillRect(s.c * cell + pad, s.r * cell + pad, cell - 2*pad, cell - 2*pad);
+    }
+
+    // Hallucination flashes
+    for (const s of steps) {
+      if (s.is_hallucination) {
+        ctx.fillStyle = 'rgba(248,113,113,0.35)';
+        ctx.fillRect(s.c * cell + 1, s.r * cell + 1, cell - 2, cell - 2);
+        // lightning bolt
+        ctx.fillStyle = '#fbbf24';
+        ctx.font = `bold ${Math.floor(cell*0.45)}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('!', s.c * cell + cell/2, s.r * cell + cell/2);
+      }
+    }
+  }
+
+  // Walls
+  ctx.strokeStyle = '#2a3048';
+  ctx.lineWidth = 1.5;
+  for (let r = 0; r < N; r++) {
+    for (let c = 0; c < N; c++) {
+      const w = WALLS[r][c];
+      const x = c * cell, y = r * cell;
+      ctx.beginPath();
+      if (w.N) { ctx.moveTo(x, y); ctx.lineTo(x + cell, y); }
+      ctx.stroke(); ctx.beginPath();
+      if (w.S) { ctx.moveTo(x, y+cell); ctx.lineTo(x+cell, y+cell); }
+      ctx.stroke(); ctx.beginPath();
+      if (w.W) { ctx.moveTo(x, y); ctx.lineTo(x, y+cell); }
+      ctx.stroke(); ctx.beginPath();
+      if (w.E) { ctx.moveTo(x+cell, y); ctx.lineTo(x+cell, y+cell); }
+      ctx.stroke();
+    }
+  }
+
+  // Border
+  ctx.strokeStyle = '#3a4060';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(1, 1, size - 2, size - 2);
+
+  // Start marker
+  ctx.fillStyle = '#34d399';
+  ctx.font = `${Math.floor(cell*0.4)}px sans-serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('S', cell*0.5, cell*0.5);
+
+  // End marker
+  const status = getModelStatus(modelIdx, upToStep);
+  if (status === 'solved') {
+    ctx.fillStyle = '#ffd700';
+    ctx.font = `bold ${Math.floor(cell*0.5)}px sans-serif`;
+    ctx.fillText('G', END[1]*cell + cell/2, END[0]*cell + cell/2);
+  } else {
+    ctx.fillStyle = '#f87171';
+    ctx.fillText('G', END[1]*cell + cell/2, END[0]*cell + cell/2);
+  }
+
+  // Agent dot
+  if (upToStep > 0) {
+    const [ar, ac] = getCurrentPos(modelIdx, upToStep);
+    const cx = ac * cell + cell/2;
+    const cy = ar * cell + cell/2;
+    const r = cell * agentSize;
+
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 10;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Current step indicator (backtrack/hall)
+    if (steps.length > 0) {
+      const lastStep = steps[steps.length - 1];
+      if (lastStep.is_backtrack) {
+        ctx.strokeStyle = '#fb923c';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r + 2, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1,3), 16);
+  const g = parseInt(hex.slice(3,5), 16);
+  const b = parseInt(hex.slice(5,7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+// ── BUILD GRID VIEW ──
+function buildGridView() {
+  const container = document.getElementById('grid-row');
+  container.innerHTML = '';
+  gridCanvases.length = 0;
+  gridCtxs.length = 0;
+
+  MODELS.forEach((m, i) => {
+    const color = MODEL_COLORS[i];
+    const card = document.createElement('div');
+    card.className = 'model-card';
+    card.id = `card-${i}`;
+    card.style.setProperty('--card-color', color);
+
+    card.innerHTML = `
+      <div class="card-header">
+        <div class="card-dot" style="background:${color}"></div>
+        <div class="card-name">${m.model}</div>
+        <div class="card-badge badge-waiting" id="badge-${i}">WAITING</div>
+      </div>
+      <div class="card-canvas-wrap" id="canvas-wrap-${i}">
+        <canvas id="maze-${i}" class="maze-canvas"></canvas>
+      </div>
+      <div class="card-stats">
+        <div class="stat-cell">
+          <span class="stat-val" id="steps-${i}" style="color:${color}">0</span>
+          <span class="stat-lbl">Steps</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-val" id="halls-${i}" style="color:var(--red)">0</span>
+          <span class="stat-lbl">Halls</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-val" id="bt-${i}" style="color:var(--orange)">0</span>
+          <span class="stat-lbl">BT</span>
+        </div>
+      </div>
+      <div class="card-mei">
+        <div class="mei-track">
+          <div class="mei-fill" id="mei-fill-${i}" style="background:${color};width:0%"></div>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+
+    const canvas = document.getElementById(`maze-${i}`);
+    gridCanvases.push(canvas);
+    gridCtxs.push(canvas.getContext('2d'));
+  });
+
+  resizeGridCanvases();
+}
+
+function resizeGridCanvases() {
+  MODELS.forEach((m, i) => {
+    const wrap = document.getElementById(`canvas-wrap-${i}`);
+    if (!wrap) return;
+    const w = wrap.clientWidth - 12;
+    const h = wrap.clientHeight - 12;
+    const s = Math.min(w, h, 240);
+    gridCanvases[i].width = s;
+    gridCanvases[i].height = s;
+  });
+}
+
+// ── BUILD OVERLAY VIEW ──
+function buildOverlayView() {
+  const wrap = document.getElementById('overlay-canvas-wrap');
+  const canvas = document.getElementById('overlay-canvas');
+  const legend = document.getElementById('overlay-legend');
+
+  const mainArea = document.getElementById('main');
+  const avail = Math.min(mainArea.clientHeight - 60, 420);
+  const size = Math.max(avail, 260);
+  canvas.width = size;
+  canvas.height = size;
+
+  legend.innerHTML = '';
+  MODELS.forEach((m, i) => {
+    const row = document.createElement('div');
+    row.className = 'legend-row';
+    row.id = `legend-${i}`;
+    row.style.setProperty('--row-color', MODEL_COLORS[i]);
+    row.innerHTML = `
+      <div class="legend-color" style="background:${MODEL_COLORS[i]}"></div>
+      <div class="legend-name">${m.model}</div>
+      <div class="legend-steps" id="legend-steps-${i}">0 steps</div>
+    `;
+    legend.appendChild(row);
+  });
+}
+
+function drawOverlay(step) {
+  const canvas = document.getElementById('overlay-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const size = canvas.width;
+  const cell = size / N;
+
+  // Background + walls (same as single maze)
+  ctx.fillStyle = '#0e1118';
+  ctx.fillRect(0, 0, size, size);
+
+  // Solution hint
+  ctx.fillStyle = 'rgba(255,255,255,0.025)';
+  for (const [sr, sc] of SOLUTION_PATH) {
+    ctx.fillRect(sc*cell+0.5, sr*cell+0.5, cell-1, cell-1);
+  }
+
+  // All trails first
+  MODELS.forEach((m, i) => {
+    const steps = getStepsUpTo(i, step);
+    const color = MODEL_COLORS[i];
+    steps.forEach((s, idx) => {
+      const alpha = 0.1 + 0.2 * (idx / Math.max(steps.length, 1));
+      ctx.fillStyle = hexToRgba(color, alpha);
+      const pad = cell * 0.08;
+      ctx.fillRect(s.c*cell+pad, s.r*cell+pad, cell-2*pad, cell-2*pad);
     });
   });
 
-  // Progress bar animation on scroll
-  var observer = new IntersectionObserver(function(entries) {
-    for (var j = 0; j < entries.length; j++) {
-      if (entries[j].isIntersecting) {
-        var fills = entries[j].target.querySelectorAll('.progress-fill');
-        for (var k = 0; k < fills.length; k++) {
-          var target = fills[k].getAttribute('data-target');
-          if (target) {
-            fills[k].style.width = target + '%';
-          }
+  // Walls
+  ctx.strokeStyle = '#2a3048';
+  ctx.lineWidth = 1.5;
+  for (let r = 0; r < N; r++) {
+    for (let c = 0; c < N; c++) {
+      const w = WALLS[r][c];
+      const x = c*cell, y = r*cell;
+      ['N','S','W','E'].forEach(dir => {
+        if (w[dir]) {
+          ctx.beginPath();
+          if (dir==='N') { ctx.moveTo(x,y); ctx.lineTo(x+cell,y); }
+          if (dir==='S') { ctx.moveTo(x,y+cell); ctx.lineTo(x+cell,y+cell); }
+          if (dir==='W') { ctx.moveTo(x,y); ctx.lineTo(x,y+cell); }
+          if (dir==='E') { ctx.moveTo(x+cell,y); ctx.lineTo(x+cell,y+cell); }
+          ctx.stroke();
         }
-        observer.unobserve(entries[j].target);
-      }
+      });
     }
-  }, { threshold: 0.2 });
+  }
 
-  var table = document.querySelector('.lb-table');
-  if (table) observer.observe(table);
+  ctx.strokeStyle = '#3a4060';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(1, 1, size-2, size-2);
 
-  // Nav active state on scroll
-  var sections = document.querySelectorAll('section[id]');
-  var navLinks = document.querySelectorAll('.nav-links a');
+  // Start / End
+  ctx.fillStyle = '#34d399';
+  ctx.font = `bold ${Math.floor(cell*0.4)}px sans-serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('S', cell*0.5, cell*0.5);
+  ctx.fillStyle = '#f87171';
+  ctx.fillText('G', END[1]*cell+cell/2, END[0]*cell+cell/2);
 
-  window.addEventListener('scroll', function() {
-    var scrollY = window.scrollY + 100;
-    for (var s = 0; s < sections.length; s++) {
-      var top = sections[s].offsetTop;
-      var height = sections[s].offsetHeight;
-      var id = sections[s].getAttribute('id');
-      if (scrollY >= top && scrollY < top + height) {
-        for (var l = 0; l < navLinks.length; l++) {
-          navLinks[l].classList.remove('active');
-          if (navLinks[l].getAttribute('href') === '#' + id) {
-            navLinks[l].classList.add('active');
-          }
-        }
-      }
-    }
+  // Agent dots with initials
+  MODELS.forEach((m, i) => {
+    if (step === 0) return;
+    const [ar, ac] = getCurrentPos(i, step);
+    const cx = ac*cell + cell/2;
+    const cy = ar*cell + cell/2;
+    const rad = cell * 0.32;
+    const color = MODEL_COLORS[i];
+
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 8;
+    ctx.fillStyle = hexToRgba(color, 0.9);
+    ctx.beginPath();
+    ctx.arc(cx, cy, rad, 0, Math.PI*2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Initials
+    ctx.fillStyle = '#080a10';
+    ctx.font = `bold ${Math.floor(rad)}px DM Mono, monospace`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(m.model[0], cx, cy);
   });
-})();
-</script>
 
+  // Update legend
+  MODELS.forEach((m, i) => {
+    const el = document.getElementById(`legend-steps-${i}`);
+    if (el) el.textContent = `${Math.min(step, m.steps.length)} / ${m.steps.length}`;
+    const row = document.getElementById(`legend-${i}`);
+    if (row) row.classList.toggle('active-step', false);
+  });
+}
+
+// ── BUILD TIMELINE VIEW ──
+function buildTimelineView() {
+  const container = document.getElementById('view-timeline');
+  container.innerHTML = '';
+
+  MODELS.forEach((m, i) => {
+    const color = MODEL_COLORS[i];
+    const row = document.createElement('div');
+    row.className = 'timeline-row';
+
+    const segW = 100 / m.steps.length;
+    let segsHTML = '';
+    m.steps.forEach((s, idx) => {
+      let bg = color;
+      let opacity = 0.7;
+      if (s.is_hallucination) { bg = '#f87171'; opacity = 1; }
+      else if (s.is_backtrack) { bg = '#fb923c'; opacity = 0.85; }
+      else if (s.is_loop) { bg = '#fbbf24'; opacity = 0.7; }
+      segsHTML += `<div class="tl-segment" style="left:${idx*segW}%;width:${segW}%;background:${bg};opacity:${opacity}" title="Step ${idx+1}: ${s.is_hallucination?'HALL':s.is_backtrack?'BT':s.is_loop?'LOOP':'OK'}"></div>`;
+    });
+
+    const halls = m.steps.filter(s => s.is_hallucination).length;
+    const bts = m.steps.filter(s => s.is_backtrack).length;
+
+    row.innerHTML = `
+      <div class="tl-name" style="color:${color}">${m.model}</div>
+      <div class="tl-bar-wrap" id="tl-bar-${i}" onclick="seekTimeline(${i}, event)">
+        ${segsHTML}
+        <div class="tl-playhead" id="tl-ph-${i}" style="left:0%"></div>
+      </div>
+      <div class="tl-stats">
+        <div class="tl-stat"><span id="tl-step-${i}">0</span>/${m.steps.length}</div>
+        <div class="tl-stat">H:<span style="color:var(--red)">${halls}</span></div>
+        <div class="tl-stat">BT:<span style="color:var(--orange)">${bts}</span></div>
+      </div>
+    `;
+    container.appendChild(row);
+  });
+}
+
+function seekTimeline(modelIdx, event) {
+  const bar = event.currentTarget;
+  const rect = bar.getBoundingClientRect();
+  const pct = (event.clientX - rect.left) / rect.width;
+  const m = MODELS[modelIdx];
+  currentStep = Math.round(pct * m.steps.length);
+  updateAll();
+}
+
+// ── UPDATE ALL ──
+function updateAll() {
+  const step = currentStep;
+  const maxS = MAX_STEPS;
+
+  // Progress bar
+  document.getElementById('progress-fill').style.width = `${(step / maxS) * 100}%`;
+  document.getElementById('step-counter').textContent = `Step ${step} / ${maxS}`;
+
+  if (currentView === 'grid') updateGrid(step);
+  if (currentView === 'overlay') drawOverlay(step);
+  if (currentView === 'timeline') updateTimeline(step);
+
+  updateLeaderboard(step);
+}
+
+function updateGrid(step) {
+  MODELS.forEach((m, i) => {
+    if (!gridCanvases[i]) return;
+    const size = gridCanvases[i].width;
+    if (size < 10) return;
+    drawMaze(gridCtxs[i], size, i, step);
+
+    const status = getModelStatus(i, step);
+    const badge = document.getElementById(`badge-${i}`);
+    const card = document.getElementById(`card-${i}`);
+    const stepsNow = Math.min(step, m.steps.length);
+
+    if (badge) {
+      badge.className = 'card-badge';
+      if (status === 'solved') { badge.classList.add('badge-solved'); badge.textContent = 'SOLVED'; }
+      else if (status === 'stuck') { badge.classList.add('badge-stuck'); badge.textContent = 'STUCK'; }
+      else if (status === 'waiting') { badge.classList.add('badge-waiting'); badge.textContent = 'WAIT'; }
+      else { badge.classList.add('badge-solving'); badge.textContent = 'SOLVING'; }
+    }
+
+    if (card) {
+      card.classList.toggle('solved-glow', status === 'solved');
+      // flash active on current step
+      if (step > 0 && step <= m.steps.length) {
+        card.classList.add('active-step');
+        setTimeout(() => card.classList.remove('active-step'), 200);
+      }
+    }
+
+    const hallsSoFar = m.steps.slice(0, stepsNow).filter(s => s.is_hallucination).length;
+    const btSoFar = m.steps.slice(0, stepsNow).filter(s => s.is_backtrack).length;
+    const el_s = document.getElementById(`steps-${i}`);
+    const el_h = document.getElementById(`halls-${i}`);
+    const el_b = document.getElementById(`bt-${i}`);
+    if (el_s) el_s.textContent = stepsNow;
+    if (el_h) el_h.textContent = hallsSoFar;
+    if (el_b) el_b.textContent = btSoFar;
+
+    const mei = meiAtStep(i, step);
+    const mf = document.getElementById(`mei-fill-${i}`);
+    if (mf) mf.style.width = `${mei * 100}%`;
+  });
+}
+
+function updateTimeline(step) {
+  MODELS.forEach((m, i) => {
+    const stepsNow = Math.min(step, m.steps.length);
+    const pct = m.steps.length > 0 ? (stepsNow / m.steps.length) * 100 : 0;
+    const ph = document.getElementById(`tl-ph-${i}`);
+    if (ph) ph.style.left = `${pct}%`;
+    const sc = document.getElementById(`tl-step-${i}`);
+    if (sc) sc.textContent = stepsNow;
+  });
+}
+
+// ── LEADERBOARD ──
+function updateLeaderboard(step) {
+  const tbody = document.getElementById('lb-body');
+  if (!tbody) return;
+
+  const rows = MODELS.map((m, i) => {
+    const stepsNow = Math.min(step, m.steps.length);
+    const status = getModelStatus(i, step);
+    const mei = meiAtStep(i, step);
+    const halls = m.steps.slice(0, stepsNow).filter(s => s.is_hallucination).length;
+    const bts = m.steps.slice(0, stepsNow).filter(s => s.is_backtrack).length;
+    return { i, m, stepsNow, status, mei, halls, bts };
+  });
+
+  // Sort: solved first (by fewer steps), then by MEI desc
+  rows.sort((a, b) => {
+    if (a.status === 'solved' && b.status !== 'solved') return -1;
+    if (b.status === 'solved' && a.status !== 'solved') return 1;
+    if (a.status === 'solved' && b.status === 'solved') return a.stepsNow - b.stepsNow;
+    return b.mei - a.mei;
+  });
+
+  tbody.innerHTML = rows.map((row, rank) => {
+    const color = MODEL_COLORS[row.i];
+    const statusText = row.status === 'solved' ? '&#9733; DONE' :
+                       row.status === 'stuck'  ? 'STUCK' :
+                       row.status === 'waiting'? '--' : `${row.stepsNow}/${row.m.steps.length}`;
+    const statusColor = row.status === 'solved' ? '#ffd700' :
+                        row.status === 'stuck'  ? '#f87171' : '';
+    const meiPct = (row.mei * 100).toFixed(0);
+    return `<tr>
+      <td class="lb-rank">${rank+1}</td>
+      <td class="lb-model"><span class="lb-dot" style="background:${color}"></span>${row.m.model}</td>
+      <td>${row.stepsNow}</td>
+      <td style="color:var(--red)">${row.halls}</td>
+      <td style="color:var(--orange)">${row.bts}</td>
+      <td>
+        <span style="margin-right:4px;font-size:10px">${meiPct}%</span>
+        <span class="lb-mei-bar" style="width:${meiPct}px;background:${color}"></span>
+      </td>
+      <td style="color:${statusColor};font-size:10px">${statusText}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── PLAYBACK ──
+function getSpeed() {
+  const v = parseInt(document.getElementById('speed-slider').value);
+  // speed 1=slow(800ms), 10=fast(80ms)
+  return Math.round(800 - (v - 1) * 80);
+}
+
+function togglePlay() {
+  playing = !playing;
+  const btn = document.getElementById('play-btn');
+  if (playing) {
+    btn.textContent = '⏸ Pause';
+    scheduleNext();
+  } else {
+    btn.textContent = '▶ Play';
+    if (playInterval) clearTimeout(playInterval);
+  }
+}
+
+function scheduleNext() {
+  if (!playing) return;
+  playInterval = setTimeout(() => {
+    if (currentStep < MAX_STEPS) {
+      currentStep++;
+      updateAll();
+      scheduleNext();
+    } else {
+      playing = false;
+      document.getElementById('play-btn').textContent = '▶ Play';
+    }
+  }, getSpeed());
+}
+
+function stepForward() {
+  if (currentStep < MAX_STEPS) { currentStep++; updateAll(); }
+}
+function stepBackward() {
+  if (currentStep > 0) { currentStep--; updateAll(); }
+}
+
+function seekProgress(event) {
+  const track = document.getElementById('progress-track');
+  const rect = track.getBoundingClientRect();
+  const pct = (event.clientX - rect.left) / rect.width;
+  currentStep = Math.round(pct * MAX_STEPS);
+  updateAll();
+}
+
+// ── VIEW SWITCHING ──
+function setView(v) {
+  currentView = v;
+  ['grid','overlay','timeline'].forEach(name => {
+    document.getElementById(`view-${name}`).style.display = name === v ? 'flex' : 'none';
+    document.getElementById(`btn-${name}`).classList.toggle('active', name === v);
+  });
+  if (v === 'overlay') buildOverlayView();
+  updateAll();
+}
+
+// ── KEYBOARD ──
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+  if (e.code === 'ArrowRight') { e.preventDefault(); stepForward(); }
+  if (e.code === 'ArrowLeft') { e.preventDefault(); stepBackward(); }
+});
+
+// ── RESIZE ──
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    resizeGridCanvases();
+    if (currentView === 'overlay') buildOverlayView();
+    updateAll();
+  }, 150);
+});
+
+// ── METRICS PANEL ──
+const OPTIMAL_STEPS = SOLUTION_PATH.length;
+
+function buildMetricsPanel() {
+  const meiRows = document.getElementById('metric-mei-rows');
+  const effRows = document.getElementById('metric-eff-rows');
+  const errRows = document.getElementById('metric-err-rows');
+
+  // Pre-compute values for sorting — aggregate stats (n=60) take priority
+  const modelData = MODELS.map((m, i) => {
+    const agg = AGGREGATE_STATS[m.model] || {};
+    const mei = agg.mei !== undefined ? agg.mei : m.mei;
+    const hrr = agg.hrr !== undefined ? agg.hrr : m.hrr;
+    const hasData = mei !== null && mei !== undefined;
+    const meiVal = hasData ? mei : 0;
+    const hrrVal = hrr !== null && hrr !== undefined ? hrr :
+                   (m.solved ? Math.min(1, OPTIMAL_STEPS / m.steps.length) : 0);
+    const hcVal = agg.avg_hc !== undefined ? agg.avg_hc :
+                  (m.avg_hc !== null && m.avg_hc !== undefined) ? m.avg_hc : m.hallucination_count;
+    const btVal = agg.avg_bt !== undefined ? agg.avg_bt : (m.backtrack_count || 0);
+    const errTotal = hcVal + btVal;
+    const n_trials = agg.n || m.n_trials;
+    return { i, m, agg, hasData, meiVal, hrrVal, hcVal, btVal, errTotal, n_trials };
+  });
+
+  // Sort indices descending by MEI
+  const meiOrder = [...modelData].sort((a, b) => b.meiVal - a.meiVal);
+  // Sort indices descending by HRR
+  const hrrOrder = [...modelData].sort((a, b) => b.hrrVal - a.hrrVal);
+  // Sort indices descending by error total (highest errors first = worst)
+  const errOrder = [...modelData].sort((a, b) => b.errTotal - a.errTotal);
+
+  const maxErr = Math.max(...modelData.map(d => d.errTotal)) || 1;
+
+  meiOrder.forEach(d => {
+    const { i, m, hasData, meiVal, n_trials } = d;
+    const color = MODEL_COLORS[i % MODEL_COLORS.length];
+    const shortName = getShortName(m.model);
+    const nLabel = n_trials ? ` n=${n_trials}` : '';
+    const errLabel = m.error ? ' !' : '';
+    meiRows.insertAdjacentHTML('beforeend', `
+      <div class="metric-row">
+        <div class="metric-model-name" style="color:${color}">${shortName}${errLabel}</div>
+        <div class="metric-bar-track">
+          <div class="metric-bar-fill" id="mei-bar-${i}" style="background:${color};width:${meiVal*100}%;opacity:${hasData?1:0.3}"></div>
+        </div>
+        <div class="metric-val" id="mei-val-${i}">${hasData ? meiVal.toFixed(3) : 'N/A'}${nLabel}</div>
+      </div>`);
+  });
+
+  hrrOrder.forEach(d => {
+    const { i, m, hasData, hrrVal } = d;
+    const color = MODEL_COLORS[i % MODEL_COLORS.length];
+    const shortName = getShortName(m.model);
+    const hrrLabel = (m.hrr !== null && m.hrr !== undefined) ? 'HRR' : 'Eff';
+    effRows.insertAdjacentHTML('beforeend', `
+      <div class="metric-row">
+        <div class="metric-model-name" style="color:${color}">${shortName}</div>
+        <div class="metric-bar-track">
+          <div class="metric-bar-fill" id="eff-bar-${i}" style="background:${color};width:${hrrVal*100}%;opacity:${hasData?1:0.3}"></div>
+        </div>
+        <div class="metric-val" id="eff-val-${i}">${hrrLabel}:${(hrrVal*100).toFixed(0)}%</div>
+      </div>`);
+  });
+
+  errOrder.forEach(d => {
+    const { i, m, hasData, hcVal } = d;
+    const color = MODEL_COLORS[i % MODEL_COLORS.length];
+    const shortName = getShortName(m.model);
+    const hallPct = (hcVal / maxErr * 100).toFixed(1);
+    const btPct = ((m.backtrack_count||0) / maxErr * 100).toFixed(1);
+    const hcDisplay = m.error ? 'Error' : `H${hcVal.toFixed(1)}/B${d.btVal.toFixed(0)}`;
+    errRows.insertAdjacentHTML('beforeend', `
+      <div class="metric-row">
+        <div class="metric-model-name" style="color:${color}">${shortName}</div>
+        <div class="metric-bar-track" style="position:relative">
+          <div style="position:absolute;left:0;top:0;height:100%;width:${hallPct}%;background:#f87171;border-radius:4px 0 0 4px;opacity:${hasData?1:0.3}"></div>
+          <div style="position:absolute;left:${hallPct}%;top:0;height:100%;width:${btPct}%;background:#fb923c;opacity:${hasData?1:0.3}"></div>
+        </div>
+        <div class="metric-val">${hcDisplay}</div>
+      </div>`);
+  });
+
+  drawRadar();
+}
+
+let selectedRadarModel = -1;
+
+function buildRadarLegend() {
+  const legend = document.getElementById('radar-legend');
+  if (!legend) return;
+  legend.textContent = '';
+  MODELS.forEach((m, i) => {
+    const color = MODEL_COLORS[i % MODEL_COLORS.length];
+    const shortName = getShortName(m.model);
+    const item = document.createElement('div');
+    item.className = 'radar-leg-item' +
+      (selectedRadarModel >= 0 && selectedRadarModel !== i ? ' dimmed' : '') +
+      (selectedRadarModel === i ? ' selected' : '');
+    const swatch = document.createElement('span');
+    swatch.className = 'radar-leg-swatch';
+    swatch.style.background = color;
+    const name = document.createElement('span');
+    name.className = 'radar-leg-name';
+    name.textContent = shortName;
+    item.appendChild(swatch);
+    item.appendChild(name);
+    item.addEventListener('click', () => {
+      selectedRadarModel = selectedRadarModel === i ? -1 : i;
+      drawRadar();
+    });
+    legend.appendChild(item);
+  });
+}
+
+function drawRadar() {
+  const canvas = document.getElementById('radar-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cx = W/2, cy = H/2;
+  const R = Math.min(W,H)/2 - 24;
+  const axes = ['MEI','Recovery(HRR)','Confidence','Solve Rate','No-Error'];
+  const nAxes = axes.length;
+  ctx.clearRect(0,0,W,H);
+
+  // Background grid
+  for (let ring = 1; ring <= 4; ring++) {
+    ctx.beginPath();
+    for (let a = 0; a < nAxes; a++) {
+      const angle = (a/nAxes)*Math.PI*2 - Math.PI/2;
+      const r = R * ring/4;
+      const x = cx + Math.cos(angle)*r;
+      const y = cy + Math.sin(angle)*r;
+      a===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // Axis lines + labels
+  axes.forEach((label, a) => {
+    const angle = (a/nAxes)*Math.PI*2 - Math.PI/2;
+    const x = cx + Math.cos(angle)*R;
+    const y = cy + Math.sin(angle)*R;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(x, y);
+    ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Label
+    const lx = cx + Math.cos(angle)*(R+14);
+    const ly = cy + Math.sin(angle)*(R+14);
+    ctx.fillStyle = 'rgba(255,255,255,0.4)';
+    ctx.font = '8px "DM Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(label, lx, ly);
+  });
+
+  // Model polygons
+  const maxBT = Math.max(...MODELS.map(m => m.backtrack_count)) || 1;
+  const maxHall = Math.max(...MODELS.map(m => {
+    const agg = AGGREGATE_STATS[m.model] || {};
+    return agg.avg_hc !== undefined ? agg.avg_hc : m.hallucination_count;
+  })) || 1;
+  const hasSel = selectedRadarModel >= 0;
+
+  MODELS.forEach((m, i) => {
+    const agg = AGGREGATE_STATS[m.model] || {};
+    const color = MODEL_COLORS[i % MODEL_COLORS.length];
+    const mei = agg.mei !== undefined ? agg.mei : m.mei;
+    const hasData = mei !== null && mei !== undefined;
+    const isSelected = selectedRadarModel === i;
+    const isDimmed = hasSel && !isSelected;
+
+    // Use aggregate stats (n=60) — fall back to single-run
+    const meiScore = hasData ? mei : 0;
+    const hrrScore = agg.hrr !== undefined ? agg.hrr :
+                     (m.hrr !== null && m.hrr !== undefined) ? m.hrr :
+                     (m.solved ? Math.min(1, OPTIMAL_STEPS / m.steps.length) : 0);
+    const srScore = agg.sr !== undefined ? agg.sr :
+                    (m.sr_agg !== null && m.sr_agg !== undefined) ? m.sr_agg : (m.solved ? 1 : 0);
+    const hcVal = agg.avg_hc !== undefined ? agg.avg_hc :
+                  (m.avg_hc !== null && m.avg_hc !== undefined) ? m.avg_hc : m.hallucination_count;
+    const noErrScore = hasData ? Math.max(0, 1 - (hcVal / (maxHall+1))) : 0;
+
+    // Compute avg confidence from steps (for display only)
+    const confSteps = m.steps.filter(s => s.confidence !== null && s.confidence !== undefined);
+    const avgConf = confSteps.length ? confSteps.reduce((s,x)=>s+x.confidence,0)/confSteps.length/100 : 0.5;
+
+    const scores = [
+      meiScore,    // MEI
+      hrrScore,    // Recovery Rate (HRR)
+      avgConf,     // Avg Confidence
+      srScore,     // Solve Rate (aggregate)
+      noErrScore   // No-Error rate
+    ];
+
+    ctx.beginPath();
+    scores.forEach((score, a) => {
+      const angle = (a/nAxes)*Math.PI*2 - Math.PI/2;
+      const r = R * score;
+      const x = cx + Math.cos(angle)*r;
+      const y = cy + Math.sin(angle)*r;
+      a===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    });
+    ctx.closePath();
+
+    if (isDimmed) {
+      ctx.fillStyle = color + '08';
+      ctx.fill();
+      ctx.strokeStyle = color + '30';
+      ctx.lineWidth = 1;
+    } else if (isSelected) {
+      ctx.fillStyle = color + '44';
+      ctx.fill();
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 10;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 3;
+    } else {
+      ctx.fillStyle = color + '22';
+      ctx.fill();
+      ctx.strokeStyle = color + 'aa';
+      ctx.lineWidth = 1.5;
+    }
+    ctx.stroke();
+    ctx.shadowColor = 'transparent';
+    ctx.shadowBlur = 0;
+  });
+
+  // Update clickable legend below canvas
+  buildRadarLegend();
+}
+
+// ── INIT ──
+buildGridView();
+buildTimelineView();
+buildMetricsPanel();
+updateAll();
+
+// Auto-size after layout — double RAF to ensure min-height CSS is computed
+requestAnimationFrame(() => requestAnimationFrame(() => {
+  resizeGridCanvases();
+  updateAll();
+}));
+</script>
 </body>
 </html>

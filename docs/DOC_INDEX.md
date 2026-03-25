@@ -9,12 +9,13 @@
 | docs/hf_post.md | HuggingFace community blog post about HalluMaze benchmark | 2026-03-24 |
 | docs/hallumaze_arxiv.tex | arXiv LaTeX paper draft (NeurIPS 2026 format) | 2026-03-24 |
 | docs/hallumaze.bib | BibTeX references for arXiv paper | 2026-03-24 |
+| docs/hf_post_v2.md | HF 커뮤니티 포스트 v2 (트렌딩 스타일, 24시간 후 포스팅 예정) | 2026-03-25 |
 | docs/figures/fig1_mei_leaderboard.png | Figure 1: MEI leaderboard bar chart (600dpi) | 2026-03-24 |
 | docs/figures/fig2_hrr_sr_scatter.png | Figure 2: HRR vs SR dissociation scatter (600dpi) | 2026-03-24 |
 | docs/figures/fig3_cost_mei.png | Figure 3: MEI vs API cost scatter (600dpi) | 2026-03-24 |
 
 ## Related
-- [[projects/Miro/research/20260323-hallumaze-extension-todos|20260323-hallumaze-extension-todos]]
 - [[projects/Miro/research/20260323-hallumaze-paper-draft|20260323-hallumaze-paper-draft]]
+- [[projects/Miro/research/20260323-hallumaze-extension-todos|20260323-hallumaze-extension-todos]]
 - [[projects/Miro/research/20260324-hallumaze-ecological-validity|20260324-hallumaze-ecological-validity]]
 - [[projects/Miro/research/20260324-marl5stage-fix-solutions|20260324-marl5stage-fix-solutions]]

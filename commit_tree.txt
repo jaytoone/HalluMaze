@@ -1,3 +1,10 @@
+v1.6 20260325 1114 — race viewer final: n=60 aggregate stats + HF post v2
+    - index.html: AGGREGATE_STATS (n=60) — bar charts & radar now use real aggregate stats
+    - index.html: buildPerformanceBars + drawRadar patched to use AGGREGATE_STATS
+    - docs/hf_post_v2.md: HF community post v2 (trending style, emoji list, no tables)
+    - docs/DOC_INDEX.md: updated index
+    - Expert research result: NeurIPS 2026 D&B 35-45%, ACL/EMNLP 2026 40-55%
+
 v1.5 20260324 1650 — arXiv figures + LaTeX draft + index.html update
     - arXiv figures: fig1 MEI leaderboard, fig2 HRR-SR scatter, fig3 cost-MEI scatter (600dpi)
     - LaTeX paper draft (docs/hallumaze_arxiv.tex) + BibTeX (docs/hallumaze.bib)
