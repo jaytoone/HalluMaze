@@ -907,6 +907,48 @@
       ],
       "errors": 1,
       "elapsed": 13.24
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1001,
+      "size": 5,
+      "mei": 0.5,
+      "path_valid": false
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 2002,
+      "size": 5,
+      "mei": 0.9,
+      "path_valid": true
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 3003,
+      "size": 5,
+      "mei": 0.5,
+      "path_valid": false
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 4004,
+      "size": 5,
+      "mei": 0.5,
+      "path_valid": false
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 5005,
+      "size": 5,
+      "mei": 0.5,
+      "path_valid": false
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 6006,
+      "size": 5,
+      "mei": 0.9,
+      "path_valid": true
     }
   ],
   "timestamp": "2026-03-26T13:24:21.875452"
