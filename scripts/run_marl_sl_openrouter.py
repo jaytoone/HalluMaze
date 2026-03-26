@@ -43,6 +43,9 @@ OPENROUTER_MODELS = {
     "llama-4-maverick": {"id": "meta-llama/llama-4-maverick", "display": "Llama 4 Maverick"},
     "claude-haiku": {"id": "anthropic/claude-3-haiku", "display": "Claude 3 Haiku"},
     "gpt-4o-mini": {"id": "openai/gpt-4o-mini", "display": "GPT-4o mini"},
+    "claude-sonnet": {"id": "anthropic/claude-3.7-sonnet", "display": "Claude 3.7 Sonnet"},
+    "gemini-flash": {"id": "google/gemini-2.0-flash-lite-001", "display": "Gemini 2.0 Flash-Lite"},
+    "qwen-72b": {"id": "qwen/qwen-2.5-72b-instruct", "display": "Qwen 2.5 72B"},
 }
 
 def call_openrouter(prompt: str, model_id: str, system: str = "", max_tokens: int = 8000) -> str:
@@ -193,13 +196,25 @@ if __name__ == "__main__":
     parser.add_argument("--models", default="llama-4-scout,claude-haiku", help="comma-separated")
     parser.add_argument("--n", type=int, default=10, help="trials per model")
     parser.add_argument("--sizes", default="5,7")
+    parser.add_argument("--append", action="store_true", help="append to existing results")
     args = parser.parse_args()
+
+    # Load existing results if append mode
+    existing_results = []
+    if args.append:
+        try:
+            with open('/home/jayone/Project/Miro/experiment_results/marl_sl_openrouter.json') as f:
+                existing = json.load(f)
+                existing_results = existing.get('results', [])
+                print(f"Append mode: loaded {len(existing_results)} existing results")
+        except:
+            pass
 
     model_keys = args.models.split(",")
     sizes = [int(s) for s in args.sizes.split(",")]
     seeds = [1001 + i for i in range(args.n)]
 
-    results = []
+    results = existing_results.copy()
     for model_key in model_keys:
         print(f"\n=== {model_key} ===")
         model_results = []
