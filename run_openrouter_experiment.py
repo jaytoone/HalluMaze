@@ -123,6 +123,31 @@ OPENROUTER_MODELS = {
         "phase": ["C"],
         "notes": "Anthropic flagship — NeurIPS P0.1",
     },
+    # ── Claude 4.x line ────────────────────────────────────────
+    "claude-haiku-4.5": {
+        "id": "anthropic/claude-haiku-4.5",
+        "display": "Claude Haiku 4.5",
+        "cost_per_m_in": 1.0,
+        "cost_per_m_out": 5.0,
+        "phase": ["B", "C"],
+        "notes": "Anthropic 4th gen compact — NeurIPS extended",
+    },
+    "claude-sonnet-4.5": {
+        "id": "anthropic/claude-sonnet-4.5",
+        "display": "Claude Sonnet 4.5",
+        "cost_per_m_in": 3.0,
+        "cost_per_m_out": 15.0,
+        "phase": ["C"],
+        "notes": "Anthropic 4th gen mid — NeurIPS extended",
+    },
+    "claude-sonnet-4.6": {
+        "id": "anthropic/claude-sonnet-4.6",
+        "display": "Claude Sonnet 4.6",
+        "cost_per_m_in": 3.0,
+        "cost_per_m_out": 15.0,
+        "phase": ["C"],
+        "notes": "Anthropic latest flagship — NeurIPS extended",
+    },
 }
 
 PHASE_A_SEEDS = [1001, 2002, 3003, 4004, 5005]  # n=5 pilot

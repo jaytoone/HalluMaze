@@ -1,7 +1,7 @@
 {
   "method": "marl_sl_multi_model",
   "models": [
-    "minimax-m2.5-free"
+    "minimax"
   ],
   "n_trials": 6,
   "sizes": [
@@ -9,59 +9,18 @@
   ],
   "results": [
     {
-      "model": "claude-haiku",
+      "model": "minimax",
       "seed": 1001,
       "size": 5,
       "mei": 0.5,
       "sr": 0.0,
       "path_valid": false,
-      "path": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          0,
-          3
-        ],
-        [
-          0,
-          4
-        ],
-        [
-          1,
-          4
-        ],
-        [
-          2,
-          4
-        ],
-        [
-          3,
-          4
-        ],
-        [
-          4,
-          4
-        ]
-      ],
-      "errors": 1,
-      "elapsed": 6.42
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
     },
     {
-      "model": "claude-haiku",
+      "model": "minimax",
       "seed": 1002,
       "size": 5,
       "mei": 0.5,
@@ -74,222 +33,21 @@
         ]
       ],
       "errors": 1,
-      "elapsed": 6.25
+      "elapsed": 60.59
     },
     {
-      "model": "claude-haiku",
-      "seed": 1003,
-      "size": 5,
-      "mei": 0.5,
-      "sr": 0.0,
-      "path_valid": false,
-      "path": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          1,
-          2
-        ],
-        [
-          1,
-          3
-        ],
-        [
-          1,
-          4
-        ],
-        [
-          2,
-          4
-        ],
-        [
-          3,
-          4
-        ],
-        [
-          4,
-          4
-        ]
-      ],
-      "errors": 2,
-      "elapsed": 3.87
-    },
-    {
-      "model": "claude-haiku",
-      "seed": 1004,
-      "size": 5,
-      "mei": 0.5,
-      "sr": 0.0,
-      "path_valid": false,
-      "path": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          0,
-          3
-        ],
-        [
-          1,
-          3
-        ],
-        [
-          1,
-          4
-        ],
-        [
-          2,
-          4
-        ],
-        [
-          3,
-          4
-        ],
-        [
-          4,
-          4
-        ]
-      ],
-      "errors": 2,
-      "elapsed": 7.91
-    },
-    {
-      "model": "claude-haiku",
-      "seed": 1005,
-      "size": 5,
-      "mei": 0.5,
-      "sr": 0.0,
-      "path_valid": false,
-      "path": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          0,
-          3
-        ],
-        [
-          0,
-          4
-        ],
-        [
-          1,
-          4
-        ],
-        [
-          2,
-          3
-        ],
-        [
-          3,
-          2
-        ],
-        [
-          4,
-          2
-        ],
-        [
-          4,
-          3
-        ],
-        [
-          4,
-          4
-        ]
-      ],
-      "errors": 1,
-      "elapsed": 5.81
-    },
-    {
-      "model": "claude-haiku",
-      "seed": 1006,
-      "size": 5,
-      "mei": 0.9,
-      "sr": 1.0,
-      "path_valid": true,
-      "path": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          2,
-          3
-        ],
-        [
-          2,
-          4
-        ],
-        [
-          3,
-          4
-        ],
-        [
-          4,
-          4
-        ]
-      ],
-      "errors": 0,
-      "elapsed": 4.74
-    },
-    {
-      "model": "claude-sonnet",
+      "model": "minimax",
       "seed": 1001,
       "size": 5,
       "mei": 0.5,
       "sr": 0.0,
       "path_valid": false,
-      "path": [
-        [
-          0,
-          0
-        ]
-      ],
+      "path": [],
       "errors": 1,
-      "elapsed": 22.42
+      "elapsed": 161.03
     },
     {
-      "model": "claude-sonnet",
+      "model": "minimax",
       "seed": 1002,
       "size": 5,
       "mei": 0.9,
@@ -342,90 +100,21 @@
         ]
       ],
       "errors": 0,
-      "elapsed": 18.29
+      "elapsed": 313.68
     },
     {
-      "model": "claude-sonnet",
+      "model": "minimax",
       "seed": 1003,
       "size": 5,
-      "mei": 0.9,
-      "sr": 1.0,
-      "path_valid": true,
-      "path": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          1,
-          2
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          2,
-          2
-        ],
-        [
-          3,
-          2
-        ],
-        [
-          3,
-          1
-        ],
-        [
-          3,
-          0
-        ],
-        [
-          4,
-          0
-        ],
-        [
-          4,
-          1
-        ],
-        [
-          4,
-          2
-        ],
-        [
-          4,
-          3
-        ],
-        [
-          4,
-          4
-        ]
-      ],
-      "errors": 0,
-      "elapsed": 18.62
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
     },
     {
-      "model": "claude-sonnet",
+      "model": "minimax",
       "seed": 1004,
       "size": 5,
       "mei": 0.5,
@@ -438,405 +127,10 @@
         ]
       ],
       "errors": 1,
-      "elapsed": 27.12
+      "elapsed": 81.68
     },
     {
-      "model": "claude-sonnet",
-      "seed": 1005,
-      "size": 5,
-      "mei": 0.9,
-      "sr": 1.0,
-      "path_valid": true,
-      "path": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          0,
-          3
-        ],
-        [
-          0,
-          4
-        ],
-        [
-          1,
-          4
-        ],
-        [
-          2,
-          4
-        ],
-        [
-          2,
-          3
-        ],
-        [
-          1,
-          3
-        ],
-        [
-          1,
-          2
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          3,
-          1
-        ],
-        [
-          3,
-          0
-        ],
-        [
-          4,
-          0
-        ],
-        [
-          4,
-          1
-        ],
-        [
-          4,
-          2
-        ],
-        [
-          3,
-          2
-        ],
-        [
-          3,
-          3
-        ],
-        [
-          4,
-          3
-        ],
-        [
-          4,
-          4
-        ]
-      ],
-      "errors": 0,
-      "elapsed": 23.5
-    },
-    {
-      "model": "claude-sonnet",
-      "seed": 1006,
-      "size": 5,
-      "mei": 0.9,
-      "sr": 1.0,
-      "path_valid": true,
-      "path": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          2,
-          2
-        ],
-        [
-          1,
-          2
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          0,
-          3
-        ],
-        [
-          1,
-          3
-        ],
-        [
-          2,
-          3
-        ],
-        [
-          2,
-          4
-        ],
-        [
-          3,
-          4
-        ],
-        [
-          4,
-          4
-        ]
-      ],
-      "errors": 0,
-      "elapsed": 20.74
-    },
-    {
-      "model": "claude-haiku",
-      "seed": 1001,
-      "size": 5,
-      "mei": 0.5,
-      "sr": 0.0,
-      "path_valid": false,
-      "path": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          0,
-          3
-        ],
-        [
-          0,
-          4
-        ],
-        [
-          1,
-          4
-        ],
-        [
-          2,
-          4
-        ],
-        [
-          3,
-          4
-        ],
-        [
-          4,
-          4
-        ]
-      ],
-      "errors": 2,
-      "elapsed": 9.02
-    },
-    {
-      "model": "claude-haiku",
-      "seed": 1002,
-      "size": 5,
-      "mei": 0.5,
-      "sr": 0.0,
-      "path_valid": false,
-      "path": null,
-      "errors": Infinity,
-      "elapsed": null
-    },
-    {
-      "model": "claude-haiku",
-      "seed": 1003,
-      "size": 5,
-      "mei": 0.5,
-      "sr": 0.0,
-      "path_valid": false,
-      "path": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          0,
-          3
-        ],
-        [
-          0,
-          4
-        ],
-        [
-          1,
-          4
-        ],
-        [
-          1,
-          3
-        ],
-        [
-          1,
-          2
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          1,
-          0
-        ],
-        [
-          2,
-          0
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          2,
-          2
-        ],
-        [
-          2,
-          3
-        ],
-        [
-          2,
-          4
-        ],
-        [
-          3,
-          4
-        ],
-        [
-          3,
-          3
-        ],
-        [
-          3,
-          2
-        ],
-        [
-          3,
-          1
-        ],
-        [
-          3,
-          0
-        ],
-        [
-          4,
-          0
-        ],
-        [
-          4,
-          1
-        ],
-        [
-          4,
-          2
-        ],
-        [
-          4,
-          3
-        ],
-        [
-          4,
-          4
-        ]
-      ],
-      "errors": 7,
-      "elapsed": 11.47
-    },
-    {
-      "model": "claude-haiku",
-      "seed": 1004,
-      "size": 5,
-      "mei": 0.5,
-      "sr": 0.0,
-      "path_valid": false,
-      "path": [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          1
-        ],
-        [
-          0,
-          2
-        ],
-        [
-          0,
-          3
-        ],
-        [
-          1,
-          3
-        ],
-        [
-          1,
-          2
-        ],
-        [
-          1,
-          1
-        ],
-        [
-          2,
-          1
-        ],
-        [
-          2,
-          2
-        ],
-        [
-          2,
-          3
-        ],
-        [
-          3,
-          3
-        ],
-        [
-          3,
-          4
-        ],
-        [
-          4,
-          4
-        ]
-      ],
-      "errors": 5,
-      "elapsed": 6.67
-    },
-    {
-      "model": "claude-haiku",
+      "model": "minimax",
       "seed": 1005,
       "size": 5,
       "mei": 0.5,
@@ -848,6 +142,14 @@
           0
         ],
         [
+          4,
+          3
+        ],
+        [
+          0,
+          0
+        ],
+        [
           0,
           1
         ],
@@ -868,153 +170,64 @@
           4
         ],
         [
-          1,
-          3
+          2,
+          4
         ],
         [
           2,
           3
         ],
         [
-          3,
+          1,
           3
         ],
         [
+          1,
+          2
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
           3,
-          4
+          1
+        ],
+        [
+          3,
+          0
         ],
         [
           4,
-          4
-        ]
-      ],
-      "errors": 3,
-      "elapsed": 8.15
-    },
-    {
-      "model": "claude-haiku",
-      "seed": 1006,
-      "size": 5,
-      "mei": 0.5,
-      "sr": 0.0,
-      "path_valid": false,
-      "path": [
-        [
-          0,
           0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          2
         ]
       ],
       "errors": 1,
-      "elapsed": 13.24
+      "elapsed": 91.68
     },
     {
-      "model": "qwen-72b",
-      "seed": 1001,
-      "size": 5,
-      "mei": 0.5,
-      "path_valid": false
-    },
-    {
-      "model": "qwen-72b",
-      "seed": 2002,
-      "size": 5,
-      "mei": 0.9,
-      "path_valid": true
-    },
-    {
-      "model": "qwen-72b",
-      "seed": 3003,
-      "size": 5,
-      "mei": 0.5,
-      "path_valid": false
-    },
-    {
-      "model": "qwen-72b",
-      "seed": 4004,
-      "size": 5,
-      "mei": 0.5,
-      "path_valid": false
-    },
-    {
-      "model": "qwen-72b",
-      "seed": 5005,
-      "size": 5,
-      "mei": 0.5,
-      "path_valid": false
-    },
-    {
-      "model": "qwen-72b",
-      "seed": 6006,
-      "size": 5,
-      "mei": 0.9,
-      "path_valid": true
-    },
-    {
-      "model": "minimax-m2.5-free",
-      "seed": 1001,
-      "size": 5,
-      "mei": 0.5,
-      "sr": 0.0,
-      "path_valid": false,
-      "path": null,
-      "errors": Infinity,
-      "elapsed": null
-    },
-    {
-      "model": "minimax-m2.5-free",
-      "seed": 1002,
-      "size": 5,
-      "mei": 0.5,
-      "sr": 0.0,
-      "path_valid": false,
-      "path": null,
-      "errors": Infinity,
-      "elapsed": null
-    },
-    {
-      "model": "minimax-m2.5-free",
-      "seed": 1003,
-      "size": 5,
-      "mei": 0.5,
-      "sr": 0.0,
-      "path_valid": false,
-      "path": null,
-      "errors": Infinity,
-      "elapsed": null
-    },
-    {
-      "model": "minimax-m2.5-free",
-      "seed": 1004,
-      "size": 5,
-      "mei": 0.5,
-      "sr": 0.0,
-      "path_valid": false,
-      "path": null,
-      "errors": Infinity,
-      "elapsed": null
-    },
-    {
-      "model": "minimax-m2.5-free",
-      "seed": 1005,
-      "size": 5,
-      "mei": 0.5,
-      "sr": 0.0,
-      "path_valid": false,
-      "path": null,
-      "errors": Infinity,
-      "elapsed": null
-    },
-    {
-      "model": "minimax-m2.5-free",
+      "model": "minimax",
       "seed": 1006,
       "size": 5,
       "mei": 0.5,
       "sr": 0.0,
       "path_valid": false,
-      "path": null,
-      "errors": Infinity,
-      "elapsed": null
+      "path": [],
+      "errors": 1,
+      "elapsed": 174.81
     }
   ],
-  "timestamp": "2026-03-26T14:15:32.258473"
+  "timestamp": "2026-03-26T16:39:05.667235"
 }

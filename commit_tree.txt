@@ -1,3 +1,24 @@
+v1.21 20260326 1856 — Claude 4.x leaderboard expansion (13 models total)
+    - run_openrouter_experiment.py: Add claude-haiku-4.5, claude-sonnet-4.5, claude-sonnet-4.6 to registry
+    - experiment_results/claude4x_pilot.json: Pilot n=5 results
+    - experiment_results/claude4x_full.json: Full n=60 results
+      - claude-haiku-4.5: SR=5%, MEI=0.376, HRR=0.383 (≈ Haiku-3)
+      - claude-sonnet-4.5: SR=36.7%, MEI=0.783, HRR=0.892 → NEW #1
+      - claude-sonnet-4.6: SR=60%, MEI=0.545, HRR=0.583 → #8 (SR↑ but MEI↓)
+    - docs/hallumaze_arxiv.tex: Expand leaderboard table to 13 models, add 4.x finding
+    - .claude/CLAUDE.md: Update leaderboard with Claude 4.x results
+    - docs/hf_post_v3.md: HF post v3 with Claude 4.x update
+    - docs/DOC_INDEX.md: Add new entries
+
+v1.20 20260326 1640 — MARL-SL MiniMax fix (direct API) + results SR=16.7%
+    - scripts/run_marl_sl_openrouter.py: Replace OpenRouter MiniMax (404 privacy block) with direct API
+      - call_minimax(): direct https://api.minimax.io/v1/chat/completions (OpenAI-compatible)
+      - 3-retry logic for choices:null (intermittent server-side issue)
+      - <think> block stripping for reasoning model output
+      - DIRECT_MODELS registry separate from OPENROUTER_MODELS
+    - experiment_results/marl_sl_openrouter.json: MiniMax-M2.5 SR=16.7% (1/6), MEI=0.567
+    - docs/hallumaze_arxiv.tex: Add MiniMax MARL-SL finding (SR=16.7% < baseline 53.3%)
+
 v1.15 20260326 1139 — Baseline timing measured + MARL efficiency table in paper
     - experiment_results/baseline_timing_glm.json: GLM-4.7 baseline timing (n=6, mean=36.5s)
     - docs/hallumaze_arxiv.tex: Add Table 3 (MARL efficiency comparison) + baseline ~37s note

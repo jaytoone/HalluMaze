@@ -46,7 +46,11 @@ OPENROUTER_MODELS = {
     "claude-sonnet": {"id": "anthropic/claude-3.7-sonnet", "display": "Claude 3.7 Sonnet"},
     "gemini-flash": {"id": "google/gemini-2.0-flash-lite-001", "display": "Gemini 2.0 Flash-Lite"},
     "qwen-72b": {"id": "qwen/qwen-2.5-72b-instruct", "display": "Qwen 2.5 72B"},
-    "minimax-free": {"id": "minimax/minimax-m2.5:free", "display": "MiniMax-M2.5 (free)"},
+}
+
+# Models using direct API (not OpenRouter)
+DIRECT_MODELS = {
+    "minimax": {"display": "MiniMax-M2.5", "api": "minimax"},
 }
 
 def call_openrouter(prompt: str, model_id: str, system: str = "", max_tokens: int = 8000) -> str:
@@ -66,10 +70,60 @@ def call_openrouter(prompt: str, model_id: str, system: str = "", max_tokens: in
     data = resp.json()
     return data["choices"][0]["message"]["content"]
 
+def call_minimax(prompt: str, system: str = "", max_tokens: int = 8000) -> str:
+    """MiniMax direct API (OpenAI-compatible). MiniMax-M2.5 is a reasoning model:
+    <think> blocks consume ~3000+ tokens, so effective max_tokens is max(max_tokens, 8000).
+    Retries up to 2 times on choices:null (intermittent server-side issue)."""
+    import requests, re
+    key = os.environ.get("MINIMAX_API_KEY", "")
+    base_url = os.environ.get("MINIMAX_BASE_URL", "https://api.minimax.io/v1")
+    model = os.environ.get("MINIMAX_MODEL", "MiniMax-M2.5")
+    # Strip /anthropic suffix if present — use OpenAI-compatible endpoint
+    base_url = base_url.rstrip("/").replace("/anthropic", "")
+    effective_tokens = max(max_tokens, 8000)
+    headers = {
+        "Authorization": f"Bearer {key}",
+        "Content-Type": "application/json",
+    }
+    payload = {
+        "model": model,
+        "max_tokens": effective_tokens,
+        "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}],
+    }
+    for attempt in range(3):
+        resp = requests.post(f"{base_url}/v1/chat/completions", headers=headers, json=payload, timeout=300)
+        resp.raise_for_status()
+        data = resp.json()
+        choices = data.get("choices")
+        if not choices:
+            base_resp = data.get("base_resp", {})
+            if attempt < 2:
+                print(f" [minimax retry {attempt+1}/3: choices=null, base_resp={base_resp}]", end=" ", flush=True)
+                time.sleep(5)
+                continue
+            raise RuntimeError(f"MiniMax API returned choices:null after 3 attempts. base_resp={base_resp}")
+        content = choices[0]["message"].get("content")
+        if content is None:
+            if attempt < 2:
+                print(f" [minimax retry {attempt+1}/3: content=null]", end=" ", flush=True)
+                time.sleep(5)
+                continue
+            raise RuntimeError("MiniMax API returned content:null in message")
+        # Strip <think>...</think> reasoning blocks
+        stripped = re.sub(r'<think>.*?</think>', '', content, flags=re.DOTALL).strip()
+        return stripped if stripped else content
+    raise RuntimeError("MiniMax call_minimax exhausted retries")
+
 def call_timed_or(prompt: str, model_key: str, system: str = "", max_tokens: int = 8000) -> tuple[str, float]:
     t0 = time.time()
-    model = OPENROUTER_MODELS[model_key]["id"]
-    result = call_openrouter(prompt, model, system, max_tokens)
+    if model_key in DIRECT_MODELS:
+        if DIRECT_MODELS[model_key]["api"] == "minimax":
+            result = call_minimax(prompt, system, max_tokens)
+        else:
+            raise ValueError(f"Unknown direct model api: {DIRECT_MODELS[model_key]['api']}")
+    else:
+        model = OPENROUTER_MODELS[model_key]["id"]
+        result = call_openrouter(prompt, model, system, max_tokens)
     return result, round(time.time() - t0, 2)
 
 # ═══════════════════════════════════════════════════════════════
