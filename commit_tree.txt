@@ -1,3 +1,14 @@
+v1.14 20260326 1129 — MARL-SL (Single-Layer) experiment + paper Section 6.2 update
+    - scripts/run_marl_single_layer_glm.py: 5-roles projected into 1 LLM call via role-tagged output
+      - SL_SYSTEM: unified maze reasoning system with 5 cognitive layers (===LAYER N===)
+      - PathValidator gate: deterministic early exit on valid path
+      - Size-adaptive budget: 5x5=6000, 7x7=10000 tokens
+    - experiment_results/marl_single_layer_glm.json: MARL-SL results (n=10, GLM-4.7)
+      - MEI=0.829 (+3.2% vs Eff v2), SR=0.800, mean 1.60 calls/trial
+      - 117.1s/trial (-72% vs Eff v2 417s), -74% API calls vs Eff v2
+    - docs/hallumaze_arxiv.tex: Add MARL-SL paragraph to Section 6.2
+    - docs/DOC_INDEX.md: Add MARL-SL entries
+
 v1.13 20260325 — MARL efficiency experiments complete (v1+v2) + paper Section 6 update
     - experiment_results/marl_efficient_glm.json: Efficient v1 results (n=10)
       - MEI=0.697 (-13.2% vs v2), 64.2% token savings, all complex
