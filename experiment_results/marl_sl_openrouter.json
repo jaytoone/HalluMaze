@@ -1,8 +1,7 @@
 {
   "method": "marl_sl_multi_model",
   "models": [
-    "claude-sonnet",
-    "claude-haiku"
+    "minimax-m2.5-free"
   ],
   "n_trials": 6,
   "sizes": [
@@ -949,7 +948,73 @@
       "size": 5,
       "mei": 0.9,
       "path_valid": true
+    },
+    {
+      "model": "minimax-m2.5-free",
+      "seed": 1001,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "minimax-m2.5-free",
+      "seed": 1002,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "minimax-m2.5-free",
+      "seed": 1003,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "minimax-m2.5-free",
+      "seed": 1004,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "minimax-m2.5-free",
+      "seed": 1005,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "minimax-m2.5-free",
+      "seed": 1006,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
     }
   ],
-  "timestamp": "2026-03-26T13:24:21.875452"
+  "timestamp": "2026-03-26T14:15:32.258473"
 }

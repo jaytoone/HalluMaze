@@ -46,6 +46,7 @@ OPENROUTER_MODELS = {
     "claude-sonnet": {"id": "anthropic/claude-3.7-sonnet", "display": "Claude 3.7 Sonnet"},
     "gemini-flash": {"id": "google/gemini-2.0-flash-lite-001", "display": "Gemini 2.0 Flash-Lite"},
     "qwen-72b": {"id": "qwen/qwen-2.5-72b-instruct", "display": "Qwen 2.5 72B"},
+    "minimax-free": {"id": "minimax/minimax-m2.5:free", "display": "MiniMax-M2.5 (free)"},
 }
 
 def call_openrouter(prompt: str, model_id: str, system: str = "", max_tokens: int = 8000) -> str:
