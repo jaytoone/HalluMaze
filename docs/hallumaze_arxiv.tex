@@ -313,6 +313,7 @@ Early-exit cases reduced per-trial wall-clock time from ${\sim}$417\,s to ${\sim
 
 \textbf{MARL Single-Layer (MARL-SL)} (GLM-4.7, $n{=}10$): We propose projecting all five pipeline roles into a \emph{single} LLM call via role-tagged structured output ($==$LAYER~$k$$==$), eliminating inter-stage communication latency (``Telephone Game'' error propagation) and leveraging GLM-4.7's internal \texttt{<think>} chain-of-thought as implicit multi-role reasoning.
 MEI$=$0.829 ($+3.2$\% vs.\ Eff~v2, $+34.8$\% vs.\ baseline MEI$=$0.615), SR$=$0.800 (vs.\ 8.3\% baseline), average 1.60 API calls/trial (vs.\ 6.2 for Eff~v2; $\mathbf{-74\%}$), wall-clock $=$117\,s/trial ($\mathbf{-72\%}$ vs.\ Eff~v2 $=$417\,s; baseline single-call measured at ${\sim}$37\,s but MEI$=$0.615).
+\textbf{Finding}: Multi-model validation on Llama-4-Scout and GPT-4o-mini showed 0\% valid paths, suggesting the structured layer format requires strong instruction-following capability. This validates the need for extended multi-model testing as future work.
 Table~\ref{tab:marl_efficiency} summarises all efficiency variants.
 \textbf{Key lesson}: Projecting multi-agent roles onto a single inference layer simultaneously \emph{improves} quality and \emph{reduces} cost, suggesting that pipeline depth is not always beneficial when the base model already performs internal multi-step reasoning.
 

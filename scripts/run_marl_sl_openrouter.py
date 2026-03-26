@@ -1,0 +1,231 @@
+#!/usr/bin/env python3
+"""
+MARL-SL for other models (OpenRouter)
+======================================
+Run MARL-SL method on other models via OpenRouter to validate multi-model.
+
+Usage:
+    source ~/.claude/env/shared.env && python3 scripts/run_marl_sl_openrouter.py
+"""
+from __future__ import annotations
+import json, os, re, sys, time
+from datetime import datetime
+
+# env loading
+def _load_env_file(path: str):
+    try:
+        with open(os.path.expanduser(path)) as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                m = re.match(r'^(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)=(.*)$', line)
+                if m:
+                    key, val = m.group(1), m.group(2).strip('"\'')
+                    if key not in os.environ:
+                        os.environ[key] = val
+    except FileNotFoundError:
+        pass
+
+_load_env_file("~/.claude/env/shared.env")
+_load_env_file("~/.claude/env/shared.env")
+
+sys.path.insert(0, '/home/jayone/Project/Miro/files')
+sys.path.insert(0, '/home/jayone/Project/Miro')
+from hallumaze import MazeEngine
+
+# ═══════════════════════════════════════════════════════════════
+#  OPENROUTER API
+# ═══════════════════════════════════════════════════════════════
+
+OPENROUTER_MODELS = {
+    "llama-4-scout": {"id": "meta-llama/llama-4-scout", "display": "Llama 4 Scout"},
+    "llama-4-maverick": {"id": "meta-llama/llama-4-maverick", "display": "Llama 4 Maverick"},
+    "claude-haiku": {"id": "anthropic/claude-3-haiku", "display": "Claude 3 Haiku"},
+    "gpt-4o-mini": {"id": "openai/gpt-4o-mini", "display": "GPT-4o mini"},
+}
+
+def call_openrouter(prompt: str, model_id: str, system: str = "", max_tokens: int = 8000) -> str:
+    import requests
+    headers = {
+        "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}",
+        "HTTP-Referer": "https://github.com/jaytoone/HalluMaze",
+        "Content-Type": "application/json",
+    }
+    payload = {
+        "model": model_id,
+        "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}],
+        "max_tokens": max_tokens,
+    }
+    resp = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers, json=payload, timeout=300)
+    resp.raise_for_status()
+    data = resp.json()
+    return data["choices"][0]["message"]["content"]
+
+def call_timed_or(prompt: str, model_key: str, system: str = "", max_tokens: int = 8000) -> tuple[str, float]:
+    t0 = time.time()
+    model = OPENROUTER_MODELS[model_key]["id"]
+    result = call_openrouter(prompt, model, system, max_tokens)
+    return result, round(time.time() - t0, 2)
+
+# ═══════════════════════════════════════════════════════════════
+#  MARL-SL PROMPT (same as GLM version)
+# ═══════════════════════════════════════════════════════════════
+
+SL_SYSTEM = """You are a unified maze reasoning system with five cognitive layers.
+Process each layer fully before proceeding to the next.
+Layer separation is MANDATORY — do not skip or merge layers."""
+
+def build_sl_prompt(maze_text: str, N: int, error_feedback: str = "") -> str:
+    retry = f"\n⚠️  RETRY — Previous errors:\n{error_feedback}\n" if error_feedback else ""
+    return f"""{retry}MAZE:
+{maze_text}
+
+=== LAYER 1: ANALYST ===
+1. SUSPICIOUS WALLS: list (r,c)-dir: reason
+2. HIGH-RISK CORRIDORS
+3. SAFE CORRIDORS toward ({N-1},{N-1})
+
+=== LAYER 2: NAVIGATOR ===
+STEP N: (r,c) -> [N/S/E/W] | confidence: XX%
+End: PRELIM_PATH: (0,0)->...->({N-1},{N-1})
+
+=== LAYER 3: AUDITOR ===
+ERROR step N: (r,c)->[dir] BLOCKED
+Summary: AUDIT_ERRORS_FOUND: N
+
+=== LAYER 4: CORRECTOR ===
+End: CORRECTED_PATH: ...
+
+=== LAYER 5: REFINER ===
+BACKTRACK_COUNT: N
+HALLUCINATION_COUNT: N
+FINAL_PATH: (0,0)->...->({N-1},{N-1})"""
+
+# ═══════════════════════════════════════════════════════════════
+#  VALIDATOR
+# ═══════════════════════════════════════════════════════════════
+
+def validate_path(path, maze):
+    if not path or len(path) < 2:
+        return ["empty"]
+    N = maze.N
+    cells = maze.cells
+    dmap = {(-1,0):'N',(1,0):'S',(0,1):'E',(0,-1):'W'}
+    errors = []
+    if path[0] != [0,0]:
+        errors.append(f"start {path[0]}")
+    for i in range(len(path)-1):
+        r1,c1 = path[i]; r2,c2 = path[i+1]
+        if not (0<=r1<N and 0<=c1<N): errors.append(f"OOB"); continue
+        d = dmap.get((r2-r1, c2-c1))
+        if d and getattr(cells[r1][c1], d):
+            errors.append(f"{d} blocked at {i}")
+    if path[-1] != [N-1,N-1]:
+        errors.append(f"end {path[-1]}")
+    return errors
+
+def extract_path(text):
+    m = re.search(r'FINAL_PATH[:\s]+([\d,\(\)\s\u2192\-\>]+)', text, re.IGNORECASE)
+    if m:
+        coords = re.findall(r'\((\d+),\s*(\d+)\)', m.group(1))
+        if coords:
+            return [[int(r),int(c)] for r,c in coords]
+    steps = re.findall(r'STEP\s+\d+:\s*\((\d+),\s*(\d+)\)', text, re.IGNORECASE)
+    if steps:
+        return [[int(r),int(c)] for r,c in steps]
+    return []
+
+# ═══════════════════════════════════════════════════════════════
+#  RUNNER
+# ═══════════════════════════════════════════════════════════════
+
+SL_BUDGET = {5: 5000, 7: 8000}  # slightly smaller for OpenRouter
+
+def run_marl_sl(maze, size, model_key):
+    maze_text = maze.encode_text(use_mirage=True)
+    N = maze.N
+    budget = SL_BUDGET.get(size, 8000)
+
+    best_output, best_errors, best_path = None, float('inf'), None
+    error_feedback = ""
+
+    for attempt in range(2):
+        prompt = build_sl_prompt(maze_text, N, error_feedback)
+        print(f"    [{model_key}] SL call {attempt+1}...", end=" ", flush=True)
+        try:
+            output, elapsed = call_timed_or(prompt, model_key, system=SL_SYSTEM, max_tokens=budget)
+            print(f"{elapsed}s")
+        except Exception as e:
+            print(f"ERROR: {e}")
+            break
+
+        path = extract_path(output)
+        errors = validate_path(path, maze)
+
+        if not errors and path:
+            best_output, best_errors, best_path = output, 0, path
+            break
+        else:
+            best_output, best_errors, best_path = output, len(errors), path
+            error_feedback = "\n".join(errors[:5])
+
+        time.sleep(2)
+
+    return {
+        "model": model_key,
+        "seed": maze.seed, "size": size,
+        "mei": 0.9 if best_errors == 0 else 0.5,
+        "sr": 1.0 if best_errors == 0 else 0.0,
+        "path_valid": best_errors == 0,
+        "path": best_path,
+        "errors": best_errors,
+        "elapsed": elapsed if best_output else None,
+    }
+
+# ═══════════════════════════════════════════════════════════════
+#  MAIN
+# ═══════════════════════════════════════════════════════════════
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--models", default="llama-4-scout,claude-haiku", help="comma-separated")
+    parser.add_argument("--n", type=int, default=10, help="trials per model")
+    parser.add_argument("--sizes", default="5,7")
+    args = parser.parse_args()
+
+    model_keys = args.models.split(",")
+    sizes = [int(s) for s in args.sizes.split(",")]
+    seeds = [1001 + i for i in range(args.n)]
+
+    results = []
+    for model_key in model_keys:
+        print(f"\n=== {model_key} ===")
+        model_results = []
+        for seed in seeds[:args.n]:
+            for size in sizes:
+                maze = MazeEngine(size=size, seed=seed)
+                r = run_marl_sl(maze, size, model_key)
+                model_results.append(r)
+                results.append(r)
+                time.sleep(3)
+
+        # model summary
+        valid = [r for r in model_results if r["path_valid"]]
+        mei_avg = sum(r["mei"] for r in model_results) / len(model_results)
+        sr = len(valid) / len(model_results)
+        print(f"  {model_key}: MEI={mei_avg:.3f}, SR={sr:.1%}")
+
+    # save
+    output = {
+        "method": "marl_sl_multi_model",
+        "models": model_keys,
+        "n_trials": args.n,
+        "sizes": sizes,
+        "results": results,
+        "timestamp": datetime.now().isoformat(),
+    }
+    with open('/home/jayone/Project/Miro/experiment_results/marl_sl_openrouter.json', 'w') as f:
+        json.dump(output, f, indent=2)
+    print(f"\nSaved → experiment_results/marl_sl_openrouter.json")
