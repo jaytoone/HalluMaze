@@ -1,0 +1,57 @@
+{
+  "method": "baseline_single_call",
+  "model": "glm-4.7",
+  "n_trials": 6,
+  "mean_elapsed_sec": 36.5,
+  "min_elapsed_sec": 8.3,
+  "max_elapsed_sec": 111.9,
+  "by_size": {
+    "5": 48.5,
+    "7": 24.5
+  },
+  "trials": [
+    {
+      "seed": 1001,
+      "size": 5,
+      "elapsed": 8.290750741958618,
+      "response_len": 1197,
+      "success": true
+    },
+    {
+      "seed": 1001,
+      "size": 7,
+      "elapsed": 29.47071075439453,
+      "response_len": 504,
+      "success": true
+    },
+    {
+      "seed": 2002,
+      "size": 5,
+      "elapsed": 25.41182518005371,
+      "response_len": 2550,
+      "success": true
+    },
+    {
+      "seed": 2002,
+      "size": 7,
+      "elapsed": 16.753804683685303,
+      "response_len": 976,
+      "success": true
+    },
+    {
+      "seed": 3003,
+      "size": 5,
+      "elapsed": 111.92733860015869,
+      "response_len": 8348,
+      "success": true
+    },
+    {
+      "seed": 3003,
+      "size": 7,
+      "elapsed": 27.132261991500854,
+      "response_len": 1194,
+      "success": true
+    }
+  ],
+  "timestamp": "2026-03-26T11:36:49.049423"
+}

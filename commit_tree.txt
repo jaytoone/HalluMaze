@@ -1,3 +1,8 @@
+v1.15 20260326 1139 — Baseline timing measured + MARL efficiency table in paper
+    - experiment_results/baseline_timing_glm.json: GLM-4.7 baseline timing (n=6, mean=36.5s)
+    - docs/hallumaze_arxiv.tex: Add Table 3 (MARL efficiency comparison) + baseline ~37s note
+    - docs/DOC_INDEX.md: Add baseline timing entry
+
 v1.14 20260326 1129 — MARL-SL (Single-Layer) experiment + paper Section 6.2 update
     - scripts/run_marl_single_layer_glm.py: 5-roles projected into 1 LLM call via role-tagged output
       - SL_SYSTEM: unified maze reasoning system with 5 cognitive layers (===LAYER N===)

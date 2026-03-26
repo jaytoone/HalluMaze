@@ -15,6 +15,7 @@
 | experiment_results/marl_efficient_v2_glm.json | MARL Efficient v2: early exit + adaptive budget (n=10, MEI=0.802, SR=0.50, 64% token savings) | 2026-03-25 |
 | experiment_results/marl_single_layer_glm.json | MARL-SL: 5-roles in 1 call via role-tagged output (n=10, MEI=0.829, SR=0.80, 1.60 calls, 117s, -74% calls vs Eff v2) | 2026-03-26 |
 | scripts/run_marl_single_layer_glm.py | MARL Single-Layer runner: GLM-4.7, role-tagged prompt, PathValidator gate | 2026-03-26 |
+| experiment_results/baseline_timing_glm.json | GLM-4.7 baseline single-call timing (n=6, mean=36.5s, min=8.3s, max=111.9s) | 2026-03-26 |
 | docs/figures/fig1_mei_leaderboard.png | Figure 1: MEI leaderboard bar chart (600dpi) | 2026-03-24 |
 | docs/figures/fig2_hrr_sr_scatter.png | Figure 2: HRR vs SR dissociation scatter (600dpi) | 2026-03-24 |
 | docs/figures/fig3_cost_mei.png | Figure 3: MEI vs API cost scatter (600dpi) | 2026-03-24 |
