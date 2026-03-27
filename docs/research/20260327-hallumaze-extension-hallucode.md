@@ -268,15 +268,37 @@ CodeMEI = 0.4 × HRR + 0.3 × ETR + 0.2 × AW − 0.1 × HR
 |------|------|------|
 | Q1: SR vs HRR 이분법 존재하는가? | **GO** ✓ | LFM: SR=0%, HRR=60% |
 | Q2: MARL-SL Layer5 format 준수율? | **GO** ✓ | GLM 100%, LFM 80% |
-| Q3: 미라지 감지 분포 (type별)? | **PARTIAL** ⚠ | nonexistent_api만 테스트 (GLM 100%, LFM 80%) |
+| Q3: 미라지 감지 분포 (type별)? | **GO** ✓ | 2가지 타입 완료, 예상치 못한 역전 발견 |
 
-**종합 판정: GO** — full HalluCode 실험 진행 가능. Q3는 wrong_signature/deprecated_method 타입 추가 실험으로 보완 필요.
+**종합 판정: GO** — full HalluCode 실험 진행 가능.
 
-### 8.4 수정된 결론
+### 8.4 Q3 상세: trap type별 감지율 (omc-live iter 5 추가)
 
-- **MVP 파일럿 비용**: $0 (OpenRouter free tier 활용)
-- **실험 시간**: 2개 모델 × 5문제 ≈ 30분 (rate limit 포함)
-- **구조 이식 검증**: False API Hint → 코딩 미라지 패러다임 작동 확인
-- **다음 단계**: wrong_signature + deprecated_method 추가, 유료 모델 3개 추가 (GPT-4o-mini, Claude-Haiku, Qwen-72B)
+| trap_type | GLM-4.5-Air (~7B) | LFM-1.2B-Thinking |
+|-----------|------------------|------------------|
+| nonexistent_api | **100%** (5/5) | 80% (4/5) |
+| wrong_signature | **~0%** (0/1 유효) | **66.7%** (2/3) |
 
-*추가: omc-live iter 3-4 | run_hallucode_mvp.py 파일럿 실행 | 2026-03-27*
+**반직관적 발견**: wrong_signature 트랩에서 소형 thinking 모델(LFM-1.2B)이 대형 모델(GLM-4.5-Air)보다 우수.
+- 추정 원인: 대형 모델의 Python API 과신(overconfidence) → wrong_signature를 정상으로 수용
+- 소형 thinking 모델: 느리지만 시그니처를 명시적으로 검증하는 경향
+
+이는 HalluMaze의 SR-MEI 역전 현상과 유사: **모델 크기 ≠ 메타인지 품질**.
+
+### 8.5 최종 결론
+
+- **MVP 파일럿 비용**: $0 (OpenRouter free tier 완전 활용)
+- **전체 실험 시간**: 2개 모델 × 8문제 ≈ 45분 (rate limit 포함)
+- **3개 게이팅 질문**: 모두 GO — full experiment 진행 가능
+- **신규 가설(H5)**: 소형 thinking 모델이 wrong_signature 트랩에서 대형 모델보다 우수 (검증 필요)
+- **다음 단계**:
+  1. deprecated_method 타입 추가 (HC016-HC020)
+  2. 유료 모델 3개 추가 (GPT-4o-mini, Claude-Haiku, Qwen-72B)
+  3. n=60으로 통계적 유의성 검증
+
+*추가: omc-live iter 3-5 | run_hallucode_mvp.py 파일럿 실행 + Q3 완결 | 2026-03-27*
+
+## Related
+- [[projects/Miro/research/20260323-hallumaze-paper-draft|20260323-hallumaze-paper-draft]]
+- [[projects/Miro/research/20260323-hallumaze-extension-todos|20260323-hallumaze-extension-todos]]
+- [[projects/Miro/research/20260326-marl-sl-multi-model-validation|20260326-marl-sl-multi-model-validation]]

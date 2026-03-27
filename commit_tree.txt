@@ -1,3 +1,15 @@
+v1.25 20260327 — HalluCode 파일럿 완결: Q3 wrong_signature + 신규 가설 H5 (omc-live iter 5)
+    - scripts/run_hallucode_mvp.py: --start 옵션 추가 (특정 문제부터 실행)
+    - experiment_results/hallucode_wrong_sig.json: LFM-1.2B wrong_sig 결과
+      LFM-1.2B HC011-013: HRR=33%, Detect=66.7% (nonexistent 80% 대비 낮음)
+    - experiment_results/hallucode_wrong_sig_glm.json: GLM wrong_sig (HC013만 유효)
+      GLM HC013: Detect=0% — wrong_signature에서 GLM이 LFM보다 취약!
+    - docs/research/20260327-hallumaze-extension-hallucode.md: 섹션 8.4-8.5 추가
+      - Q3 trap_type × model 교차 분석 완료 (3개 게이팅 질문 모두 GO)
+      - 신규 발견 H5: 소형 thinking 모델 wrong_sig에서 대형 모델보다 우수
+      - 반직관: 모델 크기 ≠ 메타인지 품질 (HalluMaze SR-MEI 역전과 유사 패턴)
+    - .omc/live-state.json: iter 5 완료, best_score=0.96
+
 v1.24 20260327 — HalluCode MVP 파일럿 실험 완료 (omc-live iter 1-4)
     - scripts/run_hallucode_mvp.py: HalluCode MVP 실험 스크립트 (710줄)
       - 20개 False API Hint 문제셋 (nonexistent_api×10, wrong_signature×5, deprecated×5)

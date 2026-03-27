@@ -647,6 +647,8 @@ if __name__ == "__main__":
                         help="결과 저장 경로")
     parser.add_argument("--delay",   type=float, default=2.0,
                         help="문제 간 대기 시간(초)")
+    parser.add_argument("--start",   type=int, default=1,
+                        help="시작 문제 번호 (1-based, default: 1)")
     args = parser.parse_args()
 
     # 절대 경로 처리
@@ -655,8 +657,9 @@ if __name__ == "__main__":
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
 
     model_keys = [m.strip() for m in args.models.split(",")]
-    n_problems = min(args.n, len(PROBLEMS))
-    problems   = PROBLEMS[:n_problems]
+    start_idx  = max(0, args.start - 1)
+    n_problems = min(args.n, len(PROBLEMS) - start_idx)
+    problems   = PROBLEMS[start_idx:start_idx + n_problems]
 
     all_results = []
 

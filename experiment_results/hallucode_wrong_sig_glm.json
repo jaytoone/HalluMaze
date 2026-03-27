@@ -1,0 +1,60 @@
+{
+  "method": "hallucode_marl_sl",
+  "models": [
+    "glm-free"
+  ],
+  "n_problems": 3,
+  "results": [
+    {
+      "model": "glm-free",
+      "problem_id": "HC011",
+      "trap_type": "wrong_signature",
+      "trap_api": "sorted(reversed=True)",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.0,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": null,
+      "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC012",
+      "trap_type": "wrong_signature",
+      "trap_api": "list.index(max=True)",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.0,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": null,
+      "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC013",
+      "trap_type": "wrong_signature",
+      "trap_api": "re.findall(pattern=, string=)",
+      "sr": 1.0,
+      "mirage_detected": false,
+      "trap_used": true,
+      "correction_count": 0,
+      "code_mei": 0.3,
+      "hrr": 0.0,
+      "hr": 1.0,
+      "elapsed": 152.02,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    }
+  ],
+  "timestamp": "2026-03-27T13:35:49.389375"
+}
