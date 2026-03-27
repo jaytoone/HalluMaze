@@ -1,3 +1,29 @@
+v1.24 20260327 — HalluCode MVP 파일럿 실험 완료 (omc-live iter 1-4)
+    - scripts/run_hallucode_mvp.py: HalluCode MVP 실험 스크립트 (710줄)
+      - 20개 False API Hint 문제셋 (nonexistent_api×10, wrong_signature×5, deprecated×5)
+      - MARL-SL 5-Layer 코딩 프롬프트 + CodeMEI = 0.4×HRR+0.3×ETR+0.2×AW-0.1×HR
+      - Free tier 모델 추가: minimax-free, qwen3-coder-free, glm-free, lfm-1b-free
+    - experiment_results/hallucode_pilot.json: 파일럿 결과 (2개 모델, 10 runs)
+      - GLM-4.5-Air:   CodeMEI=0.800, SR=100%, HRR=100% (미라지 완전 감지)
+      - LFM-1.2B-Thinking: CodeMEI=0.360, SR=0%, HRR=60% (코딩 불가 but 미라지 감지)
+      - 핵심 발견: SR≠HRR 이분법 HalluCode 도메인에서 재현 (H4 예비 검증)
+    - docs/research/20260327-hallumaze-extension-hallucode.md: 섹션 8 추가
+      - 파일럿 결과 테이블, 게이팅 질문 답변 (Q1/Q2 GO, Q3 PARTIAL), 수정된 결론
+    - .omc/goal-tree.json: v2 goal 진화 (연구설계→MVP→파일럿실행)
+    - .omc/live-state.json: iter 4 완료, best_score=0.94
+
+v1.23 20260327 1046 — HF Space/Dataset 13-model leaderboard update
+    - hallumaze_final.html: 13-model leaderboard (Claude-Sonnet-4.5 #1, 4.6 #8, Haiku-4.5 #12)
+      - Hero: "13 LLMs", updated sub text (SR≠MEI, newer≠better)
+      - Leaderboard table: all 13 rows with CI, rank badges, NEW tags
+      - Findings F1/F2/F3 rewritten for 13-model results
+      - Statistics table: added Claude 4.x rows (d=0.586/0.825/1.965)
+      - Abstract: updated to 13 models + SR⊥MEI finding
+      - Version footer: v1.21, 780 trials
+    - index.html (HF Space race viewer): AGGREGATE_STATS + Claude-Sonnet-4.5/4.6/Haiku-4.5
+    - dataset_card.md: already updated (v1.22)
+    - SR metric: P(reach goal (N-1,N-1) within step budget) — orthogonal to MEI
+
 v1.22 20260327 0941 — MARL-SL multi-model E1/E3/E4 experiments
     - experiment_results/marl_sl_e1.json: Qwen-72b(n=20,SR=0%), MiniMax(n=20,SR=10%), Haiku(402)
     - experiment_results/marl_sl_e3.json: Llama-4-Scout(n=20,SR=0%), Llama-4-Maverick(n=20,402)

@@ -1,17 +1,33 @@
 {
-  "root_goal": "Run MARL-SL experiments E1~E4: n보강(Claude-Sonnet/Qwen/Haiku/MiniMax/GLM n≥20), E2 paired comparison, E3 new models(Claude-3.5-Sonnet/Gemini-2.0-Pro), E4 9x9 scaling",
-  "original_goal": "E1~E4 실험 자동 실행. 대상 모델: Claude-3.7-Sonnet, Qwen-2.5-72B, GLM-4.7, Claude-Haiku, MiniMax-M2.5.",
-  "evolution_history": [],
+  "root_goal": "HalluCode 파일럿 실험 실행 + 결과 분석: llama-4-scout x n=5 실험 실행, CodeMEI 계산, 3개 게이팅 질문 검증 (SR vs HRR 이분법 / MARL-SL format 준수율 / 미라지 감지 분포), experiment_results/hallucode_pilot.json 저장",
+  "original_goal": "미로 기반 단위 지능 검증을 코딩/도구사용 능력 평가로 확장. MARL-SL을 다양한 LLM 환경에 도입하기 위한 HalluMaze 확장 버전 설계 및 실험.",
   "level": 0,
   "sub_goals": [
-    {"id": "E1", "desc": "MARL-SL n 보강 (all models n≥20)", "status": "pending"},
-    {"id": "E2", "desc": "Paired baseline vs MARL-SL comparison (same seeds)", "status": "pending"},
-    {"id": "E3", "desc": "New models: Claude-3.5-Sonnet, Gemini-2.0-Pro", "status": "pending"},
-    {"id": "E4", "desc": "9x9 maze scaling test", "status": "pending"}
+    {"id": "P1", "desc": "llama-4-scout n=5 실험 실행 (무료 티어)", "status": "pending"},
+    {"id": "P2", "desc": "CodeMEI 결과 계산 및 검증", "status": "pending"},
+    {"id": "P3", "desc": "게이팅 Q1: SR vs HRR 이분법 확인", "status": "pending"},
+    {"id": "P4", "desc": "게이팅 Q2: MARL-SL Layer 5 format 준수율 측정", "status": "pending"},
+    {"id": "P5", "desc": "게이팅 Q3: 미라지 감지 분포 분석", "status": "pending"},
+    {"id": "P6", "desc": "결과 experiment_results/hallucode_pilot.json 저장", "status": "pending"}
   ],
   "reward_spec": {
-    "primary_metric": "experiment completion",
-    "threshold": "all E1-E4 results saved to experiment_results/"
+    "primary_metric": "pilot_experiment_completeness",
+    "threshold": "최소 1개 모델 n≥5 실험 완료 + CodeMEI 계산 + 3개 게이팅 질문 답변 가능"
   },
-  "history": []
+  "evolution_history": [
+    {
+      "iteration": 1,
+      "goal": "HalluMaze를 미로 단위 지능 검증에서 코딩/도구사용 능력 평가로 확장하는 연구 설계안 작성",
+      "score": 0.87,
+      "rationale": "Research complete; weakest: completeness (no executable pilot code)"
+    },
+    {
+      "iteration": 2,
+      "goal": "HalluCode MVP 실험 스크립트 작성: False API Hint mirage 문제셋 + MARL-SL 코딩 프롬프트 + 결정론적 검증 파이프라인",
+      "score": 0.92,
+      "rationale": "MVP script complete; weakest: efficiency/impact (not yet run). Next: execute pilot."
+    }
+  ],
+  "history": [],
+  "evolution_count": 2
 }
