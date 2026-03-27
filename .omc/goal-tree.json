@@ -1,0 +1,17 @@
+{
+  "root_goal": "Run MARL-SL experiments E1~E4: n보강(Claude-Sonnet/Qwen/Haiku/MiniMax/GLM n≥20), E2 paired comparison, E3 new models(Claude-3.5-Sonnet/Gemini-2.0-Pro), E4 9x9 scaling",
+  "original_goal": "E1~E4 실험 자동 실행. 대상 모델: Claude-3.7-Sonnet, Qwen-2.5-72B, GLM-4.7, Claude-Haiku, MiniMax-M2.5.",
+  "evolution_history": [],
+  "level": 0,
+  "sub_goals": [
+    {"id": "E1", "desc": "MARL-SL n 보강 (all models n≥20)", "status": "pending"},
+    {"id": "E2", "desc": "Paired baseline vs MARL-SL comparison (same seeds)", "status": "pending"},
+    {"id": "E3", "desc": "New models: Claude-3.5-Sonnet, Gemini-2.0-Pro", "status": "pending"},
+    {"id": "E4", "desc": "9x9 maze scaling test", "status": "pending"}
+  ],
+  "reward_spec": {
+    "primary_metric": "experiment completion",
+    "threshold": "all E1-E4 results saved to experiment_results/"
+  },
+  "history": []
+}

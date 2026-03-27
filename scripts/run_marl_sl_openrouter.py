@@ -44,7 +44,9 @@ OPENROUTER_MODELS = {
     "claude-haiku": {"id": "anthropic/claude-3-haiku", "display": "Claude 3 Haiku"},
     "gpt-4o-mini": {"id": "openai/gpt-4o-mini", "display": "GPT-4o mini"},
     "claude-sonnet": {"id": "anthropic/claude-3.7-sonnet", "display": "Claude 3.7 Sonnet"},
+    "claude-3.5-sonnet": {"id": "anthropic/claude-3.5-sonnet", "display": "Claude 3.5 Sonnet"},
     "gemini-flash": {"id": "google/gemini-2.0-flash-lite-001", "display": "Gemini 2.0 Flash-Lite"},
+    "gemini-pro": {"id": "google/gemini-2.5-pro-preview", "display": "Gemini 2.5 Pro"},
     "qwen-72b": {"id": "qwen/qwen-2.5-72b-instruct", "display": "Qwen 2.5 72B"},
 }
 
@@ -198,7 +200,7 @@ def extract_path(text):
 #  RUNNER
 # ═══════════════════════════════════════════════════════════════
 
-SL_BUDGET = {5: 5000, 7: 8000}  # slightly smaller for OpenRouter
+SL_BUDGET = {5: 5000, 7: 8000, 9: 12000}  # slightly smaller for OpenRouter; 9x9 extended
 
 def run_marl_sl(maze, size, model_key):
     maze_text = maze.encode_text(use_mirage=True)
@@ -252,13 +254,17 @@ if __name__ == "__main__":
     parser.add_argument("--n", type=int, default=10, help="trials per model")
     parser.add_argument("--sizes", default="5,7")
     parser.add_argument("--append", action="store_true", help="append to existing results")
+    parser.add_argument("--output", default="experiment_results/marl_sl_openrouter.json", help="output file path")
+    parser.add_argument("--seed-start", type=int, default=1001, help="first seed value")
     args = parser.parse_args()
+
+    out_path = os.path.join('/home/jayone/Project/Miro', args.output) if not os.path.isabs(args.output) else args.output
 
     # Load existing results if append mode
     existing_results = []
     if args.append:
         try:
-            with open('/home/jayone/Project/Miro/experiment_results/marl_sl_openrouter.json') as f:
+            with open(out_path) as f:
                 existing = json.load(f)
                 existing_results = existing.get('results', [])
                 print(f"Append mode: loaded {len(existing_results)} existing results")
@@ -267,7 +273,7 @@ if __name__ == "__main__":
 
     model_keys = args.models.split(",")
     sizes = [int(s) for s in args.sizes.split(",")]
-    seeds = [1001 + i for i in range(args.n)]
+    seeds = [args.seed_start + i for i in range(args.n)]
 
     results = existing_results.copy()
     for model_key in model_keys:
@@ -296,6 +302,7 @@ if __name__ == "__main__":
         "results": results,
         "timestamp": datetime.now().isoformat(),
     }
-    with open('/home/jayone/Project/Miro/experiment_results/marl_sl_openrouter.json', 'w') as f:
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    with open(out_path, 'w') as f:
         json.dump(output, f, indent=2)
-    print(f"\nSaved → experiment_results/marl_sl_openrouter.json")
+    print(f"\nSaved → {out_path}")

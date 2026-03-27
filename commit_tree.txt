@@ -1,3 +1,12 @@
+v1.22 20260327 0941 — MARL-SL multi-model E1/E3/E4 experiments
+    - experiment_results/marl_sl_e1.json: Qwen-72b(n=20,SR=0%), MiniMax(n=20,SR=10%), Haiku(402)
+    - experiment_results/marl_sl_e3.json: Llama-4-Scout(n=20,SR=0%), Llama-4-Maverick(n=20,402)
+    - experiment_results/marl_sl_e4_9x9.json: Qwen+Llama-Scout 9x9(n=10,SR=0%)
+    - scripts/run_marl_sl_openrouter.py: Add claude-3.5-sonnet, gemini-2.5-pro, SL_BUDGET[9], --output/--seed-start args
+    - Key finding: MARL-SL model-dependent — GLM-4.7 SR=80% vs others SR=0-10%
+    - .omc/: omc-live GoalTree initialized for E1-E4
+    - docs/misc/ontolo-biz-unconscious-purchase-20260327.md: CTA optimization analysis
+
 v1.21 20260326 1856 — Claude 4.x leaderboard expansion (13 models total)
     - run_openrouter_experiment.py: Add claude-haiku-4.5, claude-sonnet-4.5, claude-sonnet-4.6 to registry
     - experiment_results/claude4x_pilot.json: Pilot n=5 results

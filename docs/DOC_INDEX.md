@@ -2,6 +2,7 @@
 
 | 파일 | 설명 | 날짜 |
 |------|------|------|
+| docs/misc/ontolo-biz-unconscious-purchase-20260327.md | ontolo-agent biz-unconscious-purchase — HF 포스트 CTA 최적화 분석 | 2026-03-27 |
 | docs/research/20260323-hallumaze-paper-draft.md | HalluMaze 논문 초안 (NeurIPS 2026 target) | 2026-03-23 |
 | docs/research/20260323-hallumaze-extension-todos.md | 확장 연구 방향 분석 (expert-research-v2) | 2026-03-23 |
 | docs/research/20260324-marl5stage-fix-solutions.md | MARL 5-stage 성능 저하 해결책 연구 (expert-research-v2) | 2026-03-24 |

@@ -1,0 +1,12 @@
+{
+  "current_iteration": 1,
+  "last_outcome": "in_progress",
+  "last_phase_reached": "phase_0",
+  "started_at": "2026-03-27T00:00:00",
+  "best_score": 0.0,
+  "current_score": 0.0,
+  "current_goal_fidelity": 1.0,
+  "plateau_count": 0,
+  "evolution_count": 0,
+  "score_history": []
+}

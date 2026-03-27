@@ -1,0 +1,1759 @@
+{
+  "method": "marl_sl_multi_model",
+  "models": [
+    "qwen-72b",
+    "claude-haiku",
+    "minimax"
+  ],
+  "n_trials": 10,
+  "sizes": [
+    5,
+    7
+  ],
+  "results": [
+    {
+      "model": "qwen-72b",
+      "seed": 1001,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 36.55
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1001,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "errors": 4,
+      "elapsed": 69.69
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1002,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          1,
+          3
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 34.52
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1002,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          3,
+          6
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 35.49
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1003,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 29.33
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1003,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "errors": 4,
+      "elapsed": 38.14
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1004,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 36.02
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1004,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 152.17
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1005,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "errors": 2,
+      "elapsed": 58.29
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1005,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          3,
+          5
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 69.92
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1006,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 75.21
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1006,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1007,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "errors": 2,
+      "elapsed": 47.07
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1007,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1008,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 212.82
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1008,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1009,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1009,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1010,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1010,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1001,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1001,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1002,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1002,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1003,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1003,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1004,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1004,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1005,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1005,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1006,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1006,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1007,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1007,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1008,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1008,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1009,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1009,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1010,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "claude-haiku",
+      "seed": 1010,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "minimax",
+      "seed": 1001,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 203.9
+    },
+    {
+      "model": "minimax",
+      "seed": 1001,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 114.91
+    },
+    {
+      "model": "minimax",
+      "seed": 1002,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "minimax",
+      "seed": 1002,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          6,
+          3
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          6,
+          3
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          6
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 66.61
+    },
+    {
+      "model": "minimax",
+      "seed": 1003,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 32.07
+    },
+    {
+      "model": "minimax",
+      "seed": 1003,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 57.76
+    },
+    {
+      "model": "minimax",
+      "seed": 1004,
+      "size": 5,
+      "mei": 0.9,
+      "sr": 1.0,
+      "path_valid": true,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "errors": 0,
+      "elapsed": 75.92
+    },
+    {
+      "model": "minimax",
+      "seed": 1004,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 110.42
+    },
+    {
+      "model": "minimax",
+      "seed": 1005,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          3
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 87.78
+    },
+    {
+      "model": "minimax",
+      "seed": 1005,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "minimax",
+      "seed": 1006,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 311.35
+    },
+    {
+      "model": "minimax",
+      "seed": 1006,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 59.13
+    },
+    {
+      "model": "minimax",
+      "seed": 1007,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 91.44
+    },
+    {
+      "model": "minimax",
+      "seed": 1007,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 53.99
+    },
+    {
+      "model": "minimax",
+      "seed": 1008,
+      "size": 5,
+      "mei": 0.9,
+      "sr": 1.0,
+      "path_valid": true,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "errors": 0,
+      "elapsed": 56.16
+    },
+    {
+      "model": "minimax",
+      "seed": 1008,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "errors": 2,
+      "elapsed": 68.95
+    },
+    {
+      "model": "minimax",
+      "seed": 1009,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 51.08
+    },
+    {
+      "model": "minimax",
+      "seed": 1009,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 80.12
+    },
+    {
+      "model": "minimax",
+      "seed": 1010,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 85.35
+    },
+    {
+      "model": "minimax",
+      "seed": 1010,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    }
+  ],
+  "timestamp": "2026-03-27T02:40:38.794480"
+}

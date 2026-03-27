@@ -1,0 +1,710 @@
+{
+  "method": "marl_sl_multi_model",
+  "models": [
+    "qwen-72b",
+    "llama-4-scout"
+  ],
+  "n_trials": 10,
+  "sizes": [
+    9
+  ],
+  "results": [
+    {
+      "model": "qwen-72b",
+      "seed": 1001,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          6,
+          3
+        ],
+        [
+          7,
+          3
+        ],
+        [
+          8,
+          3
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          8,
+          1
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          8,
+          1
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          8,
+          3
+        ],
+        [
+          8,
+          4
+        ],
+        [
+          8,
+          5
+        ],
+        [
+          8,
+          4
+        ],
+        [
+          8,
+          5
+        ],
+        [
+          8,
+          6
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "errors": 4,
+      "elapsed": 31.45
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1002,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 267.54
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1003,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          6,
+          3
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          4
+        ],
+        [
+          8,
+          4
+        ],
+        [
+          8,
+          5
+        ],
+        [
+          8,
+          6
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          8,
+          8
+        ]
+      ],
+      "errors": 6,
+      "elapsed": 29.92
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1004,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 158.21
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1005,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          0,
+          5
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          0,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          7,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          8,
+          7
+        ]
+      ],
+      "errors": 7,
+      "elapsed": 213.61
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1006,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1007,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1008,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1009,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "qwen-72b",
+      "seed": 1010,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1001,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 16.44
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1002,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 21.3
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1003,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1004,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1005,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1006,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1007,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1008,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1009,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1010,
+      "size": 9,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    }
+  ],
+  "timestamp": "2026-03-27T01:07:57.757549"
+}

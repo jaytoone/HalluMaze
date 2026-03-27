@@ -1,0 +1,822 @@
+{
+  "method": "marl_sl_multi_model",
+  "models": [
+    "llama-4-scout",
+    "llama-4-maverick"
+  ],
+  "n_trials": 10,
+  "sizes": [
+    5,
+    7
+  ],
+  "results": [
+    {
+      "model": "llama-4-scout",
+      "seed": 1001,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 3.15
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1001,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 20.38
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1002,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 28.05
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1002,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          5,
+          0
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 23.04
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1003,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 21.61
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1003,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 22.79
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1004,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 3.16
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1004,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 2.47
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1005,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "errors": 2,
+      "elapsed": 18.13
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1005,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "errors": 6,
+      "elapsed": 8.8
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1006,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 3.66
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1006,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 21.55
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1007,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 11.82
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1007,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "errors": 5,
+      "elapsed": 2.23
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1008,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 2.65
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1008,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 106.22
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1009,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          2,
+          1
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 22.03
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1009,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "errors": 6,
+      "elapsed": 2.7
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1010,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 16.1
+    },
+    {
+      "model": "llama-4-scout",
+      "seed": 1010,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 23.56
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1001,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 38.12
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1001,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          6,
+          3
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          6,
+          6
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 37.37
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1002,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 70.26
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1002,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 32.09
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1003,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "errors": 1,
+      "elapsed": 70.25
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1003,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1004,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": [],
+      "errors": 1,
+      "elapsed": 35.01
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1004,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1005,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1005,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1006,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1006,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1007,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1007,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1008,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1008,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1009,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1009,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1010,
+      "size": 5,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    },
+    {
+      "model": "llama-4-maverick",
+      "seed": 1010,
+      "size": 7,
+      "mei": 0.5,
+      "sr": 0.0,
+      "path_valid": false,
+      "path": null,
+      "errors": Infinity,
+      "elapsed": null
+    }
+  ],
+  "timestamp": "2026-03-27T01:09:13.385967"
+}
