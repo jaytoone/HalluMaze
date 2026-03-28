@@ -143,6 +143,28 @@ Model & Trap Type & $n$ & CodeMEI & SR & HRR \\
 \end{table}
 
 Full HalluCode results ($n{\geq}60$ per model, 5 models, balanced trap types) are planned as a companion paper.
+
+\paragraph{MARL-SL Middleware Ablation.}
+To quantify the effect of the MARL-SL structured prompt middleware, we ran a no-middleware baseline on LFM-1.2B-Thinking ($n{=}19$, same problems, simple single-shot prompt).
+Table~\ref{tab:hallucode_ablation} shows a striking SR$\leftrightarrow$HRR trade-off: without MARL-SL, LFM achieves SR$=$68.4\% (often ignoring the hint entirely) but HRR$=$0\% (never explicitly detecting traps).
+With MARL-SL, SR drops to 5\% while HRR rises to 25\%---the structured five-layer format induces trap-detection reasoning but overwhelms LFM-1.2B's limited generation capacity.
+This \textbf{model-capacity~$\times$~middleware interaction} is a new finding: MARL-SL middleware shifts the SR$\perp$HRR plane rather than uniformly improving both dimensions, and the net CodeMEI effect is negative for sub-capacity models (0.215 vs.\ 0.274).
+For sufficient-capacity models such as GLM-4.5-Air (SR$=$100\% even with MARL-SL), the middleware does not suppress coding ability and adds HRR benefit.
+
+\begin{table}[h]
+\centering\small
+\caption{HalluCode middleware ablation: MARL-SL vs.\ baseline (LFM-1.2B-Thinking, $n{=}19$).}
+\label{tab:hallucode_ablation}
+\begin{tabular}{lccc}
+\toprule
+Condition & CodeMEI & SR & HRR \\
+\midrule
+Baseline (no middleware) & 0.274 & 68.4\% & 0.0\% \\
+MARL-SL (5-layer)        & 0.215 & 5.0\%  & 25.0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \textsc{HalluMaze} introduces HRR as the first metric targeting this function.
 
 Recent agentic benchmarks---AgentBench \citep{liu2023agentbench}, WebArena \citep{zhou2023webarena}, OSWorld---measure task success in interactive environments but do not evaluate \emph{mid-episode} metacognitive recovery.

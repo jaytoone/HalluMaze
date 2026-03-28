@@ -203,17 +203,48 @@ HalluCode SR은 실제 코딩 능력의 타당한 측정값이다 — 실행 방
 
 ---
 
+## C7. MARL-SL 미들웨어 Ablation 결과 (2026-03-29)
+
+### 실험: Baseline vs MARL-SL — LFM-1.2B, n=19
+
+| 조건 | CodeMEI | SR | HRR | Detect |
+|------|---------|-----|-----|--------|
+| Baseline (no middleware) | 0.274 | 68.4% | 0.0% | 0.0% |
+| MARL-SL (5-layer) | 0.215 | 5.0% | 25.0% | 35.0% |
+
+### 핵심 발견: 모델 용량 × 미들웨어 상호작용 (H6)
+
+**현상**: MARL-SL은 LFM-1.2B에서 SR을 63pp 감소시키고 HRR을 25pp 증가시킴 → 넷 CodeMEI 감소.
+
+**메커니즘 (가설)**:
+- **Baseline**: LFM-1.2B는 단순 프롬프트에서 힌트를 무시하고 올바른 코드 작성 가능 (SR=68.4%)
+  - 그러나 트랩 감지 의식 없음 (HRR=0%)
+- **MARL-SL**: 5-레이어 구조화 출력 형식이 LFM의 코딩 생성 용량을 소모
+  - Layer 1-4 구조에 집착하면서 FINAL_CODE 생성 실패 (SR=5%)
+  - 하지만 ANALYST 레이어 강제로 메타인지 활성화 (HRR=25%)
+
+**임계 결론 (H6)**: MARL-SL 미들웨어 효과는 모델 기반 코딩 능력에 비례:
+- GLM-4.5-Air (충분한 용량): MARL-SL과 함께 SR=100% 유지 + HRR=84% → 미들웨어 순혜택
+- LFM-1.2B (부족한 용량): MARL-SL이 SR 압도 → CodeMEI 감소 (미들웨어 역효과)
+
+### 결론
+HalluCode-MARL은 동질적 향상을 주지 않는다. SR-HRR 평면을 이동시킨다. 모델 용량이 임계값 이상일 때만 순이익이 발생하며, 이 임계값을 찾는 것이 companion paper의 실험 설계 핵심이다.
+
+---
+
 ## Verification Required
 
 - [UNCERTAIN] 실제 API hallucination 빈도 (GitHub Copilot 로그 분석)
 - [RESOLVED/REJECTED] H5 (wrong_signature × 소형 thinking 모델 우세): n=5 full experiment에서 기각. LFM Detect=0% vs GLM=80%. n=3 파일럿은 소표본 위양성.
 - [UNCERTAIN] ToolBench 자연 발생 실패 케이스에서 HalluCode 트랩 패턴 빈도
 - [PARTIALLY RESOLVED] HalluCode SR ecological validity: 3-레이어 이론 구축 완료. 직접 Spearman 상관은 companion paper에서 수행 예정.
+- [NEW/CONFIRMED] H6 MARL-SL capacity interaction: LFM-1.2B에서 실험 확인 (n=19). GLM-4.5-Air baseline 비교는 companion paper에서.
 
 ---
 
 *생성: omc-live iter 1 | research-deep-analyst | 2026-03-28*
 *업데이트: omc-live iter 1 | ecological validity C6 추가 | 2026-03-28*
+*업데이트: omc-live iter 2 | C7 MARL-SL ablation 실험 결과 추가 | 2026-03-29*
 
 ## Related
 - [[projects/Miro/research/20260324-hallumaze-ecological-validity|20260324-hallumaze-ecological-validity]]

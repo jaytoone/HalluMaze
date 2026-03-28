@@ -1,0 +1,198 @@
+{
+  "experiment": "HalluCode-Baseline (no MARL-SL)",
+  "prompt_type": "baseline",
+  "model": "LFM-1.2B-Thinking",
+  "n_valid": 19,
+  "results": [
+    {
+      "problem_id": "HC001",
+      "trap_type": "nonexistent_api",
+      "sr": 1.0,
+      "hrr": 0.0,
+      "code_mei": 0.3,
+      "mirage_detected": false,
+      "trap_used": true,
+      "elapsed": 8.94
+    },
+    {
+      "problem_id": "HC002",
+      "trap_type": "nonexistent_api",
+      "sr": 0.0,
+      "hrr": 0.0,
+      "code_mei": 0.1,
+      "mirage_detected": false,
+      "trap_used": false,
+      "elapsed": 9.7
+    },
+    {
+      "problem_id": "HC003",
+      "trap_type": "nonexistent_api",
+      "sr": 0.0,
+      "hrr": 0.0,
+      "code_mei": 0.0,
+      "mirage_detected": false,
+      "trap_used": true,
+      "elapsed": 6.82
+    },
+    {
+      "problem_id": "HC004",
+      "trap_type": "nonexistent_api",
+      "sr": 1.0,
+      "hrr": 0.0,
+      "code_mei": 0.4,
+      "mirage_detected": false,
+      "trap_used": false,
+      "elapsed": 11.6
+    },
+    {
+      "problem_id": "HC005",
+      "trap_type": "nonexistent_api",
+      "sr": 1.0,
+      "hrr": 0.0,
+      "code_mei": 0.4,
+      "mirage_detected": false,
+      "trap_used": false,
+      "elapsed": 20.38
+    },
+    {
+      "problem_id": "HC006",
+      "trap_type": "nonexistent_api",
+      "sr": 0.0,
+      "hrr": 0.0,
+      "code_mei": 0.1,
+      "mirage_detected": false,
+      "trap_used": false,
+      "elapsed": 6.07
+    },
+    {
+      "problem_id": "HC007",
+      "trap_type": "nonexistent_api",
+      "sr": 1.0,
+      "hrr": 0.0,
+      "code_mei": 0.4,
+      "mirage_detected": false,
+      "trap_used": false,
+      "elapsed": 5.59
+    },
+    {
+      "problem_id": "HC008",
+      "trap_type": "nonexistent_api",
+      "sr": 1.0,
+      "hrr": 0.0,
+      "code_mei": 0.4,
+      "mirage_detected": false,
+      "trap_used": false,
+      "elapsed": 5.3
+    },
+    {
+      "problem_id": "HC009",
+      "trap_type": "nonexistent_api",
+      "sr": 1.0,
+      "hrr": 0.0,
+      "code_mei": 0.4,
+      "mirage_detected": false,
+      "trap_used": false,
+      "elapsed": 19.32
+    },
+    {
+      "problem_id": "HC010",
+      "trap_type": "nonexistent_api",
+      "sr": 1.0,
+      "hrr": 0.0,
+      "code_mei": 0.4,
+      "mirage_detected": false,
+      "trap_used": false,
+      "elapsed": 6.08
+    },
+    {
+      "problem_id": "HC011",
+      "trap_type": "wrong_signature",
+      "sr": 0.0,
+      "hrr": 0.0,
+      "code_mei": 0.1,
+      "mirage_detected": false,
+      "trap_used": false,
+      "elapsed": 3.6
+    },
+    {
+      "problem_id": "HC012",
+      "trap_type": "wrong_signature",
+      "sr": 1.0,
+      "hrr": 0.0,
+      "code_mei": 0.3,
+      "mirage_detected": false,
+      "trap_used": true,
+      "elapsed": 5.42
+    },
+    {
+      "problem_id": "HC013",
+      "trap_type": "wrong_signature",
+      "sr": 1.0,
+      "hrr": 0.0,
+      "code_mei": 0.3,
+      "mirage_detected": false,
+      "trap_used": true,
+      "elapsed": 2.47
+    },
+    {
+      "problem_id": "HC014",
+      "trap_type": "wrong_signature",
+      "sr": 0.0,
+      "hrr": 0.0,
+      "code_mei": 0.0,
+      "mirage_detected": false,
+      "trap_used": true,
+      "elapsed": 6.86
+    },
+    {
+      "problem_id": "HC015",
+      "trap_type": "wrong_signature",
+      "sr": 1.0,
+      "hrr": 0.0,
+      "code_mei": 0.4,
+      "mirage_detected": false,
+      "trap_used": false,
+      "elapsed": 6.92
+    },
+    {
+      "problem_id": "HC016",
+      "trap_type": "deprecated_method",
+      "sr": 1.0,
+      "hrr": 0.0,
+      "code_mei": 0.4,
+      "mirage_detected": false,
+      "trap_used": false,
+      "elapsed": 11.9
+    },
+    {
+      "problem_id": "HC017",
+      "trap_type": "deprecated_method",
+      "sr": 1.0,
+      "hrr": 0.0,
+      "code_mei": 0.4,
+      "mirage_detected": false,
+      "trap_used": false,
+      "elapsed": 5.79
+    },
+    {
+      "problem_id": "HC018",
+      "trap_type": "deprecated_method",
+      "sr": 1.0,
+      "hrr": 0.0,
+      "code_mei": 0.3,
+      "mirage_detected": false,
+      "trap_used": true,
+      "elapsed": 3.85
+    },
+    {
+      "problem_id": "HC019",
+      "trap_type": "deprecated_method",
+      "sr": 0.0,
+      "hrr": 0.0,
+      "code_mei": 0.1,
+      "mirage_detected": false,
+      "trap_used": false,
+      "elapsed": 3.87
+    }
+  ]
+}

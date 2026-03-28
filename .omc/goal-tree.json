@@ -1,25 +1,17 @@
 {
-  "root_goal": "HalluCode SR의 외부 코딩 벤치마크 상관 증거 강화: ArtificialAnalysis/OpenRouter에서 GLM/LFM 코딩 랭킹 수집 + HalluCode 20문제 HumanEval 난이도 매핑 + arXiv Table 추가",
-  "original_goal": "HalluCode 결과와 실제 코딩 능력이 유관하다는 증거 설계 및 문서화",
+  "root_goal": "HalluCode에서 MARL-SL 미들웨어 성능 증강 효과 실험 입증: (1) Baseline 단순 프롬프트 스크립트 작성, (2) LFM-1.2B로 baseline vs MARL-SL 실험 실행, (3) SR/HRR/CodeMEI 비교 분석, (4) arXiv 결과 단락 추가",
+  "original_goal": "HalluCode에서 MARL-SL 미들웨어를 통해 성능 증강 발현 연구 실험",
   "level": 0,
   "sub_goals": [
-    "GLM-4.5-Air, LFM-1.2B coding leaderboard 순위 수집 (ArtificialAnalysis, OpenRouter)",
-    "HalluCode 20문제 난이도 분류 (HumanEval Easy/Medium/Hard 기준)",
-    "비교 증거 표 arXiv에 추가 또는 기존 ecological validity 단락 강화"
+    "scripts/run_hallucode_baseline.py 작성 (MARL 레이어 없는 단순 프롬프트)",
+    "LFM-1.2B free tier로 baseline 실험 실행 (n>=10, rate-limit 고려)",
+    "baseline vs MARL-SL 비교표 작성 (SR/HRR/CodeMEI delta)",
+    "arXiv hallumaze_arxiv.tex에 ablation 결과 단락 추가"
   ],
   "reward_spec": {
-    "primary_metric": "외부 벤치마크 데이터로 HalluCode SR ecological validity 강화",
-    "threshold": "구체적 수치 또는 순위 증거를 arXiv에 포함"
+    "primary_metric": "MARL-SL 미들웨어가 HalluCode에서 SR 또는 HRR을 향상시킴을 수치로 입증",
+    "threshold": "baseline vs MARL-SL 비교 결과가 arXiv에 포함됨"
   },
-  "evolution_history": [
-    {
-      "iteration": 1,
-      "goal": "HalluCode CodeMEI와 실제 코딩 능력 유관성 입증: GLM/LFM 공개 코딩 벤치마크 점수 조회, HalluCode SR 상관 분석, arXiv ecological validity 단락 추가",
-      "score": 0.829,
-      "rationale": "3-레이어 논거 구축 완료. 가장 약한 차원(impact=0.737): 직접 수치 증거 없음. EVOLVE → 외부 랭킹 데이터 수집"
-    }
-  ],
-  "history": [
-    {"iteration": 1, "outcome": "success", "score": 0.829}
-  ]
+  "evolution_history": [],
+  "history": []
 }
