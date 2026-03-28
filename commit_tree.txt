@@ -1,3 +1,9 @@
+v1.36 20260328 — extension-hallucode.md H5 기각 + full experiment 표 업데이트 (omc-live iter5)
+    - docs/research/20260327-hallumaze-extension-hallucode.md:
+      - 파일럿 결과 표 보존 + Full experiment n=5 비교표 추가
+      - H5 ⚠️ 기각 명시: n=3 파일럿 위양성 확인
+      - Section 8.5 최종 결론: n=39 완료, trap-type 난이도 순위, 향후 계획
+
 v1.35 20260328 — cubic-evaluation.md full experiment 결과 + H5 기각 업데이트 (omc-live iter4)
     - docs/research/20260328-hallucode-cubic-evaluation.md:
       - Full experiment 결과 섹션 추가: n=39, CodeMEI 표, trap-type 난이도 순위

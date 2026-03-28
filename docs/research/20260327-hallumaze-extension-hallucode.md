@@ -274,27 +274,34 @@ CodeMEI = 0.4 × HRR + 0.3 × ETR + 0.2 × AW − 0.1 × HR
 
 ### 8.4 Q3 상세: trap type별 감지율 (omc-live iter 5 추가)
 
+**파일럿 결과 (n=3-5, 소표본)**:
 | trap_type | GLM-4.5-Air (~7B) | LFM-1.2B-Thinking |
 |-----------|------------------|------------------|
 | nonexistent_api | **100%** (5/5) | 80% (4/5) |
-| wrong_signature | **~0%** (0/1 유효) | **66.7%** (2/3) |
+| wrong_signature | **~0%** (0/1 유효) | **66.7%** (2/3) ← 소표본 |
 
-**반직관적 발견**: wrong_signature 트랩에서 소형 thinking 모델(LFM-1.2B)이 대형 모델(GLM-4.5-Air)보다 우수.
-- 추정 원인: 대형 모델의 Python API 과신(overconfidence) → wrong_signature를 정상으로 수용
-- 소형 thinking 모델: 느리지만 시그니처를 명시적으로 검증하는 경향
+**⚠️ Full Experiment 결과로 H5 기각 (2026-03-28, n=5 per type)**:
+| trap_type | GLM-4.5-Air (~7B) | LFM-1.2B-Thinking |
+|-----------|------------------|------------------|
+| nonexistent_api (n=10) | Detect=100%, CodeMEI=0.810 | Detect=60%, CodeMEI=0.270 |
+| wrong_signature (n=5) | Detect=**80%**, CodeMEI=0.600 | Detect=**0%**, CodeMEI=0.080 |
+| deprecated_method (n=4/5) | Detect=75%, CodeMEI=0.725 | Detect=20%, CodeMEI=0.240 |
+| **Overall** | **CodeMEI=0.737, SR=100%** | **CodeMEI=0.215, SR=5%** |
 
-이는 HalluMaze의 SR-MEI 역전 현상과 유사: **모델 크기 ≠ 메타인지 품질**.
+파일럿의 "LFM 우세" 발견은 n=3 소표본 위양성으로 확인. Full experiment(n=5)에서 완전히 반전: GLM Detect=80% vs LFM=0%.
 
-### 8.5 최종 결론
+이는 HalluMaze의 SR-MEI 역전 현상과 유사: **모델 크기 ≠ 메타인지 품질** (단, 이 방향성은 GLM>LFM으로 수정됨).
 
-- **MVP 파일럿 비용**: $0 (OpenRouter free tier 완전 활용)
-- **전체 실험 시간**: 2개 모델 × 8문제 ≈ 45분 (rate limit 포함)
-- **3개 게이팅 질문**: 모두 GO — full experiment 진행 가능
-- **신규 가설(H5)**: 소형 thinking 모델이 wrong_signature 트랩에서 대형 모델보다 우수 (검증 필요)
+### 8.5 최종 결론 (Updated 2026-03-28)
+
+- **Full Experiment 완료**: n=39 valid (HC020 timeout 제외), 2모델 × 3 trap type
+- **SR⊥CodeMEI 확증**: GLM SR=100% vs LFM=5%, 그러나 두 모델 모두 메타인지 능력 측정 가능
+- **H5 가설 기각**: wrong_signature에서 소형 모델 우세 현상 — n=3 파일럿 위양성
+- **trap-type 난이도**: nonexistent_api (쉬움) > deprecated_method (중간) > wrong_signature (어려움)
 - **다음 단계**:
-  1. deprecated_method 타입 추가 (HC016-HC020)
+  1. n=60으로 통계적 유의성 검증 (현 n=39로는 bootstrap CI 불안정)
   2. 유료 모델 3개 추가 (GPT-4o-mini, Claude-Haiku, Qwen-72B)
-  3. n=60으로 통계적 유의성 검증
+  3. HC020 API timeout 문제 해결
 
 *추가: omc-live iter 3-5 | run_hallucode_mvp.py 파일럿 실행 + Q3 완결 | 2026-03-27*
 
