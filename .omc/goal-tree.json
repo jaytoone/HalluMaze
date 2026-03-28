@@ -1,33 +1,25 @@
 {
-  "root_goal": "HalluCode 파일럿 실험 실행 + 결과 분석: llama-4-scout x n=5 실험 실행, CodeMEI 계산, 3개 게이팅 질문 검증 (SR vs HRR 이분법 / MARL-SL format 준수율 / 미라지 감지 분포), experiment_results/hallucode_pilot.json 저장",
-  "original_goal": "미로 기반 단위 지능 검증을 코딩/도구사용 능력 평가로 확장. MARL-SL을 다양한 LLM 환경에 도입하기 위한 HalluMaze 확장 버전 설계 및 실험.",
+  "root_goal": "HalluCode MRC Cubic 주장을 docs/hallumaze_arxiv.tex에 통합: related work에 HalluCode 단락 추가, abstract에 SR⊥HRR 발견 언급, limitations에 n=5 인정 + future work으로 독립 논문 방향 명시",
+  "original_goal": "HalluCode가 코딩 능력 검증의 평가 단위 '큐빅(Cubic)'이 될 수 있는지 다각도 평론",
   "level": 0,
   "sub_goals": [
-    {"id": "P1", "desc": "llama-4-scout n=5 실험 실행 (무료 티어)", "status": "pending"},
-    {"id": "P2", "desc": "CodeMEI 결과 계산 및 검증", "status": "pending"},
-    {"id": "P3", "desc": "게이팅 Q1: SR vs HRR 이분법 확인", "status": "pending"},
-    {"id": "P4", "desc": "게이팅 Q2: MARL-SL Layer 5 format 준수율 측정", "status": "pending"},
-    {"id": "P5", "desc": "게이팅 Q3: 미라지 감지 분포 분석", "status": "pending"},
-    {"id": "P6", "desc": "결과 experiment_results/hallucode_pilot.json 저장", "status": "pending"}
+    {"id": "A1", "desc": "hallumaze_arxiv.tex abstract에 SR⊥HRR 이분법 1문장 추가", "status": "pending"},
+    {"id": "A2", "desc": "related work 섹션에 HalluCode = MRC Cubic 단락 추가", "status": "pending"},
+    {"id": "A3", "desc": "limitations 섹션에 n=5 파일럿 인정 + future work 언급", "status": "pending"},
+    {"id": "A4", "desc": "새 연구 문서 DOC_INDEX에 등록", "status": "pending"}
   ],
   "reward_spec": {
-    "primary_metric": "pilot_experiment_completeness",
-    "threshold": "최소 1개 모델 n≥5 실험 완료 + CodeMEI 계산 + 3개 게이팅 질문 답변 가능"
+    "primary_metric": "arxiv_integration_quality",
+    "threshold": "abstract + related work + limitations 세 섹션 모두 업데이트"
   },
   "evolution_history": [
     {
       "iteration": 1,
-      "goal": "HalluMaze를 미로 단위 지능 검증에서 코딩/도구사용 능력 평가로 확장하는 연구 설계안 작성",
-      "score": 0.87,
-      "rationale": "Research complete; weakest: completeness (no executable pilot code)"
-    },
-    {
-      "iteration": 2,
-      "goal": "HalluCode MVP 실험 스크립트 작성: False API Hint mirage 문제셋 + MARL-SL 코딩 프롬프트 + 결정론적 검증 파이프라인",
-      "score": 0.92,
-      "rationale": "MVP script complete; weakest: efficiency/impact (not yet run). Next: execute pilot."
+      "goal": "HalluCode MRC Cubic 자격 다각도 평론",
+      "score": 0.901,
+      "rationale": "평론 완료(0.901). weakest=efficiency. arXiv draft에 주장 통합으로 임팩트 극대화."
     }
   ],
   "history": [],
-  "evolution_count": 2
+  "evolution_count": 1
 }

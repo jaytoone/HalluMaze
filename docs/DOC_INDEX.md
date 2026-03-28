@@ -2,6 +2,9 @@
 
 | 파일 | 설명 | 날짜 |
 |------|------|------|
+| docs/research/20260328-hallucode-cubic-evaluation.md | HalluCode MRC Cubic 자격 평론: 원자성/직교성/조합성/견고성 판정, 기존 벤치마크 갭, 3-Cubic 스택 설계, NeurIPS 로드맵 | 2026-03-28 |
+| scripts/run_hallucode_mvp.py | HalluCode MVP 파일럿: False API Hint 20문제 + MARL-SL 코딩 프롬프트 + CodeMEI 검증 파이프라인 | 2026-03-27 |
+| docs/research/20260327-hallumaze-extension-hallucode.md | HalluCode/HalluTool 확장 연구: 선행 연구 갭 분석, MARL-SL 코딩 매핑, CodeMEI 설계, MVP 실험 설계안 | 2026-03-27 |
 | docs/misc/ontolo-biz-unconscious-purchase-20260327.md | ontolo-agent biz-unconscious-purchase — HF 포스트 CTA 최적화 분석 | 2026-03-27 |
 | docs/research/20260323-hallumaze-paper-draft.md | HalluMaze 논문 초안 (NeurIPS 2026 target) | 2026-03-23 |
 | docs/research/20260323-hallumaze-extension-todos.md | 확장 연구 방향 분석 (expert-research-v2) | 2026-03-23 |
@@ -29,8 +32,9 @@
 
 ## Related
 - [[projects/Miro/research/20260323-hallumaze-paper-draft|20260323-hallumaze-paper-draft]]
-- [[projects/Miro/research/20260325-marl-efficiency-research|20260325-marl-efficiency-research]]
 - [[projects/Miro/research/20260323-hallumaze-extension-todos|20260323-hallumaze-extension-todos]]
+- [[projects/Miro/research/20260325-marl-efficiency-research|20260325-marl-efficiency-research]]
 - [[projects/Miro/research/20260326-marl-sl-multi-model-validation|20260326-marl-sl-multi-model-validation]]
-- [[projects/Miro/research/20260324-hallumaze-ecological-validity|20260324-hallumaze-ecological-validity]]
+- [[projects/Miro/misc/ontolo-biz-unconscious-purchase-20260327|ontolo-biz-unconscious-purchase-20260327]]
 - [[projects/Miro/research/20260324-marl5stage-fix-solutions|20260324-marl5stage-fix-solutions]]
+- [[projects/Miro/research/20260324-hallumaze-ecological-validity|20260324-hallumaze-ecological-validity]]

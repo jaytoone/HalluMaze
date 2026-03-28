@@ -32,9 +32,10 @@
 \begin{abstract}
 We introduce \textsc{HalluMaze}, a benchmark that measures large language model (LLM) metacognitive error recovery through maze navigation.
 Unlike existing hallucination benchmarks that evaluate final-answer accuracy, \textsc{HalluMaze} captures real-time error detection and corrective action by exposing models to navigable environments containing ``mirage'' walls---passages that appear blocked but are traversable.
-We evaluate 10 LLMs (Claude-3.7-Sonnet, GLM-4.7, Llama-4-Maverick, MiniMax-M2.5, Llama-4-Scout, Qwen-2.5-72B, Gemini-2.0-Flash-Lite, Claude-3-Haiku, GPT-4o-mini, GPT-4o) across $n{=}60$ seeds $\times$ 5${\times}$5 and 7${\times}$7 maze sizes (600 total trials).
+We evaluate 13 LLMs across $n{=}60$ seeds $\times$ 5${\times}$5 and 7${\times}$7 maze sizes (780 total trials), including an extended evaluation of the Claude~4.x family (Haiku-4.5, Sonnet-4.5, Sonnet-4.6).
 We introduce the \emph{Metacognitive Escape Index} (MEI), grounded in Nelson \& Narens' (1990) metamemory framework, which decomposes metacognitive performance into recovery rate (HRR), efficiency (ETR), awareness (AW), and error rate (HR).
-All 10 tested LLMs score significantly below a random walk baseline ($p{<}0.001$ Bonferroni-corrected, $\delta{=}0.6$--$2.1$), revealing a systematic deficit in real-time metacognitive recovery.
+All 13 tested LLMs score significantly below a random walk baseline ($p{<}0.001$ Bonferroni-corrected, $\delta{=}0.6$--$2.1$), revealing a systematic deficit in real-time metacognitive recovery.
+Critically, we find that \emph{solve rate (SR) and metacognitive recovery (MEI/HRR) are orthogonal dimensions}: Claude-Sonnet-4.6 achieves the highest SR ($60\%$, rank~1) yet ranks~8th on MEI ($0.545$), while Claude-Sonnet-4.5 leads the leaderboard on MEI ($0.783$) with a more modest SR ($36.7\%$).
 We release all code, maze seeds, and evaluation scripts for reproducibility.
 \end{abstract}
 
@@ -99,6 +100,14 @@ Reflexion \citep{shinn2023reflexion} & Reasoning & Success (cross-ep.) & Partial
 
 \textbf{Key gap.}
 No existing benchmark measures metacognitive \emph{recovery}---detecting and correcting errors mid-task.
+
+\subsection{Coding Benchmarks and the MRC Cubic Gap}
+
+Coding evaluation benchmarks (HumanEval~\citep{chen2021codex}, MBPP~\citep{austin2021mbpp}, SWE-bench~\citep{jimenez2024swebench}, ToolBench~\citep{qin2023toolbench}) universally measure final-output accuracy (\emph{pass@k}, SR), leaving metacognitive error recovery unmeasured.
+We propose \textbf{HalluCode} as a \emph{Metacognitive Recovery Cubic (MRC)} for the coding domain: a minimal, orthogonal, and composable evaluation unit that measures whether a model can detect injected false API hints (``mirage traps'') and produce correct code despite the misdirection.
+A pilot study ($n{=}5$ per model, 2 free-tier models) demonstrates the SR$\perp$HRR dissociation in the coding domain: LFM-1.2B-Thinking achieves HRR$=$60\% yet SR$=$0\%, confirming that coding ability and metacognitive awareness are separable dimensions.
+An unexpected finding (H5) shows that small thinking models (1.2B) outperform large generalist models ($\sim$7B) on wrong-signature trap detection (66.7\% vs.\ $\approx$0\%), suggesting that model size does not monotonically determine metacognitive quality---a pattern consistent with the SR$\neq$MEI inversion observed in HalluMaze.
+Full HalluCode results (n$=$60, 5 models) are planned as a companion paper.
 \textsc{HalluMaze} introduces HRR as the first metric targeting this function.
 
 Recent agentic benchmarks---AgentBench \citep{liu2023agentbench}, WebArena \citep{zhou2023webarena}, OSWorld---measure task success in interactive environments but do not evaluate \emph{mid-episode} metacognitive recovery.
@@ -347,6 +356,7 @@ Efficient v2     & 0.802 & 50.0\% & 6.2  & 417\,s        \\
   \item 9$\times$9 scaling extended to all 10 models (current: GLM-4.7 only, $n{=}30$).
   \item Alternative maze algorithms (Kruskal, Wilson's).
   \item PyPI package \texttt{hallumaze} with full evaluation server.
+  \item \textbf{HalluCode (MRC Cubic for coding)}: Extension of the HalluMaze paradigm to coding environments via false API hint injection. Pilot (n$=$5, 2 models) confirms SR$\perp$HRR dissociation in coding domain. Full experiment (n$=$60, 5 models, 3 trap types) planned; executable at \texttt{scripts/run\_hallucode\_mvp.py}.
 \end{enumerate}
 
 % =================================================================

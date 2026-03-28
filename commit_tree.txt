@@ -1,3 +1,14 @@
+v1.26 20260328 — HalluCode MRC Cubic 평론 + arXiv 통합 (omc-live)
+    - docs/research/20260328-hallucode-cubic-evaluation.md: MRC Cubic 자격 평론
+      - 4속성 판정: 원자성 PARTIAL, 직교성 GO, 조합성 GO, 견고성 PARTIAL
+      - 3-Cubic 코딩 평가 스택: HumanEval(SR) + HalluCode(HRR) + SWE-bench
+      - NeurIPS 2026/2027 로드맵, H5 가설 통합
+    - docs/hallumaze_arxiv.tex: 3개 섹션 업데이트
+      - abstract: 13모델 780 trials + SR⊥MEI 직교성 발견 (Sonnet-4.6 SR#1 but MEI#8)
+      - related work: HalluCode MRC Cubic 단락 추가 (코딩 벤치마크 갭 + 파일럿 결과)
+      - planned extensions: HalluCode 항목 추가 (run_hallucode_mvp.py 참조)
+    - docs/DOC_INDEX.md: cubic-evaluation 문서 등록
+
 v1.25 20260327 — HalluCode 파일럿 완결: Q3 wrong_signature + 신규 가설 H5 (omc-live iter 5)
     - scripts/run_hallucode_mvp.py: --start 옵션 추가 (특정 문제부터 실행)
     - experiment_results/hallucode_wrong_sig.json: LFM-1.2B wrong_sig 결과
