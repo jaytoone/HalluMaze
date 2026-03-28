@@ -1,3 +1,11 @@
+v1.35 20260328 — cubic-evaluation.md full experiment 결과 + H5 기각 업데이트 (omc-live iter4)
+    - docs/research/20260328-hallucode-cubic-evaluation.md:
+      - Full experiment 결과 섹션 추가: n=39, CodeMEI 표, trap-type 난이도 순위
+      - H5 가설 기각 확정: n=3 파일럿 위양성, full n=5에서 반전
+        (GLM wrong_sig Detect=80% > LFM=0%, 파일럿과 반대)
+      - Verification Required: H5 [RESOLVED/REJECTED] 업데이트
+      - 로드맵: n=60 목표 표현 업데이트
+
 v1.34 20260328 — arXiv 비교표 HalluCode 행 추가 + conclusion 강화 (omc-live iter3)
     - docs/hallumaze_arxiv.tex: 2개 추가 수정
       - Table 1 (benchmark comparison): HalluCode 행 추가 (ours, Coding, CodeMEI/SR/HRR)

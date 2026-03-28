@@ -117,22 +117,39 @@ Cubic 3 — SWE-bench : 실세계 버그 수정 (patch success rate)
 
 세 큐빅이 상호 직교적이라면, 모델 코딩 능력을 **3차원 벡터**로 표현하는 평가 체계 성립.
 
-### 신규 발견 (H5): 큐빅 내 trap-type별 감지율 역전
+### Full Experiment 결과 (n=39, 2모델, 3 trap type) — 2026-03-28
 
 ```
-wrong_signature 트랩:
-  GLM-4.5-Air (~7B) : HRR ≈ 0%   ← 대형 모델의 API 과신
-  LFM-1.2B-Thinking : HRR = 66.7% ← 소형 thinking 모델 우세
+모델            | CodeMEI  | SR    | HRR   | 비고
+GLM-4.5-Air    | 0.737    | 100%  | 84%   | 7B급, 무료 tier
+LFM-1.2B       | 0.215    | 5%    | 25%   | 1.2B thinking model
+
+Trap-type 난이도 (GLM 기준):
+  nonexistent_api  : CodeMEI=0.810, Detect=100% (가장 쉬움)
+  deprecated_method: CodeMEI=0.725, Detect=75%  (중간)
+  wrong_signature  : CodeMEI=0.600, Detect=80%  (가장 어려움)
 ```
 
-이는 HalluCode cubic 내에서 trap type이 제2차원을 형성할 수 있음을 시사. v2 설계에서 **trap_type × model_size** 교차 분석이 중요 연구 방향.
+**SR⊥CodeMEI 코딩 도메인 확증**: GLM SR=100% vs LFM SR=5% — 20× 차이. 그러나 LFM도 CodeMEI=0.215 (HRR=25%)로 일부 메타인지 능력 보유. 코딩 능력과 오류 감지력은 독립 차원.
+
+### H5 가설 — 기각 (n=5 full experiment)
+
+```
+wrong_signature 트랩 (full experiment, n=5):
+  GLM-4.5-Air (~7B) : Detect = 80%   ← 대형 모델이 우세
+  LFM-1.2B-Thinking : Detect = 0%    ← 소형 모델은 감지 불가
+
+(파일럿 n=3 결과와 반대: LFM 66.7% > GLM ≈0% → 소표본 위양성)
+```
+
+**결론**: H5는 n=3 파일럿의 소표본 위양성(false positive)으로 확인. wrong_signature는 모델 크기와 무관하게 어렵지만 소형 모델에서 더욱 취약. trap_type × model_size 교차 분석은 유효한 연구 방향이나 방향성이 반전됨.
 
 ### NeurIPS 로드맵
 
 | 시점 | 목표 | 조건 |
 |------|------|------|
 | 2026-Q2 | arXiv 제출 (HalluMaze v1) | 현재 결과로 충분. HalluCode = future work 1단락 |
-| 2026-Q3 | HalluCode n=60 풀 실험 | 5개 모델, 3가지 trap 타입 |
+| 2026-Q3 | HalluCode n=60 확장 실험 | 5개 모델, 현 n=39 → 확대 (HC020 timeout 해결 포함) |
 | 2027 NeurIPS | HalluCode 독립 논문 | MRC cubic 독립 기여 주장 |
 
 ---
@@ -148,7 +165,7 @@ wrong_signature 트랩:
 ## Verification Required
 
 - [UNCERTAIN] 실제 API hallucination 빈도 (GitHub Copilot 로그 분석)
-- [UNCERTAIN] H5 (wrong_signature × 소형 thinking 모델 우세) n=60 재현 여부
+- [RESOLVED/REJECTED] H5 (wrong_signature × 소형 thinking 모델 우세): n=5 full experiment에서 기각. LFM Detect=0% vs GLM=80%. n=3 파일럿은 소표본 위양성.
 - [UNCERTAIN] ToolBench 자연 발생 실패 케이스에서 HalluCode 트랩 패턴 빈도
 
 ---
