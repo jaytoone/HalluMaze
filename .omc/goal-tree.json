@@ -1,19 +1,24 @@
 {
-  "root_goal": "HalluCode full experiment 실행: 3가지 trap type × 최소 2개 무료 모델, n>=20, CodeMEI 통계 산출 → experiment_results/hallucode_full.json",
+  "root_goal": "hallumaze_arxiv.tex의 HalluCode 섹션을 full experiment 결과(n=39, CodeMEI table)로 업데이트: 파일럿 n=5 언급을 실제 실험 데이터로 격상, trap-type별 CodeMEI 표 추가",
   "original_goal": "HalluCode로 단위 코딩능력 확인 (full experiment)",
   "level": 0,
   "sub_goals": [
-    {"id": "E1", "desc": "현재 파일럿 결과 확인 및 실행 가능한 무료 모델 파악", "status": "pending"},
-    {"id": "E2", "desc": "run_hallucode_mvp.py로 nonexistent_api n=10 (glm-free + lfm-1b-free)", "status": "pending"},
-    {"id": "E3", "desc": "wrong_signature n=5 이상 (두 모델)", "status": "pending"},
-    {"id": "E4", "desc": "deprecated_method n=5 이상 (두 모델)", "status": "pending"},
-    {"id": "E5", "desc": "결과 합산 및 CodeMEI 통계 산출 → hallucode_full.json", "status": "pending"}
+    {"id": "B1", "desc": "related work HalluCode 단락: pilot n=5 → full n=39 결과로 업데이트", "status": "pending"},
+    {"id": "B2", "desc": "limitations: n=5 → n=39로 업데이트, HC020 timeout 언급", "status": "pending"},
+    {"id": "B3", "desc": "planned extensions: full experiment 완료 표기, 향후 n=60으로 확대 명시", "status": "pending"}
   ],
   "reward_spec": {
-    "primary_metric": "experiment_completeness",
-    "threshold": "3 trap types × 2 models × n>=5 each, CodeMEI per model 계산 완료"
+    "primary_metric": "arxiv_hallucode_update_quality",
+    "threshold": "related work + limitations 섹션이 full experiment 결과를 반영"
   },
-  "evolution_history": [],
+  "evolution_history": [
+    {
+      "iteration": 1,
+      "goal": "HalluCode full experiment 실행 (n>=20, 3 trap types, 2 models)",
+      "score": 0.902,
+      "rationale": "실험 완료(0.902). weakest=efficiency. arXiv에 실제 데이터 반영으로 임팩트 극대화."
+    }
+  ],
   "history": [],
-  "evolution_count": 0
+  "evolution_count": 1
 }
