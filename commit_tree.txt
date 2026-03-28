@@ -1,3 +1,9 @@
+v1.30 20260328 — arXiv 주요 발견 일관성 수정 (omc-live iter4)
+    - docs/hallumaze_arxiv.tex: Introduction 주요 발견 목록 수정
+      - "All 10 tested" → "All 13 tested LLMs score below random walk"
+      - "Claude-3.7-Sonnet leads" → Claude-Sonnet-4.5 리더보드 #1 반영 (MEI=0.783)
+      - 원본 10-model 코호트 대비 13-model 확장 구분 명확화
+
 v1.29 20260328 — arXiv conclusion 13모델/780 trials 업데이트 + HalluCode 언급 (omc-live iter4)
     - docs/hallumaze_arxiv.tex: conclusion 섹션 수정
       - "10 LLMs, 600 trials" → "13 LLMs, 780 trials, Claude 4.x family"
