@@ -1,3 +1,9 @@
+v1.31 20260328 — arXiv 실험 설계 섹션 13모델 확장 명시 (omc-live iter5)
+    - docs/hallumaze_arxiv.tex: Experimental Design 섹션 수정
+      - "10 LLMs from 7 providers" 설명 직후 Claude 4.x 확장 문장 추가
+      - "13 LLMs, 780 trials, same protocol" 명시
+      - 논문 전체에서 10→13 모델 전환 맥락 완성
+
 v1.30 20260328 — arXiv 주요 발견 일관성 수정 (omc-live iter4)
     - docs/hallumaze_arxiv.tex: Introduction 주요 발견 목록 수정
       - "All 10 tested" → "All 13 tested LLMs score below random walk"
