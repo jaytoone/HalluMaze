@@ -179,6 +179,7 @@ footer a{color:var(--ac1);text-decoration:none}
     <a href="#findings">Findings</a>
     <a href="#dissociation">Dissociation</a>
     <a href="#maze">Maze Design</a>
+    <a href="#hallucode">HalluCode</a>
     <a href="#related">Related Work</a>
     <a href="#statistics">Statistics</a>
     <a href="#limitations">Limitations</a>
@@ -629,6 +630,62 @@ footer a{color:var(--ac1);text-decoration:none}
       </div>
     </div>
   </div>
+</section>
+
+<!-- HALLUCODE EXTENSION -->
+<section id="hallucode">
+  <div class="section-label">Extension</div>
+  <h2 class="section-title">HalluCode: Coding Domain Transfer</h2>
+  <p class="section-subtitle">HalluCode extends HalluMaze to the code generation domain. Instead of maze walls, the model is given deliberately false API hints (nonexistent methods, wrong signatures, deprecated calls). Metacognitive recovery = detecting the bad hint and writing correct code anyway.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:32px">
+    <div style="background:#0d1117;border:1px solid #1e2333;border-radius:8px;padding:20px;text-align:center">
+      <div style="font-size:28px;font-weight:700;color:#4f6df5">20</div>
+      <div style="font-size:12px;color:#5a6378;margin-top:4px">Problems</div>
+    </div>
+    <div style="background:#0d1117;border:1px solid #1e2333;border-radius:8px;padding:20px;text-align:center">
+      <div style="font-size:28px;font-weight:700;color:#34d399">3</div>
+      <div style="font-size:12px;color:#5a6378;margin-top:4px">Trap Types</div>
+    </div>
+    <div style="background:#0d1117;border:1px solid #1e2333;border-radius:8px;padding:20px;text-align:center">
+      <div style="font-size:28px;font-weight:700;color:#fbbf24">2</div>
+      <div style="font-size:12px;color:#5a6378;margin-top:4px">Models Tested</div>
+    </div>
+    <div style="background:#0d1117;border:1px solid #1e2333;border-radius:8px;padding:20px;text-align:center">
+      <div style="font-size:28px;font-weight:700;color:#a855f7">n=39</div>
+      <div style="font-size:12px;color:#5a6378;margin-top:4px">Validated Trials</div>
+    </div>
+  </div>
+
+  <h3 style="font-size:18px;font-weight:600;margin:32px 0 12px;color:#fff">MARL-SL Middleware Ablation (H6)</h3>
+  <p style="color:#5a6378;font-size:14px;margin-bottom:16px">Structured prompt scaffolding (5-layer MARL-SL) is not uniformly beneficial. Its effect <strong style="color:#c8cdd8">reverses depending on model capacity</strong> — a novel finding unique to the HalluCode domain.</p>
+
+  <div style="overflow-x:auto;margin-bottom:16px">
+  <table class="stat-table">
+    <thead>
+      <tr><th>Model</th><th>Capacity</th><th>Condition</th><th>CodeMEI</th><th>SR</th><th>HRR</th><th style="color:#34d399">Delta MEI</th><th style="color:#34d399">Delta SR</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="2" style="font-family:var(--mono);font-size:12px">LFM-1.2B</td>
+        <td rowspan="2" style="color:#f87171">Small (1.2B)</td>
+        <td>Baseline</td><td>0.274</td><td>68.4%</td><td>0.0%</td>
+        <td rowspan="2" style="color:#f87171;font-weight:700">-0.059</td>
+        <td rowspan="2" style="color:#f87171;font-weight:700">-63.4pp</td>
+      </tr>
+      <tr><td>MARL-SL</td><td>0.215</td><td>5.0%</td><td>25.0%</td></tr>
+      <tr>
+        <td rowspan="2" style="font-family:var(--mono);font-size:12px">GLM-4.5-Air</td>
+        <td rowspan="2" style="color:#34d399">Large (~7B+)</td>
+        <td>Baseline</td><td>0.579</td><td>78.9%</td><td>68.4%</td>
+        <td rowspan="2" style="color:#34d399;font-weight:700">+0.158</td>
+        <td rowspan="2" style="color:#34d399;font-weight:700">+21.1pp</td>
+      </tr>
+      <tr><td>MARL-SL</td><td style="font-weight:700">0.737</td><td style="font-weight:700">100.0%</td><td style="font-weight:700">84.2%</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="color:#5a6378;font-size:13px">H6: Capacity threshold lies between 1.2B and ~7B. Small models are overwhelmed by the structured 5-layer format; large models benefit from it. This mirrors the SR-MEI dissociation found in HalluMaze.</p>
 </section>
 
 <!-- RELATED WORK -->

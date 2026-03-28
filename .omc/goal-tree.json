@@ -1,23 +1,29 @@
 {
-  "root_goal": "H6 용량×미들웨어 상호작용 가설 교차검증: GLM-4.5-Air baseline (no-MARL) 실험으로 대형 모델에서 MARL-SL SR 향상 확인, 용량 임계점 (1.2B vs ~7B) 수치 입증 및 arXiv 업데이트",
+  "root_goal": "GitHub push (22 local commits) + HF Space hallumaze_final.html 업데이트로 H6 교차검증 결과 공개 배포",
   "original_goal": "HalluCode에서 MARL-SL 미들웨어를 통해 성능 증강 발현 연구 실험",
   "level": 0,
   "sub_goals": [
-    "scripts/run_hallucode_baseline.py에 GLM 모델 지원 확인 (--models glm-free)",
-    "GLM-4.5-Air baseline 실험 실행 (n>=10, HC001-HC020)",
-    "GLM baseline vs GLM MARL-SL 비교 분석 (H6 역방향 확인: 대형 모델에서 MARL-SL이 SR↑)",
-    "arXiv Table 3 GLM 행 추가 + H6 용량 임계점 결론 강화"
+    "git push origin main (22 commits v1.20~v1.41)",
+    "hallumaze_final.html에 HalluCode ablation 섹션 추가 (H6 table)",
+    "hallumaze_final.html에 MARL-SL methodology 설명 추가",
+    "HF Space push (hallumaze_final.html + index.html)"
   ],
   "reward_spec": {
-    "primary_metric": "GLM-4.5-Air baseline SR vs MARL-SL SR 수치 비교",
-    "threshold": "GLM에서 MARL-SL SR >= baseline SR (대형 모델 역전 확인) 또는 결과가 arXiv에 반영됨"
+    "primary_metric": "GitHub main branch updated with all v1.20-v1.41 commits",
+    "threshold": "git log origin/main shows v1.41 as HEAD"
   },
   "evolution_history": [
     {
       "iteration": 1,
-      "goal": "HalluCode에서 MARL-SL 미들웨어 성능 증강 효과 실험 입증: (1) Baseline 단순 프롬프트 스크립트 작성, (2) LFM-1.2B로 baseline vs MARL-SL 실험 실행, (3) SR/HRR/CodeMEI 비교 분석, (4) arXiv 결과 단락 추가",
+      "goal": "HalluCode에서 MARL-SL 미들웨어 성능 증강 효과 실험 입증",
       "score": 0.848,
-      "rationale": "LFM SR↔HRR trade-off (H6) 발견, baseline script 완성, arXiv 업데이트. 미완: GLM 교차검증"
+      "rationale": "LFM baseline 완성, H6 발견"
+    },
+    {
+      "iteration": 2,
+      "goal": "H6 GLM 교차검증: GLM-4.5-Air baseline 실험으로 대형 모델 MARL-SL SR↑ 확인",
+      "score": 0.914,
+      "rationale": "H6 완전 확인 (LFM −0.059 vs GLM +0.158), arXiv Table 3 4-row 완성"
     }
   ],
   "history": []
