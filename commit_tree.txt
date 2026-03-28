@@ -1,3 +1,9 @@
+v1.34 20260328 — arXiv 비교표 HalluCode 행 추가 + conclusion 강화 (omc-live iter3)
+    - docs/hallumaze_arxiv.tex: 2개 추가 수정
+      - Table 1 (benchmark comparison): HalluCode 행 추가 (ours, Coding, CodeMEI/SR/HRR)
+      - Conclusion: "preliminary" → n=39 실제 결과 수치 (GLM SR=100%/MEI=0.737, LFM SR=5%/MEI=0.215)
+        - 도메인 전이 확증 문장으로 강화
+
 v1.33 20260328 — arXiv HalluCode 섹션 full experiment 결과로 격상 (omc-live iter2)
     - docs/hallumaze_arxiv.tex: HalluCode 단락 전면 업데이트
       - related work: pilot n=5 → full n=39, CodeMEI 표(Table 2) 추가

@@ -94,6 +94,7 @@ WebArena \citep{zhou2023webarena} & Web navigation & Task success & No & No \\
 Reflexion \citep{shinn2023reflexion} & Reasoning & Success (cross-ep.) & Partial & No \\
 \midrule
 \textbf{HalluMaze (ours)} & Navigation & MEI, HRR, SR & \textbf{Yes} & Planned \\
+\textbf{HalluCode (ours)} & Coding & CodeMEI, SR, HRR & \textbf{Yes} & Planned \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -394,7 +395,7 @@ Efficient v2     & 0.802 & 50.0\% & 6.2  & 417\,s        \\
 Our evaluation of 13 LLMs across 7 providers (780 total trials, including the Claude~4.x family) reveals a universal and statistically significant deficit: all models fall below random walk on MEI ($\delta{=}0.6$--$2.1$, $p{<}0.001$ Bonferroni-corrected).
 The frontier cost inversion is striking: GPT-4o ranks last on MEI (MEI$=$0.315) while Claude-Sonnet-4.5 leads (MEI$=$0.783), demonstrating that neither API cost nor recency predict metacognitive recovery.
 Critically, SR and MEI are orthogonal dimensions (Claude-Sonnet-4.6 SR rank~1 yet MEI rank~8), suggesting these capabilities may require distinct training targets.
-A preliminary extension to coding tasks (\textbf{HalluCode}) confirms this dissociation transfers across domains.
+An initial HalluCode experiment ($n{=}39$, 2 models, 3 trap types) confirms this SR$\perp$HRR dissociation transfers to the coding domain: GLM-4.5-Air achieves SR$=$100\% but CodeMEI$=$0.737, while LFM-1.2B achieves SR$=$5\% yet CodeMEI$=$0.215---the gap between coding ability and metacognitive recovery holds across domains.
 We release all code, maze seeds, and evaluation scripts to enable reproducible evaluation and invite the community to build on this benchmark.
 
 \paragraph{Reproducibility.}
