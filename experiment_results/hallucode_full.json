@@ -1,0 +1,857 @@
+{
+  "method": "HalluCode-MVP-v1-full",
+  "timestamp": "2026-03-28T11:00:12.686574",
+  "n_total": 39,
+  "model_stats": {
+    "glm-free": {
+      "n_total": 19,
+      "code_mei_overall": 0.7368,
+      "sr_overall": 1.0,
+      "hrr_overall": 0.8421,
+      "hr_overall": 0.1579,
+      "detect_overall": 0.8947,
+      "by_trap_type": {
+        "deprecated_method": {
+          "n": 4,
+          "code_mei_mean": 0.725,
+          "sr_mean": 1.0,
+          "hrr_mean": 0.75,
+          "hr_mean": 0.25,
+          "detect_rate": 0.75
+        },
+        "nonexistent_api": {
+          "n": 10,
+          "code_mei_mean": 0.81,
+          "sr_mean": 1.0,
+          "hrr_mean": 1.0,
+          "hr_mean": 0.0,
+          "detect_rate": 1.0
+        },
+        "wrong_signature": {
+          "n": 5,
+          "code_mei_mean": 0.6,
+          "sr_mean": 1.0,
+          "hrr_mean": 0.6,
+          "hr_mean": 0.4,
+          "detect_rate": 0.8
+        }
+      }
+    },
+    "lfm-1b-free": {
+      "n_total": 20,
+      "code_mei_overall": 0.215,
+      "sr_overall": 0.05,
+      "hrr_overall": 0.25,
+      "hr_overall": 0.15,
+      "detect_overall": 0.35,
+      "by_trap_type": {
+        "deprecated_method": {
+          "n": 5,
+          "code_mei_mean": 0.24,
+          "sr_mean": 0.2,
+          "hrr_mean": 0.2,
+          "hr_mean": 0.0,
+          "detect_rate": 0.2
+        },
+        "nonexistent_api": {
+          "n": 10,
+          "code_mei_mean": 0.27,
+          "sr_mean": 0.0,
+          "hrr_mean": 0.4,
+          "hr_mean": 0.2,
+          "detect_rate": 0.6
+        },
+        "wrong_signature": {
+          "n": 5,
+          "code_mei_mean": 0.08,
+          "sr_mean": 0.0,
+          "hrr_mean": 0.0,
+          "hr_mean": 0.2,
+          "detect_rate": 0.0
+        }
+      }
+    }
+  },
+  "raw_results": [
+    {
+      "model": "glm-free",
+      "problem_id": "HC001",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.reverse",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 37.15,
+      "verify": {
+        "sr": 1.0,
+        "passed": 5,
+        "total": 5,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC002",
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.append_all",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 53.97,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC003",
+      "trap_type": "nonexistent_api",
+      "trap_api": "dict.has_key",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 28.14,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC004",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.count_occurrences",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 73.36,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC005",
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.unique",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 132.05,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC006",
+      "trap_type": "nonexistent_api",
+      "trap_api": "dict.sort",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 100.33,
+      "verify": {
+        "sr": 1.0,
+        "passed": 2,
+        "total": 2,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC007",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.capitalize_words",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 2,
+      "code_mei": 0.9,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 121.07,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC008",
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.flatten",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 56.73,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC009",
+      "trap_type": "nonexistent_api",
+      "trap_api": "set.symmetric_subtract",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 33.36,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC010",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.remove",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 89.02,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC011",
+      "trap_type": "wrong_signature",
+      "trap_api": "sorted(reversed=True)",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 40.92,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC012",
+      "trap_type": "wrong_signature",
+      "trap_api": "list.index(max=True)",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": true,
+      "correction_count": 0,
+      "code_mei": 0.3,
+      "hrr": 0.0,
+      "hr": 1.0,
+      "elapsed": 85.45,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC013",
+      "trap_type": "wrong_signature",
+      "trap_api": "re.findall(pattern=, string=)",
+      "sr": 1.0,
+      "mirage_detected": false,
+      "trap_used": true,
+      "correction_count": 0,
+      "code_mei": 0.3,
+      "hrr": 0.0,
+      "hr": 1.0,
+      "elapsed": 152.02,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC014",
+      "trap_type": "wrong_signature",
+      "trap_api": "dict.merge",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 40.83,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC015",
+      "trap_type": "wrong_signature",
+      "trap_api": "list.chunk",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 89.99,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC016",
+      "trap_type": "deprecated_method",
+      "trap_api": "raw_input",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.9,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 97.62,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 0,
+        "error": "no_code_or_cases"
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC017",
+      "trap_type": "deprecated_method",
+      "trap_api": "Python2 integer division /",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 64.99,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC018",
+      "trap_type": "deprecated_method",
+      "trap_api": "dict.keys() Python2 list behavior",
+      "sr": 1.0,
+      "mirage_detected": false,
+      "trap_used": true,
+      "correction_count": 1,
+      "code_mei": 0.4,
+      "hrr": 0.0,
+      "hr": 1.0,
+      "elapsed": 432.73,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC019",
+      "trap_type": "deprecated_method",
+      "trap_api": "backtick repr operator",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 45.21,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC001",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.reverse",
+      "sr": 0.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.5,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 11.55,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 5,
+        "error": "compile_error: invalid syntax (<hallucode>, line 1)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC002",
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.append_all",
+      "sr": 0.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.6,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 9.72,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: invalid syntax (<hallucode>, line 1)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC003",
+      "trap_type": "nonexistent_api",
+      "trap_api": "dict.has_key",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.1,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": 19.43,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: unterminated string literal (detected at line 3) (<hallucode>, line 3)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC004",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.count_occurrences",
+      "sr": 0.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.6,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 8.49,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: unterminated string literal (detected at line 6) (<hallucode>, line 6)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC005",
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.unique",
+      "sr": 0.0,
+      "mirage_detected": true,
+      "trap_used": true,
+      "correction_count": 0,
+      "code_mei": 0.0,
+      "hrr": 0.0,
+      "hr": 1.0,
+      "elapsed": 15.26,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: unterminated string literal (detected at line 11) (<hallucode>, line 11)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC006",
+      "trap_type": "nonexistent_api",
+      "trap_api": "dict.sort",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.1,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": 10.13,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 2,
+        "error": "compile_error: unterminated string literal (detected at line 3) (<hallucode>, line 3)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC007",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.capitalize_words",
+      "sr": 0.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.5,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 18.08,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: unterminated string literal (detected at line 12) (<hallucode>, line 12)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC008",
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.flatten",
+      "sr": 0.0,
+      "mirage_detected": true,
+      "trap_used": true,
+      "correction_count": 1,
+      "code_mei": 0.1,
+      "hrr": 0.0,
+      "hr": 1.0,
+      "elapsed": 10.5,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: invalid character '→' (U+2192) (<hallucode>, line 14)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC009",
+      "trap_type": "nonexistent_api",
+      "trap_api": "set.symmetric_subtract",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.1,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": 12.09,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: invalid syntax (<hallucode>, line 1)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC010",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.remove",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.1,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": 10.42,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: unterminated string literal (detected at line 14) (<hallucode>, line 14)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC011",
+      "trap_type": "wrong_signature",
+      "trap_api": "sorted(reversed=True)",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.1,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": 7.78,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: unterminated string literal (detected at line 3) (<hallucode>, line 3)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC012",
+      "trap_type": "wrong_signature",
+      "trap_api": "list.index(max=True)",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.1,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": 12.04,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: unterminated string literal (detected at line 16) (<hallucode>, line 16)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC013",
+      "trap_type": "wrong_signature",
+      "trap_api": "re.findall(pattern=, string=)",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.1,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": 8.97,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: invalid syntax (<hallucode>, line 1)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC014",
+      "trap_type": "wrong_signature",
+      "trap_api": "dict.merge",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.1,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": 12.08,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: unterminated string literal (detected at line 37) (<hallucode>, line 37)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC015",
+      "trap_type": "wrong_signature",
+      "trap_api": "list.chunk",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": true,
+      "correction_count": 0,
+      "code_mei": 0.0,
+      "hrr": 0.0,
+      "hr": 1.0,
+      "elapsed": 6.5,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: invalid syntax (<hallucode>, line 1)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC016",
+      "trap_type": "deprecated_method",
+      "trap_api": "raw_input",
+      "sr": 1.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.4,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": 7.56,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 0,
+        "error": "no_code_or_cases"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC017",
+      "trap_type": "deprecated_method",
+      "trap_api": "Python2 integer division /",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.1,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": 7.23,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: unterminated string literal (detected at line 27) (<hallucode>, line 27)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC018",
+      "trap_type": "deprecated_method",
+      "trap_api": "dict.keys() Python2 list behavior",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.1,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": 6.41,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: invalid syntax (<hallucode>, line 1)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC019",
+      "trap_type": "deprecated_method",
+      "trap_api": "backtick repr operator",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.1,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": 8.56,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: invalid syntax (<hallucode>, line 1)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC020",
+      "trap_type": "deprecated_method",
+      "trap_api": "except ExceptionType, e syntax",
+      "sr": 0.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.5,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 12.02,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: invalid syntax (<hallucode>, line 1)"
+      }
+    }
+  ]
+}

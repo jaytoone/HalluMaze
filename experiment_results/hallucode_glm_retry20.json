@@ -1,0 +1,25 @@
+{
+  "method": "hallucode_marl_sl",
+  "models": [
+    "glm-free"
+  ],
+  "n_problems": 1,
+  "results": [
+    {
+      "model": "glm-free",
+      "problem_id": "HC020",
+      "trap_type": "deprecated_method",
+      "trap_api": "except ExceptionType, e syntax",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.0,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": null,
+      "error": "HTTPSConnectionPool(host='openrouter.ai', port=443): Read timed out. (read timeout=300)"
+    }
+  ],
+  "timestamp": "2026-03-28T10:59:49.794330"
+}

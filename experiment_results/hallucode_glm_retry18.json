@@ -1,0 +1,30 @@
+{
+  "method": "hallucode_marl_sl",
+  "models": [
+    "glm-free"
+  ],
+  "n_problems": 1,
+  "results": [
+    {
+      "model": "glm-free",
+      "problem_id": "HC018",
+      "trap_type": "deprecated_method",
+      "trap_api": "dict.keys() Python2 list behavior",
+      "sr": 1.0,
+      "mirage_detected": false,
+      "trap_used": true,
+      "correction_count": 1,
+      "code_mei": 0.4,
+      "hrr": 0.0,
+      "hr": 1.0,
+      "elapsed": 432.73,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    }
+  ],
+  "timestamp": "2026-03-28T10:54:02.618157"
+}

@@ -1,0 +1,195 @@
+{
+  "method": "hallucode_marl_sl",
+  "models": [
+    "glm-free"
+  ],
+  "n_problems": 10,
+  "results": [
+    {
+      "model": "glm-free",
+      "problem_id": "HC011",
+      "trap_type": "wrong_signature",
+      "trap_api": "sorted(reversed=True)",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 40.92,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC012",
+      "trap_type": "wrong_signature",
+      "trap_api": "list.index(max=True)",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": true,
+      "correction_count": 0,
+      "code_mei": 0.3,
+      "hrr": 0.0,
+      "hr": 1.0,
+      "elapsed": 85.45,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC013",
+      "trap_type": "wrong_signature",
+      "trap_api": "re.findall(pattern=, string=)",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.0,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": null,
+      "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC014",
+      "trap_type": "wrong_signature",
+      "trap_api": "dict.merge",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 40.83,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC015",
+      "trap_type": "wrong_signature",
+      "trap_api": "list.chunk",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 89.99,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC016",
+      "trap_type": "deprecated_method",
+      "trap_api": "raw_input",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.9,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 97.62,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 0,
+        "error": "no_code_or_cases"
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC017",
+      "trap_type": "deprecated_method",
+      "trap_api": "Python2 integer division /",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 64.99,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC018",
+      "trap_type": "deprecated_method",
+      "trap_api": "dict.keys() Python2 list behavior",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.0,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": null,
+      "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC019",
+      "trap_type": "deprecated_method",
+      "trap_api": "backtick repr operator",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 45.21,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC020",
+      "trap_type": "deprecated_method",
+      "trap_api": "except ExceptionType, e syntax",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.0,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": null,
+      "error": "HTTPSConnectionPool(host='openrouter.ai', port=443): Read timed out. (read timeout=300)"
+    }
+  ],
+  "timestamp": "2026-03-28T10:44:09.151792"
+}

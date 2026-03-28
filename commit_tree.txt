@@ -1,3 +1,17 @@
+v1.32 20260328 — HalluCode Full Experiment 완료 (omc-live)
+    - experiment_results/hallucode_full.json: 2모델×3 trap type, n=39 유효 결과
+      - GLM-4.5-Air (n=19): CodeMEI=0.737, SR=100%, HRR=84%
+        - nonexistent_api(n=10): MEI=0.810, HRR=100%, Detect=100%
+        - wrong_signature(n=5): MEI=0.600, HRR=60%, Detect=80%
+        - deprecated_method(n=4): MEI=0.725, HRR=75%, Detect=75%
+      - LFM-1.2B-Thinking (n=20): CodeMEI=0.215, SR=5%, HRR=25%
+        - nonexistent_api(n=10): MEI=0.270, HRR=40%, Detect=60%
+        - wrong_signature(n=5): MEI=0.080, HRR=0%, Detect=0%
+        - deprecated_method(n=5): MEI=0.240, HRR=20%, Detect=20%
+      - 핵심: SR(GLM=100% vs LFM=5%) ⊥ CodeMEI — 코딩 도메인 SR⊥HRR 확증
+    - scripts/build_hallucode_full.py: 결과 병합+통계 스크립트
+    - docs/DOC_INDEX.md: 신규 실험 등록
+
 v1.31 20260328 — arXiv 실험 설계 섹션 13모델 확장 명시 (omc-live iter5)
     - docs/hallumaze_arxiv.tex: Experimental Design 섹션 수정
       - "10 LLMs from 7 providers" 설명 직후 Claude 4.x 확장 문장 추가

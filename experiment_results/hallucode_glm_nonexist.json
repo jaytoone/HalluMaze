@@ -1,0 +1,100 @@
+{
+  "method": "hallucode_marl_sl",
+  "models": [
+    "glm-free"
+  ],
+  "n_problems": 5,
+  "results": [
+    {
+      "model": "glm-free",
+      "problem_id": "HC006",
+      "trap_type": "nonexistent_api",
+      "trap_api": "dict.sort",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.0,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": null,
+      "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC007",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.capitalize_words",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.0,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": null,
+      "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC008",
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.flatten",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 56.73,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC009",
+      "trap_type": "nonexistent_api",
+      "trap_api": "set.symmetric_subtract",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 33.36,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC010",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.remove",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 89.02,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    }
+  ],
+  "timestamp": "2026-03-28T10:11:04.052655"
+}

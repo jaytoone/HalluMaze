@@ -1,0 +1,50 @@
+{
+  "method": "hallucode_marl_sl",
+  "models": [
+    "glm-free"
+  ],
+  "n_problems": 2,
+  "results": [
+    {
+      "model": "glm-free",
+      "problem_id": "HC006",
+      "trap_type": "nonexistent_api",
+      "trap_api": "dict.sort",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 100.33,
+      "verify": {
+        "sr": 1.0,
+        "passed": 2,
+        "total": 2,
+        "error": null
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC007",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.capitalize_words",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 2,
+      "code_mei": 0.9,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 121.07,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      }
+    }
+  ],
+  "timestamp": "2026-03-28T10:17:34.789892"
+}
