@@ -1,3 +1,11 @@
+v1.33 20260328 — arXiv HalluCode 섹션 full experiment 결과로 격상 (omc-live iter2)
+    - docs/hallumaze_arxiv.tex: HalluCode 단락 전면 업데이트
+      - related work: pilot n=5 → full n=39, CodeMEI 표(Table 2) 추가
+        - GLM CodeMEI=0.737/SR=100%, LFM CodeMEI=0.215/SR=5% per trap type
+        - H5 가설 기각: LFM wrong_sig Detect=0% vs GLM=80%
+      - limitations: "n=5" → "n=39", HC020 timeout 문서화, H5 기각 명시
+      - planned extensions: "pilot" → "initial experiment n=39" 완료 표기
+
 v1.32 20260328 — HalluCode Full Experiment 완료 (omc-live)
     - experiment_results/hallucode_full.json: 2모델×3 trap type, n=39 유효 결과
       - GLM-4.5-Air (n=19): CodeMEI=0.737, SR=100%, HRR=84%
