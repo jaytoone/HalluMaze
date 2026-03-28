@@ -47,35 +47,40 @@ configs:
 
 # HalluMaze Benchmark Dataset
 
-> **All 10 tested LLMs score significantly below a random walk on metacognitive recovery (p<0.001, Glass's δ=0.6–2.1). Frontier cost does not predict performance: GPT-4o ranks last (MEI=0.315), Claude-3.7-Sonnet ranks first (MEI=0.774).**
+> **All 13 tested LLMs score significantly below a random walk on metacognitive recovery (p<0.001). Newer ≠ better: Claude-Sonnet-4.5 (MEI=0.783) surpasses 4.6 (MEI=0.545). SR and MEI are orthogonal: 4.6 has highest SR (60%) but ranks 8th.**
 
 ## Dataset Description
 
 HalluMaze measures **metacognitive error recovery** in LLMs through maze navigation. Models are exposed to "mirage" walls — passages that appear blocked but are traversable — testing real-time belief updating.
 
-**Key finding**: A random walk agent (MEI=0.900) outperforms all 10 tested LLMs (best: Claude-3.7-Sonnet, MEI=0.774), revealing a systematic deficit in metacognitive error recovery across all model families and cost tiers.
+**Key finding**: A random walk agent (MEI=0.900) outperforms all 13 tested LLMs (best: Claude-Sonnet-4.5, MEI=0.783), revealing a systematic deficit in metacognitive error recovery across all model families and cost tiers. SR (solve rate) and MEI (metacognitive quality) are orthogonal — a model can win more mazes while recovering from errors less reliably.
 
 - **Paper**: [HalluMaze: A Maze Navigation Benchmark for LLM Metacognitive Error Recovery](https://github.com/jaytoone/HalluMaze)
 - **Demo**: [HuggingFace Space](https://huggingface.co/spaces/Be2Jay/hallumaze)
 - **GitHub**: [jaytoone/HalluMaze](https://github.com/jaytoone/HalluMaze)
 
-## Leaderboard (MEI ↑, n=60 per model)
+## Leaderboard (MEI ↑)
 
-| Rank | Model | MEI [95% CI] | SR | HRR | Glass's δ |
-|------|-------|--------------|-----|-----|-----------|
-| — | Random Walk ★ | 0.900 | 100% | 100% | — |
-| 1 | **Claude-3.7-Sonnet** | **0.774** [0.715, 0.830] | 56.7% | 87.5% | 0.554 |
-| 2 | GLM-4.7 | 0.615 [0.551, 0.681] | 8.3% | 71.8% | 1.102 |
-| 3 | Llama-4-Maverick | 0.600 [0.541, 0.660] | 13.3% | 81.1% | 1.254 |
-| 4 | MiniMax-M2.5 | 0.593 [0.500, 0.682] | 53.3% | 60.0% | 0.847 |
-| 5 | Llama-4-Scout | 0.589 [0.525, 0.649] | 8.3% | 81.0% | 1.230 |
-| 6 | Qwen-2.5-72B | 0.559 [0.488, 0.629] | 10.0% | 60.7% | 1.223 |
-| 7 | Gemini-2.0-Flash-Lite | 0.432 [0.352, 0.507] | 8.3% | 40.3% | 1.557 |
-| 8 | Claude-3-Haiku | 0.398 [0.341, 0.457] | 5.0% | 36.3% | 2.129 |
-| 9 | GPT-4o-mini | 0.391 [0.310, 0.467] | 5.0% | 38.2% | 1.620 |
-| 10 | **GPT-4o** | **0.315** [0.239, 0.394] | 6.7% | 35.3% | 1.917 |
+| Rank | Model | MEI | SR | HRR | Glass's δ | n |
+|------|-------|-----|-----|-----|-----------|---|
+| — | Random Walk ★ | 0.900 | 100% | 100% | — | — |
+| 1 | **Claude-Sonnet-4.5** † | **0.783** | 36.7% | 89.2% | 0.586 | 60 |
+| 2 | Claude-3.7-Sonnet | 0.774 | 56.7% | 87.5% | 0.554 | 60 |
+| 3 | GLM-4.7 | 0.615 | 8.3% | 71.8% | 1.102 | 60 |
+| 4 | Llama-4-Maverick | 0.600 | 13.3% | 81.1% | 1.254 | 60 |
+| 5 | MiniMax-M2.5 | 0.593 | 53.3% | 60.0% | 0.847 | 60 |
+| 6 | Llama-4-Scout | 0.589 | 8.3% | 81.0% | 1.230 | 60 |
+| 7 | Qwen-2.5-72B | 0.559 | 10.0% | 60.7% | 1.223 | 60 |
+| 8 | Claude-Sonnet-4.6 † | 0.545 | **60.0%** | 58.3% | 0.825 | 60 |
+| 9 | Gemini-2.0-Flash-Lite | 0.432 | 8.3% | 40.3% | 1.557 | 60 |
+| 10 | Claude-3-Haiku | 0.398 | 5.0% | 36.3% | 2.129 | 60 |
+| 11 | GPT-4o-mini | 0.391 | 5.0% | 38.2% | 1.620 | 60 |
+| 12 | Claude-Haiku-4.5 † | 0.376 | 5.0% | 38.3% | 1.965 | 60 |
+| 13 | GPT-4o | 0.315 | 6.7% | 35.3% | 1.917 | 60 |
 
-★ Deterministic baseline. All LLMs vs Random Walk: one-sample Wilcoxon signed-rank test, Bonferroni k=10, all p<0.001.
+★ Deterministic baseline. † Claude 4.x family (same protocol). All LLMs vs Random Walk: p<0.001 (Wilcoxon + Bonferroni).
+
+**SR ≠ MEI**: Claude-Sonnet-4.6 has the highest SR (60%) but ranks 8th on MEI. Solving more mazes does not imply better metacognitive error recovery.
 
 ## Dataset Structure
 

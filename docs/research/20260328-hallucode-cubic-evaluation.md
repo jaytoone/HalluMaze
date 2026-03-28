@@ -154,3 +154,6 @@ wrong_signature 트랩:
 ---
 
 *생성: omc-live iter 1 | research-deep-analyst | 2026-03-28*
+
+## Related
+- [[projects/Miro/research/20260327-hallumaze-extension-hallucode|20260327-hallumaze-extension-hallucode]]

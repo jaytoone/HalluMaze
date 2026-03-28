@@ -196,17 +196,17 @@ footer a{color:var(--ac1);text-decoration:none}
     A Maze Navigation Benchmark for<br>LLM Metacognitive Error Recovery
   </h1>
   <p class="hero-sub">
-    All 8 tested LLMs score significantly below a random walk on metacognitive recovery.
-    Task completion does not imply metacognitive competence.
+    All 13 tested LLMs score significantly below a random walk on metacognitive recovery.
+    Newer models are not better: Claude-Sonnet-4.5 (MEI=0.783) surpasses 4.6 (0.545). SR and MEI are orthogonal.
   </p>
   <div class="hero-badges">
     <span class="badge badge-venue">NeurIPS 2026 Target</span>
     <span class="badge badge-stat">n=60 per model</span>
-    <span class="badge badge-stat">8 LLMs + 2 baselines</span>
+    <span class="badge badge-stat">13 LLMs + 2 baselines</span>
     <span class="badge badge-stat">p&lt;0.001 all models</span>
   </div>
   <div class="hero-stats">
-    <div class="hero-stat"><div class="val">8</div><div class="lbl">LLMs Tested</div></div>
+    <div class="hero-stat"><div class="val">13</div><div class="lbl">LLMs Tested</div></div>
     <div class="hero-stat"><div class="val">60</div><div class="lbl">Seeds / Model</div></div>
     <div class="hero-stat"><div class="val">0.585</div><div class="lbl">Max MEI Gap</div></div>
     <div class="hero-stat"><div class="val">2.1</div><div class="lbl">Max Glass's delta</div></div>
@@ -228,7 +228,7 @@ footer a{color:var(--ac1);text-decoration:none}
   <h2 class="section-title">Paper Summary</h2>
   <div class="abstract-box">
     <p class="abstract-text">
-      We introduce <strong>HalluMaze</strong>, a benchmark that measures large language model (LLM) metacognitive error recovery through maze navigation. Unlike existing hallucination benchmarks that evaluate final-answer accuracy, HalluMaze captures <strong>real-time error detection and corrective action</strong> by exposing models to navigable environments containing "mirage" walls -- passages that appear blocked but are traversable. We evaluate <strong>10 LLMs</strong> (Claude-3.7-Sonnet, GLM-4.7, Llama-4-Maverick, MiniMax-M2.5, Llama-4-Scout, Qwen-2.5-72B, Gemini-2.0-Flash-Lite, Claude-3-Haiku, GPT-4o-mini, GPT-4o) across n=60 seeds per model on 5x5 and 7x7 mazes. We introduce the <strong>Metacognitive Escape Index (MEI)</strong>, grounded in Nelson &amp; Narens' (1990) metamemory framework, which decomposes metacognitive performance into recovery rate (HRR), efficiency (ETR), awareness (AW), and error rate (HR). All 10 tested LLMs score significantly below a random walk baseline (<strong>p&lt;0.001 Bonferroni-corrected, d=0.6&ndash;2.1 for all</strong>), revealing a systematic deficit in real-time metacognitive recovery.
+      We introduce <strong>HalluMaze</strong>, a benchmark that measures large language model (LLM) metacognitive error recovery through maze navigation. Unlike existing hallucination benchmarks that evaluate final-answer accuracy, HalluMaze captures <strong>real-time error detection and corrective action</strong> by exposing models to navigable environments containing "mirage" walls -- passages that appear blocked but are traversable. We evaluate <strong>13 LLMs</strong> (Claude-Sonnet-4.5, Claude-3.7-Sonnet, GLM-4.7, Llama-4-Maverick, MiniMax-M2.5, Llama-4-Scout, Qwen-2.5-72B, Claude-Sonnet-4.6, Gemini-2.0-Flash-Lite, Claude-3-Haiku, GPT-4o-mini, Claude-Haiku-4.5, GPT-4o) across n=60 seeds per model on 5x5 and 7x7 mazes. We introduce the <strong>Metacognitive Escape Index (MEI)</strong>, grounded in Nelson &amp; Narens' (1990) metamemory framework, which decomposes metacognitive performance into recovery rate (HRR), efficiency (ETR), awareness (AW), and error rate (HR). All 13 tested LLMs score significantly below a random walk baseline (<strong>p&lt;0.001 Bonferroni-corrected, d=0.6&ndash;2.1 for all</strong>), revealing a systematic deficit in real-time metacognitive recovery. Critically, SR and MEI are orthogonal: Claude-Sonnet-4.6 has the highest SR (60%) but ranks #8 on MEI. Newer models are not better: Sonnet-4.5 (MEI=0.783) surpasses Sonnet-4.6 (0.545).
     </p>
     <div class="keywords">
       <span class="kw">hallucination</span>
@@ -245,7 +245,7 @@ footer a{color:var(--ac1);text-decoration:none}
 <section id="leaderboard">
   <div class="section-label">Results</div>
   <h2 class="section-title">Model Leaderboard</h2>
-  <p class="section-subtitle">Ranked by MEI (Metacognitive Escape Index). All LLMs tested with n=60 seeds across 5x5 and 7x7 mazes. Higher MEI = better metacognitive recovery.</p>
+  <p class="section-subtitle">Ranked by MEI (Metacognitive Escape Index). All LLMs tested with n=60 seeds across 5x5 and 7x7 mazes. Higher MEI = better metacognitive recovery. SR (Solve Rate) and MEI are orthogonal — a model can win more mazes while recovering from errors less reliably.</p>
 
   <div style="overflow-x:auto">
   <table class="lb-table">
@@ -280,19 +280,29 @@ footer a{color:var(--ac1);text-decoration:none}
         <td class="progress-cell"><span class="progress-label">100.0%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="100"></div></div></td>
         <td style="font-family:var(--mono);color:var(--tx3)">--</td>
       </tr>
-      <!-- #1 Claude-3.7-Sonnet NEW -->
+      <!-- #1 Claude-Sonnet-4.5 NEW -->
       <tr>
         <td><span class="rank-badge rank-1">1</span></td>
-        <td><span class="model-name">Claude-3.7-Sonnet</span><span class="model-provider">Anthropic (OpenRouter)</span><span class="model-note note-new">NEW</span></td>
+        <td><span class="model-name">Claude-Sonnet-4.5</span><span class="model-provider">Anthropic (OpenRouter)</span><span class="model-note note-new">NEW</span></td>
+        <td><span class="mei-val">0.783</span><span class="mei-ci">[0.732, 0.829]</span></td>
+        <td><span class="grade grade-b">B</span></td>
+        <td class="progress-cell"><span class="progress-label">36.7%</span><div class="progress-bar"><div class="progress-fill fill-sr" style="width:0%" data-target="36.7"></div></div></td>
+        <td class="progress-cell"><span class="progress-label">89.2%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="89.2"></div></div></td>
+        <td style="font-family:var(--mono)">60</td>
+      </tr>
+      <!-- #2 Claude-3.7-Sonnet -->
+      <tr>
+        <td><span class="rank-badge rank-2">2</span></td>
+        <td><span class="model-name">Claude-3.7-Sonnet</span><span class="model-provider">Anthropic (OpenRouter)</span></td>
         <td><span class="mei-val">0.774</span><span class="mei-ci">[0.715, 0.830]</span></td>
         <td><span class="grade grade-b">B</span></td>
         <td class="progress-cell"><span class="progress-label">56.7%</span><div class="progress-bar"><div class="progress-fill fill-sr" style="width:0%" data-target="56.7"></div></div></td>
         <td class="progress-cell"><span class="progress-label">87.5%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="87.5"></div></div></td>
         <td style="font-family:var(--mono)">60</td>
       </tr>
-      <!-- #2 GLM -->
+      <!-- #3 GLM -->
       <tr>
-        <td><span class="rank-badge rank-2">2</span></td>
+        <td><span class="rank-badge rank-3">3</span></td>
         <td><span class="model-name">GLM-4.7</span><span class="model-provider">Zhipu AI</span></td>
         <td><span class="mei-val">0.615</span><span class="mei-ci">[0.551, 0.681]</span></td>
         <td><span class="grade grade-b">B</span></td>
@@ -300,9 +310,9 @@ footer a{color:var(--ac1);text-decoration:none}
         <td class="progress-cell"><span class="progress-label">71.8%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="71.8"></div></div></td>
         <td style="font-family:var(--mono)">60</td>
       </tr>
-      <!-- #3 Maverick -->
+      <!-- #4 Maverick -->
       <tr>
-        <td><span class="rank-badge rank-3">3</span></td>
+        <td><span class="rank-badge rank-n">4</span></td>
         <td><span class="model-name">Llama-4-Maverick</span><span class="model-provider">Meta (OpenRouter)</span></td>
         <td><span class="mei-val">0.600</span><span class="mei-ci">[0.541, 0.660]</span></td>
         <td><span class="grade grade-b">B</span></td>
@@ -310,9 +320,9 @@ footer a{color:var(--ac1);text-decoration:none}
         <td class="progress-cell"><span class="progress-label">81.1%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="81.1"></div></div></td>
         <td style="font-family:var(--mono)">60</td>
       </tr>
-      <!-- #4 MiniMax -->
+      <!-- #5 MiniMax -->
       <tr>
-        <td><span class="rank-badge rank-n">4</span></td>
+        <td><span class="rank-badge rank-n">5</span></td>
         <td><span class="model-name">MiniMax-M2.5</span><span class="model-provider">MiniMax</span></td>
         <td><span class="mei-val">0.593</span><span class="mei-ci">[0.500, 0.682]</span></td>
         <td><span class="grade grade-b">B</span></td>
@@ -320,9 +330,9 @@ footer a{color:var(--ac1);text-decoration:none}
         <td class="progress-cell"><span class="progress-label">60.0%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="60.0"></div></div></td>
         <td style="font-family:var(--mono)">60</td>
       </tr>
-      <!-- #5 Scout -->
+      <!-- #6 Scout -->
       <tr>
-        <td><span class="rank-badge rank-n">5</span></td>
+        <td><span class="rank-badge rank-n">6</span></td>
         <td><span class="model-name">Llama-4-Scout</span><span class="model-provider">Meta (OpenRouter)</span></td>
         <td><span class="mei-val">0.589</span><span class="mei-ci">[0.525, 0.649]</span></td>
         <td><span class="grade grade-b">B</span></td>
@@ -330,9 +340,9 @@ footer a{color:var(--ac1);text-decoration:none}
         <td class="progress-cell"><span class="progress-label">81.0%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="81.0"></div></div></td>
         <td style="font-family:var(--mono)">60</td>
       </tr>
-      <!-- #6 Qwen -->
+      <!-- #7 Qwen -->
       <tr>
-        <td><span class="rank-badge rank-n">6</span></td>
+        <td><span class="rank-badge rank-n">7</span></td>
         <td><span class="model-name">Qwen-2.5-72B</span><span class="model-provider">Alibaba (OpenRouter)</span></td>
         <td><span class="mei-val">0.559</span><span class="mei-ci">[0.488, 0.629]</span></td>
         <td><span class="grade grade-b">B</span></td>
@@ -340,9 +350,19 @@ footer a{color:var(--ac1);text-decoration:none}
         <td class="progress-cell"><span class="progress-label">60.7%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="60.7"></div></div></td>
         <td style="font-family:var(--mono)">60</td>
       </tr>
-      <!-- #7 Gemini -->
+      <!-- #8 Claude-Sonnet-4.6 NEW -->
       <tr>
-        <td><span class="rank-badge rank-n">7</span></td>
+        <td><span class="rank-badge rank-n">8</span></td>
+        <td><span class="model-name">Claude-Sonnet-4.6</span><span class="model-provider">Anthropic (OpenRouter)</span><span class="model-note note-new">NEW</span></td>
+        <td><span class="mei-val">0.545</span><span class="mei-ci">[0.440, 0.649]</span></td>
+        <td><span class="grade grade-b">B</span></td>
+        <td class="progress-cell"><span class="progress-label">60.0%</span><div class="progress-bar"><div class="progress-fill fill-sr" style="width:0%" data-target="60.0"></div></div></td>
+        <td class="progress-cell"><span class="progress-label">58.3%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="58.3"></div></div></td>
+        <td style="font-family:var(--mono)">60</td>
+      </tr>
+      <!-- #9 Gemini -->
+      <tr>
+        <td><span class="rank-badge rank-n">9</span></td>
         <td><span class="model-name">Gemini-2.0-Flash-Lite</span><span class="model-provider">Google (OpenRouter)</span></td>
         <td><span class="mei-val">0.432</span><span class="mei-ci">[0.352, 0.507]</span></td>
         <td><span class="grade grade-d">D</span></td>
@@ -350,9 +370,9 @@ footer a{color:var(--ac1);text-decoration:none}
         <td class="progress-cell"><span class="progress-label">40.3%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="40.3"></div></div></td>
         <td style="font-family:var(--mono)">60</td>
       </tr>
-      <!-- #8 Claude Haiku -->
+      <!-- #10 Claude-3-Haiku -->
       <tr>
-        <td><span class="rank-badge rank-n">8</span></td>
+        <td><span class="rank-badge rank-n">10</span></td>
         <td><span class="model-name">Claude-3-Haiku</span><span class="model-provider">Anthropic (OpenRouter)</span></td>
         <td><span class="mei-val">0.398</span><span class="mei-ci">[0.341, 0.457]</span></td>
         <td><span class="grade grade-d">D</span></td>
@@ -360,9 +380,9 @@ footer a{color:var(--ac1);text-decoration:none}
         <td class="progress-cell"><span class="progress-label">36.3%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="36.3"></div></div></td>
         <td style="font-family:var(--mono)">60</td>
       </tr>
-      <!-- #9 GPT-4o-mini -->
+      <!-- #11 GPT-4o-mini -->
       <tr>
-        <td><span class="rank-badge rank-n">9</span></td>
+        <td><span class="rank-badge rank-n">11</span></td>
         <td><span class="model-name">GPT-4o-mini</span><span class="model-provider">OpenAI (OpenRouter)</span></td>
         <td><span class="mei-val">0.391</span><span class="mei-ci">[0.310, 0.467]</span></td>
         <td><span class="grade grade-d">D</span></td>
@@ -370,10 +390,20 @@ footer a{color:var(--ac1);text-decoration:none}
         <td class="progress-cell"><span class="progress-label">38.2%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="38.2"></div></div></td>
         <td style="font-family:var(--mono)">60</td>
       </tr>
-      <!-- #10 GPT-4o NEW -->
+      <!-- #12 Claude-Haiku-4.5 NEW -->
       <tr>
-        <td><span class="rank-badge rank-n">10</span></td>
-        <td><span class="model-name">GPT-4o</span><span class="model-provider">OpenAI (OpenRouter)</span><span class="model-note note-new">NEW</span></td>
+        <td><span class="rank-badge rank-n">12</span></td>
+        <td><span class="model-name">Claude-Haiku-4.5</span><span class="model-provider">Anthropic (OpenRouter)</span><span class="model-note note-new">NEW</span></td>
+        <td><span class="mei-val">0.376</span><span class="mei-ci">[0.312, 0.446]</span></td>
+        <td><span class="grade grade-d">D</span></td>
+        <td class="progress-cell"><span class="progress-label">5.0%</span><div class="progress-bar"><div class="progress-fill fill-sr" style="width:0%" data-target="5.0"></div></div></td>
+        <td class="progress-cell"><span class="progress-label">38.3%</span><div class="progress-bar"><div class="progress-fill fill-hrr" style="width:0%" data-target="38.3"></div></div></td>
+        <td style="font-family:var(--mono)">60</td>
+      </tr>
+      <!-- #13 GPT-4o -->
+      <tr>
+        <td><span class="rank-badge rank-n">13</span></td>
+        <td><span class="model-name">GPT-4o</span><span class="model-provider">OpenAI (OpenRouter)</span></td>
         <td><span class="mei-val">0.315</span><span class="mei-ci">[0.239, 0.394]</span></td>
         <td><span class="grade grade-f">F</span></td>
         <td class="progress-cell"><span class="progress-label">6.7%</span><div class="progress-bar"><div class="progress-fill fill-sr" style="width:0%" data-target="6.7"></div></div></td>
@@ -384,8 +414,9 @@ footer a{color:var(--ac1);text-decoration:none}
   </table>
   </div>
   <p style="font-size:11px;color:var(--tx3);margin-top:12px;font-family:var(--mono)">
-    v1.4: +Claude-3.7-Sonnet (#1, MEI=0.774) +GPT-4o (#10, MEI=0.315). 10 models total, n=600 trials.
-    Grade scale: A (0.8+) / B (0.55+) / C (0.45+) / D (0.35+) / F (&lt;0.35).
+    v1.21: +Claude-Sonnet-4.5 (#1, MEI=0.783) +Claude-Sonnet-4.6 (#8, MEI=0.545, SR=60%) +Claude-Haiku-4.5 (#12). 13 models total, n=780 trials.
+    SR (Solve Rate) and MEI are orthogonal: Sonnet-4.6 has the highest SR (60%) but ranks #8 on MEI. Newer ≠ better metacognition.
+    Grade scale: A (0.8+) / B (0.55+) / C (0.45+) / D (0.35+) / F (&lt;0.35). † Claude 4.x family.
   </p>
 </section>
 
@@ -441,18 +472,18 @@ footer a{color:var(--ac1);text-decoration:none}
   <div class="card-grid">
     <div class="card">
       <div class="card-tag">F1 -- Universal Deficit</div>
-      <div class="card-title">All 10 LLMs Below Random Walk</div>
-      <div class="card-body">Every tested model scores significantly below a random walk baseline on MEI (p&lt;0.001, Glass's &#948;=0.6&ndash;2.1). A random agent that simply tries directions until one works outperforms all LLMs on metacognitive recovery, including frontier models.</div>
+      <div class="card-title">All 13 LLMs Below Random Walk</div>
+      <div class="card-body">Every tested model scores significantly below a random walk baseline on MEI (p&lt;0.001, Glass's &#948;=0.6&ndash;2.1). A random agent that simply tries directions until one works outperforms all 13 LLMs on metacognitive recovery, including the latest frontier models.</div>
     </div>
     <div class="card">
       <div class="card-tag">F2 -- SR-MEI Dissociation</div>
-      <div class="card-title">Task Success Does Not Equal Recovery</div>
-      <div class="card-body">MiniMax-M2.5 achieves the highest SR (53.3%) but ranks only #3 on MEI. GLM-4.7 ranks #1 on MEI despite the lowest SR (8.3%). Solving the maze and recovering from errors are orthogonal capabilities.</div>
+      <div class="card-title">Solve Rate Does Not Equal Recovery</div>
+      <div class="card-body">Claude-Sonnet-4.6 achieves the highest SR (60%) but ranks #8 on MEI (0.545). Claude-Sonnet-4.5 leads MEI (#1, 0.783) despite lower SR (36.7%). Solving more mazes does not imply better metacognitive error recovery.</div>
     </div>
     <div class="card">
-      <div class="card-tag">F3 -- Frontier Inversion</div>
-      <div class="card-title">Frontier Cost Does Not Predict Metacognition</div>
-      <div class="card-body">Claude-3.7-Sonnet leads at MEI=0.774 while GPT-4o ranks last at MEI=0.315 -- below GPT-4o-mini (0.391). HRR shows the same pattern: Sonnet HRR=87.5% vs GPT-4o HRR=35.3%. API cost does not predict metacognitive recovery.</div>
+      <div class="card-tag">F3 -- Newer ≠ Better</div>
+      <div class="card-title">Newer Models Can Regress on Metacognition</div>
+      <div class="card-body">Within the Claude 4.x family: Sonnet-4.5 (MEI=0.783) surpasses Sonnet-4.6 (MEI=0.545) despite being an older release. Haiku-4.5 (MEI=0.376) is comparable to Claude-3-Haiku (0.398). Version number is not a predictor of metacognitive quality.</div>
     </div>
     <div class="card">
       <div class="card-tag">F4 -- Recovery Over Accuracy</div>
@@ -637,19 +668,23 @@ footer a{color:var(--ac1);text-decoration:none}
       <tr><th>Model</th><th>n</th><th>Glass's delta</th><th>p (Bonferroni)</th><th>Reject H0</th></tr>
     </thead>
     <tbody>
+      <tr><td><strong>Claude-Sonnet-4.5 †</strong></td><td>60</td><td style="font-family:var(--mono)">0.586</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
       <tr><td><strong>Claude-3.7-Sonnet</strong></td><td>60</td><td style="font-family:var(--mono)">0.554</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
       <tr><td>GLM-4.7</td><td>60</td><td style="font-family:var(--mono)">1.102</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
       <tr><td>Llama-4-Maverick</td><td>60</td><td style="font-family:var(--mono)">1.254</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
       <tr><td>MiniMax-M2.5</td><td>60</td><td style="font-family:var(--mono)">0.847</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
       <tr><td>Llama-4-Scout</td><td>60</td><td style="font-family:var(--mono)">1.230</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
       <tr><td>Qwen-2.5-72B</td><td>60</td><td style="font-family:var(--mono)">1.223</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
+      <tr><td>Claude-Sonnet-4.6 †</td><td>60</td><td style="font-family:var(--mono)">0.825</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
       <tr><td>Gemini-2.0-Flash-Lite</td><td>60</td><td style="font-family:var(--mono)">1.557</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
       <tr><td>Claude-3-Haiku</td><td>60</td><td style="font-family:var(--mono)">2.129</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
       <tr><td>GPT-4o-mini</td><td>60</td><td style="font-family:var(--mono)">1.620</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
+      <tr><td>Claude-Haiku-4.5 †</td><td>60</td><td style="font-family:var(--mono)">1.965</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
       <tr><td><strong>GPT-4o</strong></td><td>60</td><td style="font-family:var(--mono)">1.917</td><td style="font-family:var(--mono)">&lt;0.001</td><td class="sig">Yes</td></tr>
     </tbody>
   </table>
   </div>
+  <p style="font-size:11px;color:var(--tx3);margin-top:8px;font-family:var(--mono)">† Claude 4.x family (same protocol, n=60 each)</p>
 
   <div class="expert-only" style="margin-top:24px">
     <div class="card">

@@ -1,7 +1,7 @@
 {
   "method": "marl_single_layer",
   "model": "glm-4.7",
-  "timestamp": "2026-03-26T00:35:27.893552",
+  "timestamp": "2026-03-27T01:20:53.484917",
   "trials": [
     {
       "seed": 1001,
@@ -298,8 +298,6 @@
       "v2": 0.803,
       "eff_v2": 0.8017
     },
-    "delta_vs_eff_v2": 0.0271,
-    "baseline_timing_note": "Not measured in original n=60 runs; estimated ~67-73s/call from SL (117.1s / 1.60 calls = 73.2s/call) and Eff_v2 (416.8s / 6.2 calls = 67.2s/call)",
-    "estimated_baseline_elapsed_sec": 70.0
+    "delta_vs_eff_v2": 0.0271
   }
 }

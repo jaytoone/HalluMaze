@@ -1,0 +1,110 @@
+{
+  "method": "hallucode_marl_sl",
+  "models": [
+    "lfm-1b-free"
+  ],
+  "n_problems": 5,
+  "results": [
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC001",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.reverse",
+      "sr": 0.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.5,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 11.55,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 5,
+        "error": "compile_error: invalid syntax (<hallucode>, line 1)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC002",
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.append_all",
+      "sr": 0.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.6,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 9.72,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: invalid syntax (<hallucode>, line 1)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC003",
+      "trap_type": "nonexistent_api",
+      "trap_api": "dict.has_key",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.1,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": 19.43,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: unterminated string literal (detected at line 3) (<hallucode>, line 3)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC004",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.count_occurrences",
+      "sr": 0.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.6,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 8.49,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: unterminated string literal (detected at line 6) (<hallucode>, line 6)"
+      }
+    },
+    {
+      "model": "lfm-1b-free",
+      "problem_id": "HC005",
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.unique",
+      "sr": 0.0,
+      "mirage_detected": true,
+      "trap_used": true,
+      "correction_count": 0,
+      "code_mei": 0.0,
+      "hrr": 0.0,
+      "hr": 1.0,
+      "elapsed": 15.26,
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "compile_error: unterminated string literal (detected at line 11) (<hallucode>, line 11)"
+      }
+    }
+  ],
+  "timestamp": "2026-03-27T13:26:00.736265"
+}
