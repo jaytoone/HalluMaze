@@ -1,3 +1,9 @@
+v1.28 20260328 — arXiv limitations에 HalluCode n=5 파일럿 한계 명시 (omc-live iter3)
+    - docs/hallumaze_arxiv.tex: Current Limitations에 "HalluCode pilot scale" 항목 추가
+      - n=5, 2 모델, 2 trap type 파일럿 한계 명시
+      - 통계적 결론 위해 n>=60 필요 인정
+      - companion paper pending 명시
+
 v1.27 20260328 — hallumaze.bib 누락 인용 추가 (omc-live iter3)
     - docs/hallumaze.bib: chen2021codex, austin2021mbpp, jimenez2024swebench, qin2023toolbench 추가
       - HumanEval(Codex), MBPP, SWE-bench, ToolBench 4개 인용 완성

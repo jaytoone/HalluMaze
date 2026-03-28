@@ -307,6 +307,7 @@ This is consistent with \citet{huang2024selfcorrect}, who find that LLMs cannot 
   \item \textbf{DFS maze bias}: Recursive DFS generates long corridors; Kruskal/Wilson's alternatives are planned for structural diversity.
   \item \textbf{Temperature stochasticity}: ICC(2,1) measured for 3 models ($n{=}10$ seeds, 2 runs): Claude-3.7-Sonnet ICC$=$0.664 (moderate), Llama-4-Maverick$=$0.330 (poor), GLM-4.7$=$0.156 (poor). Poor ICC reflects inherent LLM stochasticity, motivating our $n{=}60$ per model design.
   \item \textbf{Size scaling}: 9$\times$9 condition completed for GLM-4.7 ($n{=}30$): MEI$=$0.637 (5$\times$5) $\to$ 0.588 (7$\times$7) $\to$ 0.487 (9$\times$9); HRR monotonically declines; SR$=$0\% at 9$\times$9. Larger mazes amplify metacognitive deficit.
+  \item \textbf{HalluCode pilot scale}: The HalluCode results reported in this paper are based on $n{=}5$ problems per model (2 free-tier models, 2 of 3 trap types). While sufficient to demonstrate the SR$\perp$HRR dissociation qualitatively and validate the H5 small-model hypothesis directionally, full statistical conclusions require $n{\geq}60$ per model with balanced trap-type coverage (nonexistent\_api, wrong\_signature, deprecated\_method). These are reported as preliminary findings pending a companion paper.
 \end{itemize}
 
 \subsection{Multi-Agent Reasoning Layers \textnormal{\small(Preliminary, $n{=}10$, single model)}}
