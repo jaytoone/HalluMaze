@@ -1,3 +1,8 @@
+v1.27 20260328 — hallumaze.bib 누락 인용 추가 (omc-live iter3)
+    - docs/hallumaze.bib: chen2021codex, austin2021mbpp, jimenez2024swebench, qin2023toolbench 추가
+      - HumanEval(Codex), MBPP, SWE-bench, ToolBench 4개 인용 완성
+      - hallumaze_arxiv.tex related work HalluCode 단락 인용 완전성 확보
+
 v1.26 20260328 — HalluCode MRC Cubic 평론 + arXiv 통합 (omc-live)
     - docs/research/20260328-hallucode-cubic-evaluation.md: MRC Cubic 자격 평론
       - 4속성 판정: 원자성 PARTIAL, 직교성 GO, 조합성 GO, 견고성 PARTIAL
