@@ -3,10 +3,11 @@
 | 파일 | 설명 | 날짜 |
 |------|------|------|
 | experiment_results/hallucode_full.json | HalluCode Full Experiment: 2모델(GLM n=19, LFM n=20)×3 trap type. GLM CodeMEI=0.737/SR=100%, LFM CodeMEI=0.215/SR=5%. SR⊥CodeMEI 코딩 도메인 확증 | 2026-03-28 |
-| experiment_results/hallucode_baseline_lfm.json | HalluCode Baseline Ablation: LFM-1.2B no-MARL (n=19). SR=68.4%/HRR=0% vs MARL-SL SR=5%/HRR=25%. H6 모델용량×미들웨어 상호작용 확인 | 2026-03-29 |
+| experiment_results/hallucode_baseline_glm.json | HalluCode Baseline GLM-4.5-Air (n=19 merged). SR=78.9%/HRR=68.4%/MEI=0.579 vs MARL-SL SR=100%/HRR=84.2%/MEI=0.737. H6 교차검증: 대형모델 MARL-SL +ΔCodeMEI=+0.158 | 2026-03-29 |
+| experiment_results/hallucode_baseline_lfm.json | HalluCode Baseline Ablation: LFM-1.2B no-MARL (n=19). SR=68.4%/HRR=0% vs MARL-SL SR=5%/HRR=25%. H6 소형모델 MARL-SL −ΔCodeMEI=−0.059 | 2026-03-29 |
 | scripts/run_hallucode_baseline.py | HalluCode Baseline 단순 프롬프트 스크립트 (no MARL-SL, ablation용) | 2026-03-29 |
 | scripts/build_hallucode_full.py | HalluCode Full Experiment 결과 병합+통계 산출 스크립트 | 2026-03-28 |
-| docs/research/20260328-hallucode-cubic-evaluation.md | HalluCode MRC Cubic 자격 평론: 원자성/직교성/조합성/견고성 판정, 기존 벤치마크 갭, 3-Cubic 스택 설계, NeurIPS 로드맵, C6 생태 타당성 3-레이어 입증 (실행 동등성/모델 크기 일관성/역방향 보수성) | 2026-03-28 |
+| docs/research/20260328-hallucode-cubic-evaluation.md | HalluCode MRC Cubic 자격 평론: 원자성/직교성/조합성/견고성 판정, C6 생태 타당성 3-레이어, C7 H6 교차검증 완료 (LFM+GLM ablation, 용량 임계점 1.2B~7B) | 2026-03-29 |
 | scripts/run_hallucode_mvp.py | HalluCode MVP 파일럿: False API Hint 20문제 + MARL-SL 코딩 프롬프트 + CodeMEI 검증 파이프라인 | 2026-03-27 |
 | docs/research/20260327-hallumaze-extension-hallucode.md | HalluCode/HalluTool 확장 연구: 선행 연구 갭 분석, MARL-SL 코딩 매핑, CodeMEI 설계, MVP 실험 설계안 | 2026-03-27 |
 | docs/misc/ontolo-biz-unconscious-purchase-20260327.md | ontolo-agent biz-unconscious-purchase — HF 포스트 CTA 최적화 분석 | 2026-03-27 |
@@ -36,10 +37,10 @@
 
 ## Related
 - [[projects/Miro/research/20260323-hallumaze-paper-draft|20260323-hallumaze-paper-draft]]
-- [[projects/Miro/research/20260327-hallumaze-extension-hallucode|20260327-hallumaze-extension-hallucode]]
 - [[projects/Miro/research/20260328-hallucode-cubic-evaluation|20260328-hallucode-cubic-evaluation]]
+- [[projects/Miro/research/20260327-hallumaze-extension-hallucode|20260327-hallumaze-extension-hallucode]]
+- [[projects/Miro/research/20260325-marl-efficiency-research|20260325-marl-efficiency-research]]
 - [[projects/Miro/research/20260323-hallumaze-extension-todos|20260323-hallumaze-extension-todos]]
 - [[projects/Miro/research/20260326-marl-sl-multi-model-validation|20260326-marl-sl-multi-model-validation]]
-- [[projects/Miro/research/20260325-marl-efficiency-research|20260325-marl-efficiency-research]]
 - [[projects/Miro/misc/ontolo-biz-unconscious-purchase-20260327|ontolo-biz-unconscious-purchase-20260327]]
 - [[projects/Miro/research/20260324-marl5stage-fix-solutions|20260324-marl5stage-fix-solutions]]

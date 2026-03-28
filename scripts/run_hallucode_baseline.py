@@ -10,8 +10,24 @@ Usage:
     python3 scripts/run_hallucode_baseline.py --models lfm-1b-free --n 19
 """
 from __future__ import annotations
-import json, os, re, sys, time, signal
+import json, os, re, sys, time, signal, socket
 from datetime import datetime
+
+# WSL2 DNS monkey-patch (nameserver 172.18.16.1 broken)
+try:
+    import dns.resolver as _dns_r
+    _orig_ga = socket.getaddrinfo
+    def _custom_ga(host, port, *a, **k):
+        if host in ('openrouter.ai',):
+            try:
+                r = _dns_r.Resolver(); r.nameservers = ['8.8.8.8']
+                ip = r.resolve(host, 'A')[0].to_text()
+                return _orig_ga(ip, port, *a, **k)
+            except Exception: pass
+        return _orig_ga(host, port, *a, **k)
+    socket.getaddrinfo = _custom_ga
+except ImportError:
+    pass
 
 def _load_env_file(path):
     try:
@@ -53,7 +69,9 @@ def call_openrouter(prompt, model_id, system="", max_tokens=4000):
     resp = requests.post("https://openrouter.ai/api/v1/chat/completions",
                          headers=headers, json=payload, timeout=300)
     resp.raise_for_status()
-    return resp.json()["choices"][0]["message"]["content"]
+    msg = resp.json()["choices"][0]["message"]
+    # some thinking models return content=None when reasoning consumes tokens
+    return msg.get("content") or msg.get("reasoning", "") or ""
 
 def call_timed_or(prompt, model_key, system="", max_tokens=4000):
     t0 = time.time()
@@ -222,6 +240,11 @@ if __name__ == "__main__":
         for i, prob in enumerate(problems):
             result = run_problem(model_key, prob)
             model_results.append(result); all_results.append(result)
+            # incremental save
+            with open(out_path, "w", encoding="utf-8") as f:
+                json.dump({"experiment":"HalluCode-Baseline (no MARL-SL)","prompt_type":"baseline",
+                           "timestamp":datetime.now().isoformat(),"n_results":len(all_results),
+                           "results":all_results}, f, ensure_ascii=False, indent=2)
             if i < n_problems-1: time.sleep(args.delay)
         if model_results:
             avg_mei = sum(r["code_mei"] for r in model_results)/len(model_results)

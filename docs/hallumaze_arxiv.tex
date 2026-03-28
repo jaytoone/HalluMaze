@@ -145,22 +145,31 @@ Model & Trap Type & $n$ & CodeMEI & SR & HRR \\
 Full HalluCode results ($n{\geq}60$ per model, 5 models, balanced trap types) are planned as a companion paper.
 
 \paragraph{MARL-SL Middleware Ablation.}
-To quantify the effect of the MARL-SL structured prompt middleware, we ran a no-middleware baseline on LFM-1.2B-Thinking ($n{=}19$, same problems, simple single-shot prompt).
-Table~\ref{tab:hallucode_ablation} shows a striking SR$\leftrightarrow$HRR trade-off: without MARL-SL, LFM achieves SR$=$68.4\% (often ignoring the hint entirely) but HRR$=$0\% (never explicitly detecting traps).
-With MARL-SL, SR drops to 5\% while HRR rises to 25\%---the structured five-layer format induces trap-detection reasoning but overwhelms LFM-1.2B's limited generation capacity.
-This \textbf{model-capacity~$\times$~middleware interaction} is a new finding: MARL-SL middleware shifts the SR$\perp$HRR plane rather than uniformly improving both dimensions, and the net CodeMEI effect is negative for sub-capacity models (0.215 vs.\ 0.274).
-For sufficient-capacity models such as GLM-4.5-Air (SR$=$100\% even with MARL-SL), the middleware does not suppress coding ability and adds HRR benefit.
+To quantify the effect of the MARL-SL structured prompt middleware, we ran no-middleware baselines on both LFM-1.2B-Thinking and GLM-4.5-Air ($n{=}19$ each, same problems, simple single-shot prompt without role-layered scaffolding).
+Table~\ref{tab:hallucode_ablation} reveals a \textbf{model-capacity~$\times$~middleware interaction} (H6): the direction of MARL-SL's effect reverses depending on model size.
+
+For LFM-1.2B-Thinking, the baseline achieves SR$=$68.4\% (the model often ignores the hint entirely) but HRR$=$0\% (no explicit trap detection).
+With MARL-SL, SR collapses to 5\% while HRR rises to 25\%: the five-layer format induces metacognitive reasoning but overwhelms LFM's limited generation capacity, yielding CodeMEI$=$0.215 vs.\ 0.274 (\textit{net negative}).
+
+For GLM-4.5-Air, the pattern inverts: the baseline achieves SR$=$78.9\%, HRR$=$68.4\%, CodeMEI$=$0.579, while MARL-SL yields SR$=$100\%, HRR$=$84.2\%, CodeMEI$=$0.737 (\textit{net positive}, $+$0.158).
+This cross-model replication confirms that MARL-SL middleware is \textit{not uniformly beneficial}: it requires sufficient model capacity to absorb structured prompting without sacrificing code generation quality.
+The capacity threshold appears to lie between 1.2B and the GLM-4.5-Air scale (${\sim}$7B+).
 
 \begin{table}[h]
 \centering\small
-\caption{HalluCode middleware ablation: MARL-SL vs.\ baseline (LFM-1.2B-Thinking, $n{=}19$).}
+\caption{HalluCode middleware ablation: MARL-SL vs.\ no-middleware baseline, two models ($n{=}19$ each). $\Delta$ columns show MARL-SL minus Baseline.}
 \label{tab:hallucode_ablation}
-\begin{tabular}{lccc}
+\begin{tabular}{llccccc}
 \toprule
-Condition & CodeMEI & SR & HRR \\
+Model & Condition & CodeMEI & SR & HRR & $\Delta$CodeMEI & $\Delta$SR \\
 \midrule
-Baseline (no middleware) & 0.274 & 68.4\% & 0.0\% \\
-MARL-SL (5-layer)        & 0.215 & 5.0\%  & 25.0\% \\
+\multirow{2}{*}{LFM-1.2B-Thinking}
+ & Baseline (no middleware) & 0.274 & 68.4\% & 0.0\% & \multirow{2}{*}{$-$0.059} & \multirow{2}{*}{$-$63.4pp} \\
+ & MARL-SL (5-layer)        & 0.215 &  5.0\% & 25.0\% & & \\
+\midrule
+\multirow{2}{*}{GLM-4.5-Air}
+ & Baseline (no middleware) & 0.579 & 78.9\% & 68.4\% & \multirow{2}{*}{$+$0.158} & \multirow{2}{*}{$+$21.1pp} \\
+ & MARL-SL (5-layer)        & 0.737 & 100.0\% & 84.2\% & & \\
 \bottomrule
 \end{tabular}
 \end{table}

@@ -1,0 +1,113 @@
+{
+  "experiment": "HalluCode-Baseline (no MARL-SL)",
+  "prompt_type": "baseline",
+  "timestamp": "2026-03-29T01:17:19.859912",
+  "n_results": 5,
+  "results": [
+    {
+      "model": "glm-free",
+      "problem_id": "HC001",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.reverse",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 76.23,
+      "verify": {
+        "sr": 1.0,
+        "passed": 5,
+        "total": 5,
+        "error": null
+      },
+      "prompt_type": "baseline"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC002",
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.append_all",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 42.5,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "baseline"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC003",
+      "trap_type": "nonexistent_api",
+      "trap_api": "dict.has_key",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 35.94,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "baseline"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC004",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.count_occurrences",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 88.05,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "baseline"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC005",
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.unique",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.8,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 37.61,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "baseline"
+    }
+  ]
+}

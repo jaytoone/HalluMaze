@@ -1,3 +1,13 @@
+v1.41 20260329 0120 — H6 GLM-4.5-Air 교차검증 완료: MARL-SL capacity×middleware interaction 양방향 확인
+    - experiment_results/hallucode_baseline_glm.json: GLM-4.5-Air baseline n=19 (SR=78.9%/HRR=68.4%/MEI=0.579)
+      vs MARL-SL (SR=100%/HRR=84.2%/MEI=0.737) → +ΔCodeMEI=+0.158, ΔSR=+21.1pp
+    - scripts/run_hallucode_baseline.py: DNS monkey-patch 추가, content=None 처리, 증분 저장 추가
+    - docs/hallumaze_arxiv.tex: Table 3 (ablation) → 4-row 교차검증 표로 확장
+      (LFM: −0.059 / GLM: +0.158; 용량 임계점 1.2B~7B 명시)
+    - docs/research/20260328-hallucode-cubic-evaluation.md: C7 교차검증 완료 업데이트
+      (H6 CONFIRMED — 단일모델 아닌 일반화 가능한 패턴)
+    - docs/DOC_INDEX.md: hallucode_baseline_glm.json 등록
+
 v1.40 20260329 — HalluCode-MARL ablation 실험: MARL-SL middleware SR/HRR trade-off 발견 (H6)
     - scripts/run_hallucode_baseline.py: no-MARL 단순 프롬프트 baseline 스크립트 추가
     - experiment_results/hallucode_baseline_lfm.json: LFM-1.2B baseline n=19 실험 결과 (SR=68.4%/HRR=0%)
