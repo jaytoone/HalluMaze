@@ -1,3 +1,15 @@
+v1.37 20260328 — HalluCode ecological validity 3-레이어 입증 (arXiv + research doc)
+    - docs/hallumaze_arxiv.tex:
+      - \subsection{Coding Benchmarks}에 \label{sec:coding_benchmarks} 추가
+      - Ecological Validity paragraph 추가 (실행 동등성/모델 크기 일관성/역방향 보수성)
+      - Limitations에 HalluCode ecological validity 항목 추가
+      - Planned Extensions 3번 항목 구체화 (companion paper SR×HumanEval correlation)
+    - docs/research/20260328-hallucode-cubic-evaluation.md:
+      - C6 생태 타당성 섹션 추가 (3-레이어 표, 현재 한계 HONEST, 결론)
+      - 실행 권고 업데이트 (즉시→완료, companion paper 항목 추가)
+      - Verification Required 업데이트 ([PARTIALLY RESOLVED] ecological validity)
+    - docs/DOC_INDEX.md: 20260328-hallucode-cubic-evaluation.md 설명 업데이트
+
 v1.36 20260328 — extension-hallucode.md H5 기각 + full experiment 표 업데이트 (omc-live iter5)
     - docs/research/20260327-hallumaze-extension-hallucode.md:
       - 파일럿 결과 표 보존 + Full experiment n=5 비교표 추가

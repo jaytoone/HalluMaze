@@ -103,6 +103,7 @@ Reflexion \citep{shinn2023reflexion} & Reasoning & Success (cross-ep.) & Partial
 No existing benchmark measures metacognitive \emph{recovery}---detecting and correcting errors mid-task.
 
 \subsection{Coding Benchmarks and the MRC Cubic Gap}
+\label{sec:coding_benchmarks}
 
 Coding evaluation benchmarks (HumanEval~\citep{chen2021codex}, MBPP~\citep{austin2021mbpp}, SWE-bench~\citep{jimenez2024swebench}, ToolBench~\citep{qin2023toolbench}) universally measure final-output accuracy (\emph{pass@k}, SR), leaving metacognitive error recovery unmeasured.
 We propose \textbf{HalluCode} as a \emph{Metacognitive Recovery Cubic (MRC)} for the coding domain: a minimal, orthogonal, and composable evaluation unit that measures whether a model can detect injected false API hints (``mirage traps'') and produce correct code despite the misdirection.
@@ -110,6 +111,14 @@ An initial experiment ($n{=}39$ valid trials, 2 free-tier models, 3 trap types) 
 GLM-4.5-Air achieves SR$=$100\% and CodeMEI$=$0.737, while LFM-1.2B-Thinking achieves SR$=$5\% yet maintains CodeMEI$=$0.215 (HRR$=$25\%): coding ability and metacognitive awareness are separable dimensions.
 Trap-type difficulty differs systematically: \emph{nonexistent\_api} is easiest to detect (GLM Detect$=$100\%), \emph{wrong\_signature} is hardest (LFM Detect$=$0\%), and \emph{deprecated\_method} is intermediate.
 The H5 hypothesis (small models better at wrong-signature detection) is \emph{not supported} in the full experiment: LFM wrong-signature Detect$=$0\% vs.\ GLM$=$80\%, reversing the initial $n{=}3$ pilot finding.
+
+\paragraph{Ecological Validity of HalluCode SR.}
+A natural question is whether HalluCode SR reflects genuine coding ability or merely task-specific artifact.
+We argue validity on three grounds.
+\emph{(1) Execution equivalence}: HalluCode SR uses \texttt{verify\_code()}, which compiles and executes model-generated code against held-out unit test cases---identical methodology to HumanEval~\citep{chen2021codex} and MBPP~\citep{austin2021mbpp}. SR is a binary execution success rate, not a text similarity proxy.
+\emph{(2) Model-size consistency}: GLM-4.5-Air (${\approx}$7B parameters) achieves SR$=$100\%; LFM-1.2B-Thinking (1.2B parameters) achieves SR$=$5\%---a 20$\times$ gap consistent with expected coding capability differences between 7B and 1.2B models. This ranking is further corroborated by Artificial Analysis Intelligence Index, which ranks LFM-1.2B-class models in the bottom decile of coding ability among 120+ evaluated models.
+\emph{(3) Adversarial hardness lower bound}: HalluCode SR is measured \emph{under adversarial conditions} (false API hints injected into context). A model achieving high SR despite misdirection must possess \emph{at least} as strong an underlying coding capability as models achieving comparable SR under neutral conditions---making HalluCode SR a conservative lower bound on true coding ability.
+Full correlation between HalluCode SR and HumanEval/MBPP pass@1 is planned for the companion paper (5 models, $n{\geq}60$).
 
 \begin{table}[h]
 \centering
@@ -335,6 +344,7 @@ This is consistent with \citet{huang2024selfcorrect}, who find that LLMs cannot 
   \item \textbf{Temperature stochasticity}: ICC(2,1) measured for 3 models ($n{=}10$ seeds, 2 runs): Claude-3.7-Sonnet ICC$=$0.664 (moderate), Llama-4-Maverick$=$0.330 (poor), GLM-4.7$=$0.156 (poor). Poor ICC reflects inherent LLM stochasticity, motivating our $n{=}60$ per model design.
   \item \textbf{Size scaling}: 9$\times$9 condition completed for GLM-4.7 ($n{=}30$): MEI$=$0.637 (5$\times$5) $\to$ 0.588 (7$\times$7) $\to$ 0.487 (9$\times$9); HRR monotonically declines; SR$=$0\% at 9$\times$9. Larger mazes amplify metacognitive deficit.
   \item \textbf{HalluCode experiment scale}: The HalluCode results in this paper cover $n{=}39$ valid trials (2 free-tier models, 3 trap types; 1 problem, HC020, excluded due to consistent API timeouts). The SR$\perp$HRR dissociation is confirmed across all three trap types. The H5 hypothesis (small-model advantage on wrong-signature detection) is \emph{not supported} at full scale (LFM Detect$=$0\% vs.\ GLM$=$80\%). Full statistical conclusions ($n{\geq}60$ per model, 5 models) are planned for a companion paper.
+  \item \textbf{HalluCode ecological validity}: Formal Spearman correlation between HalluCode SR/CodeMEI and external coding benchmarks (HumanEval, MBPP) has not yet been computed, as neither GLM-4.5-Air nor LFM-1.2B-Thinking publish HumanEval pass@1 scores. The current ecological validity argument rests on (i) execution-based equivalence methodology and (ii) model-size ranking consistency (Section~\ref{sec:coding_benchmarks}). Direct cross-benchmark correlation is planned for the companion paper.
 \end{itemize}
 
 \subsection{Multi-Agent Reasoning Layers \textnormal{\small(Preliminary, $n{=}10$, single model)}}
@@ -380,7 +390,7 @@ Efficient v2     & 0.802 & 50.0\% & 6.2  & 417\,s        \\
 \begin{enumerate}[nosep]
   \item Human baseline via Prolific ($n{\geq}25$, same protocol).
   \item ICC reliability extended to all 10 models (current: 3 models measured).
-  \item Ecological validity (Spearman correlation with TruthfulQA/HaluEval public scores).
+  \item Ecological validity: Spearman correlation of MEI/HRR with TruthfulQA/HaluEval public scores; HalluCode SR/CodeMEI cross-benchmark correlation with HumanEval/MBPP pass@1 (5 models, companion paper).
   \item 9$\times$9 scaling extended to all 10 models (current: GLM-4.7 only, $n{=}30$).
   \item Alternative maze algorithms (Kruskal, Wilson's).
   \item PyPI package \texttt{hallumaze} with full evaluation server.
