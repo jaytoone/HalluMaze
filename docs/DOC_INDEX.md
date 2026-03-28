@@ -35,9 +35,9 @@
 ## Related
 - [[projects/Miro/research/20260323-hallumaze-paper-draft|20260323-hallumaze-paper-draft]]
 - [[projects/Miro/research/20260327-hallumaze-extension-hallucode|20260327-hallumaze-extension-hallucode]]
+- [[projects/Miro/research/20260328-hallucode-cubic-evaluation|20260328-hallucode-cubic-evaluation]]
 - [[projects/Miro/research/20260323-hallumaze-extension-todos|20260323-hallumaze-extension-todos]]
 - [[projects/Miro/research/20260326-marl-sl-multi-model-validation|20260326-marl-sl-multi-model-validation]]
 - [[projects/Miro/research/20260325-marl-efficiency-research|20260325-marl-efficiency-research]]
-- [[projects/Miro/research/20260328-hallucode-cubic-evaluation|20260328-hallucode-cubic-evaluation]]
 - [[projects/Miro/misc/ontolo-biz-unconscious-purchase-20260327|ontolo-biz-unconscious-purchase-20260327]]
 - [[projects/Miro/research/20260324-marl5stage-fix-solutions|20260324-marl5stage-fix-solutions]]

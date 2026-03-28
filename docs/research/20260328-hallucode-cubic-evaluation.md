@@ -211,4 +211,6 @@ HalluCode SR은 실제 코딩 능력의 타당한 측정값이다 — 실행 방
 *업데이트: omc-live iter 1 | ecological validity C6 추가 | 2026-03-28*
 
 ## Related
+- [[projects/Miro/research/20260324-hallumaze-ecological-validity|20260324-hallumaze-ecological-validity]]
 - [[projects/Miro/research/20260327-hallumaze-extension-hallucode|20260327-hallumaze-extension-hallucode]]
+- [[projects/Miro/research/20260323-hallumaze-paper-draft|20260323-hallumaze-paper-draft]]

@@ -1,24 +1,17 @@
 {
-  "root_goal": "hallumaze_arxiv.tex의 HalluCode 섹션을 full experiment 결과(n=39, CodeMEI table)로 업데이트: 파일럿 n=5 언급을 실제 실험 데이터로 격상, trap-type별 CodeMEI 표 추가",
-  "original_goal": "HalluCode로 단위 코딩능력 확인 (full experiment)",
+  "root_goal": "HalluCode CodeMEI와 실제 코딩 능력 유관성 입증: GLM/LFM 공개 코딩 벤치마크 점수 조회, HalluCode SR 상관 분석, arXiv ecological validity 단락 추가, research doc 업데이트",
+  "original_goal": "HalluCode 결과와 실제 코딩 능력이 유관하다는 증거 설계 및 문서화",
   "level": 0,
   "sub_goals": [
-    {"id": "B1", "desc": "related work HalluCode 단락: pilot n=5 → full n=39 결과로 업데이트", "status": "pending"},
-    {"id": "B2", "desc": "limitations: n=5 → n=39로 업데이트, HC020 timeout 언급", "status": "pending"},
-    {"id": "B3", "desc": "planned extensions: full experiment 완료 표기, 향후 n=60으로 확대 명시", "status": "pending"}
+    "GLM-4.5-Air / LFM-1.2B 공개 HumanEval/MBPP 점수 조회",
+    "HalluCode SR vs 외부 벤치마크 상관 비교 분석",
+    "arXiv hallumaze_arxiv.tex에 ecological validity 논의 단락 추가",
+    "research doc (20260328-hallucode-cubic-evaluation.md) 업데이트"
   ],
   "reward_spec": {
-    "primary_metric": "arxiv_hallucode_update_quality",
-    "threshold": "related work + limitations 섹션이 full experiment 결과를 반영"
+    "primary_metric": "ecological validity 주장이 arXiv에 포함되고 evidence로 뒷받침됨",
+    "threshold": "arXiv 수정 완료 + research doc 업데이트 완료"
   },
-  "evolution_history": [
-    {
-      "iteration": 1,
-      "goal": "HalluCode full experiment 실행 (n>=20, 3 trap types, 2 models)",
-      "score": 0.902,
-      "rationale": "실험 완료(0.902). weakest=efficiency. arXiv에 실제 데이터 반영으로 임팩트 극대화."
-    }
-  ],
-  "history": [],
-  "evolution_count": 1
+  "evolution_history": [],
+  "history": []
 }
