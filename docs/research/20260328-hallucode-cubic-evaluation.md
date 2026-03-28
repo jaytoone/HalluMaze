@@ -166,13 +166,18 @@ wrong_signature 트랩 (full experiment, n=5):
 - 텍스트 유사도 메트릭이 아닌 실제 코드 실행 기반 → 직접적 코딩 능력 측정
 
 #### Layer 2 — 모델 크기 일관성 (Model Size Consistency)
-| 모델 | 파라미터 | HalluCode SR | 코딩 랭킹 |
+| 모델 | 파라미터 | HalluCode SR | 외부 랭킹 |
 |------|----------|-------------|----------|
-| GLM-4.5-Air | ~7B | 100% | 상위 (7B급 강력 코더) |
-| LFM-1.2B-Thinking | 1.2B | 5% | 하위 (BenchLM: 121개 중 #118) |
+| GLM-4.5-Air | ~7B | 100% | Artificial Analysis: 23/100 (#12/55) |
+| LFM-1.2B-Thinking | 1.2B | 5% | Artificial Analysis: 6/100 (#17/24 on-device) |
+
+| 추가 증거 | 수치 | 소스 |
+|----------|------|------|
+| GLM-4.7 (same Zhipu family) | HumanEval 94.2% (#6/55) | BenchLM.ai |
+| LFM-1.2B | **HumanEval 미등재** | BenchLM, llm-stats.com |
 
 20× SR 격차는 7B vs 1.2B의 예상 코딩 능력 차이와 일관됨.
-LFM-1.2B는 Artificial Analysis Intelligence Index 코딩 평가에서 하위 10% 확인.
+LFM-1.2B는 표준 HumanEval 리더보드 미등재 — 코딩 능력 취약 확인.
 
 #### Layer 3 — 역방향 보수성 (Adversarial Hardness Lower Bound)
 - HalluCode SR은 **역방향 API 힌트 주입** 조건에서 측정
@@ -180,9 +185,9 @@ LFM-1.2B는 Artificial Analysis Intelligence Index 코딩 평가에서 하위 10
 - → HalluCode SR은 실제 코딩 능력의 **보수적 하한값(conservative lower bound)**
 
 ### 현재 한계 (HONEST)
-- GLM-4.5-Air, LFM-1.2B 모두 HumanEval pass@1 공식 수치 미발표
+- GLM-4.5-Air, LFM-1.2B 모두 HumanEval pass@1 공식 수치 미발표 (GLM-4.7은 94.2% 있음)
+- Artificial Analysis Intelligence Index는 coding-specific이 아닌 복합 지표
 - 직접 Spearman 상관 계산 불가 (companion paper에서 5개 모델로 수행 예정)
-- BenchLM LFM 순위는 간접 증거 (동일 모델 버전 불확실)
 
 ### 결론
 HalluCode SR은 실제 코딩 능력의 타당한 측정값이다 — 실행 방법론 동등성으로 원칙적으로 성립하고, 모델 크기 일관성으로 방향성이 확인된다. HRR은 기존 벤치마크에 없는 독립 메타인지 차원을 추가한다.

@@ -1,17 +1,25 @@
 {
-  "root_goal": "HalluCode CodeMEI와 실제 코딩 능력 유관성 입증: GLM/LFM 공개 코딩 벤치마크 점수 조회, HalluCode SR 상관 분석, arXiv ecological validity 단락 추가, research doc 업데이트",
+  "root_goal": "HalluCode SR의 외부 코딩 벤치마크 상관 증거 강화: ArtificialAnalysis/OpenRouter에서 GLM/LFM 코딩 랭킹 수집 + HalluCode 20문제 HumanEval 난이도 매핑 + arXiv Table 추가",
   "original_goal": "HalluCode 결과와 실제 코딩 능력이 유관하다는 증거 설계 및 문서화",
   "level": 0,
   "sub_goals": [
-    "GLM-4.5-Air / LFM-1.2B 공개 HumanEval/MBPP 점수 조회",
-    "HalluCode SR vs 외부 벤치마크 상관 비교 분석",
-    "arXiv hallumaze_arxiv.tex에 ecological validity 논의 단락 추가",
-    "research doc (20260328-hallucode-cubic-evaluation.md) 업데이트"
+    "GLM-4.5-Air, LFM-1.2B coding leaderboard 순위 수집 (ArtificialAnalysis, OpenRouter)",
+    "HalluCode 20문제 난이도 분류 (HumanEval Easy/Medium/Hard 기준)",
+    "비교 증거 표 arXiv에 추가 또는 기존 ecological validity 단락 강화"
   ],
   "reward_spec": {
-    "primary_metric": "ecological validity 주장이 arXiv에 포함되고 evidence로 뒷받침됨",
-    "threshold": "arXiv 수정 완료 + research doc 업데이트 완료"
+    "primary_metric": "외부 벤치마크 데이터로 HalluCode SR ecological validity 강화",
+    "threshold": "구체적 수치 또는 순위 증거를 arXiv에 포함"
   },
-  "evolution_history": [],
-  "history": []
+  "evolution_history": [
+    {
+      "iteration": 1,
+      "goal": "HalluCode CodeMEI와 실제 코딩 능력 유관성 입증: GLM/LFM 공개 코딩 벤치마크 점수 조회, HalluCode SR 상관 분석, arXiv ecological validity 단락 추가",
+      "score": 0.829,
+      "rationale": "3-레이어 논거 구축 완료. 가장 약한 차원(impact=0.737): 직접 수치 증거 없음. EVOLVE → 외부 랭킹 데이터 수집"
+    }
+  ],
+  "history": [
+    {"iteration": 1, "outcome": "success", "score": 0.829}
+  ]
 }

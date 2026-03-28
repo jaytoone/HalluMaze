@@ -1,3 +1,7 @@
+v1.38 20260328 — HalluCode ecological validity 구체화: Artificial Analysis 실수치 추가
+    - docs/hallumaze_arxiv.tex: ecological validity (2) 항목 → 실제 랭킹 수치 (GLM #12/55 score=23, LFM #17/24 score=6, GLM-4.7 HumanEval 94.2%) 추가
+    - docs/research/20260328-hallucode-cubic-evaluation.md: Layer 2 표 → 외부 랭킹 수치로 업데이트, 현재 한계 HONEST 업데이트
+
 v1.37 20260328 — HalluCode ecological validity 3-레이어 입증 (arXiv + research doc)
     - docs/hallumaze_arxiv.tex:
       - \subsection{Coding Benchmarks}에 \label{sec:coding_benchmarks} 추가
