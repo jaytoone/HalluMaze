@@ -1,3 +1,10 @@
+v1.29 20260328 — arXiv conclusion 13모델/780 trials 업데이트 + HalluCode 언급 (omc-live iter4)
+    - docs/hallumaze_arxiv.tex: conclusion 섹션 수정
+      - "10 LLMs, 600 trials" → "13 LLMs, 780 trials, Claude 4.x family"
+      - Claude-Sonnet-4.5 리더보드 #1 반영 (이전: Claude-3.7-Sonnet)
+      - SR⊥MEI 직교성 결론에 명시
+      - HalluCode 도메인 전이 확인 언급 추가
+
 v1.28 20260328 — arXiv limitations에 HalluCode n=5 파일럿 한계 명시 (omc-live iter3)
     - docs/hallumaze_arxiv.tex: Current Limitations에 "HalluCode pilot scale" 항목 추가
       - n=5, 2 모델, 2 trap type 파일럿 한계 명시
