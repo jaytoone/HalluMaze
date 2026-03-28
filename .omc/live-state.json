@@ -1,10 +1,10 @@
 {
-  "current_iteration": 1,
+  "current_iteration": 2,
   "last_outcome": "success",
   "last_phase_reached": "phase_5",
   "started_at": "2026-03-28T00:00:00Z",
   "best_score": 0.829,
-  "current_score": 0.829,
+  "current_score": 0.0,
   "current_goal_fidelity": 0.95,
   "plateau_count": 0,
   "evolution_count": 1,
