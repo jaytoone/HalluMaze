@@ -1,3 +1,7 @@
+v1.53 20260329 2010
+    - .omc/episodes.jsonl: iter 3 episode 추가 (score=0.920, convergence)
+    - docs/DOC_INDEX.md: MBPP-Trap, Spearman 분석 파일 등록
+
 v1.41 20260329 0120 — H6 GLM-4.5-Air 교차검증 완료: MARL-SL capacity×middleware interaction 양방향 확인
     - experiment_results/hallucode_baseline_glm.json: GLM-4.5-Air baseline n=19 (SR=78.9%/HRR=68.4%/MEI=0.579)
       vs MARL-SL (SR=100%/HRR=84.2%/MEI=0.737) → +ΔCodeMEI=+0.158, ΔSR=+21.1pp
