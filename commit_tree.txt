@@ -1,3 +1,6 @@
+v1.60 20260329 2052
+    - README.md: 전면 업데이트 — 8모델→13모델, HalluCode, Spearman, Claude 4.x 반영
+
 v1.59 20260329 2045
     - docs/hallumaze_arxiv.tex: Abstract 336→~218 words (NeurIPS 300 한도 준수)
     - hallumaze_arxiv_submit.tar.gz 재빌드
