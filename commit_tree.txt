@@ -1,3 +1,7 @@
+v1.56 20260329 2025
+    - hallumaze_final.html: F6 Key Finding 카드 추가 (MEI ⊥ HumanEval, Spearman ρ=+0.30)
+    - hallumaze_final.html: hero-sub에 Spearman 독립성 문장 추가
+
 v1.55 20260329 2018
     - docs/hallumaze_arxiv.tex: Conclusion에 Spearman + MBPP-Trap external validity 추가 (2문장)
     - docs/hallumaze_arxiv.tex: Planned Extensions §3 "[Substantially completed]"로 업데이트

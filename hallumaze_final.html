@@ -199,6 +199,7 @@ footer a{color:var(--ac1);text-decoration:none}
   <p class="hero-sub">
     All 13 tested LLMs score significantly below a random walk on metacognitive recovery.
     Newer models are not better: Claude-Sonnet-4.5 (MEI=0.783) surpasses 4.6 (0.545). SR and MEI are orthogonal.
+    MEI is independent of coding ability (Spearman &#961;=+0.30, p=0.32): GPT-4o ranks last on MEI despite top HumanEval scores.
   </p>
   <div class="hero-badges">
     <span class="badge badge-venue">NeurIPS 2026 Target</span>
@@ -495,6 +496,11 @@ footer a{color:var(--ac1);text-decoration:none}
       <div class="card-tag">F5 -- Cross-Provider</div>
       <div class="card-title">Universal Across 7 Providers</div>
       <div class="card-body">The deficit spans Meta, Zhipu AI, MiniMax, Google, OpenAI, Anthropic, and Alibaba. No provider-specific training paradigm confers metacognitive advantage, ruling out provider artifacts as explanation.</div>
+    </div>
+    <div class="card">
+      <div class="card-tag">F6 &mdash; Orthogonal to Coding Ability</div>
+      <div class="card-title">MEI Independent of HumanEval (Spearman &#961;=+0.30, n.s.)</div>
+      <div class="card-body">Spearman correlation between 13-model MEI and published HumanEval pass@1 scores: &#961;=+0.30, p=0.32 (not significant). GPT-4o (HumanEval 90.2% &mdash; top-tier coder) ranks LAST on MEI (0.315). Metacognitive recovery is a distinct capability dimension, not a proxy for general coding ability.</div>
     </div>
     <div class="card general-only">
       <div class="card-tag">What This Means</div>
