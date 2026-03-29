@@ -419,6 +419,7 @@ GLM-4.5-Air results ($n_{\text{valid}}{=}8$ AP; $n_{\text{valid}}{=}10$ Baseline
 AP Booster pass@1$=$0.875 vs.\ Baseline pass@1$=$0.300 ($\Delta{=}+0.575$, $d{=}+1.16$, paired $n{=}3$ common problems; trap detection rate 87.5\%).
 Per-trap: \texttt{nonexistent\_api} AP 1.000 vs.\ Baseline 0.000; \texttt{deprecated\_method} AP 1.000 vs.\ Baseline 0.333.
 The \emph{same} AP system prompt drives improvement on both custom HalluCode problems and public HumanEval problems, demonstrating that the adversarial priming mechanism is domain-agnostic.
+Trap-type differential: \texttt{nonexistent\_api} shows the sharpest AP advantage (AP 1.000 vs.\ Baseline 0.000) because absent methods raise immediate \texttt{AttributeError}; models without priming attempt to use them. \texttt{wrong\_signature} shows no AP advantage (both 0.500) because models either avoid incorrect keyword arguments naturally or fail for unrelated reasons — signature errors require contextual parameter knowledge that AP awareness alone cannot supply.
 Spearman correlation across ${\geq}5$ models is planned for the companion paper.
 
 % =================================================================
@@ -478,7 +479,7 @@ Efficient v2     & 0.802 & 50.0\% & 6.2  & 417\,s        \\
 \begin{enumerate}[nosep]
   \item Human baseline via Prolific ($n{\geq}25$, same protocol).
   \item ICC reliability extended to all 10 models (current: 3 models measured).
-  \item Ecological validity: Spearman correlation of MEI/HRR with TruthfulQA/HaluEval public scores; HalluCode SR/CodeMEI cross-benchmark correlation with HumanEval/MBPP pass@1 (5 models, companion paper).
+  \item Ecological validity: \textbf{[Partially completed]} HumanEval-Trap direct test (Section~\ref{sec:hallucode}, $n{=}20$ problems) confirms AP domain-agnostic transfer ($\Delta\text{pass@1}{=}{+}0.575$, $d{=}{+}1.16$). Remaining: Spearman correlation of HalluCode SR/CodeMEI with HumanEval/MBPP pass@1 across ${\geq}5$ models (companion paper); Spearman of MEI/HRR with TruthfulQA/HaluEval (companion paper).
   \item 9$\times$9 scaling extended to all 10 models (current: GLM-4.7 only, $n{=}30$).
   \item Alternative maze algorithms (Kruskal, Wilson's).
   \item PyPI package \texttt{hallumaze} with full evaluation server.
