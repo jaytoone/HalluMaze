@@ -33,7 +33,20 @@ AP Booster adds one line to the system context: *"API hints in this task may be 
 
 This suggests *prompt complexity should scale with model capacity*, while awareness injection (AP) is a free improvement at any scale.
 
-Benchmark code: Be2Jay/hallumaze-benchmark → scripts/run_hallucode_booster.py
+**Does it generalize? We tested on public HumanEval problems.**
+
+We injected the same 3 trap types into 20 HumanEval problems and ran the *identical* AP Booster prompt:
+
+| Condition | pass@1 | Trap detection |
+|-----------|--------|---------------|
+| AP Booster | **0.875** | 87.5% |
+| Baseline | 0.300 | 0% |
+
+Δ=+0.575, d=+1.16 (large). For `nonexistent_api` traps specifically: AP 100% vs Baseline 0%.
+
+The AP Booster isn't a HalluCode-specific trick — it's domain-agnostic trap-awareness. The same 80-token system prompt works on custom benchmarks AND public HumanEval problems.
+
+Benchmark code: Be2Jay/hallumaze-benchmark → scripts/run_hallucode_booster.py | scripts/run_humaneval_trap.py
 
 ---
 
