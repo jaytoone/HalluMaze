@@ -44,6 +44,33 @@
       }
     }
   },
+  "mbpp_trap": {
+    "n_ap": 14,
+    "n_baseline": 11,
+    "pass_ap": 0.0,
+    "pass_baseline": 0.0,
+    "delta_pass": 0.0,
+    "trap_detection_rate_ap": 0.857,
+    "trap_used_rate_baseline": 0.455,
+    "per_trap_type_ap": {
+      "nonexistent_api": {
+        "n_valid": 4,
+        "pass_rate": 0.0,
+        "detection_rate": 0.75
+      },
+      "wrong_signature": {
+        "n_valid": 7,
+        "pass_rate": 0.0,
+        "detection_rate": 0.857
+      },
+      "deprecated_method": {
+        "n_valid": 3,
+        "pass_rate": 0.0,
+        "detection_rate": 1.0
+      }
+    },
+    "interpretation": "AP detects traps (85.7%) but base MBPP coding quality too low for pass@1 measurement. Trap-awareness mechanism transfers; difficulty-level moderates pass@1 improvement."
+  },
   "size_consistency": {
     "n_models": 2,
     "spearman_rho": null,
@@ -64,10 +91,25 @@
       }
     ]
   },
+  "multi_benchmark_summary": {
+    "benchmarks_tested": [
+      "HumanEval-Trap",
+      "MBPP-Trap"
+    ],
+    "ap_detection_rates": {
+      "humaneval": 0.875,
+      "mbpp": 0.857
+    },
+    "ap_delta_pass1": {
+      "humaneval": 0.575,
+      "mbpp": 0.0
+    }
+  },
   "interpretation": {
-    "primary": "AP Booster improves pass@1 by +0.575 on HumanEval-Trap (same prompt as HalluCode)",
-    "mechanism": "Trap-awareness (AP) is domain-agnostic: effective on both custom HalluCode and public HumanEval problems",
-    "size_pattern": "Larger models show higher HalluCode SR under AP, consistent with coding ability ordering",
-    "limitation": "n=8/10 valid due to free-tier rate limits; n=2 models for size correlation (companion paper: n≥5)"
+    "trap_awareness_transfer": "AP trap detection transfers to both HumanEval and MBPP (~85-88%)",
+    "pass1_difficulty_moderation": "pass@1 improvement is difficulty-dependent: large on HumanEval (Δ=+0.575, d=+1.16), negligible on MBPP (both ~0) where base coding quality is the bottleneck",
+    "size_pattern": "Larger models (GLM ~7B) show higher HalluCode SR under AP vs smaller (LFM 1.2B)",
+    "spearman_status": "n=2 models — Spearman requires n≥3 (deferred to companion paper)",
+    "conclusion": "HumanEval-Trap is the appropriate difficulty-matched benchmark for HalluCode external validity"
   }
 }

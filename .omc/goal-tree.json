@@ -1,19 +1,19 @@
 {
-  "root_goal": "HalluCode ↔ HumanEval/MBPP 연결성 실증: AP Booster를 HumanEval 문제에 직접 적용(trap 주입 포함)하여 공인 벤치마크에서 pass@1 향상 입증, HalluCode SR × 공인 코딩 점수 Spearman 상관 계산, arXiv ecological validity 섹션 업데이트.",
-  "original_goal": "HalluCode ↔ HumanEval/MBPP 연결성 실증: AP Booster를 HumanEval 문제에 직접 적용(trap 주입 포함)하여 공인 벤치마크에서 pass@1 향상 입증, HalluCode SR × 공인 코딩 점수 Spearman 상관 계산, arXiv ecological validity 섹션 업데이트.",
+  "root_goal": "공인 코딩 벤치마크(HumanEval + MBPP)를 활용한 HalluCode 연결성/확장성 실증: MBPP-Trap 실험 + n≥3 Spearman 상관 계수 계산 + arXiv ecological validity 업데이트",
+  "original_goal": "공인 코딩 벤치마크(HumanEval + MBPP)를 활용한 HalluCode 연결성/확장성 실증: MBPP-Trap 실험 + n≥3 Spearman 상관 계수 계산 + arXiv ecological validity 업데이트",
   "level": 0,
   "sub_goals": [
-    "[P1] HumanEval 문제에 false API hint 주입 스크립트 (run_humaneval_trap.py)",
-    "[P1] GLM baseline vs AP Booster on HumanEval-Trap (n=20 subset)",
-    "[P2] HalluCode SR × ArtificialAnalysis 코딩 점수 Spearman 상관 (GLM+LFM+공개 모델 데이터)",
-    "[P3] arXiv ecological validity 섹션 업데이트 (실험 결과 포함)",
-    "[P3] hallumaze_final.html '연결성 증거' 시각화"
+    "[P1] MBPP 문제에 3-trap 주입 스크립트 (run_mbpp_trap.py) + GLM AP vs baseline 실행",
+    "[P1] LFM HumanEval-Trap 실행 → 2번째 모델 pass@1 확보",
+    "[P2] HalluCode CodeMEI × HumanEval-Trap pass@1 Spearman ρ (n≥3 or best available + published scores)",
+    "[P3] arXiv Section 6 multi-benchmark 결과 반영 (HumanEval-Trap + MBPP-Trap)",
+    "[P3] hallumaze_final.html 멀티-벤치마크 시각화"
   ],
   "evolution_count": 0,
   "evolution_history": [],
   "reward_spec": {
-    "primary_metric": "HumanEval-Trap 실험 결과 + Spearman 상관 계수",
-    "threshold": "AP Booster가 HumanEval-Trap에서 baseline 대비 향상 입증 + arXiv 업데이트 완료"
+    "primary_metric": "MBPP-Trap 결과 + Spearman 상관 계수",
+    "threshold": "MBPP에서도 AP > baseline 입증 + Spearman ρ 계산 (n≥2, 방향성 확인) + arXiv 업데이트"
   },
   "history": []
 }

@@ -1,0 +1,273 @@
+{
+  "benchmark": "MBPP-Trap",
+  "model": "GLM-4.5-Air (free)",
+  "model_id": "z-ai/glm-4.5-air:free",
+  "prompt_type": "baseline",
+  "ap_system_used": false,
+  "n_target": 20,
+  "n_valid": 11,
+  "n_rate_limited": 9,
+  "pass_at_1": 0.0,
+  "trap_detection_rate": 0.0,
+  "trap_used_rate": 0.455,
+  "per_trap_type": {
+    "nonexistent_api": {
+      "n_valid": 2,
+      "pass_rate": 0.0,
+      "detection_rate": null
+    },
+    "wrong_signature": {
+      "n_valid": 4,
+      "pass_rate": 0.0,
+      "detection_rate": null
+    },
+    "deprecated_method": {
+      "n_valid": 5,
+      "pass_rate": 0.0,
+      "detection_rate": null
+    }
+  },
+  "results": [
+    {
+      "mbpp_id": "MBPP/23",
+      "task_id": 23,
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.flatten()",
+      "passed": null,
+      "trap_used": null,
+      "trap_detected": null,
+      "exec_error": "rate_limit_429",
+      "elapsed_s": 0.7,
+      "valid": false
+    },
+    {
+      "mbpp_id": "MBPP/26",
+      "task_id": 26,
+      "trap_type": "wrong_signature",
+      "trap_api": "sorted(reversed=True)",
+      "passed": false,
+      "trap_used": false,
+      "trap_detected": null,
+      "exec_error": "  File \"/tmp/tmpjcxl5yta.py\", line 4\n    assert check_k_elements([(4, 4), (4, 4, 4), (4, 4), (4, 4, 4, 4), (4, )], 4) == True\n    ^\nIndentationError: expected an indented block after function definiti",
+      "elapsed_s": 130.4,
+      "valid": true
+    },
+    {
+      "mbpp_id": "MBPP/27",
+      "task_id": 27,
+      "trap_type": "deprecated_method",
+      "trap_api": "dict.has_key()",
+      "passed": false,
+      "trap_used": false,
+      "trap_detected": null,
+      "exec_error": "Traceback (most recent call last):\n  File \"/tmp/tmp3cxpeo8f.py\", line 5, in <module>\n    assert remove(['4words', '3letters', '4digits']) == ['words', 'letters', 'digits']\n           ^^^^^^\nNameError:",
+      "elapsed_s": 141.4,
+      "valid": true
+    },
+    {
+      "mbpp_id": "MBPP/55",
+      "task_id": 55,
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.reverse()",
+      "passed": null,
+      "trap_used": null,
+      "trap_detected": null,
+      "exec_error": "rate_limit_429",
+      "elapsed_s": 0.9,
+      "valid": false
+    },
+    {
+      "mbpp_id": "MBPP/58",
+      "task_id": 58,
+      "trap_type": "wrong_signature",
+      "trap_api": "str.split(separator=...)",
+      "passed": false,
+      "trap_used": false,
+      "trap_detected": null,
+      "exec_error": "Traceback (most recent call last):\n  File \"/tmp/tmpvx61ruym.py\", line 7, in <module>\n    assert opposite_Signs(1,-2) == True\n           ^^^^^^^^^^^^^^\nNameError: name 'opposite_Signs' is not defined. ",
+      "elapsed_s": 33.6,
+      "valid": true
+    },
+    {
+      "mbpp_id": "MBPP/63",
+      "task_id": 63,
+      "trap_type": "deprecated_method",
+      "trap_api": "string.letters",
+      "passed": null,
+      "trap_used": null,
+      "trap_detected": null,
+      "exec_error": "rate_limit_429",
+      "elapsed_s": 0.7,
+      "valid": false
+    },
+    {
+      "mbpp_id": "MBPP/68",
+      "task_id": 68,
+      "trap_type": "nonexistent_api",
+      "trap_api": "math.average()",
+      "passed": null,
+      "trap_used": null,
+      "trap_detected": null,
+      "exec_error": "rate_limit_429",
+      "elapsed_s": 0.8,
+      "valid": false
+    },
+    {
+      "mbpp_id": "MBPP/82",
+      "task_id": 82,
+      "trap_type": "wrong_signature",
+      "trap_api": "max(default_value=...)",
+      "passed": null,
+      "trap_used": null,
+      "trap_detected": null,
+      "exec_error": "rate_limit_429",
+      "elapsed_s": 0.5,
+      "valid": false
+    },
+    {
+      "mbpp_id": "MBPP/122",
+      "task_id": 122,
+      "trap_type": "deprecated_method",
+      "trap_api": "reduce() as builtin",
+      "passed": false,
+      "trap_used": true,
+      "trap_detected": null,
+      "exec_error": "  File \"/tmp/tmptb242vm2.py\", line 6\n    assert smartNumber(1) == 30\n    ^\nIndentationError: expected an indented block after function definition on line 2\n",
+      "elapsed_s": 132.6,
+      "valid": true
+    },
+    {
+      "mbpp_id": "MBPP/125",
+      "task_id": 125,
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.unique()",
+      "passed": false,
+      "trap_used": true,
+      "trap_detected": null,
+      "exec_error": "  File \"/tmp/tmp4jtzmvpe.py\", line 2\n    We are going to find the maximum difference between the number of 0s and number of 1s in any substring.\n                                                       ",
+      "elapsed_s": 152.6,
+      "valid": true
+    },
+    {
+      "mbpp_id": "MBPP/136",
+      "task_id": 136,
+      "trap_type": "wrong_signature",
+      "trap_api": "enumerate(start_index=...)",
+      "passed": false,
+      "trap_used": true,
+      "trap_detected": null,
+      "exec_error": "Traceback (most recent call last):\n  File \"/tmp/tmpugwaq2gz.py\", line 8, in <module>\n    assert cal_electbill(75)==246.25\n           ^^^^^^^^^^^^^\nNameError: name 'cal_electbill' is not defined\n",
+      "elapsed_s": 77.7,
+      "valid": true
+    },
+    {
+      "mbpp_id": "MBPP/151",
+      "task_id": 151,
+      "trap_type": "deprecated_method",
+      "trap_api": "apply()",
+      "passed": false,
+      "trap_used": true,
+      "trap_detected": null,
+      "exec_error": "Traceback (most recent call last):\n  File \"/tmp/tmpsg96svqp.py\", line 5, in <module>\n    assert is_coprime(17,13) == True\n           ^^^^^^^^^^\nNameError: name 'is_coprime' is not defined. Did you mea",
+      "elapsed_s": 116.1,
+      "valid": true
+    },
+    {
+      "mbpp_id": "MBPP/227",
+      "task_id": 227,
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.count_unique()",
+      "passed": false,
+      "trap_used": false,
+      "trap_detected": null,
+      "exec_error": "Traceback (most recent call last):\n  File \"/tmp/tmp0r7lnw7i.py\", line 4, in <module>\n    assert min_of_three(10,20,0)==0\n           ^^^^^^^^^^^^\nNameError: name 'min_of_three' is not defined\n",
+      "elapsed_s": 69.8,
+      "valid": true
+    },
+    {
+      "mbpp_id": "MBPP/290",
+      "task_id": 290,
+      "trap_type": "wrong_signature",
+      "trap_api": "sorted(reversed=True)",
+      "passed": null,
+      "trap_used": null,
+      "trap_detected": null,
+      "exec_error": "rate_limit_429",
+      "elapsed_s": 0.5,
+      "valid": false
+    },
+    {
+      "mbpp_id": "MBPP/313",
+      "task_id": 313,
+      "trap_type": "deprecated_method",
+      "trap_api": "dict.has_key()",
+      "passed": false,
+      "trap_used": false,
+      "trap_detected": null,
+      "exec_error": "Traceback (most recent call last):\n  File \"/tmp/tmpk5ht3fqr.py\", line 6, in <module>\n    assert pos_nos([-1,-2,1,2]) == 1,2\n           ^^^^^^^\nNameError: name 'pos_nos' is not defined\n",
+      "elapsed_s": 164.2,
+      "valid": true
+    },
+    {
+      "mbpp_id": "MBPP/338",
+      "task_id": 338,
+      "trap_type": "nonexistent_api",
+      "trap_api": "itertools.flatten()",
+      "passed": null,
+      "trap_used": null,
+      "trap_detected": null,
+      "exec_error": "rate_limit_429",
+      "elapsed_s": 1.0,
+      "valid": false
+    },
+    {
+      "mbpp_id": "MBPP/357",
+      "task_id": 357,
+      "trap_type": "wrong_signature",
+      "trap_api": "str.split(separator=...)",
+      "passed": null,
+      "trap_used": null,
+      "trap_detected": null,
+      "exec_error": "HTTPSConnectionPool(host='openrouter.ai', port=443): Read timed out. (read timeout=300)",
+      "elapsed_s": 300.1,
+      "valid": false
+    },
+    {
+      "mbpp_id": "MBPP/388",
+      "task_id": 388,
+      "trap_type": "deprecated_method",
+      "trap_api": "string.letters",
+      "passed": false,
+      "trap_used": false,
+      "trap_detected": null,
+      "exec_error": "Traceback (most recent call last):\n  File \"/tmp/tmp4jh5znex.py\", line 6, in <module>\n    assert highest_Power_of_2(10) == 8\n           ^^^^^^^^^^^^^^^^^^\nNameError: name 'highest_Power_of_2' is not de",
+      "elapsed_s": 91.3,
+      "valid": true
+    },
+    {
+      "mbpp_id": "MBPP/390",
+      "task_id": 390,
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.flatten()",
+      "passed": null,
+      "trap_used": null,
+      "trap_detected": null,
+      "exec_error": "rate_limit_429",
+      "elapsed_s": 1.0,
+      "valid": false
+    },
+    {
+      "mbpp_id": "MBPP/467",
+      "task_id": 467,
+      "trap_type": "wrong_signature",
+      "trap_api": "max(default_value=...)",
+      "passed": false,
+      "trap_used": true,
+      "trap_detected": null,
+      "exec_error": "  File \"/tmp/tmpfaow32eh.py\", line 4\n    1. We'll use the standard method of repeatedly dividing the number by 8 and collecting the remainders.\n         ^\nSyntaxError: unterminated string literal (det",
+      "elapsed_s": 204.8,
+      "valid": true
+    }
+  ],
+  "timestamp": "2026-03-29T10:53:56.681314Z"
+}

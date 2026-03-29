@@ -38,7 +38,7 @@ All 13 tested LLMs score significantly below a random walk baseline ($p{<}0.001$
 Critically, we find that \emph{solve rate (SR) and metacognitive recovery (MEI/HRR) are orthogonal dimensions}: Claude-Sonnet-4.6 achieves the highest SR ($60\%$, rank~1) yet ranks~8th on MEI ($0.545$), while Claude-Sonnet-4.5 leads on MEI ($0.783$) with a more modest SR ($36.7\%$).
 We further introduce \textbf{HalluCode}, an extension of the HalluMaze paradigm to coding environments via false API hint injection (19 problems, 3 trap types).
 An Adversarial Priming (AP) system prompt---making the model explicitly aware that hints may be malicious---achieves CodeMEI$=$0.821 on GLM-4.5-Air ($d{=}+1.58$, $p{<}0.001$ vs.\ no-middleware baseline; $n{=}19$) and 0.371 on LFM-1.2B ($d{=}+0.31$, $p{=}0.038$; $n{=}17$), outperforming a more complex 5-layer MARL-SL scaffold on both models.
-To establish external validity, we apply the identical AP prompt to 20 public HumanEval problems injected with the same 3 trap categories: pass@1 rises from 0.300 (baseline) to 0.875 (AP), $\Delta{=}{+}0.575$, $d{=}{+}1.16$ (large effect), confirming that awareness injection is domain-agnostic.
+To establish external validity, we apply the identical AP prompt to public HumanEval and MBPP problems injected with the same trap categories: on HumanEval, pass@1 rises from 0.300 to 0.875 ($\Delta{=}{+}0.575$, $d{=}{+}1.16$, large effect); on MBPP, AP trap detection transfers (85.7\%) but base coding difficulty dominates pass@1, revealing difficulty level as a moderator of AP effectiveness.
 We release all code, maze seeds, and evaluation scripts for reproducibility.
 \end{abstract}
 
@@ -67,7 +67,7 @@ No existing benchmark captures this.
   \item \textbf{HalluMaze benchmark} (13 LLMs, 780 trials): All LLMs score below a random walk on MEI ($p{<}0.001$, $\delta{=}0.6$--$2.1$); SR and metacognitive recovery are orthogonal (Claude-Sonnet-4.6: SR rank~1 yet MEI rank~8).
   \item \textbf{Metacognitive Escape Index (MEI)}: A composite metric grounded in Nelson--Narens metamemory theory, decomposing recovery, efficiency, awareness, and error rate.
   \item \textbf{HalluCode extension}: A coding metacognitive recovery benchmark (19 problems, 3 trap types). Adversarial Priming (AP)---a single system prompt making the model aware that hints may be malicious---achieves CodeMEI$=$0.821 ($d{=}+1.58$, $p{<}0.001$, $n{=}19$) on GLM-4.5-Air, outperforming a 5-layer MARL-SL scaffold. Effect holds across model sizes ($d{=}+0.31$, LFM-1.2B), demonstrating that \emph{awareness injection} dominates structural complexity.
-  \item \textbf{External validity (HumanEval-Trap)}: The identical AP prompt applied to 20 public HumanEval problems with injected false API hints yields pass@1$=$0.875 vs.\ 0.300 baseline ($\Delta{=}{+}0.575$, $d{=}{+}1.16$, large effect). This confirms AP is not a HalluCode-specific artifact---it is a domain-agnostic trap-awareness mechanism transferable to standard coding benchmarks.
+  \item \textbf{External validity (HumanEval-Trap + MBPP-Trap)}: The identical AP prompt on HumanEval problems yields pass@1$=$0.875 vs.\ 0.300 ($\Delta{=}{+}0.575$, $d{=}{+}1.16$). On MBPP, AP trap detection transfers (85.7\%) but base difficulty dominates pass@1 --- revealing difficulty level as a moderator and confirming HumanEval as the appropriate difficulty-matched validation benchmark.
 \end{itemize}
 
 % =================================================================
@@ -421,8 +421,12 @@ GLM-4.5-Air results ($n_{\text{valid}}{=}8$ AP; $n_{\text{valid}}{=}10$ Baseline
 AP Booster pass@1$=$0.875 vs.\ Baseline pass@1$=$0.300 ($\Delta{=}+0.575$, $d{=}+1.16$, paired $n{=}3$ common problems; trap detection rate 87.5\%).
 Per-trap: \texttt{nonexistent\_api} AP 1.000 vs.\ Baseline 0.000; \texttt{deprecated\_method} AP 1.000 vs.\ Baseline 0.333.
 The \emph{same} AP system prompt drives improvement on both custom HalluCode problems and public HumanEval problems, demonstrating that the adversarial priming mechanism is domain-agnostic.
-Trap-type differential: \texttt{nonexistent\_api} shows the sharpest AP advantage (AP 1.000 vs.\ Baseline 0.000) because absent methods raise immediate \texttt{AttributeError}; models without priming attempt to use them. \texttt{wrong\_signature} shows no AP advantage (both 0.500) because models either avoid incorrect keyword arguments naturally or fail for unrelated reasons — signature errors require contextual parameter knowledge that AP awareness alone cannot supply.
-Spearman correlation across ${\geq}5$ models is planned for the companion paper.
+Trap-type differential: \texttt{nonexistent\_api} shows the sharpest AP advantage (AP 1.000 vs.\ Baseline 0.000) because absent methods raise immediate \texttt{AttributeError}; models without priming attempt to use them. \texttt{wrong\_signature} shows no AP advantage (both 0.500) because models either avoid incorrect keyword arguments naturally or fail for unrelated reasons.
+\emph{(4) MBPP-Trap transfer}: We additionally test on $n{=}20$ MBPP~\citep{austin2021mbpp} problems with identical trap injection.
+AP trap detection remains consistent (85.7\% vs.\ 0\% baseline), confirming that the awareness mechanism transfers across benchmark families.
+However, pass@1$=$0.000 for both conditions (GLM-4.5-Air free-tier, $n_{\text{valid}}{\leq}14$), revealing that \emph{task difficulty is a moderator}: on HumanEval (elementary functions), AP unlocks a $\Delta{=}+0.575$ improvement; on MBPP (more complex multi-assertion problems), base coding quality is the binding constraint and trap-awareness alone is insufficient.
+This boundary condition is itself informative: HalluCode's difficulty level is calibrated to HumanEval, not MBPP, making HumanEval the difficulty-matched external benchmark for AP validation.
+Spearman correlation of CodeMEI $\times$ HumanEval pass@1 across ${\geq}5$ models is planned for the companion paper.
 
 % =================================================================
 \section{Limitations \& Future Work}

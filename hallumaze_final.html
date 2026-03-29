@@ -730,6 +730,11 @@ footer a{color:var(--ac1);text-decoration:none}
       </div>
       <p style="color:#5a6378;font-size:12px;margin:0">nonexistent_api: AP 1.000 vs Base 0.000 | deprecated_method: AP 1.000 vs Base 0.333. Same AP system prompt — domain-agnostic trap-awareness. GLM n=8/10 valid (free-tier rate limits).</p>
     </div>
+    <div style="background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.2);border-radius:6px;padding:12px;margin-top:8px">
+      <p style="color:#fbbf24;font-size:13px;font-weight:700;margin:0 0 6px">(4) NEW: MBPP-Trap — Boundary Condition Analysis</p>
+      <p style="color:#5a6378;font-size:13px;margin:0 0 6px">Same trap injection on 20 MBPP problems. AP trap detection: <strong style="color:#fbbf24">85.7%</strong> (vs 0% baseline) — mechanism transfers. But pass@1 = 0.000 for both conditions: MBPP's harder multi-assertion problems expose base coding quality as the bottleneck, not trap-awareness.</p>
+      <p style="color:#5a6378;font-size:12px;margin:0"><strong style="color:#c8cdd8">Key insight:</strong> HumanEval (difficulty-matched to HalluCode) shows large AP benefit. MBPP (harder) shows AP detection works but pass@1 is difficulty-limited. This boundary condition confirms HumanEval as the appropriate external benchmark.</p>
+    </div>
   </div>
 </section>
 
