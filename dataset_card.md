@@ -31,6 +31,22 @@ configs:
       path: experiment_results/checkpoint_rerun.json
     - split: train
       path: experiment_results/or_phaseC.json
+- config_name: claude4x
+  data_files:
+    - split: train
+      path: experiment_results/claude4x_full.json
+- config_name: hallucode
+  data_files:
+    - split: train
+      path: experiment_results/hallucode_full.json
+    - split: baseline_glm
+      path: experiment_results/hallucode_baseline_glm.json
+    - split: baseline_lfm
+      path: experiment_results/hallucode_baseline_lfm.json
+- config_name: marl_sl
+  data_files:
+    - split: train
+      path: experiment_results/marl_sl_openrouter.json
 - config_name: analysis
   data_files:
     - split: train
@@ -86,6 +102,8 @@ HalluMaze measures **metacognitive error recovery** in LLMs through maze navigat
 
 ### Files
 
+**HalluMaze core (maze navigation)**
+
 | File | Description | Records |
 |------|-------------|---------|
 | `experiment_results/or_haiku.json` | Claude-3-Haiku trials | 60 |
@@ -95,11 +113,26 @@ HalluMaze measures **metacognitive error recovery** in LLMs through maze navigat
 | `experiment_results/or_phaseB.json` | Llama-4-Scout + Gemini trials | 120 |
 | `experiment_results/checkpoint_rerun.json` | MiniMax-M2.5 + GLM-4.7 trials | 120 |
 | `experiment_results/or_phaseC.json` | Claude-3.7-Sonnet + GPT-4o trials | 120 |
-| `experiment_results/analysis_final2.json` | Final aggregated stats (Bootstrap CI + Wilcoxon, k=10) | — |
+| `experiment_results/claude4x_full.json` | Claude 4.x family — Sonnet-4.5 / Sonnet-4.6 / Haiku-4.5 (n=60 each) | 180 |
+| `experiment_results/analysis_final2.json` | Final aggregated stats (Bootstrap CI + Wilcoxon, k=13) | — |
 | `experiment_results/baselines.json` | Random Walk / A* / BFS baselines | — |
 | `experiment_results/failure_modes.json` | Failure taxonomy (TYPE_A/B/C/S) | 480 |
 | `experiment_results/calibration.json` | Confidence calibration (ECE, Brier) | — |
 | `experiment_results/mei_sensitivity.json` | 625-config weight sensitivity analysis | — |
+
+**HalluCode extension (coding domain)**
+
+| File | Description | Records |
+|------|-------------|---------|
+| `experiment_results/hallucode_full.json` | HalluCode MARL-SL: GLM-4.5-Air (n=19, CodeMEI=0.737) + LFM-1.2B (n=20, CodeMEI=0.215) | 39 |
+| `experiment_results/hallucode_baseline_glm.json` | GLM-4.5-Air no-MARL baseline (n=19, SR=78.9%, HRR=68.4%) — H6 cross-validation | 19 |
+| `experiment_results/hallucode_baseline_lfm.json` | LFM-1.2B no-MARL baseline (n=19, SR=68.4%, HRR=0%) — H6 capacity×middleware finding | 19 |
+
+**MARL-SL middleware experiments**
+
+| File | Description | Records |
+|------|-------------|---------|
+| `experiment_results/marl_sl_openrouter.json` | MARL-SL multi-model validation (Claude/MiniMax/Qwen/Haiku) | 32 |
 
 ### Trial Record Schema
 
