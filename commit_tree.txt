@@ -1,3 +1,7 @@
+v1.59 20260329 2045
+    - docs/hallumaze_arxiv.tex: Abstract 336→~218 words (NeurIPS 300 한도 준수)
+    - hallumaze_arxiv_submit.tar.gz 재빌드
+
 v1.58 20260329 2040
     - docs/hf_dataset_readme.md: HF Dataset 카드 신규 생성 (업로드 ready)
     - docs/DOC_INDEX.md: hf_dataset_readme.md 등록
