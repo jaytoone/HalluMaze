@@ -38,6 +38,7 @@ All 13 tested LLMs score significantly below a random walk baseline ($p{<}0.001$
 Critically, we find that \emph{solve rate (SR) and metacognitive recovery (MEI/HRR) are orthogonal dimensions}: Claude-Sonnet-4.6 achieves the highest SR ($60\%$, rank~1) yet ranks~8th on MEI ($0.545$), while Claude-Sonnet-4.5 leads on MEI ($0.783$) with a more modest SR ($36.7\%$).
 We further introduce \textbf{HalluCode}, an extension of the HalluMaze paradigm to coding environments via false API hint injection (19 problems, 3 trap types).
 An Adversarial Priming (AP) system prompt---making the model explicitly aware that hints may be malicious---achieves CodeMEI$=$0.821 on GLM-4.5-Air ($d{=}+1.58$, $p{<}0.001$ vs.\ no-middleware baseline; $n{=}19$) and 0.371 on LFM-1.2B ($d{=}+0.31$, $p{=}0.038$; $n{=}17$), outperforming a more complex 5-layer MARL-SL scaffold on both models.
+To establish external validity, we apply the identical AP prompt to 20 public HumanEval problems injected with the same 3 trap categories: pass@1 rises from 0.300 (baseline) to 0.875 (AP), $\Delta{=}{+}0.575$, $d{=}{+}1.16$ (large effect), confirming that awareness injection is domain-agnostic.
 We release all code, maze seeds, and evaluation scripts for reproducibility.
 \end{abstract}
 
@@ -66,6 +67,7 @@ No existing benchmark captures this.
   \item \textbf{HalluMaze benchmark} (13 LLMs, 780 trials): All LLMs score below a random walk on MEI ($p{<}0.001$, $\delta{=}0.6$--$2.1$); SR and metacognitive recovery are orthogonal (Claude-Sonnet-4.6: SR rank~1 yet MEI rank~8).
   \item \textbf{Metacognitive Escape Index (MEI)}: A composite metric grounded in Nelson--Narens metamemory theory, decomposing recovery, efficiency, awareness, and error rate.
   \item \textbf{HalluCode extension}: A coding metacognitive recovery benchmark (19 problems, 3 trap types). Adversarial Priming (AP)---a single system prompt making the model aware that hints may be malicious---achieves CodeMEI$=$0.821 ($d{=}+1.58$, $p{<}0.001$, $n{=}19$) on GLM-4.5-Air, outperforming a 5-layer MARL-SL scaffold. Effect holds across model sizes ($d{=}+0.31$, LFM-1.2B), demonstrating that \emph{awareness injection} dominates structural complexity.
+  \item \textbf{External validity (HumanEval-Trap)}: The identical AP prompt applied to 20 public HumanEval problems with injected false API hints yields pass@1$=$0.875 vs.\ 0.300 baseline ($\Delta{=}{+}0.575$, $d{=}{+}1.16$, large effect). This confirms AP is not a HalluCode-specific artifact---it is a domain-agnostic trap-awareness mechanism transferable to standard coding benchmarks.
 \end{itemize}
 
 % =================================================================
