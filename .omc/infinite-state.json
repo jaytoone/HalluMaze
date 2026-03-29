@@ -1,0 +1,82 @@
+{
+  "status": "RUNNING",
+  "session_id": "inf-20260329-2012",
+  "current_iteration": 9,
+  "root_goal": "HalluMaze + HalluCode \ub17c\ubb38 arXiv/NeurIPS \uc81c\ucd9c ready: Bootstrap CI for HalluCode + LFM multi-model + \ub17c\ubb38 \uc644\uc131\ub3c4 \uadf9\ub300\ud654",
+  "original_goal": "HalluMaze + HalluCode \ub17c\ubb38 arXiv/NeurIPS \uc81c\ucd9c ready: Bootstrap CI for HalluCode + LFM multi-model + \ub17c\ubb38 \uc644\uc131\ub3c4 \uadf9\ub300\ud654",
+  "evolution_count": 0,
+  "evolution_history": [],
+  "best_score": 0.977,
+  "plateau_count": 1,
+  "score_variance": 0.0,
+  "score_history": [
+    {
+      "iteration": 0,
+      "score": 0.84,
+      "note": "baseline estimate before iter 1"
+    },
+    {
+      "iteration": 1,
+      "score": 0.87,
+      "delta": 0.03,
+      "note": "Conclusion + Planned Extensions updated"
+    },
+    {
+      "iteration": 2,
+      "score": 0.89,
+      "delta": 0.02,
+      "note": "HTML F6 card + hero Spearman"
+    },
+    {
+      "iteration": 3,
+      "score": 0.91,
+      "delta": 0.02,
+      "note": "HumanEval\u00d7MEI scatter plot"
+    },
+    {
+      "iteration": 4,
+      "score": 0.915,
+      "delta": 0.005,
+      "note": "HF Dataset README"
+    },
+    {
+      "iteration": 5,
+      "score": 0.935,
+      "delta": 0.02,
+      "note": "Abstract trimmed 336\u2192218 words"
+    },
+    {
+      "iteration": 6,
+      "score": 0.955,
+      "delta": 0.02,
+      "note": "README full rewrite"
+    },
+    {
+      "iteration": 7,
+      "score": 0.96,
+      "delta": 0.005,
+      "note": "Bonferroni k consistency"
+    },
+    {
+      "iteration": 8,
+      "score": 0.975,
+      "delta": 0.015,
+      "note": "CRITICAL Cohen d fix"
+    },
+    {
+      "iteration": 9,
+      "score": 0.977,
+      "delta": 0.002,
+      "note": "verification pass"
+    }
+  ],
+  "cost_history": [
+    {
+      "iteration": 1,
+      "phase_reached": "phase_5",
+      "relative_cost": 0.3
+    }
+  ],
+  "rotated_at": null,
+  "started_at": "2026-03-29T20:12:00Z"
+}
