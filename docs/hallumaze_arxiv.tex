@@ -493,7 +493,7 @@ Efficient v2     & 0.802 & 50.0\% & 6.2  & 417\,s        \\
 \begin{enumerate}[nosep]
   \item Human baseline via Prolific ($n{\geq}25$, same protocol).
   \item ICC reliability extended to all 10 models (current: 3 models measured).
-  \item Ecological validity: \textbf{[Partially completed]} HumanEval-Trap direct test (Section~\ref{sec:hallucode}, $n{=}20$ problems) confirms AP domain-agnostic transfer ($\Delta\text{pass@1}{=}{+}0.575$, $d{=}{+}1.16$). Remaining: Spearman correlation of HalluCode SR/CodeMEI with HumanEval/MBPP pass@1 across ${\geq}5$ models (companion paper); Spearman of MEI/HRR with TruthfulQA/HaluEval (companion paper).
+  \item Ecological validity: \textbf{[Substantially completed --- see Section~\ref{sec:hallucode}]} HumanEval-Trap ($n{=}20$, $\Delta\text{pass@1}{=}{+}0.575$, $d{=}{+}1.16$) and MBPP-Trap ($n{=}20$, AP detection 85.7\%, difficulty-moderated) confirm AP domain-agnostic transfer. HalluMaze MEI $\times$ HumanEval Spearman $\rho{=}{+}0.30$ ($p{=}0.32$, $n{=}13$) establishes orthogonality with coding ability. Remaining: Spearman of HalluCode CodeMEI with HumanEval/MBPP across ${\geq}5$ models (companion paper); Spearman of MEI/HRR with TruthfulQA/HaluEval (companion paper).
   \item 9$\times$9 scaling extended to all 10 models (current: GLM-4.7 only, $n{=}30$).
   \item Alternative maze algorithms (Kruskal, Wilson's).
   \item PyPI package \texttt{hallumaze} with full evaluation server.
@@ -511,6 +511,8 @@ Critically, SR and MEI are orthogonal dimensions (Claude-Sonnet-4.6 SR rank~1 ye
 A HalluCode experiment (GLM $n{=}19$, LFM $n{=}17$, 3 trap types) confirms this SR$\perp$HRR dissociation transfers to the coding domain.
 Furthermore, Adversarial Priming (AP)---an explicit meta-awareness system prompt---achieves CodeMEI$=$0.821 (GLM, $d{=}+1.58$, $p{<}0.001$) and 0.371 (LFM, $d{=}+0.31$, $p{=}0.038$), both surpassing the more complex MARL-SL 5-layer scaffold.
 This demonstrates that \textit{awareness injection}, not complexity, is the key driver of metacognitive coding improvement.
+External validity is further confirmed across two public benchmarks: on HumanEval-Trap, the identical AP prompt raises pass@1 from 0.300 to 0.875 ($\Delta{=}{+}0.575$, $d{=}{+}1.16$); on MBPP-Trap, AP detection transfers (85.7\%) while task difficulty moderates pass@1 benefit.
+Crucially, Spearman correlation across 13 models ($\rho{=}{+}0.30$, $p{=}0.32$) reveals that MEI is \emph{statistically independent of HumanEval coding ability}---GPT-4o (HumanEval 90.2\%) ranks last on MEI (0.315), confirming that HalluMaze measures a genuinely distinct cognitive dimension.
 We release all code, maze seeds, and evaluation scripts to enable reproducible evaluation and invite the community to build on this benchmark.
 
 \paragraph{Reproducibility.}

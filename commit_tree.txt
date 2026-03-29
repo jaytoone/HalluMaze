@@ -1,3 +1,8 @@
+v1.55 20260329 2018
+    - docs/hallumaze_arxiv.tex: Conclusion에 Spearman + MBPP-Trap external validity 추가 (2문장)
+    - docs/hallumaze_arxiv.tex: Planned Extensions §3 "[Substantially completed]"로 업데이트
+    - hallumaze_arxiv_submit.tar.gz 재빌드
+
 v1.53 20260329 2010
     - .omc/episodes.jsonl: iter 3 episode 추가 (score=0.920, convergence)
     - docs/DOC_INDEX.md: MBPP-Trap, Spearman 분석 파일 등록
