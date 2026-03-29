@@ -663,21 +663,21 @@ footer a{color:var(--ac1);text-decoration:none}
   <div style="overflow-x:auto;margin-bottom:16px">
   <table class="stat-table">
     <thead>
-      <tr><th>Model</th><th>Condition</th><th>CodeMEI</th><th>SR</th><th>HRR</th><th style="color:#34d399">Delta MEI</th><th style="color:#94a3b8">95% CI</th><th style="color:#94a3b8">Cohen's d</th><th style="color:#94a3b8">p</th></tr>
+      <tr><th>Model</th><th>Condition</th><th>CodeMEI</th><th>SR</th><th>HRR</th><th style="color:#34d399">Δ<sub>paired</sub> vs Base</th><th style="color:#94a3b8">95% CI</th><th style="color:#94a3b8">Cohen's d</th><th style="color:#94a3b8">p</th></tr>
     </thead>
     <tbody>
       <tr>
         <td rowspan="3" style="font-family:var(--mono);font-size:12px">LFM-1.2B</td>
         <td>Baseline</td><td>0.274</td><td>68.4%</td><td>0.0%</td><td style="color:#5a6378">—</td><td style="color:#5a6378">—</td><td style="color:#5a6378">—</td><td style="color:#5a6378">—</td>
       </tr>
-      <tr><td>MARL-SL</td><td style="color:#f87171">0.215</td><td style="color:#f87171">5.0%</td><td>25.0%</td><td style="color:#f87171;font-weight:700">-0.059</td><td style="color:#5a6378">[-0.17,+0.04]</td><td style="color:#5a6378">-0.30</td><td style="color:#5a6378">0.12</td></tr>
-      <tr style="background:rgba(168,85,247,0.06)"><td style="color:#a855f7;font-weight:600">AI Booster (AP)</td><td style="color:#a855f7;font-weight:700">0.371</td><td>56.9%</td><td>23.5%</td><td style="color:#a855f7;font-weight:700">+0.097*</td><td style="color:#a855f7">[+0.01,+0.23]</td><td style="color:#a855f7">+0.31</td><td style="color:#a855f7">0.038</td></tr>
+      <tr><td>MARL-SL</td><td style="color:#f87171">0.215</td><td style="color:#f87171">5.0%</td><td>25.0%</td><td style="color:#f87171;font-weight:700">-0.074</td><td style="color:#5a6378">[-0.17,+0.04]</td><td style="color:#5a6378">-0.30</td><td style="color:#5a6378">0.12</td></tr>
+      <tr style="background:rgba(168,85,247,0.06)"><td style="color:#a855f7;font-weight:600">AI Booster (AP)</td><td style="color:#a855f7;font-weight:700">0.371</td><td>56.9%</td><td>23.5%</td><td style="color:#5a6378">+0.106</td><td style="color:#5a6378">[-0.04,+0.26]</td><td style="color:#5a6378">+0.31</td><td style="color:#5a6378">0.18</td></tr>
       <tr>
         <td rowspan="3" style="font-family:var(--mono);font-size:12px">GLM-4.5-Air</td>
         <td>Baseline</td><td>0.579</td><td>78.9%</td><td>68.4%</td><td style="color:#5a6378">—</td><td style="color:#5a6378">—</td><td style="color:#5a6378">—</td><td style="color:#5a6378">—</td>
       </tr>
-      <tr><td>MARL-SL</td><td>0.737</td><td>100.0%</td><td>84.2%</td><td style="color:#34d399;font-weight:700">+0.158</td><td style="color:#5a6378">[0.00,+0.09]</td><td style="color:#5a6378">+0.31</td><td style="color:#5a6378">0.18</td></tr>
-      <tr style="background:rgba(168,85,247,0.08)"><td style="color:#a855f7;font-weight:600">AI Booster (AP)</td><td style="color:#a855f7;font-weight:700">0.821</td><td>100.0%</td><td>84.2%</td><td style="color:#a855f7;font-weight:700">+0.242***</td><td style="color:#a855f7">[+0.10,+0.16]</td><td style="color:#a855f7">+1.58</td><td style="color:#a855f7">&lt;0.001</td></tr>
+      <tr><td>MARL-SL</td><td>0.737</td><td>100.0%</td><td>84.2%</td><td style="color:#34d399;font-weight:700">+0.031</td><td style="color:#5a6378">[+0.00,+0.09]</td><td style="color:#5a6378">+0.31</td><td style="color:#5a6378">0.18</td></tr>
+      <tr style="background:rgba(168,85,247,0.08)"><td style="color:#a855f7;font-weight:600">AI Booster (AP)</td><td style="color:#a855f7;font-weight:700">0.821</td><td>100.0%</td><td>84.2%</td><td style="color:#a855f7;font-weight:700">+0.119***</td><td style="color:#a855f7">[+0.10,+0.16]</td><td style="color:#a855f7">+1.58</td><td style="color:#a855f7">&lt;0.001</td></tr>
     </tbody>
   </table>
   </div>
@@ -695,7 +695,7 @@ footer a{color:var(--ac1);text-decoration:none}
     </tbody>
   </table>
   </div>
-  <p style="color:#5a6378;font-size:13px">* p&lt;0.05 *** p&lt;0.001 (Wilcoxon signed-rank, Bootstrap CI n=2000). <strong style="color:#c8cdd8">H6:</strong> MARL-SL capacity threshold between 1.2B and ~7B. <strong style="color:#c8cdd8">H7:</strong> AP Booster beats MARL-SL for ALL models — GLM d=+2.25 (p&lt;0.001), LFM d=+0.57 (p=0.038). GLM n=19 complete; LFM n=17 valid.</p>
+  <p style="color:#5a6378;font-size:13px">*** p&lt;0.001 (Wilcoxon signed-rank, Bootstrap CI n=2000). Δ<sub>paired</sub>: paired mean diff on common problems (GLM n=16, LFM n=17); CI/d from paired analysis. <strong style="color:#c8cdd8">H6:</strong> MARL-SL capacity threshold between 1.2B and ~7B. <strong style="color:#c8cdd8">H7 (AP vs MARL-SL):</strong> GLM Δ=+0.084, d=+2.25, p&lt;0.001; LFM Δ=+0.182, d=+0.57, p=0.038. GLM n=19; LFM n=17.</p>
 
   <div style="background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.2);border-radius:8px;padding:20px;margin:24px 0">
     <h3 style="font-size:15px;font-weight:700;color:#a855f7;margin:0 0 10px">Why AP beats MARL-SL: Mechanism Analysis</h3>
