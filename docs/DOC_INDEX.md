@@ -24,6 +24,7 @@
 | docs/hallumaze_arxiv.tex | arXiv LaTeX paper draft (NeurIPS 2026 format) | 2026-03-24 |
 | docs/hallumaze.bib | BibTeX references for arXiv paper | 2026-03-24 |
 | docs/hf_post_v2.md | HF 커뮤니티 포스트 v2 (트렌딩 스타일, 24시간 후 포스팅 예정) | 2026-03-25 |
+| docs/hf_post_v4.md | HF 커뮤니티 포스트 v4 (HalluCode AP Booster 전용: 80-token prompt beats MARL-SL, GLM d=+2.25 p<0.001) | 2026-03-29 |
 | docs/hf_post_v3.md | HF 커뮤니티 포스트 v3 (Claude 4.x 확장 결과 포함, 13모델 리더보드) | 2026-03-26 |
 | experiment_results/claude4x_pilot.json | Claude 4.x Pilot (n=5, Phase A): Haiku-4.5/Sonnet-4.5/Sonnet-4.6 초기 결과 | 2026-03-26 |
 | experiment_results/claude4x_full.json | Claude 4.x Full (n=60 each): Haiku-4.5 SR=5%, Sonnet-4.5 SR=36.7% MEI=0.783 #1, Sonnet-4.6 SR=60% MEI=0.545 | 2026-03-26 |
@@ -41,8 +42,8 @@
 | docs/figures/fig3_cost_mei.png | Figure 3: MEI vs API cost scatter (600dpi) | 2026-03-24 |
 
 ## Related
-- [[projects/Miro/research/20260323-hallumaze-paper-draft|20260323-hallumaze-paper-draft]]
 - [[projects/Miro/research/20260327-hallumaze-extension-hallucode|20260327-hallumaze-extension-hallucode]]
+- [[projects/Miro/research/20260323-hallumaze-paper-draft|20260323-hallumaze-paper-draft]]
 - [[projects/Miro/research/20260328-hallucode-cubic-evaluation|20260328-hallucode-cubic-evaluation]]
 - [[projects/Miro/research/20260323-hallumaze-extension-todos|20260323-hallumaze-extension-todos]]
 - [[projects/Miro/research/20260326-marl-sl-multi-model-validation|20260326-marl-sl-multi-model-validation]]
