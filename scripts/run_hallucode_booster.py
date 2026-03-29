@@ -75,8 +75,11 @@ _load_env_file("~/.claude/env/shared.env")
 OPENROUTER_MODELS = {
     "glm-free":         {"id": "z-ai/glm-4.5-air:free",                 "display": "GLM-4.5-Air (free)"},
     "lfm-1b-free":      {"id": "liquid/lfm-2.5-1.2b-thinking:free",     "display": "LFM-1.2B-Thinking (free)"},
-    "qwen3-coder-free": {"id": "qwen/qwen3-coder:free",                  "display": "Qwen3-Coder (free)"},
-    "mistral-free":     {"id": "mistralai/mistral-small-3.1-24b-instruct:free", "display": "Mistral-Small-3.1 (free)"},
+    "llama-70b-free":   {"id": "meta-llama/llama-3.3-70b-instruct:free","display": "Llama 3.3 70B (free)"},
+    "gemma-27b-free":   {"id": "google/gemma-3-27b-it:free",             "display": "Gemma 3 27B (free)"},
+    "minimax-free":     {"id": "minimax/minimax-m2.5:free",              "display": "MiniMax M2.5 (free)"},
+    "nemotron-free":    {"id": "nvidia/nemotron-3-super-120b-a12b:free", "display": "Nemotron Super 120B (free)"},
+    "qwen3-coder-free": {"id": "qwen/qwen3-coder:free",                  "display": "Qwen3-Coder 480B (free)"},
     "qwen-72b":         {"id": "qwen/qwen-2.5-72b-instruct",             "display": "Qwen 2.5 72B"},
     "llama-4-scout":    {"id": "meta-llama/llama-4-scout",               "display": "Llama 4 Scout"},
     "llama-4-maverick": {"id": "meta-llama/llama-4-maverick",            "display": "Llama 4 Maverick"},
