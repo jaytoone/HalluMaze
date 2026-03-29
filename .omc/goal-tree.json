@@ -1,24 +1,19 @@
 {
-  "root_goal": "HF Community Feed(huggingface.co/posts)에 v3 포스트 게시 — Playwright로 웹 UI 사용",
-  "original_goal": "HF Dataset upload (experiment_results/ JSONs) + HF Community Post v3 게시",
+  "root_goal": "HalluCode AI Booster 미들웨어 설계·구현·실증: arXiv tar.gz 재빌드 + HF Space 업데이트(P1) → HalluCode n=60 스케일업(P1) → AI Booster로 GLM CodeMEI 0.737 수준을 다른 모델에서도 달성(P2)",
+  "original_goal": "P1~P2 작업 완료 후, HalluCode에서 코딩 능력을 대폭 상승시키는 AI Booster 미들웨어 설계·구현·실증: arXiv tar.gz 재빌드, HF Space 업데이트, HalluCode n=60 스케일업, 최종적으로 GLM CodeMEI 0.737 이상을 다른 모델에서도 달성하는 AI Booster 프롬프트 엔지니어링 + 실험",
   "level": 0,
   "sub_goals": [
-    "Playwright로 huggingface.co/posts 페이지 열기",
-    "포스트 작성 버튼 클릭",
-    "docs/hf_post_v3.md 내용 입력",
-    "게시 버튼 클릭 → URL 확인"
+    "[P1] arXiv tar.gz 재빌드 (hallumaze_arxiv_submit.tar.gz) — 4-row ablation Table 3 포함",
+    "[P1] HF Space 업데이트 (hallumaze_final.html → Be2Jay/hallumaze Space)",
+    "[P1] HalluCode n=60 스케일업 — HC020 timeout fix + 5개 모델 실험",
+    "[P2] AI Booster 미들웨어 설계 — MARL-SL 강화 또는 새 전략 (target: non-GLM 모델에서 CodeMEI +0.15 이상)",
+    "[P2] AI Booster 실증 — 최소 2개 모델에서 CodeMEI 0.737 달성 확인"
   ],
   "reward_spec": {
-    "primary_metric": "HF Community Post URL 반환",
-    "threshold": "huggingface.co/posts/Be2Jay/XXXXXX URL 존재"
+    "primary_metric": "CodeMEI ≥ 0.737 in ≥2 models with AI Booster",
+    "threshold": "At least 2 non-GLM models achieve CodeMEI ≥ 0.65 with AI Booster applied"
   },
-  "evolution_history": [
-    {
-      "iteration": 1,
-      "goal": "HF Dataset + Community Post v3",
-      "score": 0.833,
-      "rationale": "Dataset upload 완료, Community Post API 없어 미완"
-    }
-  ],
+  "evolution_count": 0,
+  "evolution_history": [],
   "history": []
 }
