@@ -1,3 +1,8 @@
+v1.62 20260329 2105
+    - docs/hallumaze_arxiv.tex: CRITICAL — Abstract/Intro/Conclusion Cohen's d 오류 수정
+      (d=+1.58/+0.31 는 AP vs Baseline; MARL-SL 비교는 d=+2.25/+0.57 로 교정)
+    - hallumaze_arxiv_submit.tar.gz 재빌드
+
 v1.61 20260329 2058
     - README.md: Bonferroni k=10 주석 명확화 (10 primary + 3 Claude 4.x extended)
     - docs/hallumaze_arxiv.tex: Figure caption "10 primary models" + Stats section 13모델 반영
