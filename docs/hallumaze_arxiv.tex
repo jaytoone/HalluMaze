@@ -220,15 +220,16 @@ Rank & Model & MEI & 95\% CI & SR & HRR & $\delta$ \\
 \begin{figure}[t]
   \centering
   \includegraphics[width=\linewidth]{figures/fig1_mei_leaderboard.png}
-  \caption{MEI scores for all 10 models and the Random Walk baseline. Error bars show bootstrapped 95\% CI ($n_{\text{boot}}{=}2000$). All models fall significantly below the Random Walk dashed line.}
+  \caption{MEI scores for the 10 primary models and the Random Walk baseline. Error bars show bootstrapped 95\% CI ($n_{\text{boot}}{=}2000$). All models fall significantly below the Random Walk dashed line. Claude~4.x extended results ($\dagger$, $n{=}3$) are included in Table~\ref{tab:leaderboard}.}
   \label{fig:leaderboard}
 \end{figure}
 
 \subsection{Statistical Tests}
 
-All models vs.\ Random Walk baseline (Wilcoxon signed-rank, Bonferroni $k{=}10$): all 10 comparisons yield $p{<}0.001$.
-Glass's $\delta$ ranges from 0.554 (Claude-3.7-Sonnet) to 2.129 (Claude-3-Haiku).
-BH-FDR ($q{=}0.05$) confirms all 10 models significant.
+Primary 10-model analysis vs.\ Random Walk (Wilcoxon signed-rank, Bonferroni $k{=}10$): all 10 comparisons yield $p{<}0.001$.
+Extended Claude~4.x family ($n{=}3$, same protocol, separate evaluation): all $p{<}0.001$.
+Glass's $\delta$ ranges from 0.554 (Claude-3.7-Sonnet) to 2.129 (Claude-3-Haiku) across all 13 models.
+BH-FDR ($q{=}0.05$) confirms all 13 models significant.
 
 \subsection{Key Findings}
 

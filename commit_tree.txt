@@ -1,3 +1,8 @@
+v1.61 20260329 2058
+    - README.md: Bonferroni k=10 주석 명확화 (10 primary + 3 Claude 4.x extended)
+    - docs/hallumaze_arxiv.tex: Figure caption "10 primary models" + Stats section 13모델 반영
+    - hallumaze_arxiv_submit.tar.gz 재빌드
+
 v1.60 20260329 2052
     - README.md: 전면 업데이트 — 8모델→13모델, HalluCode, Spearman, Claude 4.x 반영
 

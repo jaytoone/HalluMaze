@@ -50,7 +50,8 @@ HalluMaze measures **metacognitive error recovery** in LLMs through maze navigat
 | 13 | **GPT-4o** | **0.315** [0.251, 0.380] | 6.7% | 35.3% | 1.917 |
 
 † Claude 4.x family (n=60 each, same protocol). ★ Deterministic baseline.
-All 13 vs. Random Walk: Wilcoxon signed-rank, Bonferroni k=10, all p<0.001.
+Original 10 models vs. Random Walk: Wilcoxon signed-rank, Bonferroni k=10, all p<0.001.
+Claude 4.x family (†): same protocol, separate extended evaluation, all p<0.001.
 
 ---
 
