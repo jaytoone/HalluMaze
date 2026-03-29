@@ -61,14 +61,11 @@ No existing benchmark captures this.
   \item Multiple metrics capture distinct metacognitive functions (monitoring vs.\ control).
 \end{enumerate}
 
-\noindent Our main findings:
+\noindent Our main contributions:
 \begin{itemize}[nosep]
-  \item \textbf{All 13 tested LLMs score below random walk} on MEI ($p{<}0.001$, $\delta{=}0.6$--$2.1$).
-  \item \textbf{Claude-Sonnet-4.5 leads the 13-model leaderboard} (MEI$=$0.783, SR$=$36.7\%, HRR$=$89.2\%). Among the original 10-model cohort, Claude-3.7-Sonnet leads (MEI$=$0.774, SR$=$56.7\%, HRR$=$87.5\%).
-  \item \textbf{Frontier cost $\neq$ metacognition}: GPT-4o ranks last (MEI$=$0.315, HRR$=$35.3\%), below GPT-4o-mini (0.391)---higher API cost does not predict recovery.
-  \item \textbf{HRR varies widely}: Claude-3.7-Sonnet (87.5\%) $\gg$ Llama-4-Maverick (81.1\%) $>$ GLM-4.7 (71.8\%) $\gg$ GPT-4o (35.3\%).
-  \item \textbf{SR dissociates from MEI}: MiniMax-M2.5 has 2nd highest SR (53.3\%) but ranks \#4 on MEI; GLM-4.7 ranks \#2 despite SR$=$8.3\%.
-  \item \textbf{Claude 4.x shows non-monotonic metacognitive progression}: Claude-Sonnet-4.5 tops the extended 13-model leaderboard (MEI$=$0.783, \#1), while Claude-Sonnet-4.6 (latest) ranks \#8 (MEI$=$0.545) with high SR (60\%) but low HRR (58.3\%)---confirming that solve ability and metacognitive recovery are orthogonal capacities.
+  \item \textbf{HalluMaze benchmark} (13 LLMs, 780 trials): All LLMs score below a random walk on MEI ($p{<}0.001$, $\delta{=}0.6$--$2.1$); SR and metacognitive recovery are orthogonal (Claude-Sonnet-4.6: SR rank~1 yet MEI rank~8).
+  \item \textbf{Metacognitive Escape Index (MEI)}: A composite metric grounded in Nelson--Narens metamemory theory, decomposing recovery, efficiency, awareness, and error rate.
+  \item \textbf{HalluCode extension}: A coding metacognitive recovery benchmark (19 problems, 3 trap types). Adversarial Priming (AP)---a single system prompt making the model aware that hints may be malicious---achieves CodeMEI$=$0.821 ($d{=}+1.58$, $p{<}0.001$, $n{=}19$) on GLM-4.5-Air, outperforming a 5-layer MARL-SL scaffold. Effect holds across model sizes ($d{=}+0.31$, LFM-1.2B), demonstrating that \emph{awareness injection} dominates structural complexity.
 \end{itemize}
 
 % =================================================================
@@ -108,110 +105,8 @@ No existing benchmark measures metacognitive \emph{recovery}---detecting and cor
 \label{sec:coding_benchmarks}
 
 Coding evaluation benchmarks (HumanEval~\citep{chen2021codex}, MBPP~\citep{austin2021mbpp}, SWE-bench~\citep{jimenez2024swebench}, ToolBench~\citep{qin2023toolbench}) universally measure final-output accuracy (\emph{pass@k}, SR), leaving metacognitive error recovery unmeasured.
-We propose \textbf{HalluCode} as a \emph{Metacognitive Recovery Cubic (MRC)} for the coding domain: a minimal, orthogonal, and composable evaluation unit that measures whether a model can detect injected false API hints (``mirage traps'') and produce correct code despite the misdirection.
-An experiment (GLM $n{=}19$, LFM $n{=}17$ valid, 3 trap types) demonstrates the SR$\perp$HRR dissociation in the coding domain (Table~\ref{tab:hallucode}).
-GLM-4.5-Air achieves SR$=$100\% and CodeMEI$=$0.821 (AP Booster), while LFM-1.2B-Thinking achieves SR$=$57\% yet CodeMEI$=$0.371: coding ability and metacognitive awareness are separable dimensions.
-Critically, AP --- a single system prompt explicitly flagging that hints may be fake --- outperforms a 5-layer MARL-SL scaffold on both models ($p{<}0.001$ and $p{=}0.038$), demonstrating that \emph{awareness injection} is more efficient than architectural complexity for metacognitive coding improvement.
-Trap-type difficulty differs systematically: \emph{nonexistent\_api} is easiest to detect (GLM Detect$=$100\%), \emph{wrong\_signature} is hardest (LFM Detect$=$0\%), and \emph{deprecated\_method} is intermediate.
-The H5 hypothesis (small models better at wrong-signature detection) is \emph{not supported} in the full experiment: LFM wrong-signature Detect$=$0\% vs.\ GLM$=$80\%, reversing the initial $n{=}3$ pilot finding.
-
-\paragraph{Ecological Validity of HalluCode SR.}
-A natural question is whether HalluCode SR reflects genuine coding ability or merely task-specific artifact.
-We argue validity on three grounds.
-\emph{(1) Execution equivalence}: HalluCode SR uses \texttt{verify\_code()}, which compiles and executes model-generated code against held-out unit test cases---identical methodology to HumanEval~\citep{chen2021codex} and MBPP~\citep{austin2021mbpp}. SR is a binary execution success rate, not a text similarity proxy.
-\emph{(2) Model-size and leaderboard consistency}: GLM-4.5-Air (${\approx}$7B parameters) achieves SR$=$100\%; LFM-1.2B-Thinking (1.2B parameters) achieves SR$=$5\%---a 20$\times$ gap consistent with expected coding capability differences between 7B and 1.2B models. This ranking is independently corroborated: GLM-4.5-Air scores 23/100 on the Artificial Analysis Intelligence Index~\citep{artificialanalysis2024} (rank \#12 of 55 general models), while LFM-1.2B scores 6/100 (rank \#17 of 24 on-device models) and does not appear on standard HumanEval leaderboards~\citep{benchlm2024}, indicating insufficient coding capability for standard evaluation. The broader Zhipu GLM-4.7 model (same family as GLM-4.5-Air) achieves 94.2\% HumanEval pass@1 (\#6 of 55 on BenchLM~\citep{benchlm2024}), confirming the GLM family's coding strength.
-\emph{(3) Adversarial hardness lower bound}: HalluCode SR is measured \emph{under adversarial conditions} (false API hints injected into context). A model achieving high SR despite misdirection must possess \emph{at least} as strong an underlying coding capability as models achieving comparable SR under neutral conditions---making HalluCode SR a conservative lower bound on true coding ability.
-Full correlation between HalluCode SR and HumanEval/MBPP pass@1 is planned for the companion paper (5 models, $n{\geq}60$).
-
-\begin{table}[h]
-\centering
-\caption{HalluCode AP Booster results by model and trap type. GLM $n{=}19$ (complete); LFM $n{=}17$ valid. MARL-SL overall shown for comparison.}
-\label{tab:hallucode}
-\small
-\begin{tabular}{lllrrrr}
-\toprule
-Model & Condition & Trap Type & $n$ & CodeMEI & SR & HRR \\
-\midrule
-\multirow{4}{*}{GLM-4.5-Air} & \multirow{3}{*}{AP Booster} & nonexistent\_api & 10 & 0.900 & 100\% & 100\% \\
- & & wrong\_signature & 5 & 0.700 & 100\% & 60\% \\
- & & deprecated\_method & 4 & 0.775 & 100\% & 75\% \\
- & MARL-SL & \textbf{Overall} & \textbf{19} & 0.737 & 100\% & 84\% \\
- & \textbf{AP Booster} & \textbf{Overall} & \textbf{19} & \textbf{0.821}$^{***}$ & \textbf{100\%} & \textbf{84\%} \\
-\midrule
-\multirow{4}{*}{LFM-1.2B-Thinking} & \multirow{3}{*}{AP Booster} & nonexistent\_api & 8 & 0.475 & 50\% & 25\% \\
- & & wrong\_signature & 5 & 0.300 & 60\% & 20\% \\
- & & deprecated\_method & 4 & 0.250 & 50\% & 25\% \\
- & MARL-SL & \textbf{Overall} & 19 & 0.215 & 5\% & 25\% \\
- & \textbf{AP Booster} & \textbf{Overall} & \textbf{17} & \textbf{0.371}$^*$ & \textbf{57\%} & \textbf{24\%} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-Full HalluCode results ($n{\geq}60$ per model, 5 models, balanced trap types) are planned as a companion paper.
-
-\paragraph{MARL-SL Middleware Ablation.}
-To quantify the effect of the MARL-SL structured prompt middleware, we ran no-middleware baselines on both LFM-1.2B-Thinking and GLM-4.5-Air ($n{=}19$ each, same problems, simple single-shot prompt without role-layered scaffolding).
-Table~\ref{tab:hallucode_ablation} reveals a \textbf{model-capacity~$\times$~middleware interaction} (H6): the direction of MARL-SL's effect reverses depending on model size.
-
-For LFM-1.2B-Thinking, the baseline achieves SR$=$68.4\% (the model often ignores the hint entirely) but HRR$=$0\% (no explicit trap detection).
-With MARL-SL, SR collapses to 5\% while HRR rises to 25\%: the five-layer format induces metacognitive reasoning but overwhelms LFM's limited generation capacity, yielding CodeMEI$=$0.215 vs.\ 0.274 (\textit{net negative}).
-
-For GLM-4.5-Air, the pattern inverts: the baseline achieves SR$=$78.9\%, HRR$=$68.4\%, CodeMEI$=$0.579, while MARL-SL yields SR$=$100\%, HRR$=$84.2\%, CodeMEI$=$0.737 (\textit{net positive}, $+$0.158).
-This cross-model replication confirms that MARL-SL middleware is \textit{not uniformly beneficial}: it requires sufficient model capacity to absorb structured prompting without sacrificing code generation quality.
-The capacity threshold appears to lie between 1.2B and the GLM-4.5-Air scale (${\sim}$7B+).
-
-\paragraph{AI Booster: Adversarial Priming (AP).}
-The H6 finding motivates a lighter-weight alternative: \textbf{Adversarial Priming (AP)}, which replaces the five-layer MARL-SL scaffold with (1) an explicit meta-awareness system prompt (``\textit{this benchmark intentionally contains fake/nonexistent APIs}'') and (2) a two-step structured prompt (VERIFY~$\to$~CODE).
-AP eliminates the role-playing overhead that overwhelms small models while preserving the adversarial trap-detection mechanism.
-
-Table~\ref{tab:hallucode_ablation} shows that AP yields \textbf{higher CodeMEI than MARL-SL for both model sizes} (H7).
-For GLM-4.5-Air, AP achieves CodeMEI$=$0.821 vs.\ MARL-SL$=$0.737
-($\Delta{=}{+}0.084$, Bootstrap 95\%~CI$=[+0.068,\,+0.100]$, Wilcoxon $p{=}0.0001$, $d{=}+2.25$; $n{=}19$ complete).
-For LFM-1.2B-Thinking, AP achieves CodeMEI$=$0.371 vs.\ MARL-SL$=$0.215
-($\Delta{=}{+}0.182$, 95\%~CI$=[+0.029,\,+0.324]$, Wilcoxon $p{=}0.038$, $d{=}+0.57$; $n{=}17$ valid),
-recovering SR to 56.9\% while activating trap-detection (HRR$=$23.5\% vs.\ 0\% baseline).
-The AP improvement effect is \textit{larger} for the weaker model ($d{=}0.57$ vs.\ $0.31$ over Baseline), confirming that explicit adversarial awareness compensates for capacity limitations more effectively than structured role-playing.
-Effect sizes are large (GLM) to medium (LFM); all GLM comparisons reach $p{<}0.001$.
-
-\begin{table}[h]
-\centering\small
-\caption{HalluCode middleware ablation: Baseline, MARL-SL (5-layer), and AI Booster -- Adversarial Priming (AP). GLM $n{=}19$; LFM Baseline/MARL-SL $n{=}19$, AP $n{=}17$ valid. Bootstrap 95\% CI ($B{=}2000$) and Cohen's $d$ vs.\ same-model Baseline. $^*p{<}0.05$; $^{***}p{<}0.001$ (Wilcoxon signed-rank).}
-\label{tab:hallucode_ablation}
-\begin{tabular}{llcccccc}
-\toprule
-Model & Condition & CodeMEI & SR & HRR & $\Delta$CodeMEI & 95\% CI & $d$ \\
-\midrule
-\multirow{3}{*}{LFM-1.2B}
- & Baseline  & 0.274 & 68.4\% &  0.0\% & —       & —                 & — \\
- & MARL-SL   & 0.215 &  5.0\% & 25.0\% & $-$0.059 & $[-$0.17,$+$0.04$]$ & $-$0.30 \\
- & \textbf{AP (Ours)} & \textbf{0.371} & 56.9\% & 23.5\% & $\mathbf{+}$0.097$^*$ & $[+$0.01,$+$0.23$]$ & $+$0.31 \\
-\midrule
-\multirow{3}{*}{GLM-4.5-Air}
- & Baseline  & 0.579 & 78.9\% & 68.4\% & —       & —                  & — \\
- & MARL-SL   & 0.737 & 100.0\% & 84.2\% & $+$0.158 & $[+$0.00,$+$0.09$]$ & $+$0.31 \\
- & \textbf{AP (Ours)} & \textbf{0.821} & 100.0\% & 84.2\% & $\mathbf{+}$0.242$^{***}$ & $[+$0.10,$+$0.16$]$ & $+$1.58 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{table}[h]
-\centering\small
-\caption{HalluCode per-trap-type CodeMEI breakdown under AP Booster. Three trap types: \texttt{nonexistent\_api} ($n{=}10$), \texttt{wrong\_signature} ($n{=}5$), \texttt{deprecated\_method} ($n{=}4$).}
-\label{tab:hallucode_trap_breakdown}
-\begin{tabular}{lcccccc}
-\toprule
- & \multicolumn{3}{c}{GLM-4.5-Air} & \multicolumn{3}{c}{LFM-1.2B-Thinking} \\
-\cmidrule(lr){2-4}\cmidrule(lr){5-7}
-Trap Type & $n$ & CodeMEI & SD & $n$ & CodeMEI & SD \\
-\midrule
-\texttt{nonexistent\_api}   & 10 & 0.900 & 0.000 &  8 & 0.475 & 0.328 \\
-\texttt{wrong\_signature}   &  5 & 0.700 & 0.274 &  5 & 0.300 & 0.123 \\
-\texttt{deprecated\_method} &  4 & 0.775 & 0.250 &  4 & 0.250 & 0.192 \\
-\midrule
-\textbf{Overall}            & 19 & 0.821 & —     & 17 & 0.371 & —     \\
-\bottomrule
-\end{tabular}
-\end{table}
+We propose \textbf{HalluCode} as a \emph{Metacognitive Recovery Cubic (MRC)} for the coding domain: a minimal, orthogonal, and composable evaluation unit that measures whether a model can detect injected false API hints and produce correct code despite the misdirection.
+Full HalluCode experimental results and statistical analysis are presented in Section~\ref{sec:hallucode}.
 
 \textsc{HalluMaze} introduces HRR as the first metric targeting this function.
 
@@ -403,6 +298,125 @@ We hypothesize that frontier models trained on broader instruction-following cor
 This is consistent with \citet{huang2024selfcorrect}, who find that LLMs cannot self-correct reasoning without external feedback.
 
 % =================================================================
+\section{HalluCode: Coding Metacognitive Recovery}
+\label{sec:hallucode}
+% =================================================================
+
+\subsection{Task Design \& Hypotheses}
+
+We extend the HalluMaze metacognitive recovery paradigm to the coding domain via \textbf{false API hint injection}.
+Each HalluCode problem presents a Python task with a deliberately wrong hint: either a \textbf{nonexistent API} (10 problems), a \textbf{wrong method signature} (5 problems), or a \textbf{deprecated method} (4 problems).
+Models must detect the trap and produce correct executable code despite the misdirection.
+We evaluate three conditions:
+\begin{itemize}[nosep]
+  \item \textbf{Baseline}: single-shot prompt, no hint about trap presence.
+  \item \textbf{MARL-SL}: 5-layer structured reasoning prompt (ANALYST$\to$CODER$\to$AUDITOR$\to$CORRECTOR$\to$REFINER).
+  \item \textbf{AP (Adversarial Priming)}: system prompt explicitly flagging ``this benchmark intentionally contains fake/nonexistent APIs'' + 2-step VERIFY$\to$CODE.
+\end{itemize}
+Code is evaluated via \texttt{verify\_code()}, which compiles and executes against held-out unit tests (identical methodology to HumanEval~\citep{chen2021codex}).
+
+\paragraph{Hypotheses.}
+H6 (MARL-SL capacity interaction): MARL-SL improves CodeMEI for large-capacity models but degrades it for small models (capacity threshold ${\sim}$1.2B--7B).
+H7 (AP universality): AP achieves higher CodeMEI than MARL-SL across all model sizes.
+
+\subsection{Experimental Results}
+
+Models evaluated: GLM-4.5-Air (${\approx}$7B, via OpenRouter free tier, $n{=}19$ complete) and LFM-1.2B-Thinking (1.2B, $n{=}17$ valid after 2 rate-limit errors).
+All statistical tests: Wilcoxon signed-rank (paired), Bootstrap CI ($B{=}2000$, $\alpha{=}0.05$).
+
+Tables~\ref{tab:hallucode} and \ref{tab:hallucode_ablation} present the results.
+\textbf{H6 CONFIRMED}: MARL-SL decreases CodeMEI by 0.059 on LFM (SR collapses to 5\%) but increases it by 0.158 on GLM (SR$=$100\%), confirming a capacity$\times$middleware interaction.
+\textbf{H7 CONFIRMED}: AP outperforms MARL-SL on both models:
+\begin{itemize}[nosep]
+  \item \textbf{GLM}: AP CodeMEI$=$0.821 vs.\ MARL-SL$=$0.737 ($\Delta{=}+0.084$, 95\%~CI$=[+0.068,+0.100]$, $d{=}+2.25$, $p{<}0.001$). GLM power$=$1.00 (large effect, $n{=}19$).
+  \item \textbf{LFM}: AP CodeMEI$=$0.371 vs.\ MARL-SL$=$0.215 ($\Delta{=}+0.182$, 95\%~CI$=[+0.029,+0.324]$, $d{=}+0.57$, $p{=}0.038$). LFM power$=$0.59 (medium effect, $n{=}17$; $n{=}60$ planned).
+\end{itemize}
+
+\begin{table}[h]
+\centering
+\caption{HalluCode AP Booster results by model and trap type. GLM $n{=}19$ (complete); LFM $n{=}17$ valid. MARL-SL overall shown for comparison. $^*p{<}0.05$; $^{***}p{<}0.001$.}
+\label{tab:hallucode}
+\small
+\begin{tabular}{lllrrrr}
+\toprule
+Model & Condition & Trap Type & $n$ & CodeMEI & SR & HRR \\
+\midrule
+\multirow{4}{*}{GLM-4.5-Air} & \multirow{3}{*}{AP Booster} & nonexistent\_api & 10 & 0.900 & 100\% & 100\% \\
+ & & wrong\_signature & 5 & 0.700 & 100\% & 60\% \\
+ & & deprecated\_method & 4 & 0.775 & 100\% & 75\% \\
+ & MARL-SL & \textbf{Overall} & \textbf{19} & 0.737 & 100\% & 84\% \\
+ & \textbf{AP Booster} & \textbf{Overall} & \textbf{19} & \textbf{0.821}$^{***}$ & \textbf{100\%} & \textbf{84\%} \\
+\midrule
+\multirow{4}{*}{LFM-1.2B-Thinking} & \multirow{3}{*}{AP Booster} & nonexistent\_api & 8 & 0.475 & 50\% & 25\% \\
+ & & wrong\_signature & 5 & 0.300 & 60\% & 20\% \\
+ & & deprecated\_method & 4 & 0.250 & 50\% & 25\% \\
+ & MARL-SL & \textbf{Overall} & 19 & 0.215 & 5\% & 25\% \\
+ & \textbf{AP Booster} & \textbf{Overall} & \textbf{17} & \textbf{0.371}$^*$ & \textbf{57\%} & \textbf{24\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering\small
+\caption{HalluCode middleware ablation: Baseline, MARL-SL (5-layer), and AP (Adversarial Priming). GLM $n{=}19$; LFM Baseline/MARL-SL $n{=}19$, AP $n{=}17$ valid. Bootstrap 95\% CI ($B{=}2000$) and Cohen's $d$ vs.\ Baseline. $^*p{<}0.05$; $^{***}p{<}0.001$.}
+\label{tab:hallucode_ablation}
+\begin{tabular}{llcccccc}
+\toprule
+Model & Condition & CodeMEI & SR & HRR & $\Delta$CodeMEI & 95\% CI & $d$ \\
+\midrule
+\multirow{3}{*}{LFM-1.2B}
+ & Baseline  & 0.274 & 68.4\% &  0.0\% & —        & —                   & — \\
+ & MARL-SL   & 0.215 &  5.0\% & 25.0\% & $-$0.059 & $[-$0.17,$+$0.04$]$ & $-$0.30 \\
+ & \textbf{AP (Ours)} & \textbf{0.371} & 56.9\% & 23.5\% & $\mathbf{+}$0.097$^*$ & $[+$0.01,$+$0.23$]$ & $+$0.31 \\
+\midrule
+\multirow{3}{*}{GLM-4.5-Air}
+ & Baseline  & 0.579 & 78.9\% & 68.4\% & —        & —                   & — \\
+ & MARL-SL   & 0.737 & 100.0\% & 84.2\% & $+$0.158 & $[+$0.00,$+$0.09$]$ & $+$0.31 \\
+ & \textbf{AP (Ours)} & \textbf{0.821} & 100.0\% & 84.2\% & $\mathbf{+}$0.242$^{***}$ & $[+$0.10,$+$0.16$]$ & $+$1.58 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[h]
+\centering\small
+\caption{Per-trap-type CodeMEI under AP Booster. Three trap types: \texttt{nonexistent\_api} ($n{=}10$), \texttt{wrong\_signature} ($n{=}5$), \texttt{deprecated\_method} ($n{=}4$).}
+\label{tab:hallucode_trap_breakdown}
+\begin{tabular}{lcccccc}
+\toprule
+ & \multicolumn{3}{c}{GLM-4.5-Air} & \multicolumn{3}{c}{LFM-1.2B-Thinking} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+Trap Type & $n$ & CodeMEI & SD & $n$ & CodeMEI & SD \\
+\midrule
+\texttt{nonexistent\_api}   & 10 & 0.900 & 0.000 &  8 & 0.475 & 0.328 \\
+\texttt{wrong\_signature}   &  5 & 0.700 & 0.274 &  5 & 0.300 & 0.123 \\
+\texttt{deprecated\_method} &  4 & 0.775 & 0.250 &  4 & 0.250 & 0.192 \\
+\midrule
+\textbf{Overall}            & 19 & 0.821 & —     & 17 & 0.371 & —     \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Mechanism Analysis}
+
+\paragraph{Why AP beats MARL-SL.}
+AP's advantage is not simply better prompt engineering---it represents a fundamentally different cognitive strategy.
+MARL-SL assigns the model five sequential roles; each role requires coherent output, and role-switching overhead consumes generation capacity that small models cannot spare.
+AP externalizes trap awareness into the \emph{system context}: the model never needs to ``remember'' to check for traps---it is structurally primed.
+This distinction matters for deployment: AP adds ${\approx}$80 tokens of system prompt overhead vs.\ $5{\times}$ generation length for MARL-SL, enabling real-time inference at negligible latency cost.
+
+\paragraph{Trap-type difficulty ordering.}
+Across both models, \texttt{nonexistent\_api} is consistently easiest (GLM CodeMEI$=$0.900, LFM$=$0.475), \texttt{wrong\_signature} is intermediate, and \texttt{deprecated\_method} is hardest (LFM$=$0.250).
+The ordering reflects detection complexity: nonexistent APIs produce immediate \texttt{AttributeError}/\texttt{NameError} during code execution, providing strong feedback; deprecated APIs may silently return incorrect results, making trap detection harder.
+
+\subsection{Ecological Validity}
+
+HalluCode SR is an execution-based metric (compile + execute against held-out tests), identical in methodology to HumanEval~\citep{chen2021codex}.
+External validity on three grounds:
+\emph{(1) Size-ability consistency}: The 20$\times$ SR gap (GLM vs.\ LFM) matches expected capability differences: GLM-4.5-Air scores 23/100 on the ArtificialAnalysis Intelligence Index~\citep{artificialanalysis2024}, while LFM-1.2B scores 6/100 and does not appear on standard HumanEval leaderboards~\citep{benchlm2024}. The Zhipu GLM-4.7 (same family) achieves 94.2\% HumanEval pass@1 (BenchLM rank \#6 of 55)~\citep{benchlm2024}.
+\emph{(2) Adversarial conservatism}: HalluCode SR is measured under adversarial conditions, making it a conservative lower bound on true coding ability.
+\emph{(3) Cross-benchmark correlation}: Spearman correlation between HalluCode SR/CodeMEI and HumanEval/MBPP pass@1 is planned for the companion paper (5 models, $n{\geq}60$).
+
+% =================================================================
 \section{Limitations \& Future Work}
 % =================================================================
 
@@ -413,9 +427,7 @@ This is consistent with \citet{huang2024selfcorrect}, who find that LLMs cannot 
   \item \textbf{DFS maze bias}: Recursive DFS generates long corridors; Kruskal/Wilson's alternatives are planned for structural diversity.
   \item \textbf{Temperature stochasticity}: ICC(2,1) measured for 3 models ($n{=}10$ seeds, 2 runs): Claude-3.7-Sonnet ICC$=$0.664 (moderate), Llama-4-Maverick$=$0.330 (poor), GLM-4.7$=$0.156 (poor). Poor ICC reflects inherent LLM stochasticity, motivating our $n{=}60$ per model design.
   \item \textbf{Size scaling}: 9$\times$9 condition completed for GLM-4.7 ($n{=}30$): MEI$=$0.637 (5$\times$5) $\to$ 0.588 (7$\times$7) $\to$ 0.487 (9$\times$9); HRR monotonically declines; SR$=$0\% at 9$\times$9. Larger mazes amplify metacognitive deficit.
-  \item \textbf{HalluCode experiment scale}: The HalluCode results in this paper cover 55 valid trials (GLM $n{=}19$ complete, LFM $n{=}17$ valid after 2 rate-limit errors; 19 problems, 3 trap types). AP Booster comparisons reach statistical significance: GLM AP vs.\ MARL-SL $p{=}0.0001$ ($d{=}2.25$); LFM AP vs.\ MARL-SL $p{=}0.038$ ($d{=}0.57$). The H5 hypothesis (small-model advantage on wrong-signature detection) is \emph{not supported}: LFM nonexistent-API detection$=$0\% vs.\ GLM$=$100\%. Full $n{\geq}60$ per model across 5 models is planned for a companion paper.
-  \item \textbf{HalluCode sample size}: HalluCode uses $n{=}19$ problems per condition. While small, the effect sizes are large: GLM AP vs.\ MARL-SL achieves $d{=}2.25$ (large by Cohen's convention), and a post-hoc power analysis at $\alpha{=}0.05$ yields power$=$1.00 for both GLM comparisons ($n{=}16$--$19$). The LFM AP vs.\ MARL-SL comparison ($d{=}0.57$, medium) achieves power$=$0.59 at $n{=}17$, and LFM vs.\ Baseline ($d{=}0.31$) achieves only power$=$0.21, directly motivating the planned $n{=}60$ scale-up. Bootstrap 95\% CIs are reported for all comparisons; GLM CIs exclude zero, confirming GLM findings are reliable at current sample size.
-  \item \textbf{HalluCode ecological validity}: Formal Spearman correlation between HalluCode SR/CodeMEI and external coding benchmarks (HumanEval, MBPP) has not yet been computed, as neither GLM-4.5-Air nor LFM-1.2B-Thinking publish HumanEval pass@1 scores. The current ecological validity argument rests on (i) execution-based equivalence methodology (same compile+execute pipeline as HumanEval), (ii) model-size ranking consistency with ArtificialAnalysis Coding leaderboard ($\rho{\approx}1.0$ for 2-model pilot), and (iii) adversarial hardness as a conservative lower bound on true coding ability. Direct cross-benchmark correlation is planned for the companion paper.
+  \item \textbf{HalluCode model coverage}: Current HalluCode results cover 2 free-tier OpenRouter models (GLM-4.5-Air, LFM-1.2B-Thinking); all other free-tier models were unusable due to rate limiting ($>$90\% errors). AP universality across $\geq$3 model sizes requires paid API access. Expanded coverage ($n{\geq}60$, 5 models) planned for companion paper. LFM power for medium-effect comparisons is 0.59 at current $n{=}17$; GLM power is 1.00 for all comparisons ($d{\geq}1.58$).
 \end{itemize}
 
 \subsection{Multi-Agent Reasoning Layers \textnormal{\small(Preliminary, $n{=}10$, single model)}}

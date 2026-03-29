@@ -1,5 +1,5 @@
 {
-  "root_goal": "HalluCode 벤치마크를 상위 티어 논문급(NeurIPS/ICML/ICLR)으로 개선: Bootstrap CI + Cohen's d 통계 강화, HalluCode 전용 리더보드 (Baseline/AP/MARL-SL × GLM+LFM), arXiv HalluCode 섹션 NeurIPS 심사 기준으로 보강 (significance test, ablation depth, ecological validity, limitation analysis)",
+  "root_goal": "HalluCode를 독립 \\section{HalluCode Extension}으로 격상: hypothesis→method→results→discussion 구조, AP Booster를 3번째 main contribution으로 Abstract에 명시, Introduction에 HalluCode contribution bullet 추가. NeurIPS 논문에서 HalluCode가 HalluMaze와 동등한 비중으로 다뤄지는 구조 완성.",
   "original_goal": "HalluCode 벤치마크를 상위 티어 논문급(NeurIPS/ICML/ICLR)으로 개선: Bootstrap CI + Cohen's d 통계 강화, HalluCode 전용 리더보드 (Baseline/AP/MARL-SL × GLM+LFM), arXiv HalluCode 섹션 NeurIPS 심사 기준으로 보강 (significance test, ablation depth, ecological validity, limitation analysis)",
   "level": 0,
   "sub_goals": [
@@ -14,7 +14,14 @@
     "primary_metric": "NeurIPS-standard HalluCode section: statistical significance + effect size + ablation depth + ecological validity",
     "threshold": "Bootstrap CI on all condition comparisons, Cohen's d reported, per-trap-type breakdown table, 2+ reviewer objections pre-empted in limitations"
   },
-  "evolution_count": 0,
-  "evolution_history": [],
+  "evolution_count": 1,
+  "evolution_history": [
+    {
+      "iteration": 2,
+      "goal": "HalluCode 벤치마크를 상위 티어 논문급(NeurIPS/ICML/ICLR)으로 개선: Bootstrap CI + Cohen's d 통계 강화, HalluCode 전용 리더보드 (Baseline/AP/MARL-SL × GLM+LFM), arXiv HalluCode 섹션 NeurIPS 심사 기준으로 보강 (significance test, ablation depth, ecological validity, limitation analysis)",
+      "score": 0.81,
+      "rationale": "Bootstrap CI+power analysis done. Weakest: completeness — HalluCode buried in Related Work subsection instead of standalone section."
+    }
+  ],
   "history": []
 }
