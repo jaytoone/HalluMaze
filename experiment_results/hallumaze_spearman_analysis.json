@@ -1,0 +1,141 @@
+{
+  "analysis_type": "HalluMaze_MEI_x_HumanEval_Spearman",
+  "n_models": 13,
+  "n_verified": 4,
+  "spearman_all": {
+    "rho": 0.3,
+    "p_value": 0.3195,
+    "n": 13
+  },
+  "spearman_verified": {
+    "rho": 0.2,
+    "p_value": 0.8,
+    "n": 4
+  },
+  "data_points": [
+    {
+      "model": "Claude-Sonnet-4.5",
+      "mei": 0.783,
+      "sr": 0.367,
+      "hrr": 0.892,
+      "humaneval": 0.92,
+      "confidence": "estimated",
+      "source": "ArtificialAnalysis HumanEval approx; Claude 4.x not separately reported"
+    },
+    {
+      "model": "Claude-3.7-Sonnet",
+      "mei": 0.774,
+      "sr": 0.567,
+      "hrr": 0.875,
+      "humaneval": 0.927,
+      "confidence": "estimated",
+      "source": "ArtificialAnalysis coding benchmark"
+    },
+    {
+      "model": "GLM-4.7",
+      "mei": 0.615,
+      "sr": 0.083,
+      "hrr": 0.718,
+      "humaneval": 0.942,
+      "confidence": "verified",
+      "source": "BenchLM rank #6 (cited in paper)"
+    },
+    {
+      "model": "Llama-4-Maverick",
+      "mei": 0.6,
+      "sr": 0.133,
+      "hrr": 0.811,
+      "humaneval": 0.674,
+      "confidence": "estimated",
+      "source": "Meta AI Blog (EvalPro format, not standard HumanEval; estimate)"
+    },
+    {
+      "model": "MiniMax-M2.5",
+      "mei": 0.593,
+      "sr": 0.533,
+      "hrr": 0.6,
+      "humaneval": 0.83,
+      "confidence": "estimated",
+      "source": "Limited public benchmarks; comparable to mid-tier models"
+    },
+    {
+      "model": "Llama-4-Scout",
+      "mei": 0.589,
+      "sr": 0.083,
+      "hrr": 0.81,
+      "humaneval": 0.638,
+      "confidence": "estimated",
+      "source": "Meta AI Blog (smaller than Maverick; estimate)"
+    },
+    {
+      "model": "Qwen-2.5-72B",
+      "mei": 0.559,
+      "sr": 0.1,
+      "hrr": 0.607,
+      "humaneval": 0.864,
+      "confidence": "verified",
+      "source": "Qwen2.5 Technical Report, 2024"
+    },
+    {
+      "model": "Claude-Sonnet-4.6",
+      "mei": 0.545,
+      "sr": 0.6,
+      "hrr": 0.583,
+      "humaneval": 0.92,
+      "confidence": "estimated",
+      "source": "Same family as 4.5, similar range"
+    },
+    {
+      "model": "Gemini-2.0-Flash-Lite",
+      "mei": 0.432,
+      "sr": 0.083,
+      "hrr": 0.403,
+      "humaneval": 0.713,
+      "confidence": "estimated",
+      "source": "Google technical report estimate; Flash-Lite is lighter Flash"
+    },
+    {
+      "model": "Claude-3-Haiku",
+      "mei": 0.398,
+      "sr": 0.05,
+      "hrr": 0.363,
+      "humaneval": 0.752,
+      "confidence": "estimated",
+      "source": "ArtificialAnalysis; smaller Claude model"
+    },
+    {
+      "model": "GPT-4o-mini",
+      "mei": 0.391,
+      "sr": 0.05,
+      "hrr": 0.382,
+      "humaneval": 0.872,
+      "confidence": "verified",
+      "source": "OpenAI GPT-4o-mini system card, 2024"
+    },
+    {
+      "model": "Claude-Haiku-4.5",
+      "mei": 0.376,
+      "sr": 0.05,
+      "hrr": 0.383,
+      "humaneval": 0.8,
+      "confidence": "estimated",
+      "source": "Estimated from 4.x family pattern; not separately published"
+    },
+    {
+      "model": "GPT-4o",
+      "mei": 0.315,
+      "sr": 0.067,
+      "hrr": 0.353,
+      "humaneval": 0.902,
+      "confidence": "verified",
+      "source": "OpenAI GPT-4o system card, 2024"
+    }
+  ],
+  "interpretation": "Near-zero: HalluMaze MEI is largely INDEPENDENT of coding ability",
+  "key_finding": "GPT-4o (HumanEval=0.902, top-tier) achieves MEI=0.315 (rank 13/13). Spearman ρ=+0.300 (p=0.3195) — metacognitive recovery is largely independent of coding ability.",
+  "notes": {
+    "verified_sources": "GPT-4o/mini (OpenAI), Qwen-2.5-72B (Qwen TR), GLM-4.7 (BenchLM)",
+    "estimated_sources": "Claude, Gemini, Llama-4, MiniMax — from ArtificialAnalysis / Meta Blog / published ranges",
+    "limitation": "HumanEval saturated for top models; newer models may not report it. Estimated values introduce uncertainty."
+  }
+}

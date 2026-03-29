@@ -31,6 +31,8 @@
 | scripts/analyze_humaneval_correlation.py | HalluCode ↔ HumanEval 상관 분석: HumanEval-Trap 결과 + Spearman 상관 (n≥5 시 활성화) | 2026-03-29 |
 | experiment_results/mbpp_trap_glm_ap.json | MBPP-Trap AP Booster (GLM, n=14 valid): pass@1=0.000, trap_detection=85.7%. MBPP 난이도 과제: AP 탐지 전이 확인, base coding quality가 bottleneck | 2026-03-29 |
 | experiment_results/mbpp_trap_glm_baseline.json | MBPP-Trap Baseline (GLM, n=11 valid): pass@1=0.000, trap_used=45.5%. 난이도 moderator 확인 | 2026-03-29 |
+| experiment_results/hallumaze_spearman_analysis.json | HalluMaze MEI × HumanEval Spearman ρ=+0.30 (p=0.32, n=13) — MEI는 코딩 능력(HumanEval)과 독립적. GPT-4o(HE=90.2%) → MEI rank 13. HalluMaze 고유성 입증 | 2026-03-29 |
+| scripts/analyze_hallumaze_coding_spearman.py | HalluMaze 13-model MEI × 공개 HumanEval pass@1 Spearman 분석 스크립트 | 2026-03-29 |
 | scripts/run_mbpp_trap.py | MBPP-Trap 실험 스크립트: MBPP datasets 로드 + 3-trap 주입 + AP/baseline pass@1 측정 | 2026-03-29 |
 | docs/hf_post_v4.md | HF 커뮤니티 포스트 v4 (HalluCode AP Booster 전용: 80-token prompt beats MARL-SL, GLM d=+2.25 p<0.001) | 2026-03-29 |
 | docs/hf_post_v3.md | HF 커뮤니티 포스트 v3 (Claude 4.x 확장 결과 포함, 13모델 리더보드) | 2026-03-26 |

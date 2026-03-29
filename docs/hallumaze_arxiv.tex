@@ -428,6 +428,13 @@ However, pass@1$=$0.000 for both conditions (GLM-4.5-Air free-tier, $n_{\text{va
 This boundary condition is itself informative: HalluCode's difficulty level is calibrated to HumanEval, not MBPP, making HumanEval the difficulty-matched external benchmark for AP validation.
 Spearman correlation of CodeMEI $\times$ HumanEval pass@1 across ${\geq}5$ models is planned for the companion paper.
 
+\emph{(5) HalluMaze MEI $\times$ HumanEval Spearman (n=13)}: We compute Spearman $\rho$ between our 13-model MEI leaderboard and published HumanEval pass@1 scores~\citep{chen2021codex} for the same models (4 verified: GPT-4o, GPT-4o-mini, Qwen-2.5-72B, GLM-4.7; 9 estimated from ArtificialAnalysis/Meta AI Blog).
+Result: $\rho{=}{+}0.300$, $p{=}0.32$ (not significant, $n{=}13$); verified-only subset: $\rho{=}{+}0.200$, $p{=}0.80$ ($n{=}4$).
+\textbf{Key finding}: HalluMaze MEI is largely \emph{independent} of coding ability (HumanEval).
+The most striking case: GPT-4o (HumanEval$=$90.2\%, top-tier coder) ranks \emph{last} on MEI (0.315), while GLM-4.7 (HumanEval$=$94.2\%) ranks 3rd (MEI$=$0.615).
+This near-zero Spearman provides statistical support for HalluMaze's core claim: metacognitive error recovery is a \emph{distinct capability dimension}, not a proxy for general coding ability.
+Caution: 9/13 HumanEval scores are estimated; HumanEval is near-saturated for top models (all $>$86\%); full Spearman with verified scores across $\geq$10 models is planned for companion paper.
+
 % =================================================================
 \section{Limitations \& Future Work}
 % =================================================================

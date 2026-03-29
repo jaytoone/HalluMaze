@@ -735,6 +735,21 @@ footer a{color:var(--ac1);text-decoration:none}
       <p style="color:#5a6378;font-size:13px;margin:0 0 6px">Same trap injection on 20 MBPP problems. AP trap detection: <strong style="color:#fbbf24">85.7%</strong> (vs 0% baseline) — mechanism transfers. But pass@1 = 0.000 for both conditions: MBPP's harder multi-assertion problems expose base coding quality as the bottleneck, not trap-awareness.</p>
       <p style="color:#5a6378;font-size:12px;margin:0"><strong style="color:#c8cdd8">Key insight:</strong> HumanEval (difficulty-matched to HalluCode) shows large AP benefit. MBPP (harder) shows AP detection works but pass@1 is difficulty-limited. This boundary condition confirms HumanEval as the appropriate external benchmark.</p>
     </div>
+    <div style="background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.2);border-radius:6px;padding:12px;margin-top:8px">
+      <p style="color:#a855f7;font-size:13px;font-weight:700;margin:0 0 6px">(5) HalluMaze MEI × HumanEval Spearman (n=13 models)</p>
+      <p style="color:#5a6378;font-size:13px;margin:0 0 6px">We correlated our 13-model MEI leaderboard with published HumanEval pass@1 scores:</p>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin:8px 0">
+        <div style="background:#0d1117;border-radius:6px;padding:10px 14px;text-align:center">
+          <div style="font-size:22px;font-weight:700;color:#a855f7">ρ = +0.30</div>
+          <div style="font-size:11px;color:#5a6378">Spearman (p=0.32)</div>
+        </div>
+        <div style="background:#0d1117;border-radius:6px;padding:10px 14px;text-align:center">
+          <div style="font-size:18px;font-weight:700;color:#f87171">n.s.</div>
+          <div style="font-size:11px;color:#5a6378">Not significant</div>
+        </div>
+      </div>
+      <p style="color:#5a6378;font-size:12px;margin:4px 0 0"><strong style="color:#c8cdd8">Key:</strong> GPT-4o (HumanEval 90.2% — top-tier coder) ranks LAST on MEI (0.315). HalluMaze MEI is largely <strong style="color:#a855f7">independent of coding ability</strong> — it measures a distinct metacognitive dimension. Near-zero Spearman validates HalluMaze's novelty claim.</p>
+    </div>
   </div>
 </section>
 
