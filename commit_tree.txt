@@ -1,3 +1,12 @@
+v1.63 20260329 2323
+    - scripts/run_mbpp_easy_trap.py: AP Booster v2 + MBPP-Easy filter (NEW)
+      3-step prompt: DETECT→IDENTIFY ALTERNATIVE→WRITE CODE
+      Easy filter: ref solution ≤7 lines AND ≤2 test assertions
+    - docs/hallumaze_arxiv.tex: Planned Extensions item 8 (AP v2 methodology)
+      Conclusion updated: MBPP boundary condition → AP v2 motivation
+    - README.md: Quick Start + repo structure updated for AP v2
+    - docs/DOC_INDEX.md: run_mbpp_easy_trap.py entry added
+
 v1.62 20260329 2105
     - docs/hallumaze_arxiv.tex: CRITICAL — Abstract/Intro/Conclusion Cohen's d 오류 수정
       (d=+1.58/+0.31 는 AP vs Baseline; MARL-SL 비교는 d=+2.25/+0.57 로 교정)

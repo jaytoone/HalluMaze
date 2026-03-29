@@ -120,6 +120,10 @@ python scripts/build_final_analysis.py
 
 # HalluCode AP Booster
 python scripts/run_hallucode_booster.py --model glm-free --prompt-type ap_booster --n 19
+
+# AP Booster v2 + MBPP-Easy (3-step prompt, difficulty-filtered subset)
+python scripts/run_mbpp_easy_trap.py --model glm-free --prompt-type ap_v2 --n 15
+python scripts/run_mbpp_easy_trap.py --model glm-free --prompt-type baseline --n 15
 ```
 
 ---
@@ -134,7 +138,8 @@ HalluMaze/
 │   ├── build_final_analysis.py       # Bootstrap CI + Wilcoxon
 │   ├── run_hallucode_booster.py       # HalluCode AP Booster experiment
 │   ├── run_humaneval_trap.py          # HumanEval-Trap experiment
-│   ├── run_mbpp_trap.py               # MBPP-Trap experiment
+│   ├── run_mbpp_trap.py               # MBPP-Trap experiment (AP v1)
+│   ├── run_mbpp_easy_trap.py          # AP Booster v2 + difficulty-filtered MBPP
 │   └── analyze_hallumaze_coding_spearman.py  # MEI × HumanEval Spearman
 ├── experiment_results/
 │   ├── analysis_final2.json      # Source of truth (13 models, n=60)
