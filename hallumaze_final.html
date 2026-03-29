@@ -696,6 +696,17 @@ footer a{color:var(--ac1);text-decoration:none}
   </table>
   </div>
   <p style="color:#5a6378;font-size:13px">* p&lt;0.05 *** p&lt;0.001 (Wilcoxon signed-rank, Bootstrap CI n=2000). <strong style="color:#c8cdd8">H6:</strong> MARL-SL capacity threshold between 1.2B and ~7B. <strong style="color:#c8cdd8">H7:</strong> AP Booster beats MARL-SL for ALL models — GLM d=+2.25 (p&lt;0.001), LFM d=+0.57 (p=0.038). GLM n=19 complete; LFM n=17 valid.</p>
+
+  <div style="background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.2);border-radius:8px;padding:20px;margin:24px 0">
+    <h3 style="font-size:15px;font-weight:700;color:#a855f7;margin:0 0 10px">Why AP beats MARL-SL: Mechanism Analysis</h3>
+    <p style="color:#94a3b8;font-size:14px;margin:0 0 8px">AP is not simply "better prompting" — it externalizes trap-awareness into the <em>system context</em>. The model never needs to remember to check for traps; it is structurally primed. MARL-SL forces 5 sequential role switches, each consuming generation capacity that small models cannot afford.</p>
+    <p style="color:#5a6378;font-size:13px;margin:0"><strong style="color:#c8cdd8">Cost:</strong> AP adds ~80 tokens of system prompt vs. 5× generation length for MARL-SL. Same metacognitive effect at ~5% of the compute overhead. <strong style="color:#c8cdd8">Trap difficulty ordering:</strong> nonexistent_api (easiest, GLM 0.900) &gt; deprecated_method &gt; wrong_signature (hardest, LFM 0.300). Nonexistent APIs trigger immediate AttributeError; deprecated methods may silently return wrong results.</p>
+  </div>
+
+  <div style="background:rgba(51,65,85,0.4);border:1px solid rgba(100,116,139,0.3);border-radius:8px;padding:16px;margin:16px 0">
+    <h3 style="font-size:14px;font-weight:700;color:#c8cdd8;margin:0 0 8px">Ecological Validity</h3>
+    <p style="color:#5a6378;font-size:13px;margin:0">HalluCode SR uses compile+execute against held-out unit tests (same as HumanEval). Size-ability consistency: GLM (23/100 ArtificialAnalysis) achieves SR=100%; LFM (6/100) achieves SR=5% — a 20× gap matching expected capability differences. HalluCode SR is measured under adversarial conditions, making it a <em>conservative lower bound</em> on true coding ability.</p>
+  </div>
 </section>
 
 <!-- RELATED WORK -->

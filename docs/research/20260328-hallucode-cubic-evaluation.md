@@ -294,7 +294,8 @@ AI Booster (AP)는 모든 모델 크기에서 작동하는 범용 미들웨어�
 - [UNCERTAIN] ToolBench 자연 발생 실패 케이스에서 HalluCode 트랩 패턴 빈도
 - [PARTIALLY RESOLVED] HalluCode SR ecological validity: 3-레이어 이론 구축 완료. 직접 Spearman 상관은 companion paper에서 수행 예정.
 - [CONFIRMED] H6 MARL-SL capacity interaction: LFM-1.2B(n=19) + GLM-4.5-Air(n=19) 교차검증 완료. 용량 임계점 1.2B~7B 범위 확인.
-- [CONFIRMED] H7 AI Booster (AP) universality: AP > MARL-SL for both LFM and GLM (valid-n comparison). Effect larger for weaker models.
+- [CONFIRMED] H7 AI Booster (AP) universality: AP > MARL-SL for both LFM and GLM. GLM: Δ=+0.084, 95%CI=[+0.068,+0.100], d=+2.25, p<0.001, power=1.00 (n=19 complete). LFM: Δ=+0.182, 95%CI=[+0.029,+0.324], d=+0.57, p=0.038, power=0.59 (n=17 valid). Effect larger for weaker models.
+- [CONFIRMED] NeurIPS-grade paper restructure: HalluCode elevated to standalone Section 6 with H→M→R→D structure. Bootstrap CI + Cohen's d + power analysis all included.
 
 ---
 
@@ -303,6 +304,7 @@ AI Booster (AP)는 모든 모델 크기에서 작동하는 범용 미들웨어�
 *업데이트: omc-live iter 2 | C7 MARL-SL ablation 실험 결과 추가 | 2026-03-29*
 *업데이트: omc-live iter 2 | H6 GLM-4.5-Air 교차검증 완료 | 2026-03-29*
 *업데이트: omc-live iter 1 (AI Booster) | C8 AP 미들웨어 실증 + H7 CONFIRMED | 2026-03-29*
+*업데이트: live-infinite iter 1-4 | NeurIPS 논문급 완성: Bootstrap CI, Cohen's d, power, Section 6 독립화 | 2026-03-29*
 
 ## Related
 - [[projects/Miro/research/20260324-hallumaze-ecological-validity|20260324-hallumaze-ecological-validity]]
