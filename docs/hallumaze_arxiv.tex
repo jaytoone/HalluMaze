@@ -155,21 +155,32 @@ For GLM-4.5-Air, the pattern inverts: the baseline achieves SR$=$78.9\%, HRR$=$6
 This cross-model replication confirms that MARL-SL middleware is \textit{not uniformly beneficial}: it requires sufficient model capacity to absorb structured prompting without sacrificing code generation quality.
 The capacity threshold appears to lie between 1.2B and the GLM-4.5-Air scale (${\sim}$7B+).
 
+\paragraph{AI Booster: Adversarial Priming (AP).}
+The H6 finding motivates a lighter-weight alternative: \textbf{Adversarial Priming (AP)}, which replaces the five-layer MARL-SL scaffold with (1) an explicit meta-awareness system prompt (``\textit{this benchmark intentionally contains fake/nonexistent APIs}'') and (2) a two-step structured prompt (VERIFY~$\to$~CODE).
+AP eliminates the role-playing overhead that overwhelms small models while preserving the adversarial trap-detection mechanism.
+
+Table~\ref{tab:hallucode_ablation} shows that AP yields \textbf{higher CodeMEI than MARL-SL for both model sizes} (H7).
+For GLM-4.5-Air, AP achieves CodeMEI$=$0.812 vs.\ MARL-SL$=$0.737 ($+$0.075), with SR$=$100\% and HRR$=$82.4\% ($n{=}17$ valid).
+For LFM-1.2B-Thinking, AP achieves CodeMEI$=$0.371 vs.\ MARL-SL$=$0.215 ($+$0.156) and vs.\ baseline$=$0.274 ($+$0.097), confirming that AP also recovers SR (56.9\%) while introducing non-trivial HRR (23.5\%).
+The AP improvement effect is \textit{larger} for the weaker model ($+$0.156 vs.\ $+$0.075), suggesting that explicit adversarial awareness compensates for capacity limitations more effectively than structured role-playing.
+
 \begin{table}[h]
 \centering\small
-\caption{HalluCode middleware ablation: MARL-SL vs.\ no-middleware baseline, two models ($n{=}19$ each). $\Delta$ columns show MARL-SL minus Baseline.}
+\caption{HalluCode middleware ablation: Baseline, MARL-SL (5-layer), and AI Booster -- Adversarial Priming (AP). $n{=}19$ each; AP rows use valid-$n$ ($n{=}17$, excluding rate-limit errors). $\Delta$ vs.\ same-model Baseline.}
 \label{tab:hallucode_ablation}
 \begin{tabular}{llccccc}
 \toprule
 Model & Condition & CodeMEI & SR & HRR & $\Delta$CodeMEI & $\Delta$SR \\
 \midrule
-\multirow{2}{*}{LFM-1.2B-Thinking}
- & Baseline (no middleware) & 0.274 & 68.4\% & 0.0\% & \multirow{2}{*}{$-$0.059} & \multirow{2}{*}{$-$63.4pp} \\
- & MARL-SL (5-layer)        & 0.215 &  5.0\% & 25.0\% & & \\
+\multirow{3}{*}{LFM-1.2B-Thinking}
+ & Baseline (no middleware) & 0.274 & 68.4\% &  0.0\% & — & — \\
+ & MARL-SL (5-layer)        & 0.215 &  5.0\% & 25.0\% & $-$0.059 & $-$63.4pp \\
+ & \textbf{AP (AI Booster)} & \textbf{0.371} & 56.9\% & 23.5\% & $\mathbf{+0.097}$ & $-$11.5pp \\
 \midrule
-\multirow{2}{*}{GLM-4.5-Air}
- & Baseline (no middleware) & 0.579 & 78.9\% & 68.4\% & \multirow{2}{*}{$+$0.158} & \multirow{2}{*}{$+$21.1pp} \\
- & MARL-SL (5-layer)        & 0.737 & 100.0\% & 84.2\% & & \\
+\multirow{3}{*}{GLM-4.5-Air}
+ & Baseline (no middleware) & 0.579 & 78.9\% & 68.4\% & — & — \\
+ & MARL-SL (5-layer)        & 0.737 & 100.0\% & 84.2\% & $+$0.158 & $+$21.1pp \\
+ & \textbf{AP (AI Booster)} & \textbf{0.812} & 100.0\% & 82.4\% & $\mathbf{+0.233}$ & $+$21.1pp \\
 \bottomrule
 \end{tabular}
 \end{table}

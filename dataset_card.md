@@ -43,6 +43,10 @@ configs:
       path: experiment_results/hallucode_baseline_glm.json
     - split: baseline_lfm
       path: experiment_results/hallucode_baseline_lfm.json
+    - split: booster_glm
+      path: experiment_results/hallucode_booster_glm.json
+    - split: booster_lfm
+      path: experiment_results/hallucode_booster_lfm.json
 - config_name: marl_sl
   data_files:
     - split: train

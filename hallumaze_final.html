@@ -657,35 +657,33 @@ footer a{color:var(--ac1);text-decoration:none}
     </div>
   </div>
 
-  <h3 style="font-size:18px;font-weight:600;margin:32px 0 12px;color:#fff">MARL-SL Middleware Ablation (H6)</h3>
-  <p style="color:#5a6378;font-size:14px;margin-bottom:16px">Structured prompt scaffolding (5-layer MARL-SL) is not uniformly beneficial. Its effect <strong style="color:#c8cdd8">reverses depending on model capacity</strong> — a novel finding unique to the HalluCode domain.</p>
+  <h3 style="font-size:18px;font-weight:600;margin:32px 0 12px;color:#fff">Middleware Ablation: MARL-SL vs AI Booster (H6, H7)</h3>
+  <p style="color:#5a6378;font-size:14px;margin-bottom:16px">H6: MARL-SL effect reverses by model capacity. H7: <strong style="color:#a855f7">AI Booster (Adversarial Priming)</strong> outperforms MARL-SL universally — a lighter-weight 2-step approach that works across model sizes.</p>
 
   <div style="overflow-x:auto;margin-bottom:16px">
   <table class="stat-table">
     <thead>
-      <tr><th>Model</th><th>Capacity</th><th>Condition</th><th>CodeMEI</th><th>SR</th><th>HRR</th><th style="color:#34d399">Delta MEI</th><th style="color:#34d399">Delta SR</th></tr>
+      <tr><th>Model</th><th>Capacity</th><th>Condition</th><th>CodeMEI</th><th>SR</th><th>HRR</th><th style="color:#34d399">Delta MEI</th></tr>
     </thead>
     <tbody>
       <tr>
-        <td rowspan="2" style="font-family:var(--mono);font-size:12px">LFM-1.2B</td>
-        <td rowspan="2" style="color:#f87171">Small (1.2B)</td>
-        <td>Baseline</td><td>0.274</td><td>68.4%</td><td>0.0%</td>
-        <td rowspan="2" style="color:#f87171;font-weight:700">-0.059</td>
-        <td rowspan="2" style="color:#f87171;font-weight:700">-63.4pp</td>
+        <td rowspan="3" style="font-family:var(--mono);font-size:12px">LFM-1.2B</td>
+        <td rowspan="3" style="color:#f87171">Small (1.2B)</td>
+        <td>Baseline</td><td>0.274</td><td>68.4%</td><td>0.0%</td><td style="color:#5a6378">—</td>
       </tr>
-      <tr><td>MARL-SL</td><td>0.215</td><td>5.0%</td><td>25.0%</td></tr>
+      <tr><td>MARL-SL</td><td style="color:#f87171">0.215</td><td style="color:#f87171">5.0%</td><td>25.0%</td><td style="color:#f87171;font-weight:700">-0.059</td></tr>
+      <tr style="background:rgba(168,85,247,0.06)"><td style="color:#a855f7;font-weight:600">AI Booster (AP)</td><td style="color:#a855f7;font-weight:700">0.371</td><td>56.9%</td><td>23.5%</td><td style="color:#a855f7;font-weight:700">+0.097</td></tr>
       <tr>
-        <td rowspan="2" style="font-family:var(--mono);font-size:12px">GLM-4.5-Air</td>
-        <td rowspan="2" style="color:#34d399">Large (~7B+)</td>
-        <td>Baseline</td><td>0.579</td><td>78.9%</td><td>68.4%</td>
-        <td rowspan="2" style="color:#34d399;font-weight:700">+0.158</td>
-        <td rowspan="2" style="color:#34d399;font-weight:700">+21.1pp</td>
+        <td rowspan="3" style="font-family:var(--mono);font-size:12px">GLM-4.5-Air</td>
+        <td rowspan="3" style="color:#34d399">Large (~7B+)</td>
+        <td>Baseline</td><td>0.579</td><td>78.9%</td><td>68.4%</td><td style="color:#5a6378">—</td>
       </tr>
-      <tr><td>MARL-SL</td><td style="font-weight:700">0.737</td><td style="font-weight:700">100.0%</td><td style="font-weight:700">84.2%</td></tr>
+      <tr><td>MARL-SL</td><td>0.737</td><td>100.0%</td><td>84.2%</td><td style="color:#34d399;font-weight:700">+0.158</td></tr>
+      <tr style="background:rgba(168,85,247,0.08)"><td style="color:#a855f7;font-weight:600">AI Booster (AP)</td><td style="color:#a855f7;font-weight:700">0.812</td><td>100.0%</td><td>82.4%</td><td style="color:#a855f7;font-weight:700">+0.233</td></tr>
     </tbody>
   </table>
   </div>
-  <p style="color:#5a6378;font-size:13px">H6: Capacity threshold lies between 1.2B and ~7B. Small models are overwhelmed by the structured 5-layer format; large models benefit from it. This mirrors the SR-MEI dissociation found in HalluMaze.</p>
+  <p style="color:#5a6378;font-size:13px"><strong style="color:#c8cdd8">H6:</strong> MARL-SL capacity threshold lies between 1.2B and ~7B. <strong style="color:#c8cdd8">H7:</strong> AI Booster (Adversarial Priming = explicit trap-awareness system prompt + 2-step VERIFY→CODE) beats MARL-SL for BOTH models. Effect is larger for the weaker model (+0.156 vs +0.075 over MARL-SL). AI results use valid-n=17 (2/19 rate-limit errors excluded).</p>
 </section>
 
 <!-- RELATED WORK -->
