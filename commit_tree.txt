@@ -303,3 +303,9 @@ v1.1 20260323 — Add core library, fix statistics, HF Space ready
 - Add docs/research/ (paper draft + extension TODO analysis)
 - Add experiment_results/ full dataset (20 JSON files)
 - Fix README: pip install requirements.txt, reproducibility notes
+
+v1.45 20260329 1415
+    - GLM AP Booster n=19 완전: HC016+HC019 재실험 성공 (CodeMEI 0.812→0.821, SR=100%, HRR=84.2%)
+    - arXiv tex 업데이트: Table 3 GLM AP row (0.821, +0.242, n=19), valid-n 주석 제거
+    - hallumaze_final.html H7 표 업데이트: 0.821 / +0.242, 주석 정정
+    - arXiv tar.gz 재빌드
