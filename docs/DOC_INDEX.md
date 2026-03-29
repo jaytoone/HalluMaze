@@ -7,7 +7,7 @@
 | experiment_results/hallucode_baseline_lfm.json | HalluCode Baseline Ablation: LFM-1.2B no-MARL (n=19). SR=68.4%/HRR=0% vs MARL-SL SR=5%/HRR=25%. H6 소형모델 MARL-SL −ΔCodeMEI=−0.059 | 2026-03-29 |
 | scripts/run_hallucode_baseline.py | HalluCode Baseline 단순 프롬프트 스크립트 (no MARL-SL, ablation용) | 2026-03-29 |
 | scripts/build_hallucode_full.py | HalluCode Full Experiment 결과 병합+통계 산출 스크립트 | 2026-03-28 |
-| docs/research/20260328-hallucode-cubic-evaluation.md | HalluCode MRC Cubic 자격 평론: 원자성/직교성/조합성/견고성 판정, C6 생태 타당성 3-레이어, C7 H6 교차검증 완료 (LFM+GLM ablation, 용량 임계점 1.2B~7B) | 2026-03-29 |
+| docs/research/20260328-hallucode-cubic-evaluation.md | HalluCode MRC Cubic 자격 평론: C6 생태 타당성, C7 H6 교차검증, C8 H7 AI Booster CONFIRMED — AP > MARL-SL for ALL models (GLM n=19 완전, CodeMEI 0.821) | 2026-03-29 |
 | scripts/run_hallucode_mvp.py | HalluCode MVP 파일럿: False API Hint 20문제 + MARL-SL 코딩 프롬프트 + CodeMEI 검증 파이프라인 | 2026-03-27 |
 | docs/research/20260327-hallumaze-extension-hallucode.md | HalluCode/HalluTool 확장 연구: 선행 연구 갭 분석, MARL-SL 코딩 매핑, CodeMEI 설계, MVP 실험 설계안 | 2026-03-27 |
 | docs/misc/ontolo-biz-unconscious-purchase-20260327.md | ontolo-agent biz-unconscious-purchase — HF 포스트 CTA 최적화 분석 | 2026-03-27 |
