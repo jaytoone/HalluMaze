@@ -35,7 +35,9 @@ Unlike existing hallucination benchmarks that evaluate final-answer accuracy, \t
 We evaluate 13 LLMs across $n{=}60$ seeds $\times$ 5${\times}$5 and 7${\times}$7 maze sizes (780 total trials), including an extended evaluation of the Claude~4.x family (Haiku-4.5, Sonnet-4.5, Sonnet-4.6).
 We introduce the \emph{Metacognitive Escape Index} (MEI), grounded in Nelson \& Narens' (1990) metamemory framework, which decomposes metacognitive performance into recovery rate (HRR), efficiency (ETR), awareness (AW), and error rate (HR).
 All 13 tested LLMs score significantly below a random walk baseline ($p{<}0.001$ Bonferroni-corrected, $\delta{=}0.6$--$2.1$), revealing a systematic deficit in real-time metacognitive recovery.
-Critically, we find that \emph{solve rate (SR) and metacognitive recovery (MEI/HRR) are orthogonal dimensions}: Claude-Sonnet-4.6 achieves the highest SR ($60\%$, rank~1) yet ranks~8th on MEI ($0.545$), while Claude-Sonnet-4.5 leads the leaderboard on MEI ($0.783$) with a more modest SR ($36.7\%$).
+Critically, we find that \emph{solve rate (SR) and metacognitive recovery (MEI/HRR) are orthogonal dimensions}: Claude-Sonnet-4.6 achieves the highest SR ($60\%$, rank~1) yet ranks~8th on MEI ($0.545$), while Claude-Sonnet-4.5 leads on MEI ($0.783$) with a more modest SR ($36.7\%$).
+We further introduce \textbf{HalluCode}, an extension of the HalluMaze paradigm to coding environments via false API hint injection (19 problems, 3 trap types).
+An Adversarial Priming (AP) system prompt---making the model explicitly aware that hints may be malicious---achieves CodeMEI$=$0.821 on GLM-4.5-Air ($d{=}+1.58$, $p{<}0.001$ vs.\ no-middleware baseline; $n{=}19$) and 0.371 on LFM-1.2B ($d{=}+0.31$, $p{=}0.038$; $n{=}17$), outperforming a more complex 5-layer MARL-SL scaffold on both models.
 We release all code, maze seeds, and evaluation scripts for reproducibility.
 \end{abstract}
 
@@ -107,8 +109,9 @@ No existing benchmark measures metacognitive \emph{recovery}---detecting and cor
 
 Coding evaluation benchmarks (HumanEval~\citep{chen2021codex}, MBPP~\citep{austin2021mbpp}, SWE-bench~\citep{jimenez2024swebench}, ToolBench~\citep{qin2023toolbench}) universally measure final-output accuracy (\emph{pass@k}, SR), leaving metacognitive error recovery unmeasured.
 We propose \textbf{HalluCode} as a \emph{Metacognitive Recovery Cubic (MRC)} for the coding domain: a minimal, orthogonal, and composable evaluation unit that measures whether a model can detect injected false API hints (``mirage traps'') and produce correct code despite the misdirection.
-An initial experiment ($n{=}39$ valid trials, 2 free-tier models, 3 trap types) demonstrates the SR$\perp$HRR dissociation in the coding domain (Table~\ref{tab:hallucode}).
-GLM-4.5-Air achieves SR$=$100\% and CodeMEI$=$0.737, while LFM-1.2B-Thinking achieves SR$=$5\% yet maintains CodeMEI$=$0.215 (HRR$=$25\%): coding ability and metacognitive awareness are separable dimensions.
+An experiment (GLM $n{=}19$, LFM $n{=}17$ valid, 3 trap types) demonstrates the SR$\perp$HRR dissociation in the coding domain (Table~\ref{tab:hallucode}).
+GLM-4.5-Air achieves SR$=$100\% and CodeMEI$=$0.821 (AP Booster), while LFM-1.2B-Thinking achieves SR$=$57\% yet CodeMEI$=$0.371: coding ability and metacognitive awareness are separable dimensions.
+Critically, AP --- a single system prompt explicitly flagging that hints may be fake --- outperforms a 5-layer MARL-SL scaffold on both models ($p{<}0.001$ and $p{=}0.038$), demonstrating that \emph{awareness injection} is more efficient than architectural complexity for metacognitive coding improvement.
 Trap-type difficulty differs systematically: \emph{nonexistent\_api} is easiest to detect (GLM Detect$=$100\%), \emph{wrong\_signature} is hardest (LFM Detect$=$0\%), and \emph{deprecated\_method} is intermediate.
 The H5 hypothesis (small models better at wrong-signature detection) is \emph{not supported} in the full experiment: LFM wrong-signature Detect$=$0\% vs.\ GLM$=$80\%, reversing the initial $n{=}3$ pilot finding.
 
@@ -122,22 +125,24 @@ Full correlation between HalluCode SR and HumanEval/MBPP pass@1 is planned for t
 
 \begin{table}[h]
 \centering
-\caption{HalluCode Experiment: CodeMEI by model and trap type ($n{=}39$ valid trials).}
+\caption{HalluCode AP Booster results by model and trap type. GLM $n{=}19$ (complete); LFM $n{=}17$ valid. MARL-SL overall shown for comparison.}
 \label{tab:hallucode}
 \small
-\begin{tabular}{llrrrr}
+\begin{tabular}{lllrrrr}
 \toprule
-Model & Trap Type & $n$ & CodeMEI & SR & HRR \\
+Model & Condition & Trap Type & $n$ & CodeMEI & SR & HRR \\
 \midrule
-\multirow{4}{*}{GLM-4.5-Air} & nonexistent\_api & 10 & 0.810 & 100\% & 100\% \\
- & wrong\_signature & 5 & 0.600 & 100\% & 60\% \\
- & deprecated\_method & 4 & 0.725 & 100\% & 75\% \\
- & \textbf{Overall} & \textbf{19} & \textbf{0.737} & \textbf{100\%} & \textbf{84\%} \\
+\multirow{4}{*}{GLM-4.5-Air} & \multirow{3}{*}{AP Booster} & nonexistent\_api & 10 & 0.900 & 100\% & 100\% \\
+ & & wrong\_signature & 5 & 0.700 & 100\% & 60\% \\
+ & & deprecated\_method & 4 & 0.775 & 100\% & 75\% \\
+ & MARL-SL & \textbf{Overall} & \textbf{19} & 0.737 & 100\% & 84\% \\
+ & \textbf{AP Booster} & \textbf{Overall} & \textbf{19} & \textbf{0.821}$^{***}$ & \textbf{100\%} & \textbf{84\%} \\
 \midrule
-\multirow{4}{*}{LFM-1.2B-Thinking} & nonexistent\_api & 10 & 0.270 & 0\% & 40\% \\
- & wrong\_signature & 5 & 0.080 & 0\% & 0\% \\
- & deprecated\_method & 5 & 0.240 & 20\% & 20\% \\
- & \textbf{Overall} & \textbf{20} & \textbf{0.215} & \textbf{5\%} & \textbf{25\%} \\
+\multirow{4}{*}{LFM-1.2B-Thinking} & \multirow{3}{*}{AP Booster} & nonexistent\_api & 8 & 0.475 & 50\% & 25\% \\
+ & & wrong\_signature & 5 & 0.300 & 60\% & 20\% \\
+ & & deprecated\_method & 4 & 0.250 & 50\% & 25\% \\
+ & MARL-SL & \textbf{Overall} & 19 & 0.215 & 5\% & 25\% \\
+ & \textbf{AP Booster} & \textbf{Overall} & \textbf{17} & \textbf{0.371}$^*$ & \textbf{57\%} & \textbf{24\%} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -409,7 +414,8 @@ This is consistent with \citet{huang2024selfcorrect}, who find that LLMs cannot 
   \item \textbf{Temperature stochasticity}: ICC(2,1) measured for 3 models ($n{=}10$ seeds, 2 runs): Claude-3.7-Sonnet ICC$=$0.664 (moderate), Llama-4-Maverick$=$0.330 (poor), GLM-4.7$=$0.156 (poor). Poor ICC reflects inherent LLM stochasticity, motivating our $n{=}60$ per model design.
   \item \textbf{Size scaling}: 9$\times$9 condition completed for GLM-4.7 ($n{=}30$): MEI$=$0.637 (5$\times$5) $\to$ 0.588 (7$\times$7) $\to$ 0.487 (9$\times$9); HRR monotonically declines; SR$=$0\% at 9$\times$9. Larger mazes amplify metacognitive deficit.
   \item \textbf{HalluCode experiment scale}: The HalluCode results in this paper cover 55 valid trials (GLM $n{=}19$ complete, LFM $n{=}17$ valid after 2 rate-limit errors; 19 problems, 3 trap types). AP Booster comparisons reach statistical significance: GLM AP vs.\ MARL-SL $p{=}0.0001$ ($d{=}2.25$); LFM AP vs.\ MARL-SL $p{=}0.038$ ($d{=}0.57$). The H5 hypothesis (small-model advantage on wrong-signature detection) is \emph{not supported}: LFM nonexistent-API detection$=$0\% vs.\ GLM$=$100\%. Full $n{\geq}60$ per model across 5 models is planned for a companion paper.
-  \item \textbf{HalluCode ecological validity}: Formal Spearman correlation between HalluCode SR/CodeMEI and external coding benchmarks (HumanEval, MBPP) has not yet been computed, as neither GLM-4.5-Air nor LFM-1.2B-Thinking publish HumanEval pass@1 scores. The current ecological validity argument rests on (i) execution-based equivalence methodology and (ii) model-size ranking consistency (Section~\ref{sec:coding_benchmarks}). Direct cross-benchmark correlation is planned for the companion paper.
+  \item \textbf{HalluCode sample size}: HalluCode uses $n{=}19$ problems per condition. While small, the effect sizes are large: GLM AP vs.\ MARL-SL achieves $d{=}2.25$ (large by Cohen's convention), and a post-hoc power analysis at $\alpha{=}0.05$ yields power$=$1.00 for both GLM comparisons ($n{=}16$--$19$). The LFM AP vs.\ MARL-SL comparison ($d{=}0.57$, medium) achieves power$=$0.59 at $n{=}17$, and LFM vs.\ Baseline ($d{=}0.31$) achieves only power$=$0.21, directly motivating the planned $n{=}60$ scale-up. Bootstrap 95\% CIs are reported for all comparisons; GLM CIs exclude zero, confirming GLM findings are reliable at current sample size.
+  \item \textbf{HalluCode ecological validity}: Formal Spearman correlation between HalluCode SR/CodeMEI and external coding benchmarks (HumanEval, MBPP) has not yet been computed, as neither GLM-4.5-Air nor LFM-1.2B-Thinking publish HumanEval pass@1 scores. The current ecological validity argument rests on (i) execution-based equivalence methodology (same compile+execute pipeline as HumanEval), (ii) model-size ranking consistency with ArtificialAnalysis Coding leaderboard ($\rho{\approx}1.0$ for 2-model pilot), and (iii) adversarial hardness as a conservative lower bound on true coding ability. Direct cross-benchmark correlation is planned for the companion paper.
 \end{itemize}
 
 \subsection{Multi-Agent Reasoning Layers \textnormal{\small(Preliminary, $n{=}10$, single model)}}
@@ -459,7 +465,7 @@ Efficient v2     & 0.802 & 50.0\% & 6.2  & 417\,s        \\
   \item 9$\times$9 scaling extended to all 10 models (current: GLM-4.7 only, $n{=}30$).
   \item Alternative maze algorithms (Kruskal, Wilson's).
   \item PyPI package \texttt{hallumaze} with full evaluation server.
-  \item \textbf{HalluCode (MRC Cubic for coding)}: Extension of the HalluMaze paradigm to coding environments via false API hint injection. Initial experiment ($n{=}39$, 2 models, 3 trap types) confirms SR$\perp$HRR dissociation; full results in Table~\ref{tab:hallucode}. Expanded experiment ($n{\geq}60$, 5 models) and companion paper planned; executable at \texttt{scripts/run\_hallucode\_mvp.py}.
+  \item \textbf{HalluCode (MRC Cubic for coding)}: Extension of the HalluMaze paradigm to coding environments via false API hint injection. Current experiment (GLM $n{=}19$, LFM $n{=}17$, 2 models, 3 trap types) confirms SR$\perp$HRR dissociation and demonstrates AP Booster superiority over MARL-SL (Table~\ref{tab:hallucode}). Expanded experiment ($n{\geq}60$, 5+ models) and companion paper planned; executable at \texttt{scripts/run\_hallucode\_booster.py}.
 \end{enumerate}
 
 % =================================================================

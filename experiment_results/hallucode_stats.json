@@ -246,5 +246,27 @@
     }
   },
   "n_bootstrap": 2000,
-  "alpha": 0.05
+  "alpha": 0.05,
+  "power_analysis": {
+    "GLM AP vs MARL-SL": {
+      "d": 2.248,
+      "n": 19,
+      "power": 1.0
+    },
+    "GLM AP vs Baseline": {
+      "d": 1.583,
+      "n": 16,
+      "power": 1.0
+    },
+    "LFM AP vs MARL-SL": {
+      "d": 0.572,
+      "n": 17,
+      "power": 0.593
+    },
+    "LFM AP vs Baseline": {
+      "d": 0.311,
+      "n": 17,
+      "power": 0.209
+    }
+  }
 }

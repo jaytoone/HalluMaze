@@ -250,6 +250,31 @@ output = {
     "n_bootstrap": N_BOOT,
     "alpha": ALPHA
 }
+# ─── Post-hoc Power Analysis ──────────────────────────────────────────────────
+
+def power_ttest(d, n, alpha=0.05):
+    """One-sample t-test power for Cohen's d and n."""
+    from scipy.stats import norm, t as t_dist
+    ncp = d * np.sqrt(n)  # non-centrality parameter
+    t_crit = t_dist.ppf(1 - alpha / 2, df=n - 1)
+    power = 1 - t_dist.cdf(t_crit, df=n-1, loc=ncp) + t_dist.cdf(-t_crit, df=n-1, loc=ncp)
+    return float(power)
+
+print("\n[Post-hoc Power Analysis]")
+power_cases = [
+    ("GLM AP vs MARL-SL", 2.248, 19),
+    ("GLM AP vs Baseline", 1.583, 16),
+    ("LFM AP vs MARL-SL", 0.572, 17),
+    ("LFM AP vs Baseline", 0.311, 17),
+]
+power_results = {}
+for label, d, n in power_cases:
+    pwr = power_ttest(abs(d), n)
+    print(f"  {label:30s}  d={d:.3f}  n={n:2d}  power={pwr:.3f}")
+    power_results[label] = {"d": d, "n": n, "power": round(pwr, 3)}
+
+output["power_analysis"] = power_results
+
 out_path = os.path.join(RESULTS_DIR, "hallucode_stats.json")
 with open(out_path, 'w') as f:
     json.dump(output, f, indent=2)
