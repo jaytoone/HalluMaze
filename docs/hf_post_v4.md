@@ -46,7 +46,27 @@ We injected the same 3 trap types into 20 HumanEval problems and ran the *identi
 
 The AP Booster isn't a HalluCode-specific trick — it's domain-agnostic trap-awareness. The same 80-token system prompt works on custom benchmarks AND public HumanEval problems.
 
-Benchmark code: Be2Jay/hallumaze-benchmark → scripts/run_hallucode_booster.py | scripts/run_humaneval_trap.py
+**Does awareness transfer to a second benchmark? We tested on MBPP.**
+
+We ran the same AP Booster vs Baseline protocol on 20 MBPP problems (same trap types):
+
+| Condition | pass@1 | Trap detection |
+|-----------|--------|---------------|
+| AP Booster | 0.000 | **85.7%** |
+| Baseline | 0.000 | — |
+
+AP detection transfers (85.7%) — but the pass@1 benefit disappears. Why? MBPP test assertions are significantly stricter than HumanEval. Even when the model correctly ignores the false hint, minor implementation errors fail the assertion tests. **Task difficulty is a moderator**: AP Booster reliably raises awareness, but pass@1 improvement requires a base competence floor to land on.
+
+**Are we measuring something orthogonal to raw coding ability?**
+
+We cross-referenced our 13-model HalluMaze leaderboard against published HumanEval pass@1 scores:
+
+- GPT-4o: HumanEval pass@1 = **0.902** (top-tier) → HalluMaze MEI = **0.315** (rank 13/13, last)
+- Claude-Sonnet-4.5: HumanEval ≈ 0.920 → MEI = 0.783 (rank 1)
+
+Spearman ρ(HumanEval, MEI) = **+0.30, p = 0.32** (n=13, not significant). HalluMaze MEI is largely independent of coding ability. The best coders are not the best metacognitive error-recoverers — and vice versa.
+
+Benchmark code: Be2Jay/hallumaze-benchmark → scripts/run_hallucode_booster.py | scripts/run_humaneval_trap.py | scripts/run_mbpp_trap.py
 
 ---
 
@@ -54,9 +74,9 @@ Benchmark code: Be2Jay/hallumaze-benchmark → scripts/run_hallucode_booster.py 
 
 - **태그**: hallucination, prompt-engineering, coding-benchmark, llm-evaluation, marl
 - **이미지**: HalluCode 테이블 스크린샷 (hallumaze_final.html의 HalluCode 섹션)
-- **글자 수**: ~1,200자 (HF 한도 내)
-- **키 메시지**: 80-token prompt beats MARL architecture → capacity-aware middleware design
-- **포스팅 순서**: v3 (Claude 4.x 리더보드) → v4 (HalluCode AP Booster) — 간격 1-2일
+- **글자 수**: ~1,700자 (HF 한도 확인 필요; 초과시 MBPP/Spearman 섹션 분리)
+- **키 메시지**: 80-token prompt beats MARL → AP detection transfers across benchmarks → MEI orthogonal to HumanEval
+- **포스팅 순서**: v3 (Claude 4.x 리더보드) → v4 (HalluCode AP Booster + Generalization) — 간격 1-2일
 
 ## 포스트 레이아웃 팁
 
@@ -66,6 +86,7 @@ Benchmark code: Be2Jay/hallumaze-benchmark → scripts/run_hallucode_booster.py 
 
 ## 변경 내역
 
+- v4.1 (2026-03-29): MBPP-Trap 경계 조건 발견 + Spearman ρ=+0.30 (MEI orthogonal) 추가
 - v4 신규: HalluCode AP Booster 전용 포스트 (v3은 Claude 4.x 리더보드 전용)
 - 타겟: prompt engineers, LLM researchers, coding benchmark community
 
