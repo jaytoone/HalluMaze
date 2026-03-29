@@ -1,16 +1,24 @@
 {
-  "root_goal": "HF Dataset (Be2Jay/hallumaze-benchmark) 최신화 + HF Community Post v3 게시",
+  "root_goal": "HF Community Feed(huggingface.co/posts)에 v3 포스트 게시 — Playwright로 웹 UI 사용",
   "original_goal": "HF Dataset upload (experiment_results/ JSONs) + HF Community Post v3 게시",
   "level": 0,
   "sub_goals": [
-    "dataset_card.md에 신규 실험 파일 추가 (hallucode, marl_sl, claude4x, baseline)",
-    "huggingface-cli upload-large-folder로 experiment_results/ → Be2Jay/hallumaze-benchmark",
-    "HF Community Post v3 docs/hf_post_v3.md 내용 게시"
+    "Playwright로 huggingface.co/posts 페이지 열기",
+    "포스트 작성 버튼 클릭",
+    "docs/hf_post_v3.md 내용 입력",
+    "게시 버튼 클릭 → URL 확인"
   ],
   "reward_spec": {
-    "primary_metric": "HF Dataset + Community Post 모두 공개 배포 완료",
-    "threshold": "huggingface.co/datasets/Be2Jay/hallumaze-benchmark 최신화 + Community Post 가시적"
+    "primary_metric": "HF Community Post URL 반환",
+    "threshold": "huggingface.co/posts/Be2Jay/XXXXXX URL 존재"
   },
-  "evolution_history": [],
+  "evolution_history": [
+    {
+      "iteration": 1,
+      "goal": "HF Dataset + Community Post v3",
+      "score": 0.833,
+      "rationale": "Dataset upload 완료, Community Post API 없어 미완"
+    }
+  ],
   "history": []
 }
