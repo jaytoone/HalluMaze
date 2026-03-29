@@ -6,6 +6,11 @@
 | experiment_results/hallucode_baseline_glm.json | HalluCode Baseline GLM-4.5-Air (n=19 merged). SR=78.9%/HRR=68.4%/MEI=0.579 vs MARL-SL SR=100%/HRR=84.2%/MEI=0.737. H6 교차검증: 대형모델 MARL-SL +ΔCodeMEI=+0.158 | 2026-03-29 |
 | experiment_results/hallucode_baseline_lfm.json | HalluCode Baseline Ablation: LFM-1.2B no-MARL (n=19). SR=68.4%/HRR=0% vs MARL-SL SR=5%/HRR=25%. H6 소형모델 MARL-SL −ΔCodeMEI=−0.059 | 2026-03-29 |
 | scripts/run_hallucode_baseline.py | HalluCode Baseline 단순 프롬프트 스크립트 (no MARL-SL, ablation용) | 2026-03-29 |
+| scripts/run_hallucode_booster.py | HalluCode AP Booster 스크립트: Adversarial Priming (booster/marl_sl/baseline 3가지 prompt-type 지원) | 2026-03-29 |
+| scripts/analyze_hallucode_stats.py | HalluCode NeurIPS 통계분석: Bootstrap CI (n=2000) + Wilcoxon + Cohen's d + power analysis | 2026-03-29 |
+| experiment_results/hallucode_booster_glm.json | GLM-4.5-Air AP Booster n=19 완전: CodeMEI=0.821, SR=100%, HRR=84.2%. H7 CONFIRMED (vs MARL-SL Δ=+0.084, d=+2.25, p<0.001) | 2026-03-29 |
+| experiment_results/hallucode_booster_lfm.json | LFM-1.2B AP Booster n=17 valid: CodeMEI=0.371, SR=56.9%, HRR=23.5%. H7 CONFIRMED (vs MARL-SL Δ=+0.182, d=+0.57, p=0.038) | 2026-03-29 |
+| experiment_results/hallucode_stats.json | HalluCode 통계 결과 JSON: Bootstrap CI, Wilcoxon p-values, Cohen's d, power analysis (all 6 comparisons) | 2026-03-29 |
 | scripts/build_hallucode_full.py | HalluCode Full Experiment 결과 병합+통계 산출 스크립트 | 2026-03-28 |
 | docs/research/20260328-hallucode-cubic-evaluation.md | HalluCode MRC Cubic 자격 평론: C6 생태 타당성, C7 H6 교차검증, C8 H7 AI Booster CONFIRMED — AP > MARL-SL for ALL models (GLM n=19 완전, CodeMEI 0.821) | 2026-03-29 |
 | scripts/run_hallucode_mvp.py | HalluCode MVP 파일럿: False API Hint 20문제 + MARL-SL 코딩 프롬프트 + CodeMEI 검증 파이프라인 | 2026-03-27 |

@@ -1,0 +1,417 @@
+{
+  "method": "hallucode_booster",
+  "prompt_type": "booster",
+  "model": "glm-free",
+  "timestamp": "2026-03-29T12:32:55.778740",
+  "n_results": 19,
+  "aggregate": {
+    "code_mei": 0.7263,
+    "sr": 0.8947,
+    "hrr": 0.7368,
+    "hr": 0.1579,
+    "detect_rate": 0.8947
+  },
+  "results": [
+    {
+      "model": "glm-free",
+      "problem_id": "HC001",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.reverse",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.9,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 26.18,
+      "verify": {
+        "sr": 1.0,
+        "passed": 5,
+        "total": 5,
+        "error": null
+      },
+      "prompt_type": "booster"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC002",
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.append_all",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.9,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 40.96,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "booster"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC003",
+      "trap_type": "nonexistent_api",
+      "trap_api": "dict.has_key",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.9,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 20.64,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "booster"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC004",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.count_occurrences",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.9,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 22.25,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "booster"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC005",
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.unique",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.9,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 64.71,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "booster"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC006",
+      "trap_type": "nonexistent_api",
+      "trap_api": "dict.sort",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.9,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 48.7,
+      "verify": {
+        "sr": 1.0,
+        "passed": 2,
+        "total": 2,
+        "error": null
+      },
+      "prompt_type": "booster"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC007",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.capitalize_words",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.9,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 44.35,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "booster"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC008",
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.flatten",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.9,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 52.92,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "booster"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC009",
+      "trap_type": "nonexistent_api",
+      "trap_api": "set.symmetric_subtract",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.9,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 70.1,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "booster"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC010",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.remove",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.9,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 45.92,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "booster"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC011",
+      "trap_type": "wrong_signature",
+      "trap_api": "sorted(reversed=True)",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.9,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 28.49,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "booster"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC012",
+      "trap_type": "wrong_signature",
+      "trap_api": "list.index(max=True)",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": true,
+      "correction_count": 1,
+      "code_mei": 0.4,
+      "hrr": 0.0,
+      "hr": 1.0,
+      "elapsed": 47.73,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "booster"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC013",
+      "trap_type": "wrong_signature",
+      "trap_api": "re.findall(pattern=, string=)",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": true,
+      "correction_count": 1,
+      "code_mei": 0.4,
+      "hrr": 0.0,
+      "hr": 1.0,
+      "elapsed": 23.35,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "booster"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC014",
+      "trap_type": "wrong_signature",
+      "trap_api": "dict.merge",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.9,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 64.31,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "booster"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC015",
+      "trap_type": "wrong_signature",
+      "trap_api": "list.chunk",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.9,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 40.75,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "booster"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC016",
+      "trap_type": "deprecated_method",
+      "trap_api": "raw_input",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.0,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": null,
+      "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions",
+      "prompt_type": "booster",
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 0,
+        "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+      }
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC017",
+      "trap_type": "deprecated_method",
+      "trap_api": "Python2 integer division /",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": false,
+      "correction_count": 1,
+      "code_mei": 0.9,
+      "hrr": 1.0,
+      "hr": 0.0,
+      "elapsed": 35.2,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "booster"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC018",
+      "trap_type": "deprecated_method",
+      "trap_api": "dict.keys() Python2 list behavior",
+      "sr": 1.0,
+      "mirage_detected": true,
+      "trap_used": true,
+      "correction_count": 1,
+      "code_mei": 0.4,
+      "hrr": 0.0,
+      "hr": 1.0,
+      "elapsed": 25.46,
+      "verify": {
+        "sr": 1.0,
+        "passed": 3,
+        "total": 3,
+        "error": null
+      },
+      "prompt_type": "booster"
+    },
+    {
+      "model": "glm-free",
+      "problem_id": "HC019",
+      "trap_type": "deprecated_method",
+      "trap_api": "backtick repr operator",
+      "sr": 0.0,
+      "mirage_detected": false,
+      "trap_used": false,
+      "correction_count": 0,
+      "code_mei": 0.0,
+      "hrr": 0.0,
+      "hr": 0.0,
+      "elapsed": null,
+      "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions",
+      "prompt_type": "booster",
+      "verify": {
+        "sr": 0.0,
+        "passed": 0,
+        "total": 3,
+        "error": "429 Client Error: Too Many Requests for url: https://openrouter.ai/api/v1/chat/completions"
+      }
+    }
+  ]
+}
