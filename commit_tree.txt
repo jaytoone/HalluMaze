@@ -1,3 +1,7 @@
+v1.57 20260329 2034
+    - hallumaze_final.html: HumanEval×MEI 산점도 SVG 추가 (Spearman 섹션)
+    - 13개 모델 시각화, GPT-4o 이상값 강조, verified/estimated 범례
+
 v1.56 20260329 2025
     - hallumaze_final.html: F6 Key Finding 카드 추가 (MEI ⊥ HumanEval, Spearman ρ=+0.30)
     - hallumaze_final.html: hero-sub에 Spearman 독립성 문장 추가

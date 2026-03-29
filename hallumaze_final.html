@@ -755,6 +755,79 @@ footer a{color:var(--ac1);text-decoration:none}
         </div>
       </div>
       <p style="color:#5a6378;font-size:12px;margin:4px 0 0"><strong style="color:#c8cdd8">Key:</strong> GPT-4o (HumanEval 90.2% — top-tier coder) ranks LAST on MEI (0.315). HalluMaze MEI is largely <strong style="color:#a855f7">independent of coding ability</strong> — it measures a distinct metacognitive dimension. Near-zero Spearman validates HalluMaze's novelty claim.</p>
+      <!-- Scatter: HumanEval vs MEI -->
+      <svg viewBox="0 0 480 300" width="100%" style="max-width:480px;margin:12px auto 0;display:block;font-family:Inter,sans-serif" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background -->
+        <rect width="480" height="300" fill="#0d1117" rx="6"/>
+        <!-- Axes -->
+        <line x1="56" y1="16" x2="56" y2="250" stroke="#2d3244" stroke-width="1"/>
+        <line x1="56" y1="250" x2="460" y2="250" stroke="#2d3244" stroke-width="1"/>
+        <!-- Grid lines (light) -->
+        <line x1="56" y1="190" x2="460" y2="190" stroke="#1e2333" stroke-width="0.5" stroke-dasharray="3"/>
+        <line x1="56" y1="130" x2="460" y2="130" stroke="#1e2333" stroke-width="0.5" stroke-dasharray="3"/>
+        <line x1="56" y1="70" x2="460" y2="70" stroke="#1e2333" stroke-width="0.5" stroke-dasharray="3"/>
+        <line x1="136" y1="16" x2="136" y2="250" stroke="#1e2333" stroke-width="0.5" stroke-dasharray="3"/>
+        <line x1="216" y1="16" x2="216" y2="250" stroke="#1e2333" stroke-width="0.5" stroke-dasharray="3"/>
+        <line x1="296" y1="16" x2="296" y2="250" stroke="#1e2333" stroke-width="0.5" stroke-dasharray="3"/>
+        <line x1="376" y1="16" x2="376" y2="250" stroke="#1e2333" stroke-width="0.5" stroke-dasharray="3"/>
+        <!-- Axis labels -->
+        <text x="258" y="290" fill="#5a6378" font-size="11" text-anchor="middle">HumanEval pass@1</text>
+        <text x="14" y="133" fill="#5a6378" font-size="11" text-anchor="middle" transform="rotate(-90,14,133)">MEI</text>
+        <!-- X ticks: 0.63=56, 0.70=136, 0.77=216, 0.84=296, 0.91=376, 0.98=456 -->
+        <!-- Scale: x=(he-0.63)/0.35*400+56, y=250-(mei-0.3)/0.65*234 -->
+        <text x="56" y="265" fill="#3d4561" font-size="9" text-anchor="middle">0.63</text>
+        <text x="136" y="265" fill="#3d4561" font-size="9" text-anchor="middle">0.70</text>
+        <text x="216" y="265" fill="#3d4561" font-size="9" text-anchor="middle">0.77</text>
+        <text x="296" y="265" fill="#3d4561" font-size="9" text-anchor="middle">0.84</text>
+        <text x="376" y="265" fill="#3d4561" font-size="9" text-anchor="middle">0.91</text>
+        <text x="456" y="265" fill="#3d4561" font-size="9" text-anchor="middle">0.98</text>
+        <!-- Y ticks -->
+        <text x="48" y="253" fill="#3d4561" font-size="9" text-anchor="end">0.30</text>
+        <text x="48" y="193" fill="#3d4561" font-size="9" text-anchor="end">0.49</text>
+        <text x="48" y="133" fill="#3d4561" font-size="9" text-anchor="end">0.68</text>
+        <text x="48" y="73" fill="#3d4561" font-size="9" text-anchor="end">0.87</text>
+        <!-- Data points: x=(he-0.63)/0.35*400+56, y=250-(mei-0.3)/0.65*234 -->
+        <!-- GPT-4o: he=0.902, mei=0.315 → x=(0.272/0.35)*400+56=367, y=250-(0.015/0.65)*234=245 ANOMALY -->
+        <circle cx="367" cy="244" r="6" fill="#f87171" stroke="#0d1117" stroke-width="1.5"/>
+        <text x="373" y="243" fill="#f87171" font-size="9">GPT-4o ★</text>
+        <!-- GPT-4o-mini: he=0.872, mei=0.391 → x=333, y=250-0.141/0.65*234=199 -->
+        <circle cx="333" cy="199" r="4" fill="#94a3b8" stroke="#0d1117" stroke-width="1"/>
+        <text x="337" y="197" fill="#94a3b8" font-size="8">4o-mini</text>
+        <!-- Qwen-2.5-72B: he=0.864, mei=0.559 → x=324, y=250-0.259/0.65*234=157 -->
+        <circle cx="324" cy="157" r="4" fill="#94a3b8" stroke="#0d1117" stroke-width="1"/>
+        <!-- GLM-4.7: he=0.942, mei=0.615 VERIFIED → x=416, y=250-0.315/0.65*234=137 -->
+        <circle cx="416" cy="137" r="5" fill="#fbbf24" stroke="#0d1117" stroke-width="1.5"/>
+        <text x="420" y="135" fill="#fbbf24" font-size="8">GLM-4.7✓</text>
+        <!-- Claude-Sonnet-4.5: he=0.920, mei=0.783 → x=381, y=250-0.483/0.65*234=76 -->
+        <circle cx="381" cy="76" r="5" fill="#a855f7" stroke="#0d1117" stroke-width="1.5"/>
+        <text x="352" y="69" fill="#a855f7" font-size="8">CS-4.5 #1</text>
+        <!-- Claude-3.7-Sonnet: he=0.927, mei=0.774 → x=388, y=78 -->
+        <circle cx="388" cy="79" r="4" fill="#a855f7" stroke="#0d1117" stroke-width="1"/>
+        <!-- Claude-Sonnet-4.6: he=0.920, mei=0.545 → x=381, y=250-0.245/0.65*234=162 -->
+        <circle cx="381" cy="162" r="4" fill="#a855f7" stroke="#0d1117" stroke-width="1"/>
+        <text x="385" y="158" fill="#a855f7" font-size="8">CS-4.6</text>
+        <!-- Claude-3-Haiku: he=0.752, mei=0.398 → x=196, y=197 -->
+        <circle cx="196" cy="196" r="4" fill="#6366f1" stroke="#0d1117" stroke-width="1"/>
+        <!-- Claude-Haiku-4.5: he=0.800, mei=0.376 → x=251, y=205 -->
+        <circle cx="251" cy="205" r="4" fill="#6366f1" stroke="#0d1117" stroke-width="1"/>
+        <!-- Gemini-2.0-FL: he=0.713, mei=0.432 → x=151, y=188 -->
+        <circle cx="151" cy="188" r="4" fill="#34d399" stroke="#0d1117" stroke-width="1"/>
+        <!-- Llama-4-Mav: he=0.674, mei=0.600 → x=107, y=144 -->
+        <circle cx="107" cy="144" r="4" fill="#fb923c" stroke="#0d1117" stroke-width="1"/>
+        <!-- Llama-4-Scout: he=0.638, mei=0.589 → x=66, y=148 -->
+        <circle cx="66" cy="148" r="4" fill="#fb923c" stroke="#0d1117" stroke-width="1"/>
+        <!-- MiniMax-M2.5: he=0.830, mei=0.593 → x=285, y=146 -->
+        <circle cx="285" cy="146" r="4" fill="#38bdf8" stroke="#0d1117" stroke-width="1"/>
+        <!-- Title -->
+        <text x="258" y="30" fill="#c8cdd8" font-size="11" text-anchor="middle" font-weight="600">HumanEval pass@1 vs MEI (n=13, Spearman &#961;=+0.30, p=0.32)</text>
+        <!-- Legend -->
+        <circle cx="68" cy="278" r="4" fill="#fbbf24"/>
+        <text x="75" y="281" fill="#5a6378" font-size="8">Verified</text>
+        <circle cx="105" cy="278" r="4" fill="#94a3b8"/>
+        <text x="112" y="281" fill="#5a6378" font-size="8">Estimated</text>
+        <circle cx="152" cy="278" r="4" fill="#f87171"/>
+        <text x="159" y="281" fill="#5a6378" font-size="8">Anomaly (GPT-4o)</text>
+      </svg>
     </div>
   </div>
 </section>
