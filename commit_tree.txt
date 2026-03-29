@@ -1,3 +1,7 @@
+v1.58 20260329 2040
+    - docs/hf_dataset_readme.md: HF Dataset 카드 신규 생성 (업로드 ready)
+    - docs/DOC_INDEX.md: hf_dataset_readme.md 등록
+
 v1.57 20260329 2034
     - hallumaze_final.html: HumanEval×MEI 산점도 SVG 추가 (Spearman 섹션)
     - 13개 모델 시각화, GPT-4o 이상값 강조, verified/estimated 범례

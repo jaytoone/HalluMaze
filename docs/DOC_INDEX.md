@@ -35,6 +35,7 @@
 | scripts/analyze_hallumaze_coding_spearman.py | HalluMaze 13-model MEI × 공개 HumanEval pass@1 Spearman 분석 스크립트 | 2026-03-29 |
 | scripts/run_mbpp_trap.py | MBPP-Trap 실험 스크립트: MBPP datasets 로드 + 3-trap 주입 + AP/baseline pass@1 측정 | 2026-03-29 |
 | docs/hf_post_v4.md | HF 커뮤니티 포스트 v4 (HalluCode AP Booster 전용: 80-token prompt beats MARL-SL, GLM d=+2.25 p<0.001) | 2026-03-29 |
+| docs/hf_dataset_readme.md | HuggingFace Dataset 카드 — 13-model 리더보드, 파일 목록, 인용 정보 (HF 업로드 ready) | 2026-03-29 |
 | docs/hf_post_v3.md | HF 커뮤니티 포스트 v3 (Claude 4.x 확장 결과 포함, 13모델 리더보드) | 2026-03-26 |
 | experiment_results/claude4x_pilot.json | Claude 4.x Pilot (n=5, Phase A): Haiku-4.5/Sonnet-4.5/Sonnet-4.6 초기 결과 | 2026-03-26 |
 | experiment_results/claude4x_full.json | Claude 4.x Full (n=60 each): Haiku-4.5 SR=5%, Sonnet-4.5 SR=36.7% MEI=0.783 #1, Sonnet-4.6 SR=60% MEI=0.545 | 2026-03-26 |
