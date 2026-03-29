@@ -325,7 +325,7 @@ Models evaluated: GLM-4.5-Air (${\approx}$7B, via OpenRouter free tier, $n{=}19$
 All statistical tests: Wilcoxon signed-rank (paired), Bootstrap CI ($B{=}2000$, $\alpha{=}0.05$).
 
 Tables~\ref{tab:hallucode} and \ref{tab:hallucode_ablation} present the results.
-\textbf{H6 CONFIRMED}: MARL-SL decreases CodeMEI by 0.059 on LFM (SR collapses to 5\%) but increases it by 0.158 on GLM (SR$=$100\%), confirming a capacity$\times$middleware interaction.
+\textbf{H6 CONFIRMED}: MARL-SL decreases aggregate CodeMEI by 0.059 on LFM (SR collapses to 5\%) but increases it by 0.158 on GLM (SR$=$100\%), confirming a capacity$\times$middleware interaction (aggregate differences; paired $\Delta_{\text{GLM}}{=}+0.031$, $p{=}0.18$; the direction reversal across model sizes is the H6 signature).
 \textbf{H7 CONFIRMED}: AP outperforms MARL-SL on both models:
 \begin{itemize}[nosep]
   \item \textbf{GLM}: AP CodeMEI$=$0.821 vs.\ MARL-SL$=$0.737 ($\Delta{=}+0.084$, 95\%~CI$=[+0.068,+0.100]$, $d{=}+2.25$, $p{<}0.001$). GLM power$=$1.00 (large effect, $n{=}19$).
