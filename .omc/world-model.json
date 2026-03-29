@@ -1,0 +1,20 @@
+{
+  "tried_strategies": [],
+  "dead_ends": [],
+  "known_facts": [
+    "GLM AP Booster n=19 complete: CodeMEI=0.821, SR=100%, HRR=84.2%",
+    "LFM AP Booster n=17 valid: CodeMEI=0.371, SR=56.9%, HRR=23.5%",
+    "H7 CONFIRMED: AP > MARL-SL for ALL model sizes",
+    "Free-tier OpenRouter rate limits: GLM ~2 errors/19, LFM ~2/19, Llama-70B 18/19 (unusable)",
+    "HC018 deprecation trap causes free-tier 429 at rate-limit boundary",
+    "n=60 requires paid tier OR 3 separate seed runs with long delays",
+    "arXiv tex has 6-row Table 3 (LFM+GLM × Baseline/MARL-SL/AP)",
+    "Statistical gap: no Bootstrap CI or Cohen's d for HalluCode section yet",
+    "HalluCode has 19 problems: nonexistent_api×10, wrong_signature×5, deprecated_method×4",
+    "CodeMEI = 0.4×HRR + 0.3×ETR + 0.2×AW − 0.1×HR"
+  ],
+  "uncertain": [],
+  "dimensions_explored": {},
+  "session_count": 1,
+  "initialized_at": "2026-03-29T14:16:00Z"
+}

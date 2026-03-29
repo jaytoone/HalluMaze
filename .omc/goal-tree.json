@@ -1,28 +1,20 @@
 {
-  "root_goal": "HalluCode n=60 스케일업: AP Booster를 공식 미들웨어로 채택하여 3개 이상 모델에서 n=60 실험 완료 — 완전한 HalluCode 리더보드 구축 (Baseline / AP Booster / MARL-SL 비교표 포함)",
-  "original_goal": "P1~P2 작업 완료 후, HalluCode에서 코딩 능력을 대폭 상승시키는 AI Booster 미들웨어 설계·구현·실증: arXiv tar.gz 재빌드, HF Space 업데이트, HalluCode n=60 스케일업, 최종적으로 GLM CodeMEI 0.737 이상을 다른 모델에서도 달성하는 AI Booster 프롬프트 엔지니어링 + 실험",
+  "root_goal": "HalluCode 벤치마크를 상위 티어 논문급(NeurIPS/ICML/ICLR)으로 개선: Bootstrap CI + Cohen's d 통계 강화, HalluCode 전용 리더보드 (Baseline/AP/MARL-SL × GLM+LFM), arXiv HalluCode 섹션 NeurIPS 심사 기준으로 보강 (significance test, ablation depth, ecological validity, limitation analysis)",
+  "original_goal": "HalluCode 벤치마크를 상위 티어 논문급(NeurIPS/ICML/ICLR)으로 개선: Bootstrap CI + Cohen's d 통계 강화, HalluCode 전용 리더보드 (Baseline/AP/MARL-SL × GLM+LFM), arXiv HalluCode 섹션 NeurIPS 심사 기준으로 보강 (significance test, ablation depth, ecological validity, limitation analysis)",
   "level": 0,
   "sub_goals": [
-    "[P1 DONE] arXiv tar.gz 재빌드 — 완료 (6-row ablation Table 3 포함)",
-    "[P1 DONE] HF Space + Dataset 업데이트 — 완료",
-    "[P1 DONE] AI Booster 설계·구현 (AP: Adversarial Priming) — 완료",
-    "[P1 DONE] H7 실증: AP > MARL-SL for LFM + GLM (valid n=17) — CONFIRMED",
-    "[P2 NEXT] n=60 스케일업: GLM + LFM full runs (AP booster, HC001-HC020×3 seeds)",
-    "[P2 NEXT] 3번째 모델 테스트: Qwen-2.5-72B 또는 Mistral로 AP booster 효과 검증",
-    "[P2 NEXT] HalluCode 리더보드 완성: 3개 조건 × 3개 모델 비교표"
+    "[P1] Bootstrap CI n=2000 + Cohen's d for GLM/LFM CodeMEI comparisons",
+    "[P1] HalluCode-specific stats script (scripts/analyze_hallucode_stats.py)",
+    "[P2] arXiv tex: HalluCode subsection 확장 (statistical significance, per-trap-type breakdown)",
+    "[P2] hallumaze_final.html HalluCode 리더보드 테이블 완성 (trap-type breakdown 추가)",
+    "[P3] n=60 scale-up for GLM via 3 seed runs (HC001-HC019 × 3, if rate-limit allows)",
+    "[P3] 3rd model validation (if paid API available)"
   ],
   "reward_spec": {
-    "primary_metric": "HalluCode leaderboard with n=60 per model, AP Booster proven on 3+ models",
-    "threshold": "AP Booster achieves CodeMEI ≥ 0.65 on at least 2 non-GLM models with n≥30"
+    "primary_metric": "NeurIPS-standard HalluCode section: statistical significance + effect size + ablation depth + ecological validity",
+    "threshold": "Bootstrap CI on all condition comparisons, Cohen's d reported, per-trap-type breakdown table, 2+ reviewer objections pre-empted in limitations"
   },
-  "evolution_count": 1,
-  "evolution_history": [
-    {
-      "iteration": 1,
-      "goal": "AI Booster 미들웨어 설계·구현·실증 (GLM + LFM, n=19 pilot)",
-      "score": 0.88,
-      "rationale": "H7 confirmed AP > MARL-SL universally. Next: n=60 scale-up + 3rd model"
-    }
-  ],
+  "evolution_count": 0,
+  "evolution_history": [],
   "history": []
 }

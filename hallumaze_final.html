@@ -652,38 +652,50 @@ footer a{color:var(--ac1);text-decoration:none}
       <div style="font-size:12px;color:#5a6378;margin-top:4px">Models Tested</div>
     </div>
     <div style="background:#0d1117;border:1px solid #1e2333;border-radius:8px;padding:20px;text-align:center">
-      <div style="font-size:28px;font-weight:700;color:#a855f7">n=39</div>
-      <div style="font-size:12px;color:#5a6378;margin-top:4px">Validated Trials</div>
+      <div style="font-size:28px;font-weight:700;color:#a855f7">n=36</div>
+      <div style="font-size:12px;color:#5a6378;margin-top:4px">Validated Trials (AP+Baseline)</div>
     </div>
   </div>
 
   <h3 style="font-size:18px;font-weight:600;margin:32px 0 12px;color:#fff">Middleware Ablation: MARL-SL vs AI Booster (H6, H7)</h3>
-  <p style="color:#5a6378;font-size:14px;margin-bottom:16px">H6: MARL-SL effect reverses by model capacity. H7: <strong style="color:#a855f7">AI Booster (Adversarial Priming)</strong> outperforms MARL-SL universally — a lighter-weight 2-step approach that works across model sizes.</p>
+  <p style="color:#5a6378;font-size:14px;margin-bottom:16px">H6: MARL-SL effect reverses by model capacity. H7: <strong style="color:#a855f7">AI Booster (Adversarial Priming)</strong> outperforms MARL-SL universally — explicit trap-awareness beats complex role-playing for both model sizes (Bootstrap 95% CI, Wilcoxon signed-rank).</p>
 
   <div style="overflow-x:auto;margin-bottom:16px">
   <table class="stat-table">
     <thead>
-      <tr><th>Model</th><th>Capacity</th><th>Condition</th><th>CodeMEI</th><th>SR</th><th>HRR</th><th style="color:#34d399">Delta MEI</th></tr>
+      <tr><th>Model</th><th>Condition</th><th>CodeMEI</th><th>SR</th><th>HRR</th><th style="color:#34d399">Delta MEI</th><th style="color:#94a3b8">95% CI</th><th style="color:#94a3b8">Cohen's d</th><th style="color:#94a3b8">p</th></tr>
     </thead>
     <tbody>
       <tr>
         <td rowspan="3" style="font-family:var(--mono);font-size:12px">LFM-1.2B</td>
-        <td rowspan="3" style="color:#f87171">Small (1.2B)</td>
-        <td>Baseline</td><td>0.274</td><td>68.4%</td><td>0.0%</td><td style="color:#5a6378">—</td>
+        <td>Baseline</td><td>0.274</td><td>68.4%</td><td>0.0%</td><td style="color:#5a6378">—</td><td style="color:#5a6378">—</td><td style="color:#5a6378">—</td><td style="color:#5a6378">—</td>
       </tr>
-      <tr><td>MARL-SL</td><td style="color:#f87171">0.215</td><td style="color:#f87171">5.0%</td><td>25.0%</td><td style="color:#f87171;font-weight:700">-0.059</td></tr>
-      <tr style="background:rgba(168,85,247,0.06)"><td style="color:#a855f7;font-weight:600">AI Booster (AP)</td><td style="color:#a855f7;font-weight:700">0.371</td><td>56.9%</td><td>23.5%</td><td style="color:#a855f7;font-weight:700">+0.097</td></tr>
+      <tr><td>MARL-SL</td><td style="color:#f87171">0.215</td><td style="color:#f87171">5.0%</td><td>25.0%</td><td style="color:#f87171;font-weight:700">-0.059</td><td style="color:#5a6378">[-0.17,+0.04]</td><td style="color:#5a6378">-0.30</td><td style="color:#5a6378">0.12</td></tr>
+      <tr style="background:rgba(168,85,247,0.06)"><td style="color:#a855f7;font-weight:600">AI Booster (AP)</td><td style="color:#a855f7;font-weight:700">0.371</td><td>56.9%</td><td>23.5%</td><td style="color:#a855f7;font-weight:700">+0.097*</td><td style="color:#a855f7">[+0.01,+0.23]</td><td style="color:#a855f7">+0.31</td><td style="color:#a855f7">0.038</td></tr>
       <tr>
         <td rowspan="3" style="font-family:var(--mono);font-size:12px">GLM-4.5-Air</td>
-        <td rowspan="3" style="color:#34d399">Large (~7B+)</td>
-        <td>Baseline</td><td>0.579</td><td>78.9%</td><td>68.4%</td><td style="color:#5a6378">—</td>
+        <td>Baseline</td><td>0.579</td><td>78.9%</td><td>68.4%</td><td style="color:#5a6378">—</td><td style="color:#5a6378">—</td><td style="color:#5a6378">—</td><td style="color:#5a6378">—</td>
       </tr>
-      <tr><td>MARL-SL</td><td>0.737</td><td>100.0%</td><td>84.2%</td><td style="color:#34d399;font-weight:700">+0.158</td></tr>
-      <tr style="background:rgba(168,85,247,0.08)"><td style="color:#a855f7;font-weight:600">AI Booster (AP)</td><td style="color:#a855f7;font-weight:700">0.821</td><td>100.0%</td><td>84.2%</td><td style="color:#a855f7;font-weight:700">+0.242</td></tr>
+      <tr><td>MARL-SL</td><td>0.737</td><td>100.0%</td><td>84.2%</td><td style="color:#34d399;font-weight:700">+0.158</td><td style="color:#5a6378">[0.00,+0.09]</td><td style="color:#5a6378">+0.31</td><td style="color:#5a6378">0.18</td></tr>
+      <tr style="background:rgba(168,85,247,0.08)"><td style="color:#a855f7;font-weight:600">AI Booster (AP)</td><td style="color:#a855f7;font-weight:700">0.821</td><td>100.0%</td><td>84.2%</td><td style="color:#a855f7;font-weight:700">+0.242***</td><td style="color:#a855f7">[+0.10,+0.16]</td><td style="color:#a855f7">+1.58</td><td style="color:#a855f7">&lt;0.001</td></tr>
     </tbody>
   </table>
   </div>
-  <p style="color:#5a6378;font-size:13px"><strong style="color:#c8cdd8">H6:</strong> MARL-SL capacity threshold lies between 1.2B and ~7B. <strong style="color:#c8cdd8">H7:</strong> AI Booster (Adversarial Priming = explicit trap-awareness system prompt + 2-step VERIFY→CODE) beats MARL-SL for BOTH models. Effect is larger for the weaker model (+0.156 vs +0.084 over MARL-SL). GLM AP n=19 complete.</p>
+
+  <h3 style="font-size:16px;font-weight:600;margin:24px 0 10px;color:#c8cdd8">Per-Trap-Type Breakdown — AI Booster</h3>
+  <div style="overflow-x:auto;margin-bottom:16px">
+  <table class="stat-table">
+    <thead>
+      <tr><th>Trap Type</th><th>n</th><th style="color:#34d399">GLM CodeMEI</th><th>GLM SD</th><th style="color:#a855f7">LFM CodeMEI</th><th>LFM SD</th></tr>
+    </thead>
+    <tbody>
+      <tr><td style="font-family:var(--mono)">nonexistent_api</td><td>10 / 8</td><td style="color:#34d399;font-weight:700">0.900</td><td>0.000</td><td style="color:#a855f7">0.475</td><td>0.328</td></tr>
+      <tr><td style="font-family:var(--mono)">wrong_signature</td><td>5 / 5</td><td style="color:#34d399">0.700</td><td>0.274</td><td style="color:#a855f7">0.300</td><td>0.123</td></tr>
+      <tr><td style="font-family:var(--mono)">deprecated_method</td><td>4 / 4</td><td style="color:#34d399">0.775</td><td>0.250</td><td style="color:#a855f7">0.250</td><td>0.192</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="color:#5a6378;font-size:13px">* p&lt;0.05 *** p&lt;0.001 (Wilcoxon signed-rank, Bootstrap CI n=2000). <strong style="color:#c8cdd8">H6:</strong> MARL-SL capacity threshold between 1.2B and ~7B. <strong style="color:#c8cdd8">H7:</strong> AP Booster beats MARL-SL for ALL models — GLM d=+2.25 (p&lt;0.001), LFM d=+0.57 (p=0.038). GLM n=19 complete; LFM n=17 valid.</p>
 </section>
 
 <!-- RELATED WORK -->

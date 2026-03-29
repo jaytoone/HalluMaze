@@ -1,0 +1,250 @@
+{
+  "comparisons": {
+    "glm_AP_Booster_vs_Baseline": {
+      "comparison": "AP Booster vs Baseline",
+      "model": "GLM",
+      "n_problems": 16,
+      "mean_a": 0.8063,
+      "mean_b": 0.6875,
+      "delta": 0.1188,
+      "bootstrap_ci_95": [
+        0.1,
+        0.1562
+      ],
+      "p_wilcoxon": 0.000175,
+      "cohens_d": 1.583,
+      "sig": true,
+      "label_a": "AP Booster",
+      "label_b": "Baseline"
+    },
+    "glm_MARL-SL_vs_Baseline": {
+      "comparison": "MARL-SL vs Baseline",
+      "model": "GLM",
+      "n_problems": 16,
+      "mean_a": 0.7188,
+      "mean_b": 0.6875,
+      "delta": 0.0312,
+      "bootstrap_ci_95": [
+        0.0,
+        0.0875
+      ],
+      "p_wilcoxon": 0.179712,
+      "cohens_d": 0.308,
+      "sig": false,
+      "label_a": "MARL-SL",
+      "label_b": "Baseline"
+    },
+    "glm_AP_Booster_vs_MARL-SL": {
+      "comparison": "AP Booster vs MARL-SL",
+      "model": "GLM",
+      "n_problems": 19,
+      "mean_a": 0.8211,
+      "mean_b": 0.7368,
+      "delta": 0.0842,
+      "bootstrap_ci_95": [
+        0.0684,
+        0.1
+      ],
+      "p_wilcoxon": 0.000134,
+      "cohens_d": 2.248,
+      "sig": true,
+      "label_a": "AP Booster",
+      "label_b": "MARL-SL"
+    },
+    "lfm_AP_Booster_vs_Baseline": {
+      "comparison": "AP Booster vs Baseline",
+      "model": "LFM",
+      "n_problems": 17,
+      "mean_a": 0.3706,
+      "mean_b": 0.2647,
+      "delta": 0.1059,
+      "bootstrap_ci_95": [
+        -0.0412,
+        0.2588
+      ],
+      "p_wilcoxon": 0.180314,
+      "cohens_d": 0.311,
+      "sig": false,
+      "label_a": "AP Booster",
+      "label_b": "Baseline"
+    },
+    "lfm_MARL-SL_vs_Baseline": {
+      "comparison": "MARL-SL vs Baseline",
+      "model": "LFM",
+      "n_problems": 19,
+      "mean_a": 0.2,
+      "mean_b": 0.2737,
+      "delta": -0.0737,
+      "bootstrap_ci_95": [
+        -0.1737,
+        0.0421
+      ],
+      "p_wilcoxon": 0.123934,
+      "cohens_d": -0.304,
+      "sig": false,
+      "label_a": "MARL-SL",
+      "label_b": "Baseline"
+    },
+    "lfm_AP_Booster_vs_MARL-SL": {
+      "comparison": "AP Booster vs MARL-SL",
+      "model": "LFM",
+      "n_problems": 17,
+      "mean_a": 0.3706,
+      "mean_b": 0.1882,
+      "delta": 0.1824,
+      "bootstrap_ci_95": [
+        0.0294,
+        0.3235
+      ],
+      "p_wilcoxon": 0.037765,
+      "cohens_d": 0.572,
+      "sig": true,
+      "label_a": "AP Booster",
+      "label_b": "MARL-SL"
+    }
+  },
+  "descriptive": {
+    "GLM Baseline": {
+      "n": 16,
+      "mean": 0.6875,
+      "ci_lo": 0.5563,
+      "ci_hi": 0.8
+    },
+    "GLM MARL-SL": {
+      "n": 19,
+      "mean": 0.7368,
+      "ci_lo": 0.6474,
+      "ci_hi": 0.8105
+    },
+    "GLM AP Booster": {
+      "n": 19,
+      "mean": 0.8211,
+      "ci_lo": 0.7421,
+      "ci_hi": 0.9
+    },
+    "LFM Baseline": {
+      "n": 19,
+      "mean": 0.2737,
+      "ci_lo": 0.2,
+      "ci_hi": 0.3368
+    },
+    "LFM MARL-SL": {
+      "n": 20,
+      "mean": 0.215,
+      "ci_lo": 0.125,
+      "ci_hi": 0.31
+    },
+    "LFM AP Booster": {
+      "n": 17,
+      "mean": 0.3706,
+      "ci_lo": 0.2529,
+      "ci_hi": 0.4941
+    }
+  },
+  "trap_breakdown": {
+    "GLM_AP": {
+      "deprecated_method": {
+        "n": 4,
+        "mean_mei": 0.775,
+        "sd": 0.25
+      },
+      "nonexistent_api": {
+        "n": 10,
+        "mean_mei": 0.9,
+        "sd": 0.0
+      },
+      "wrong_signature": {
+        "n": 5,
+        "mean_mei": 0.7,
+        "sd": 0.2739
+      }
+    },
+    "LFM_AP": {
+      "deprecated_method": {
+        "n": 4,
+        "mean_mei": 0.25,
+        "sd": 0.1915
+      },
+      "nonexistent_api": {
+        "n": 8,
+        "mean_mei": 0.475,
+        "sd": 0.3284
+      },
+      "wrong_signature": {
+        "n": 5,
+        "mean_mei": 0.3,
+        "sd": 0.1225
+      }
+    },
+    "GLM_MARL": {
+      "deprecated_method": {
+        "n": 4,
+        "mean_mei": 0.725,
+        "sd": 0.2217
+      },
+      "nonexistent_api": {
+        "n": 10,
+        "mean_mei": 0.81,
+        "sd": 0.0316
+      },
+      "wrong_signature": {
+        "n": 5,
+        "mean_mei": 0.6,
+        "sd": 0.2739
+      }
+    },
+    "LFM_MARL": {
+      "deprecated_method": {
+        "n": 5,
+        "mean_mei": 0.24,
+        "sd": 0.1949
+      },
+      "nonexistent_api": {
+        "n": 10,
+        "mean_mei": 0.27,
+        "sd": 0.2452
+      },
+      "wrong_signature": {
+        "n": 5,
+        "mean_mei": 0.08,
+        "sd": 0.0447
+      }
+    },
+    "GLM_Baseline": {
+      "deprecated_method": {
+        "n": 3,
+        "mean_mei": 0.5333,
+        "sd": 0.4619
+      },
+      "nonexistent_api": {
+        "n": 8,
+        "mean_mei": 0.8,
+        "sd": 0.0
+      },
+      "wrong_signature": {
+        "n": 5,
+        "mean_mei": 0.6,
+        "sd": 0.2739
+      }
+    },
+    "LFM_Baseline": {
+      "deprecated_method": {
+        "n": 4,
+        "mean_mei": 0.3,
+        "sd": 0.1414
+      },
+      "nonexistent_api": {
+        "n": 10,
+        "mean_mei": 0.29,
+        "sd": 0.1595
+      },
+      "wrong_signature": {
+        "n": 5,
+        "mean_mei": 0.22,
+        "sd": 0.1643
+      }
+    }
+  },
+  "n_bootstrap": 2000,
+  "alpha": 0.05
+}
