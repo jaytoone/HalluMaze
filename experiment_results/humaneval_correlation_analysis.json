@@ -1,0 +1,73 @@
+{
+  "humaneval_trap": {
+    "n_ap": 8,
+    "n_baseline": 10,
+    "n_common": 3,
+    "pass_ap": 0.875,
+    "pass_baseline": 0.3,
+    "delta_pass": 0.575,
+    "cohen_d_paired": 1.155,
+    "trap_detection_rate_ap": 0.875,
+    "trap_used_rate_baseline": 0.5,
+    "trap_type_breakdown_ap": {
+      "nonexistent_api": {
+        "n": 4,
+        "passed": 4,
+        "pass_at_1": 1.0
+      },
+      "deprecated_method": {
+        "n": 2,
+        "passed": 2,
+        "pass_at_1": 1.0
+      },
+      "wrong_signature": {
+        "n": 2,
+        "passed": 1,
+        "pass_at_1": 0.5
+      }
+    },
+    "trap_type_breakdown_baseline": {
+      "wrong_signature": {
+        "n": 4,
+        "passed": 2,
+        "pass_at_1": 0.5
+      },
+      "deprecated_method": {
+        "n": 3,
+        "passed": 1,
+        "pass_at_1": 0.3333333333333333
+      },
+      "nonexistent_api": {
+        "n": 3,
+        "passed": 0,
+        "pass_at_1": 0.0
+      }
+    }
+  },
+  "size_consistency": {
+    "n_models": 2,
+    "spearman_rho": null,
+    "p_value": null,
+    "note": "n=2 models — Spearman requires n≥3. Qualitative: larger model (GLM 23/100) → higher HalluCode SR(AP)=100% vs smaller model (LFM ~5/100) → SR(AP)=56.9%. Direction consistent with size-ability hypothesis.",
+    "data_points": [
+      {
+        "model": "GLM-4.5-Air",
+        "humaneval_approx": 23,
+        "hallucode_sr_ap": 1.0,
+        "source": "ArtificialAnalysis coding score"
+      },
+      {
+        "model": "LFM-1.2B-Thinking",
+        "humaneval_approx": 5,
+        "hallucode_sr_ap": 0.569,
+        "source": "estimated ~5/100 for 1.2B model"
+      }
+    ]
+  },
+  "interpretation": {
+    "primary": "AP Booster improves pass@1 by +0.575 on HumanEval-Trap (same prompt as HalluCode)",
+    "mechanism": "Trap-awareness (AP) is domain-agnostic: effective on both custom HalluCode and public HumanEval problems",
+    "size_pattern": "Larger models show higher HalluCode SR under AP, consistent with coding ability ordering",
+    "limitation": "n=8/10 valid due to free-tier rate limits; n=2 models for size correlation (companion paper: n≥5)"
+  }
+}

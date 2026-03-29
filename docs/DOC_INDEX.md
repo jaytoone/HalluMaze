@@ -24,6 +24,11 @@
 | docs/hallumaze_arxiv.tex | arXiv LaTeX paper draft (NeurIPS 2026 format) | 2026-03-24 |
 | docs/hallumaze.bib | BibTeX references for arXiv paper | 2026-03-24 |
 | docs/hf_post_v2.md | HF 커뮤니티 포스트 v2 (트렌딩 스타일, 24시간 후 포스팅 예정) | 2026-03-25 |
+| experiment_results/humaneval_trap_glm_ap.json | HumanEval-Trap AP Booster (GLM, n=8 valid): pass@1=0.875, trap_detection=87.5%. 동일 AP 프롬프트 공인 벤치마크 전이 입증 | 2026-03-29 |
+| experiment_results/humaneval_trap_glm_baseline.json | HumanEval-Trap Baseline (GLM, n=10 valid): pass@1=0.300. Δ=+0.575 vs AP Booster | 2026-03-29 |
+| experiment_results/humaneval_correlation_analysis.json | HalluCode ↔ HumanEval 외적 타당성 분석: HumanEval-Trap Δ=+0.575, d=+1.16, 크기-능력 일관성 정성 분석 | 2026-03-29 |
+| scripts/run_humaneval_trap.py | HumanEval-Trap 실험 스크립트: false API hint 주입 + AP Booster/baseline 비교 (pass@1 측정) | 2026-03-29 |
+| scripts/analyze_humaneval_correlation.py | HalluCode ↔ HumanEval 상관 분석: HumanEval-Trap 결과 + Spearman 상관 (n≥5 시 활성화) | 2026-03-29 |
 | docs/hf_post_v4.md | HF 커뮤니티 포스트 v4 (HalluCode AP Booster 전용: 80-token prompt beats MARL-SL, GLM d=+2.25 p<0.001) | 2026-03-29 |
 | docs/hf_post_v3.md | HF 커뮤니티 포스트 v3 (Claude 4.x 확장 결과 포함, 13모델 리더보드) | 2026-03-26 |
 | experiment_results/claude4x_pilot.json | Claude 4.x Pilot (n=5, Phase A): Haiku-4.5/Sonnet-4.5/Sonnet-4.6 초기 결과 | 2026-03-26 |

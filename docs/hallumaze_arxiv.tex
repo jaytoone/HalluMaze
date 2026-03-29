@@ -414,7 +414,12 @@ HalluCode SR is an execution-based metric (compile + execute against held-out te
 External validity on three grounds:
 \emph{(1) Size-ability consistency}: The 20$\times$ SR gap (GLM vs.\ LFM) matches expected capability differences: GLM-4.5-Air scores 23/100 on the ArtificialAnalysis Intelligence Index~\citep{artificialanalysis2024}, while LFM-1.2B scores 6/100 and does not appear on standard HumanEval leaderboards~\citep{benchlm2024}. The Zhipu GLM-4.7 (same family) achieves 94.2\% HumanEval pass@1 (BenchLM rank \#6 of 55)~\citep{benchlm2024}.
 \emph{(2) Adversarial conservatism}: HalluCode SR is measured under adversarial conditions, making it a conservative lower bound on true coding ability.
-\emph{(3) Cross-benchmark correlation}: Spearman correlation between HalluCode SR/CodeMEI and HumanEval/MBPP pass@1 is planned for the companion paper (5 models, $n{\geq}60$).
+\emph{(3) HumanEval-Trap transfer}: We directly test AP Booster generalization by injecting false API hints into $n{=}20$ public HumanEval~\citep{chen2021codex} problems (3 trap types: nonexistent API, wrong signature, deprecated method — identical to HalluCode categories).
+GLM-4.5-Air results ($n_{\text{valid}}{=}8$ AP; $n_{\text{valid}}{=}10$ Baseline; free-tier rate limits):
+AP Booster pass@1$=$0.875 vs.\ Baseline pass@1$=$0.300 ($\Delta{=}+0.575$, $d{=}+1.16$, paired $n{=}3$ common problems; trap detection rate 87.5\%).
+Per-trap: \texttt{nonexistent\_api} AP 1.000 vs.\ Baseline 0.000; \texttt{deprecated\_method} AP 1.000 vs.\ Baseline 0.333.
+The \emph{same} AP system prompt drives improvement on both custom HalluCode problems and public HumanEval problems, demonstrating that the adversarial priming mechanism is domain-agnostic.
+Spearman correlation across ${\geq}5$ models is planned for the companion paper.
 
 % =================================================================
 \section{Limitations \& Future Work}

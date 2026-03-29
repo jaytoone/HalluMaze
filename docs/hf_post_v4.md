@@ -55,3 +55,8 @@ Benchmark code: Be2Jay/hallumaze-benchmark → scripts/run_hallucode_booster.py
 
 - v4 신규: HalluCode AP Booster 전용 포스트 (v3은 Claude 4.x 리더보드 전용)
 - 타겟: prompt engineers, LLM researchers, coding benchmark community
+
+## Related
+- [[projects/Miro/research/20260327-hallumaze-extension-hallucode|20260327-hallumaze-extension-hallucode]]
+- [[projects/Miro/research/20260328-hallucode-cubic-evaluation|20260328-hallucode-cubic-evaluation]]
+- [[projects/Miro/research/20260323-hallumaze-extension-todos|20260323-hallumaze-extension-todos]]

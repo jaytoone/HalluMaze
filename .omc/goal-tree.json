@@ -1,27 +1,19 @@
 {
-  "root_goal": "HalluCode를 독립 \\section{HalluCode Extension}으로 격상: hypothesis→method→results→discussion 구조, AP Booster를 3번째 main contribution으로 Abstract에 명시, Introduction에 HalluCode contribution bullet 추가. NeurIPS 논문에서 HalluCode가 HalluMaze와 동등한 비중으로 다뤄지는 구조 완성.",
-  "original_goal": "HalluCode 벤치마크를 상위 티어 논문급(NeurIPS/ICML/ICLR)으로 개선: Bootstrap CI + Cohen's d 통계 강화, HalluCode 전용 리더보드 (Baseline/AP/MARL-SL × GLM+LFM), arXiv HalluCode 섹션 NeurIPS 심사 기준으로 보강 (significance test, ablation depth, ecological validity, limitation analysis)",
+  "root_goal": "HalluCode ↔ HumanEval/MBPP 연결성 실증: AP Booster를 HumanEval 문제에 직접 적용(trap 주입 포함)하여 공인 벤치마크에서 pass@1 향상 입증, HalluCode SR × 공인 코딩 점수 Spearman 상관 계산, arXiv ecological validity 섹션 업데이트.",
+  "original_goal": "HalluCode ↔ HumanEval/MBPP 연결성 실증: AP Booster를 HumanEval 문제에 직접 적용(trap 주입 포함)하여 공인 벤치마크에서 pass@1 향상 입증, HalluCode SR × 공인 코딩 점수 Spearman 상관 계산, arXiv ecological validity 섹션 업데이트.",
   "level": 0,
   "sub_goals": [
-    "[P1] Bootstrap CI n=2000 + Cohen's d for GLM/LFM CodeMEI comparisons",
-    "[P1] HalluCode-specific stats script (scripts/analyze_hallucode_stats.py)",
-    "[P2] arXiv tex: HalluCode subsection 확장 (statistical significance, per-trap-type breakdown)",
-    "[P2] hallumaze_final.html HalluCode 리더보드 테이블 완성 (trap-type breakdown 추가)",
-    "[P3] n=60 scale-up for GLM via 3 seed runs (HC001-HC019 × 3, if rate-limit allows)",
-    "[P3] 3rd model validation (if paid API available)"
+    "[P1] HumanEval 문제에 false API hint 주입 스크립트 (run_humaneval_trap.py)",
+    "[P1] GLM baseline vs AP Booster on HumanEval-Trap (n=20 subset)",
+    "[P2] HalluCode SR × ArtificialAnalysis 코딩 점수 Spearman 상관 (GLM+LFM+공개 모델 데이터)",
+    "[P3] arXiv ecological validity 섹션 업데이트 (실험 결과 포함)",
+    "[P3] hallumaze_final.html '연결성 증거' 시각화"
   ],
+  "evolution_count": 0,
+  "evolution_history": [],
   "reward_spec": {
-    "primary_metric": "NeurIPS-standard HalluCode section: statistical significance + effect size + ablation depth + ecological validity",
-    "threshold": "Bootstrap CI on all condition comparisons, Cohen's d reported, per-trap-type breakdown table, 2+ reviewer objections pre-empted in limitations"
+    "primary_metric": "HumanEval-Trap 실험 결과 + Spearman 상관 계수",
+    "threshold": "AP Booster가 HumanEval-Trap에서 baseline 대비 향상 입증 + arXiv 업데이트 완료"
   },
-  "evolution_count": 1,
-  "evolution_history": [
-    {
-      "iteration": 2,
-      "goal": "HalluCode 벤치마크를 상위 티어 논문급(NeurIPS/ICML/ICLR)으로 개선: Bootstrap CI + Cohen's d 통계 강화, HalluCode 전용 리더보드 (Baseline/AP/MARL-SL × GLM+LFM), arXiv HalluCode 섹션 NeurIPS 심사 기준으로 보강 (significance test, ablation depth, ecological validity, limitation analysis)",
-      "score": 0.81,
-      "rationale": "Bootstrap CI+power analysis done. Weakest: completeness — HalluCode buried in Related Work subsection instead of standalone section."
-    }
-  ],
   "history": []
 }
