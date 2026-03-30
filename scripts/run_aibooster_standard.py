@@ -17,11 +17,31 @@ AI Booster v3 -- Standard Coding Benchmark (No Trap Injection)
   - Baseline: 동일 문제에 시스템 프롬프트 없이 직접 풀기
   - pass@1 측정: HumanEval 내장 test cases 실행
 
-Usage:
-    source ~/.claude/env/shared.env
+Primary models (HF popular — 어그로용):
+    # OpenRouter 파일럿 (지금 바로 실행 가능):
+    python3 scripts/run_aibooster_standard.py --model llama-70b-free --mode booster --n 30 --seed 42
+    python3 scripts/run_aibooster_standard.py --model llama-70b-free --mode baseline --n 30 --seed 42
+    python3 scripts/run_aibooster_standard.py --model qwen3-coder-free --mode booster --n 30 --seed 42
+    python3 scripts/run_aibooster_standard.py --model qwen3-coder-free --mode baseline --n 30 --seed 42
+    # NIPA H200 (local-qwen25coder, local-llama33, local-deepseek-lite)
+
+Legacy / prior experiment reference:
     python3 scripts/run_aibooster_standard.py --model glm-free --mode booster --n 30 --seed 42
-    python3 scripts/run_aibooster_standard.py --model glm-free --mode baseline --n 30 --seed 42
     python3 scripts/run_aibooster_standard.py --model local-qwen35 --mode booster --n 30 --seed 42
+
+NIPA vLLM launch commands (H200 80GB):
+    # [1] Qwen2.5-Coder-32B BF16 — HF #1 coding model (926k dl, 92.7% HumanEval)
+    python -m vllm.entrypoints.openai.api_server \
+        --model Qwen/Qwen2.5-Coder-32B-Instruct --dtype bfloat16 \
+        --gpu-memory-utilization 0.85 --port 18001
+    # [2] Llama-3.3-70B INT4 — Meta flagship (88.4% HumanEval, ~17.5GB VRAM)
+    python -m vllm.entrypoints.openai.api_server \
+        --model meta-llama/Llama-3.3-70B-Instruct --load-in-4bit \
+        --dtype bfloat16 --gpu-memory-utilization 0.85 --port 18002
+    # [3] DeepSeek-Coder-V2-Lite — MoE 16B/2.4B active (~8GB FP8, 338 langs)
+    python -m vllm.entrypoints.openai.api_server \
+        --model deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct --dtype bfloat16 \
+        --gpu-memory-utilization 0.85 --port 18003
 """
 from __future__ import annotations
 import json, os, re, sys, time, random, socket, subprocess, tempfile
@@ -71,10 +91,34 @@ OPENROUTER_MODELS = {
     "gpt-4o-mini":      {"id": "openai/gpt-4o-mini",                     "display": "GPT-4o mini"},
 }
 MODELS_LOCAL = {
+    # ── [LEGACY] Qwen3.5-122B-A10B: HalluCode 실험 연속성용 (일반 인기 모델 아님) ──
+    #     NIPA 커스텀 서빙명 (HF 공개 모델 아님) — 논문 연속성 위해 보존
     "local-qwen35": {
         "id": "qwen3.5-122b-a10b",
-        "display": "Qwen3.5-122B (NIPA local)",
+        "display": "Qwen3.5-122B-A10B (NIPA local, legacy)",
         "base_url": "http://localhost:18000/v1",
+    },
+    # ── [PRIMARY] HuggingFace 실제 인기 모델 — 논문 임팩트 극대화 ────────────
+    # [1] Qwen2.5-Coder-32B: 코딩 특화 최인기 모델 (HF #1 coding, 92.7% HumanEval)
+    #     vllm serve Qwen/Qwen2.5-Coder-32B-Instruct --port 18001 --dtype bfloat16 --max-model-len 8192
+    "local-qwen25coder": {
+        "id": "Qwen/Qwen2.5-Coder-32B-Instruct",
+        "display": "Qwen2.5-Coder-32B (NIPA local)",
+        "base_url": "http://localhost:18001/v1",
+    },
+    # [2] Llama-3.3-70B INT4: Meta 최인기 범용 모델 (88.4% HumanEval, ~17.5GB VRAM)
+    #     python -m vllm.entrypoints.openai.api_server --model meta-llama/Llama-3.3-70B-Instruct --load-in-4bit --dtype bfloat16 --gpu-memory-utilization 0.85 --port 18002
+    "local-llama33": {
+        "id": "meta-llama/Llama-3.3-70B-Instruct",
+        "display": "Llama-3.3-70B-INT4 (NIPA local)",
+        "base_url": "http://localhost:18002/v1",
+    },
+    # [3] DeepSeek-Coder-V2-Lite: MoE 16B/2.4B active (~8GB FP8), 338 langs, 128K ctx
+    #     python -m vllm.entrypoints.openai.api_server --model deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct --dtype bfloat16 --gpu-memory-utilization 0.85 --port 18003
+    "local-deepseek-lite": {
+        "id": "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
+        "display": "DeepSeek-Coder-V2-Lite (NIPA local)",
+        "base_url": "http://localhost:18003/v1",
     },
 }
 MODELS_ALL = {**OPENROUTER_MODELS, **MODELS_LOCAL}
