@@ -64,7 +64,7 @@ def call_local(prompt: str, model: dict, system: str = "", max_tokens: int = 204
     resp = requests.post(
         f"{model['base_url']}/chat/completions",
         json=payload,
-        timeout=120,
+        timeout=180,
     )
     if resp.status_code == 429:
         raise RuntimeError("rate_limit_429")
@@ -206,7 +206,7 @@ Output ONLY the function code, no explanation.
 # ─── Experiment runner ────────────────────────────────────────────────────────
 def run_experiment(model_key: str, prompt_type: str, n: int, seed: int, output_path: str):
     model = MODELS[model_key]
-    problems = load_mbpp_easy_subset(n=n, seed=seed)
+    problems = load_mbpp_easy_subset(n=n, seed=seed, min_pool=max(150, n * 5))
     use_ap = (prompt_type in ("ap_v2", "ap_booster_v2"))
 
     print(f"\n[MBPP-Easy-Trap] model={model['display']}, prompt={prompt_type}, n={n}, seed={seed}")

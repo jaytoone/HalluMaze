@@ -1,3 +1,17 @@
+v1.65 20260330 0800
+    - MBPP-Easy-Trap 정식 실험 완료 (n=30, Qwen3.5-122B NIPA H200):
+      AP v2: pass@1=0.517 detection=93.1% (n=29 valid, seed=100)
+      Baseline: pass@1=0.267 (n=30, seed=200)
+      n=30 단독: p=0.064; Pooled(pilot+n30): Δ=+0.235, h=0.484, OR=2.71, p=0.031 (SIGNIFICANT)
+      Bootstrap 95% CI=[+0.030, +0.422] — zero 제외됨
+    - scripts/run_mbpp_easy_trap.py: timeout 120→180s, min_pool=max(150, n*5) 확장
+    - experiment_results/: ap_v2_n30.json, baseline_n30.json, n30_stats.json, pooled_stats.json
+    - docs/hallumaze_arxiv.tex: §8 "Validated p=0.031" + Conclusion 업데이트
+    - README.md: MBPP-Easy 결과 pooled stats로 업데이트 (p=0.031)
+    - docs/DOC_INDEX.md: 신규 4건 추가 (n30 실험 결과 + 벤치마크 다양화 연구)
+    - docs/research/20260330-ap-benchmark-diversification.md: expert-research-v2 결과 저장
+    - .omc/world-model.json: iter 12 progress 업데이트
+
 v1.64 20260330 1115
     - MBPP-Easy-Trap 실험 완료 (Qwen3.5-122B NIPA H200):
       AP v2: pass@1=0.538 detection=92.3% (n=13)

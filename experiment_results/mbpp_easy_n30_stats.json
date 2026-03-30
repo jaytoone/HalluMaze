@@ -1,0 +1,23 @@
+{
+  "experiment": "MBPP-Easy-Trap n=30 (definitive)",
+  "ap_v2": {
+    "n": 29,
+    "pass": 15,
+    "pass_at_1": 0.517,
+    "detection": 0.931
+  },
+  "baseline": {
+    "n": 30,
+    "pass": 8,
+    "pass_at_1": 0.267
+  },
+  "delta": 0.25,
+  "bootstrap_ci_95": [
+    0.013,
+    0.489
+  ],
+  "fisher_exact_p": 0.0641,
+  "cohens_h": 0.519,
+  "oddsratio": 2.946,
+  "significant_alpha_0_05": false
+}

@@ -1,99 +1,44 @@
 {
   "status": "RUNNING",
-  "session_id": "inf-20260329-2012",
-  "current_iteration": 10,
-  "root_goal": "AP Booster v2 설계 + MBPP-Easy 필터링 + 다벤치마크 일반화 실증 (HumanEval/MBPP/HalluCode 통합)",
+  "session_id": "inf-20260330-0001",
+  "current_iteration": 12,
+  "root_goal": "MBPP-Easy n≥30 실험 + 통계적 유의성 확보 + DS-1000 domain-specific trap 설계 (벤치마크 진정한 독립성 입증)",
   "original_goal": "HalluMaze + HalluCode 논문 arXiv/NeurIPS 제출 ready: Bootstrap CI for HalluCode + LFM multi-model + 논문 완성도 극대화",
-  "evolution_count": 1,
+  "evolution_count": 2,
   "evolution_history": [
     {
-      "from": "HalluMaze + HalluCode 논문 arXiv/NeurIPS 제출 ready: Bootstrap CI for HalluCode + LFM multi-model + 논문 완성도 극대화",
+      "from": "HalluMaze + HalluCode 논문 arXiv/NeurIPS 제출 ready",
       "to": "AP Booster 다벤치마크 일반화: MBPP 난이도 장벽 돌파 + AP Booster v2 설계 + 실행",
       "iteration": 9,
       "reason": "사용자 intent 재정렬: 코딩 능력 향상이 아닌 다벤치마크 trap-awareness booster 일반화"
+    },
+    {
+      "from": "AP Booster v2 설계 + MBPP-Easy 필터링 + 다벤치마크 일반화 실증",
+      "to": "MBPP-Easy n≥30 실험 + 통계적 유의성 확보 + DS-1000 domain-specific trap 설계",
+      "iteration": 12,
+      "reason": "pilot underpowered (n=13 AP, n=15 baseline, p=0.24). Expert research: generic trap recycling = fake benchmark-independence. Need (1) n≥30 for α=0.05 and (2) domain-specific traps for DS-1000."
     }
   ],
-  "best_score": 0.75,
+  "best_score": 0.88,
   "plateau_count": 0,
   "score_variance": 0.0,
   "score_history": [
     {
-      "iteration": 0,
-      "score": 0.84,
-      "note": "baseline estimate before iter 1 (goal v0)"
-    },
-    {
-      "iteration": 1,
-      "score": 0.87,
-      "delta": 0.03,
-      "note": "Conclusion + Planned Extensions updated"
-    },
-    {
-      "iteration": 2,
-      "score": 0.89,
-      "delta": 0.02,
-      "note": "HTML F6 card + hero Spearman"
-    },
-    {
-      "iteration": 3,
-      "score": 0.91,
-      "delta": 0.02,
-      "note": "HumanEval×MEI scatter plot"
-    },
-    {
-      "iteration": 4,
-      "score": 0.915,
-      "delta": 0.005,
-      "note": "HF Dataset README"
-    },
-    {
-      "iteration": 5,
-      "score": 0.935,
-      "delta": 0.02,
-      "note": "Abstract trimmed 336→218 words"
-    },
-    {
-      "iteration": 6,
-      "score": 0.955,
-      "delta": 0.02,
-      "note": "README full rewrite"
-    },
-    {
-      "iteration": 7,
-      "score": 0.96,
-      "delta": 0.005,
-      "note": "Bonferroni k consistency"
-    },
-    {
-      "iteration": 8,
-      "score": 0.975,
-      "delta": 0.015,
-      "note": "CRITICAL Cohen d fix"
-    },
-    {
-      "iteration": 9,
-      "score": 0.977,
-      "delta": 0.002,
-      "note": "verification pass — goal v0 converged"
-    },
-    {
       "iteration": 10,
       "score": 0.75,
       "delta": 0.25,
-      "note": "goal v1 start: AP v2 script + MBPP-Easy filter + paper documented. Script runs, imports OK. Missing: actual experiment results."
+      "note": "AP v2 script + MBPP-Easy filter + paper documented. No results yet."
+    },
+    {
+      "iteration": 11,
+      "score": 0.88,
+      "delta": 0.13,
+      "note": "ACTUAL EXPERIMENT RUN: Qwen3.5-122B NIPA H200. pass@1=0.538 (AP v2) vs 0.333 (baseline). detection=92.3%. Expert research: DS-1000>BigCodeBench as next benchmarks. CRITICAL: generic trap recycling gap identified."
     }
   ],
   "cost_history": [
-    {
-      "iteration": 1,
-      "phase_reached": "phase_5",
-      "relative_cost": 0.3
-    },
-    {
-      "iteration": 10,
-      "phase_reached": "phase_4",
-      "relative_cost": 0.2
-    }
+    {"iteration": 11, "phase_reached": "phase_5", "relative_cost": 0.3, "note": "NIPA GPU - no OpenRouter cost"},
+    {"iteration": 12, "phase_reached": "phase_0", "relative_cost": 0.0, "note": "starting iter 12"}
   ],
   "rotated_at": null,
   "started_at": "2026-03-29T20:12:00Z"

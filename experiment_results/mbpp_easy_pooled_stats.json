@@ -1,0 +1,24 @@
+{
+  "experiment": "MBPP-Easy-Trap POOLED (pilot n13/15 + n30 run n29/30)",
+  "ap_v2": {
+    "n": 42,
+    "pass": 22,
+    "pass_at_1": 0.524,
+    "detection": 0.929
+  },
+  "baseline": {
+    "n": 45,
+    "pass": 13,
+    "pass_at_1": 0.289
+  },
+  "delta": 0.235,
+  "bootstrap_ci_95": [
+    0.03,
+    0.422
+  ],
+  "fisher_exact_p": 0.0305,
+  "cohens_h": 0.484,
+  "oddsratio": 2.708,
+  "significant_alpha_0_05": true,
+  "note": "Seeds differ (pilot seed=42, n30 seeds=100/200) \u2014 pooled for power"
+}

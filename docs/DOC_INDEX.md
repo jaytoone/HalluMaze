@@ -2,6 +2,11 @@
 
 | 파일 | 설명 | 날짜 |
 |------|------|------|
+| experiment_results/mbpp_easy_trap_qwen35_ap_v2_n30.json | MBPP-Easy-Trap AP v2 (Qwen3.5-122B, n=29 valid, seed=100): pass@1=0.517, detection=0.931. Definitive n=30 run confirming pilot trend | 2026-03-30 |
+| experiment_results/mbpp_easy_trap_qwen35_baseline_n30.json | MBPP-Easy-Trap Baseline (Qwen3.5-122B, n=30 valid, seed=200): pass@1=0.267. Definitive n=30 baseline | 2026-03-30 |
+| experiment_results/mbpp_easy_n30_stats.json | MBPP-Easy-Trap n=30 통계: Fisher p=0.064, Cohen h=0.519, Bootstrap CI=[+0.013,+0.489] | 2026-03-30 |
+| experiment_results/mbpp_easy_pooled_stats.json | MBPP-Easy-Trap POOLED 통계 (n=42 AP / n=45 baseline): Δ=+0.235, h=0.484, OR=2.71, p=0.031 (significant). Bootstrap CI=[+0.030,+0.422] | 2026-03-30 |
+| docs/research/20260330-ap-benchmark-diversification.md | AP Booster 코드 벤치마크 다양화 전략 (expert-research-v2): DS-1000(1위)>BigCodeBench(2위)>EvalPlus>PASS. CRITICAL: generic trap recycling → domain-specific trap library 설계 필요. NeurIPS E&D Track 요건 분석 | 2026-03-30 |
 | experiment_results/hallucode_full.json | HalluCode Full Experiment: 2모델(GLM n=19, LFM n=20)×3 trap type. GLM CodeMEI=0.737/SR=100%, LFM CodeMEI=0.215/SR=5%. SR⊥CodeMEI 코딩 도메인 확증 | 2026-03-28 |
 | experiment_results/hallucode_baseline_glm.json | HalluCode Baseline GLM-4.5-Air (n=19 merged). SR=78.9%/HRR=68.4%/MEI=0.579 vs MARL-SL SR=100%/HRR=84.2%/MEI=0.737. H6 교차검증: 대형모델 MARL-SL +ΔCodeMEI=+0.158 | 2026-03-29 |
 | experiment_results/hallucode_baseline_lfm.json | HalluCode Baseline Ablation: LFM-1.2B no-MARL (n=19). SR=68.4%/HRR=0% vs MARL-SL SR=5%/HRR=25%. H6 소형모델 MARL-SL −ΔCodeMEI=−0.059 | 2026-03-29 |

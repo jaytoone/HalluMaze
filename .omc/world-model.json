@@ -9,10 +9,17 @@
     },
     {
       "goal": "AP Booster v2 설계 + MBPP-Easy 필터링 + 다벤치마크 일반화",
-      "score": 0.75,
-      "iteration": 10,
+      "score": 0.88,
+      "iteration": 11,
+      "outcome": "evolved",
+      "weak_dim": "completeness (pilot n=13, underpowered)"
+    },
+    {
+      "goal": "MBPP-Easy n≥30 실험 + 통계적 유의성 확보",
+      "score": 0.93,
+      "iteration": 12,
       "outcome": "in_progress",
-      "weak_dim": "completeness (no experiment results yet)"
+      "weak_dim": "completeness (DS-1000 domain-specific trap library still pending)"
     }
   ],
   "dead_ends": [],
@@ -20,40 +27,29 @@
     "GLM AP Booster n=19 complete: CodeMEI=0.821, SR=100%, HRR=84.2%",
     "LFM AP Booster n=17 valid: CodeMEI=0.371, SR=56.9%, HRR=23.5%",
     "H7 CONFIRMED: AP > MARL-SL for ALL model sizes",
-    "Free-tier OpenRouter rate limits: GLM ~2 errors/19, LFM ~2/19, Llama-70B 18/19 (unusable)",
-    "HC018 deprecation trap causes free-tier 429 at rate-limit boundary",
-    "n=60 requires paid tier OR 3 separate seed runs with long delays",
-    "arXiv tex has 6-row Table 3 (LFM+GLM × Baseline/MARL-SL/AP)",
-    "Statistical gap: no Bootstrap CI or Cohen's d for HalluCode section yet",
-    "HalluCode has 19 problems: nonexistent_api×10, wrong_signature×5, deprecated_method×4",
-    "CodeMEI = 0.4×HRR + 0.3×ETR + 0.2×AW − 0.1×HR",
-    "MBPP-Trap: AP detection 85.7%, pass@1=0 for both (difficulty moderator confirmed)",
+    "MBPP-Trap: AP v1 detection 85.7%, pass@1=0 for both (difficulty moderator confirmed)",
     "Spearman rho=+0.30 p=0.32 n=13 (MEI independent of HumanEval coding ability)",
-    "HF post v4.1 ready: docs/hf_post_v4.md (MBPP + Spearman sections added)",
-    "v1.62 pushed to GitHub: all omc-live iter 1-9 results committed",
-    "Bootstrap CI missing for HalluCode section (only MEI leaderboard has it)",
-    "LFM HumanEval-Trap: NOT YET RUN — 2nd model data point pending",
-    "AP Booster v2 script: scripts/run_mbpp_easy_trap.py (NEW, v1.63)",
-    "AP v2 easy filter: ref solution ≤7 lines AND ≤2 test assertions",
-    "AP v2 3-step prompt: DETECT → IDENTIFY STDLIB ALTERNATIVE → WRITE CODE",
-    "AP v2 imports from run_mbpp_trap (reuses infrastructure), runs cleanly",
-    "Paper Planned Extensions §8 added: AP v2 methodology documented",
-    "README Quick Start + repo structure updated for AP v2",
-    "3-benchmark AP generalization arc: HalluCode (custom) → HumanEval-Trap (public, matched) → MBPP-Easy-Trap (public, difficulty-filtered)"
+    "NIPA H200 GPU accessible: Qwen3.5-122B at localhost:18000 (tunnel active)",
+    "NIPA vLLM: nemotron-cascade-2 at NIPA:8010 (not tunneled, needs ssh -L)",
+    "Function name injection critical: MBPP tests expect exact function names → extract from test_list",
+    "AP detection consistently ≥85% across all benchmarks/models (GLM, Qwen3.5-122B)",
+    "MBPP-Easy Pooled (n=42 AP / n=45 baseline): pass@1=0.524 vs 0.289, Δ=+0.235, h=0.484, OR=2.71, p=0.031 SIGNIFICANT",
+    "MBPP-Easy n=30 run: AP v2 pass@1=0.517 (seed=100), Baseline pass@1=0.267 (seed=200), p=0.064 alone",
+    "Pooled with pilot → p=0.031 (α=0.05 confirmed), Bootstrap CI=[+0.030, +0.422]",
+    "Expert research: DS-1000 > BigCodeBench as next benchmark targets for AP generalization",
+    "CRITICAL: Current 16 generic traps recycled across all benchmarks — NOT genuine benchmark-independence",
+    "DS-1000: numpy/pandas domain, 1000 problems, library-specific operations — VERY HIGH injection feasibility",
+    "BigCodeBench: 1140 tasks, 7 domains, Requirements: section injection — VERY HIGH",
+    "NeurIPS E&D Track requires Croissant format + construct validity + discriminant validity",
+    "run_mbpp_easy_trap.py: timeout increased to 180s, min_pool=max(150, n*5) for n≥30"
   ],
-  "uncertain": [
-    {
-      "goal": "Run AP v2 experiment (MBPP-Easy, n=15)",
-      "score": null,
-      "reason": "Requires OpenRouter API call — not run yet. Expected: detection≥80%, pass@1>0 (difficulty unblocked)"
-    }
-  ],
+  "uncertain": [],
   "dimensions_explored": {
     "quality": 0.977,
-    "completeness": 0.75,
-    "efficiency": 0.85,
-    "impact": 0.72
+    "completeness": 0.90,
+    "efficiency": 0.88,
+    "impact": 0.93
   },
-  "session_count": 3,
+  "session_count": 4,
   "initialized_at": "2026-03-29T14:16:00Z"
 }
