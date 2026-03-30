@@ -2,6 +2,8 @@
 
 | 파일 | 설명 | 날짜 |
 |------|------|------|
+| scripts/run_aibooster_standard.py | AI Booster v3 (General Metacognitive Middleware) 실험 스크립트: 표준 HumanEval (no trap) + 3-step ANALYZE/VERIFY/CODE 미들웨어 vs Baseline. H_AB: 일반 코딩 벤치마크 raw pass@1 향상 검증 | 2026-03-30 |
+| docs/research/20260330-ap-benchmark-selection.md | expert-research-v2 3-agent 파이프라인: BigCodeBench-Hard(148 tasks, instruct_prompt) 최종 추천 + 3개 선행조건 (AP ablation, trap library 확장 15개, Qwen3.5 seed 재실험). DA CRITICAL: AP effect = instruction-following? 분리 ablation 필수 | 2026-03-30 |
 | experiment_results/humaneval_trap_qwen35_ap.json | HumanEval-Trap AP Booster (Qwen3.5-122B NIPA H200, n=17 valid, seed=100): pass@1=1.000, detection=100%. 모델-독립성 확증: GLM Δ=+0.575 vs Qwen ability-moderated (ceiling effect) | 2026-03-30 |
 | experiment_results/humaneval_trap_qwen35_baseline.json | HumanEval-Trap Baseline (Qwen3.5-122B, n=17 valid, seed=200): pass@1=1.000†. †강력한 모델은 trap 언급해도 코드는 정확하게 작성 (ceiling at baseline) | 2026-03-30 |
 | experiment_results/mbpp_easy_trap_qwen35_ap_v2_n30.json | MBPP-Easy-Trap AP v2 (Qwen3.5-122B, n=29 valid, seed=100): pass@1=0.517, detection=0.931. Definitive n=30 run confirming pilot trend | 2026-03-30 |

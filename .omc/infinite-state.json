@@ -1,10 +1,10 @@
 {
   "status": "RUNNING",
-  "session_id": "inf-20260330-0001",
-  "current_iteration": 12,
-  "root_goal": "MBPP-Easy n≥30 실험 + 통계적 유의성 확보 + DS-1000 domain-specific trap 설계 (벤치마크 진정한 독립성 입증)",
+  "session_id": "inf-20260330-0002",
+  "current_iteration": 13,
+  "root_goal": "AI Booster (general metacognitive middleware) 설계 + 공인 코딩 벤치마크 raw pass@1 향상 실험 (trap 없이): HalluCode 검증 미들웨어 → HumanEval/BigCodeBench 전이 효과",
   "original_goal": "HalluMaze + HalluCode 논문 arXiv/NeurIPS 제출 ready: Bootstrap CI for HalluCode + LFM multi-model + 논문 완성도 극대화",
-  "evolution_count": 2,
+  "evolution_count": 3,
   "evolution_history": [
     {
       "from": "HalluMaze + HalluCode 논문 arXiv/NeurIPS 제출 ready",
@@ -17,6 +17,12 @@
       "to": "MBPP-Easy n≥30 실험 + 통계적 유의성 확보 + DS-1000 domain-specific trap 설계",
       "iteration": 12,
       "reason": "pilot underpowered (n=13 AP, n=15 baseline, p=0.24). Expert research: generic trap recycling = fake benchmark-independence. Need (1) n≥30 for α=0.05 and (2) domain-specific traps for DS-1000."
+    },
+    {
+      "from": "MBPP-Easy n≥30 실험 + DS-1000 domain-specific trap 설계",
+      "to": "AI Booster (general metacognitive middleware) 설계 + 공인 코딩 벤치마크 raw pass@1 향상 실험 (trap 없이)",
+      "iteration": 13,
+      "reason": "사용자 재정렬: trap injection 방식은 순환적 검증. 진짜 hypothesis = HalluCode 검증된 AI Booster middleware가 표준 공인 벤치마크 raw 성능을 올리느냐. AP Booster → AI Booster로 재명명."
     }
   ],
   "best_score": 0.94,
@@ -40,11 +46,18 @@
       "score": 0.94,
       "delta": 0.06,
       "note": "MBPP-Easy n=30 + pooled p=0.031 (SIGNIFICANT). HumanEval-Trap Qwen: detection=100%, pass@1=1.000 (ability-moderated). 3 benchmark × 3 model families. Paper updated."
+    },
+    {
+      "iteration": 13,
+      "score": null,
+      "delta": null,
+      "note": "Goal evolution #3: AI Booster general middleware. Trap-free standard benchmark experiment design. Target: HumanEval standard + BigCodeBench raw pass@1."
     }
   ],
   "cost_history": [
     {"iteration": 11, "phase_reached": "phase_5", "relative_cost": 0.3, "note": "NIPA GPU - no OpenRouter cost"},
-    {"iteration": 12, "phase_reached": "phase_5", "relative_cost": 0.5, "note": "NIPA GPU - n=30+20+20 runs completed"}
+    {"iteration": 12, "phase_reached": "phase_5", "relative_cost": 0.5, "note": "NIPA GPU - n=30+20+20 runs completed"},
+    {"iteration": 13, "phase_reached": "phase_1", "relative_cost": 0.0, "note": "Goal evolution — no experiment yet"}
   ],
   "rotated_at": null,
   "started_at": "2026-03-29T20:12:00Z"
