@@ -1,0 +1,258 @@
+{
+  "experiment": "AI Booster v3 -- EvalPlus HumanEval+ (extended test suite)",
+  "benchmark": "EvalPlus (HumanEval+, NeurIPS 2023) — 80x augmented test cases",
+  "hypothesis": "H_AB: AI Booster VERIFY step handles edge cases better on extended test suite",
+  "model": "Qwen2.5-Coder-32B (NIPA local)",
+  "model_key": "local-qwen25coder",
+  "mode": "booster",
+  "n_requested": 30,
+  "n_valid": 30,
+  "n_errors": 0,
+  "seed": 42,
+  "partial": false,
+  "pass_at_1": 0.8667,
+  "passed": 26,
+  "timestamp": "2026-03-30T22:39:35.795790",
+  "results": [
+    {
+      "task_id": "HumanEval/61",
+      "entry_point": "correct_bracketing",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1986
+    },
+    {
+      "task_id": "HumanEval/104",
+      "entry_point": "unique_digits",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2232
+    },
+    {
+      "task_id": "HumanEval/105",
+      "entry_point": "by_length",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2623
+    },
+    {
+      "task_id": "HumanEval/42",
+      "entry_point": "incr_list",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2604
+    },
+    {
+      "task_id": "HumanEval/145",
+      "entry_point": "order_by_points",
+      "mode": "booster",
+      "passed": false,
+      "exec_error": "Traceback (most recent call last):\n  File \"/tmp/tmp_4hlhm80.py\", line 32, in <module>\n    check(order_by_points)\n  File \"/tmp/tmp_4hlhm80.py\", line 20, in check\n    assert candidate([1, 11, -1, -11, -12]) == [-1, -11, 1, -12, 11]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nA",
+      "response_len": 2683
+    },
+    {
+      "task_id": "HumanEval/130",
+      "entry_point": "tri",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2904
+    },
+    {
+      "task_id": "HumanEval/88",
+      "entry_point": "sort_array",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2629
+    },
+    {
+      "task_id": "HumanEval/11",
+      "entry_point": "string_xor",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2395
+    },
+    {
+      "task_id": "HumanEval/137",
+      "entry_point": "compare_one",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2283
+    },
+    {
+      "task_id": "HumanEval/66",
+      "entry_point": "digitSum",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2062
+    },
+    {
+      "task_id": "HumanEval/30",
+      "entry_point": "get_positive",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1782
+    },
+    {
+      "task_id": "HumanEval/124",
+      "entry_point": "valid_date",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2851
+    },
+    {
+      "task_id": "HumanEval/154",
+      "entry_point": "cycpattern_check",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2098
+    },
+    {
+      "task_id": "HumanEval/18",
+      "entry_point": "how_many_times",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2488
+    },
+    {
+      "task_id": "HumanEval/127",
+      "entry_point": "intersection",
+      "mode": "booster",
+      "passed": false,
+      "exec_error": "Traceback (most recent call last):\n  File \"/tmp/tmpmr9fg8ws.py\", line 60, in <module>\n    check(intersection)\n  File \"/tmp/tmpmr9fg8ws.py\", line 48, in check\n    assert candidate((-1, 1), (0, 4)) == \"NO\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+      "response_len": 2372
+    },
+    {
+      "task_id": "HumanEval/121",
+      "entry_point": "solution",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2165
+    },
+    {
+      "task_id": "HumanEval/0",
+      "entry_point": "has_close_elements",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2728
+    },
+    {
+      "task_id": "HumanEval/17",
+      "entry_point": "parse_music",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2363
+    },
+    {
+      "task_id": "HumanEval/52",
+      "entry_point": "below_threshold",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2008
+    },
+    {
+      "task_id": "HumanEval/123",
+      "entry_point": "get_odd_collatz",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2471
+    },
+    {
+      "task_id": "HumanEval/38",
+      "entry_point": "decode_cyclic",
+      "mode": "booster",
+      "passed": false,
+      "exec_error": "Traceback (most recent call last):\n  File \"/tmp/tmpv4vi1v7o.py\", line 31, in <module>\n    check(decode_cyclic)\n  File \"/tmp/tmpv4vi1v7o.py\", line 26, in check\n    encoded_str = encode_cyclic(str)\n                  ^^^^^^^^^^^^^\nNameError: name 'encode_cyclic' is not defined. Did you mean: 'decode_cy",
+      "response_len": 2334
+    },
+    {
+      "task_id": "HumanEval/72",
+      "entry_point": "will_it_fly",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2305
+    },
+    {
+      "task_id": "HumanEval/132",
+      "entry_point": "is_nested",
+      "mode": "booster",
+      "passed": false,
+      "exec_error": "Traceback (most recent call last):\n  File \"/tmp/tmpkssk7wyu.py\", line 51, in <module>\n    check(is_nested)\n  File \"/tmp/tmpkssk7wyu.py\", line 41, in check\n    assert candidate('[[]][[') == True\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+      "response_len": 2416
+    },
+    {
+      "task_id": "HumanEval/95",
+      "entry_point": "check_dict_case",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2386
+    },
+    {
+      "task_id": "HumanEval/2",
+      "entry_point": "truncate_number",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2143
+    },
+    {
+      "task_id": "HumanEval/19",
+      "entry_point": "sort_numbers",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2521
+    },
+    {
+      "task_id": "HumanEval/76",
+      "entry_point": "is_simple_power",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2357
+    },
+    {
+      "task_id": "HumanEval/109",
+      "entry_point": "move_one_ball",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2669
+    },
+    {
+      "task_id": "HumanEval/67",
+      "entry_point": "fruit_distribution",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2736
+    },
+    {
+      "task_id": "HumanEval/159",
+      "entry_point": "eat",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2021
+    }
+  ]
+}

@@ -1,0 +1,258 @@
+{
+  "experiment": "AI Booster v3 -- EvalPlus HumanEval+ (extended test suite)",
+  "benchmark": "EvalPlus (HumanEval+, NeurIPS 2023) — 80x augmented test cases",
+  "hypothesis": "H_AB: AI Booster VERIFY step handles edge cases better on extended test suite",
+  "model": "Qwen2.5-Coder-32B (NIPA local)",
+  "model_key": "local-qwen25coder",
+  "mode": "baseline",
+  "n_requested": 30,
+  "n_valid": 30,
+  "n_errors": 0,
+  "seed": 42,
+  "partial": false,
+  "pass_at_1": 0.8,
+  "passed": 24,
+  "timestamp": "2026-03-30T22:37:11.030792",
+  "results": [
+    {
+      "task_id": "HumanEval/61",
+      "entry_point": "correct_bracketing",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1647
+    },
+    {
+      "task_id": "HumanEval/104",
+      "entry_point": "unique_digits",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1831
+    },
+    {
+      "task_id": "HumanEval/105",
+      "entry_point": "by_length",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1701
+    },
+    {
+      "task_id": "HumanEval/42",
+      "entry_point": "incr_list",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 628
+    },
+    {
+      "task_id": "HumanEval/145",
+      "entry_point": "order_by_points",
+      "mode": "baseline",
+      "passed": false,
+      "exec_error": "Traceback (most recent call last):\n  File \"/tmp/tmpta5i7dhn.py\", line 28, in <module>\n    check(order_by_points)\n  File \"/tmp/tmpta5i7dhn.py\", line 16, in check\n    assert candidate([1, 11, -1, -11, -12]) == [-1, -11, 1, -12, 11]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nA",
+      "response_len": 1589
+    },
+    {
+      "task_id": "HumanEval/130",
+      "entry_point": "tri",
+      "mode": "baseline",
+      "passed": false,
+      "exec_error": "Traceback (most recent call last):\n  File \"/tmp/tmp77mgx21t.py\", line 48, in <module>\n    check(tri)\n  File \"/tmp/tmp77mgx21t.py\", line 36, in check\n    assert candidate(5) == [1, 3, 2.0, 8.0, 3.0, 15.0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+      "response_len": 2127
+    },
+    {
+      "task_id": "HumanEval/88",
+      "entry_point": "sort_array",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1752
+    },
+    {
+      "task_id": "HumanEval/11",
+      "entry_point": "string_xor",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1555
+    },
+    {
+      "task_id": "HumanEval/137",
+      "entry_point": "compare_one",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1672
+    },
+    {
+      "task_id": "HumanEval/66",
+      "entry_point": "digitSum",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1206
+    },
+    {
+      "task_id": "HumanEval/30",
+      "entry_point": "get_positive",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 616
+    },
+    {
+      "task_id": "HumanEval/124",
+      "entry_point": "valid_date",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2264
+    },
+    {
+      "task_id": "HumanEval/154",
+      "entry_point": "cycpattern_check",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1520
+    },
+    {
+      "task_id": "HumanEval/18",
+      "entry_point": "how_many_times",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1691
+    },
+    {
+      "task_id": "HumanEval/127",
+      "entry_point": "intersection",
+      "mode": "baseline",
+      "passed": false,
+      "exec_error": "Traceback (most recent call last):\n  File \"/tmp/tmpv4tose4n.py\", line 59, in <module>\n    check(intersection)\n  File \"/tmp/tmpv4tose4n.py\", line 47, in check\n    assert candidate((-1, 1), (0, 4)) == \"NO\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+      "response_len": 2118
+    },
+    {
+      "task_id": "HumanEval/121",
+      "entry_point": "solution",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1147
+    },
+    {
+      "task_id": "HumanEval/0",
+      "entry_point": "has_close_elements",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1713
+    },
+    {
+      "task_id": "HumanEval/17",
+      "entry_point": "parse_music",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1558
+    },
+    {
+      "task_id": "HumanEval/52",
+      "entry_point": "below_threshold",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 690
+    },
+    {
+      "task_id": "HumanEval/123",
+      "entry_point": "get_odd_collatz",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1644
+    },
+    {
+      "task_id": "HumanEval/38",
+      "entry_point": "decode_cyclic",
+      "mode": "baseline",
+      "passed": false,
+      "exec_error": "Traceback (most recent call last):\n  File \"/tmp/tmplp2jgyj0.py\", line 12, in <module>\n    encoded = encode_cyclic(\"abcdefg\")\n              ^^^^^^^^^^^^^\nNameError: name 'encode_cyclic' is not defined. Did you mean: 'decode_cyclic'?\n",
+      "response_len": 1545
+    },
+    {
+      "task_id": "HumanEval/72",
+      "entry_point": "will_it_fly",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1283
+    },
+    {
+      "task_id": "HumanEval/132",
+      "entry_point": "is_nested",
+      "mode": "baseline",
+      "passed": false,
+      "exec_error": "Traceback (most recent call last):\n  File \"/tmp/tmpb1sqpjz7.py\", line 53, in <module>\n    check(is_nested)\n  File \"/tmp/tmpb1sqpjz7.py\", line 41, in check\n    assert candidate('[[]') == False\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+      "response_len": 1914
+    },
+    {
+      "task_id": "HumanEval/95",
+      "entry_point": "check_dict_case",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2011
+    },
+    {
+      "task_id": "HumanEval/2",
+      "entry_point": "truncate_number",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1051
+    },
+    {
+      "task_id": "HumanEval/19",
+      "entry_point": "sort_numbers",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1891
+    },
+    {
+      "task_id": "HumanEval/76",
+      "entry_point": "is_simple_power",
+      "mode": "baseline",
+      "passed": false,
+      "exec_error": "Traceback (most recent call last):\n  File \"/tmp/tmphs67x17t.py\", line 41, in <module>\n    check(is_simple_power)\n  File \"/tmp/tmphs67x17t.py\", line 37, in check\n    assert candidate(1, 12)==True, \"This prints if this assert fails 2 (also good for debugging!)\"\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssert",
+      "response_len": 1390
+    },
+    {
+      "task_id": "HumanEval/109",
+      "entry_point": "move_one_ball",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1927
+    },
+    {
+      "task_id": "HumanEval/67",
+      "entry_point": "fruit_distribution",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1396
+    },
+    {
+      "task_id": "HumanEval/159",
+      "entry_point": "eat",
+      "mode": "baseline",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1176
+    }
+  ]
+}
