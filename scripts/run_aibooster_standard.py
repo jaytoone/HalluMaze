@@ -23,7 +23,9 @@ Primary models (HF popular — 어그로용):
     python3 scripts/run_aibooster_standard.py --model llama-70b-free --mode baseline --n 30 --seed 42
     python3 scripts/run_aibooster_standard.py --model qwen3-coder-free --mode booster --n 30 --seed 42
     python3 scripts/run_aibooster_standard.py --model qwen3-coder-free --mode baseline --n 30 --seed 42
-    # NIPA H200 (local-qwen25coder, local-llama33, local-deepseek-lite)
+    python3 scripts/run_aibooster_standard.py --model qwen3-next-free --mode booster --n 30 --seed 42
+    python3 scripts/run_aibooster_standard.py --model qwen3-next-free --mode baseline --n 30 --seed 42
+    # NIPA H200 (local-qwen25coder, local-llama33, local-qwen3-32b)
 
 Legacy / prior experiment reference:
     python3 scripts/run_aibooster_standard.py --model glm-free --mode booster --n 30 --seed 42
@@ -87,7 +89,7 @@ OPENROUTER_MODELS = {
     "glm-free":         {"id": "z-ai/glm-4.5-air:free",                  "display": "GLM-4.5-Air (free)"},
     "lfm-1b-free":      {"id": "liquid/lfm-2.5-1.2b-thinking:free",      "display": "LFM-1.2B-Thinking (free)"},
     "llama-70b-free":   {"id": "meta-llama/llama-3.3-70b-instruct:free", "display": "Llama 3.3 70B (free)"},
-    "qwen3-32b-free":   {"id": "qwen/qwen3-32b:free",                     "display": "Qwen3-32B (free)"},
+    "qwen3-next-free":  {"id": "qwen/qwen3-next-80b-a3b-instruct:free",  "display": "Qwen3-Next-80B-A3B (free)"},
     "qwen3-coder-free": {"id": "qwen/qwen3-coder:free",                   "display": "Qwen3-Coder (free)"},
     "gpt-4o-mini":      {"id": "openai/gpt-4o-mini",                     "display": "GPT-4o mini"},
 }

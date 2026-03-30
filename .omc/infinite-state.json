@@ -1,10 +1,10 @@
 {
   "status": "RUNNING",
   "session_id": "inf-20260330-0003",
-  "current_iteration": 14,
-  "root_goal": "AI Booster v3 — HF 인기 모델 (Llama-3.3-70B, Qwen2.5-Coder-32B, DeepSeek-Coder-V2-Lite)에서 표준 HumanEval raw pass@1 향상 실증: OpenRouter 파일럿 → NIPA 전체 실험",
+  "current_iteration": 15,
+  "root_goal": "AI Booster ability-moderated effect 실증: Qwen2.5-Coder-32B (strong) vs GLM-4.5-Air (weak) 동일 30문제 표준 HumanEval AI Booster 비교 → NeurIPS claim: ability-moderated metacognitive middleware",
   "original_goal": "HalluMaze + HalluCode 논문 arXiv/NeurIPS 제출 ready: Bootstrap CI for HalluCode + LFM multi-model + 논문 완성도 극대화",
-  "evolution_count": 3,
+  "evolution_count": 4,
   "evolution_history": [
     {
       "from": "HalluMaze + HalluCode 논문 arXiv/NeurIPS 제출 ready",
@@ -23,11 +23,17 @@
       "to": "AI Booster (general metacognitive middleware) 설계 + 공인 코딩 벤치마크 raw pass@1 향상 실험 (trap 없이)",
       "iteration": 13,
       "reason": "사용자 재정렬: trap injection 방식은 순환적 검증. 진짜 hypothesis = HalluCode 검증된 AI Booster middleware가 표준 공인 벤치마크 raw 성능을 올리느냐. AP Booster → AI Booster로 재명명."
+    },
+    {
+      "from": "AI Booster v3 — HF 인기 모델 (Qwen2.5-Coder-32B 등) raw pass@1 향상 실증",
+      "to": "AI Booster ability-moderated effect: Qwen2.5-Coder-32B (strong) vs GLM-4.5-Air (weak) 비교",
+      "iteration": 15,
+      "reason": "Ceiling effect 발견: Qwen2.5-Coder-32B booster=0.833 vs baseline=0.800 (Δ=+0.033, McNemar p=1.0). 최상위 모델은 개선 여지 없음. 새 hypothesis: AI Booster는 metacognition이 약한 모델에서 더 효과적 (ability-moderated effect). MEI×HumanEval ρ=+0.30 패턴과 일치."
     }
   ],
   "best_score": 0.94,
   "plateau_count": 0,
-  "score_variance": 0.0,
+  "score_variance": 0.02,
   "score_history": [
     {
       "iteration": 10,
@@ -51,21 +57,33 @@
       "iteration": 13,
       "score": 0.94,
       "delta": 0.0,
-      "note": "AI Booster v3 script 완성 + HF 인기 모델 선정 (Qwen2.5-Coder-32B/Llama-3.3-70B/DeepSeek-Coder-V2-Lite). Qwen3.5-122B legacy로 강등. OpenRouter 파일럿 준비 완료."
+      "note": "AI Booster v3 script 완성 + HF 인기 모델 선정. OpenRouter 파일럿 준비 완료."
     },
     {
       "iteration": 14,
-      "score": null,
-      "delta": null,
-      "note": "Goal: OpenRouter 파일럿 (llama-70b-free, qwen3-coder-free) + NIPA 실험 준비. 인기 모델 실험 결과로 어그로 극대화."
+      "score": 0.72,
+      "delta": -0.22,
+      "note": "OpenRouter 완전 blocked (free tier rate limit + 402 no credits). NIPA 전환."
+    },
+    {
+      "iteration": 15,
+      "score": 0.72,
+      "delta": 0.0,
+      "note": "Qwen2.5-Coder-32B NIPA: booster=0.833 vs baseline=0.800 (Δ=+0.033, McNemar p=1.0). CEILING EFFECT. 새 발견: top-tier 모델에서 AI Booster 효과 미미. Evolution: ability-moderated effect 실증 필요 (GLM-4.5-Air vs Qwen2.5-Coder-32B 비교)."
     }
   ],
   "cost_history": [
     {"iteration": 11, "phase_reached": "phase_5", "relative_cost": 0.3, "note": "NIPA GPU - no OpenRouter cost"},
     {"iteration": 12, "phase_reached": "phase_5", "relative_cost": 0.5, "note": "NIPA GPU - n=30+20+20 runs completed"},
     {"iteration": 13, "phase_reached": "phase_3", "relative_cost": 0.1, "note": "Script + model selection complete. No experiment run yet."},
-    {"iteration": 14, "phase_reached": "phase_0", "relative_cost": 0.0, "note": "Ready to run OpenRouter pilot or NIPA"}
+    {"iteration": 14, "phase_reached": "phase_1", "relative_cost": 0.1, "note": "NIPA vLLM setup (multiple failures). Qwen2.5-Coder-32B downloaded + served."},
+    {"iteration": 15, "phase_reached": "phase_5", "relative_cost": 0.4, "note": "Qwen2.5-Coder-32B n=30 booster+baseline complete. Ceiling effect confirmed."}
   ],
+  "known_facts": {
+    "qwen25coder_ceiling": "Qwen2.5-Coder-32B booster=0.833 vs baseline=0.800 (Δ=+0.033, McNemar p=1.0, h=0.086). Top-tier model ceiling effect.",
+    "nipa_vllm": "vLLM 0.17.1 at /home/work/venvs/vllm018/bin/python3. Qwen2.5-Coder-32B loaded on CUDA_VISIBLE_DEVICES=0, port 19001, enforce-eager, util=0.55.",
+    "openrouter_blocked": "All free tier models rate-limited upstream. Account has no paid credits (402)."
+  },
   "rotated_at": null,
   "started_at": "2026-03-29T20:12:00Z"
 }
