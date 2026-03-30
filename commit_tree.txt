@@ -1,3 +1,13 @@
+v1.67 20260330 1000
+    - Croissant 포맷 + NeurIPS E&D Track 요건 반영:
+      docs/hf_dataset_readme.md: Croissant JSON-LD 메타데이터 섹션 추가 (desk rejection 방지)
+      docs/hf_dataset_readme.md: "Evaluations & Datasets Track" 명칭 수정
+      docs/hallumaze_arxiv.tex: Reproducibility에 Croissant 언급 추가
+    - 새 사실 반영 (Fact Finder 결과):
+      NeurIPS 2026 E&D Track 명칭 변경 확인 (blog.neurips.cc)
+      Croissant 미준수 → desk rejection 위험 확인
+      DAG 논문 (arXiv 2407.09726): wrong documentation → 39% 성능 저하 (AP 위험 근거)
+
 v1.66 20260330 0900
     - HumanEval-Trap Qwen3.5-122B 모델-독립성 검증:
       AP: pass@1=1.000, detection=100% (n=17, seed=100)

@@ -20,7 +20,7 @@ size_categories:
 # HalluMaze Benchmark Dataset
 
 **Paper**: HalluMaze — Maze Navigation Benchmark for LLM Metacognitive Error Recovery
-**Target**: NeurIPS 2026 Datasets & Benchmarks Track
+**Target**: NeurIPS 2026 Evaluations & Datasets (E&D) Track
 **GitHub**: https://github.com/jaytoone/HalluMaze
 **Demo**: https://huggingface.co/spaces/Be2Jay/hallumaze
 
@@ -153,8 +153,47 @@ python scripts/build_final_analysis.py
   title={HalluMaze: Maze Navigation Benchmark for LLM Metacognitive Error Recovery},
   author={Be2Jay},
   year={2026},
-  note={NeurIPS 2026 Datasets \& Benchmarks Track (under submission)},
+  note={NeurIPS 2026 Evaluations \& Datasets Track (under submission)},
   url={https://github.com/jaytoone/HalluMaze}
+}
+```
+
+---
+
+## Croissant Metadata (NeurIPS 2026 E&D Technical Requirement)
+
+This dataset provides Croissant-compatible machine-readable metadata per NeurIPS 2026 E&D Track requirements.
+
+```json
+{
+  "@context": "https://schema.org/",
+  "@type": "Dataset",
+  "name": "HalluMaze Benchmark",
+  "description": "Maze navigation benchmark for LLM metacognitive error recovery. 13 models × 60 trials = 780 total; HalluCode extension for coding domain.",
+  "url": "https://huggingface.co/datasets/Be2Jay/hallumaze-benchmark",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "creator": {"@type": "Person", "name": "Be2Jay"},
+  "datePublished": "2026-03-26",
+  "version": "1.0",
+  "keywords": ["hallucination", "metacognition", "LLM evaluation", "maze navigation", "error recovery"],
+  "distribution": [
+    {
+      "@type": "DataDownload",
+      "encodingFormat": "application/json",
+      "contentUrl": "https://huggingface.co/datasets/Be2Jay/hallumaze-benchmark/resolve/main/experiment_results/analysis_final2.json",
+      "name": "Main leaderboard (13 models, n=60 each)"
+    },
+    {
+      "@type": "DataDownload",
+      "encodingFormat": "application/json",
+      "contentUrl": "https://huggingface.co/datasets/Be2Jay/hallumaze-benchmark/resolve/main/experiment_results/hallucode_booster_glm.json",
+      "name": "HalluCode AP Booster GLM results"
+    }
+  ],
+  "measurementTechnique": "Wilcoxon signed-rank test, Bootstrap CI (n_boot=2000), Cohen's d",
+  "variableMeasured": ["MEI", "HRR", "SR", "ETR", "AW", "HR"],
+  "educationalLevel": "Research",
+  "inLanguage": "en"
 }
 ```
 
@@ -163,3 +202,12 @@ python scripts/build_final_analysis.py
 ## License
 
 CC-BY-4.0. See LICENSE for details.
+
+## Related
+- [[projects/Miro/research/20260325-marl-efficiency-research|20260325-marl-efficiency-research]]
+- [[projects/Miro/research/20260327-hallumaze-extension-hallucode|20260327-hallumaze-extension-hallucode]]
+- [[projects/Miro/research/20260328-hallucode-cubic-evaluation|20260328-hallucode-cubic-evaluation]]
+- [[projects/Miro/research/20260323-hallumaze-paper-draft|20260323-hallumaze-paper-draft]]
+- [[projects/Miro/research/20260323-hallumaze-extension-todos|20260323-hallumaze-extension-todos]]
+- [[projects/Miro/research/20260326-marl-sl-multi-model-validation|20260326-marl-sl-multi-model-validation]]
+- [[projects/Miro/research/20260324-hallumaze-ecological-validity|20260324-hallumaze-ecological-validity]]
