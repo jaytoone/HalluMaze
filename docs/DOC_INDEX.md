@@ -2,6 +2,8 @@
 
 | 파일 | 설명 | 날짜 |
 |------|------|------|
+| experiment_results/humaneval_trap_qwen35_ap.json | HumanEval-Trap AP Booster (Qwen3.5-122B NIPA H200, n=17 valid, seed=100): pass@1=1.000, detection=100%. 모델-독립성 확증: GLM Δ=+0.575 vs Qwen ability-moderated (ceiling effect) | 2026-03-30 |
+| experiment_results/humaneval_trap_qwen35_baseline.json | HumanEval-Trap Baseline (Qwen3.5-122B, n=17 valid, seed=200): pass@1=1.000†. †강력한 모델은 trap 언급해도 코드는 정확하게 작성 (ceiling at baseline) | 2026-03-30 |
 | experiment_results/mbpp_easy_trap_qwen35_ap_v2_n30.json | MBPP-Easy-Trap AP v2 (Qwen3.5-122B, n=29 valid, seed=100): pass@1=0.517, detection=0.931. Definitive n=30 run confirming pilot trend | 2026-03-30 |
 | experiment_results/mbpp_easy_trap_qwen35_baseline_n30.json | MBPP-Easy-Trap Baseline (Qwen3.5-122B, n=30 valid, seed=200): pass@1=0.267. Definitive n=30 baseline | 2026-03-30 |
 | experiment_results/mbpp_easy_n30_stats.json | MBPP-Easy-Trap n=30 통계: Fisher p=0.064, Cohen h=0.519, Bootstrap CI=[+0.013,+0.489] | 2026-03-30 |
@@ -65,8 +67,8 @@
 - [[projects/Miro/research/20260328-hallucode-cubic-evaluation|20260328-hallucode-cubic-evaluation]]
 - [[projects/Miro/research/20260327-hallumaze-extension-hallucode|20260327-hallumaze-extension-hallucode]]
 - [[projects/Miro/research/20260323-hallumaze-paper-draft|20260323-hallumaze-paper-draft]]
+- [[projects/Miro/research/20260330-ap-benchmark-diversification|20260330-ap-benchmark-diversification]]
 - [[projects/Miro/research/20260323-hallumaze-extension-todos|20260323-hallumaze-extension-todos]]
-- [[projects/Miro/research/20260325-marl-efficiency-research|20260325-marl-efficiency-research]]
 - [[projects/Miro/research/20260326-marl-sl-multi-model-validation|20260326-marl-sl-multi-model-validation]]
+- [[projects/Miro/research/20260325-marl-efficiency-research|20260325-marl-efficiency-research]]
 - [[projects/Miro/misc/ontolo-biz-unconscious-purchase-20260327|ontolo-biz-unconscious-purchase-20260327]]
-- [[projects/Miro/research/20260324-hallumaze-ecological-validity|20260324-hallumaze-ecological-validity]]

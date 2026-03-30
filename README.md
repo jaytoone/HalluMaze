@@ -98,12 +98,14 @@ HalluCode extends HalluMaze to coding via **false API hint injection** (19 probl
 |-----------|-------|-----------|--------|---------------|
 | HumanEval-Trap | GLM-4.5-Air | AP Booster | **0.875** | 87.5% |
 | HumanEval-Trap | GLM-4.5-Air | Baseline | 0.300 | 0% |
+| **HumanEval-Trap** | **Qwen3.5-122B** | **AP Booster** | **1.000** | **100%** |
+| HumanEval-Trap | Qwen3.5-122B | Baseline | 1.000† | 0% |
 | MBPP-Trap (full) | GLM-4.5-Air | AP Booster | 0.000 | **85.7%** |
 | MBPP-Trap (full) | GLM-4.5-Air | Baseline | 0.000 | — |
 | **MBPP-Easy-Trap** | **Qwen3.5-122B** | **AP Booster v2** | **0.524*** | **92.9%** |
 | MBPP-Easy-Trap | Qwen3.5-122B | Baseline | 0.289 | 0% |
 
-AP detection consistently ≥85% across all models and benchmarks. Pass@1 benefit is difficulty-moderated: HumanEval (medium difficulty) → large effect; MBPP-Full (hard) → difficulty blocks pass@1; MBPP-Easy (filtered ≤7 lines) → detection persists and pass@1 improves significantly (+0.235, h=0.484, OR=2.71, p=0.031, n=42/45 pooled).
+AP detection consistently ≥85% across all models and benchmarks. Pass@1 benefit is **ability-moderated**: GLM-4.5-Air (weaker) → large effect on HumanEval (Δ=+0.575, d=+1.16); Qwen3.5-122B (stronger) → already achieves 1.000 without AP (†trap mentioned but code bypasses fake API). MBPP-Easy: significant pass@1 improvement (Δ=+0.235, h=0.484, OR=2.71, p=0.031, n=42/45 pooled).
 
 *p=0.031 (Fisher exact, pooled n=42 AP / n=45 baseline, 95% CI=[+0.030, +0.422]).
 

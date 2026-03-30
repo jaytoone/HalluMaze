@@ -76,6 +76,35 @@ OPENROUTER_MODELS = {
     "gpt-4o-mini":      {"id": "openai/gpt-4o-mini",                     "display": "GPT-4o mini"},
 }
 
+MODELS_LOCAL = {
+    "local-qwen35": {"id": "qwen3.5-122b-a10b", "display": "Qwen3.5-122B (NIPA local)", "base_url": "http://localhost:18000/v1"},
+}
+
+MODELS_ALL = {**OPENROUTER_MODELS, **MODELS_LOCAL}
+
+
+def call_local(prompt: str, model: dict, system: str = "", max_tokens: int = 4096) -> str:
+    import requests
+    payload = {
+        "model": model["id"],
+        "messages": [
+            {"role": "system", "content": system},
+            {"role": "user", "content": prompt},
+        ],
+        "max_tokens": max_tokens,
+    }
+    resp = requests.post(f"{model['base_url']}/chat/completions", json=payload, timeout=180)
+    if resp.status_code == 429:
+        raise RuntimeError("rate_limit_429")
+    resp.raise_for_status()
+    return resp.json()["choices"][0]["message"].get("content") or ""
+
+
+def call_model(prompt: str, model_key: str, system: str = "", max_tokens: int = 4096) -> str:
+    if model_key.startswith("local-"):
+        return call_local(prompt, MODELS_LOCAL[model_key], system=system, max_tokens=max_tokens)
+    return call_openrouter(prompt, OPENROUTER_MODELS[model_key]["id"], system=system, max_tokens=max_tokens)
+
 
 def call_openrouter(prompt: str, model_id: str, system: str = "", max_tokens: int = 4096) -> str:
     import requests
@@ -468,7 +497,7 @@ def run_experiment(
     start: int = 0,
     checkpoint: str = "",
 ):
-    model_info = OPENROUTER_MODELS[model_key]
+    model_info = MODELS_ALL[model_key]
     model_id = model_info["id"]
     display = model_info["display"]
 
@@ -515,7 +544,7 @@ def run_experiment(
         trap_used_in_code = False
 
         try:
-            raw_response = call_openrouter(user_prompt, model_id, system=system)
+            raw_response = call_model(user_prompt, model_key, system=system)
             elapsed = time.time() - t_start
 
             # Extract code
@@ -607,7 +636,7 @@ def _save(path: str, model_key: str, prompt_type: str, results: list, n: int, se
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", default="glm-free", choices=list(OPENROUTER_MODELS.keys()))
+    parser.add_argument("--model", default="glm-free", choices=list(MODELS_ALL.keys()))
     parser.add_argument("--prompt-type", default="ap_booster", choices=["ap_booster", "baseline"])
     parser.add_argument("--n", type=int, default=20)
     parser.add_argument("--delay", type=float, default=8.0)

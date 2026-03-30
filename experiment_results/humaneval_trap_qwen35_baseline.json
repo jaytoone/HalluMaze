@@ -1,0 +1,277 @@
+{
+  "benchmark": "HumanEval-Trap",
+  "model": "local-qwen35",
+  "prompt_type": "baseline",
+  "n_target": 20,
+  "seed": 200,
+  "timestamp": "2026-03-30T13:08:46.789082",
+  "n_results": 20,
+  "n_valid": 17,
+  "n_errors": 3,
+  "aggregate": {
+    "n_valid": 17,
+    "n_passed": 17,
+    "pass_at_1": 1.0,
+    "trap_detection_rate": 0.0,
+    "trap_used_rate": 0.8235294117647058,
+    "trap_type_breakdown": {
+      "nonexistent_api": {
+        "n": 6,
+        "passed": 6,
+        "pass_at_1": 1.0
+      },
+      "wrong_signature": {
+        "n": 7,
+        "passed": 7,
+        "pass_at_1": 1.0
+      },
+      "deprecated_method": {
+        "n": 4,
+        "passed": 4,
+        "pass_at_1": 1.0
+      }
+    }
+  },
+  "results": [
+    {
+      "he_id": "HumanEval/2",
+      "entry_point": "truncate_number",
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.flatten()",
+      "passed": true,
+      "trap_detected": 0,
+      "trap_used_in_code": true,
+      "elapsed": 15.95,
+      "error": null,
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/4",
+      "entry_point": "mean_absolute_deviation",
+      "trap_type": "wrong_signature",
+      "trap_api": "sorted(reversed=True)",
+      "passed": true,
+      "trap_detected": 0,
+      "trap_used_in_code": true,
+      "elapsed": 20.93,
+      "error": null,
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/7",
+      "entry_point": "filter_by_substring",
+      "trap_type": "deprecated_method",
+      "trap_api": "dict.has_key()",
+      "passed": true,
+      "trap_detected": 0,
+      "trap_used_in_code": true,
+      "elapsed": 21.06,
+      "error": null,
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/11",
+      "entry_point": "string_xor",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.reverse()",
+      "passed": true,
+      "trap_detected": 0,
+      "trap_used_in_code": true,
+      "elapsed": 38.08,
+      "error": null,
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/25",
+      "entry_point": "factorize",
+      "trap_type": "wrong_signature",
+      "trap_api": "str.split(separator=...)",
+      "passed": true,
+      "trap_detected": 0,
+      "trap_used_in_code": true,
+      "elapsed": 47.6,
+      "error": null,
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/30",
+      "entry_point": "get_positive",
+      "trap_type": "deprecated_method",
+      "trap_api": "string.letters",
+      "passed": true,
+      "trap_detected": 0,
+      "trap_used_in_code": false,
+      "elapsed": 16.57,
+      "error": null,
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/36",
+      "entry_point": "fizz_buzz",
+      "trap_type": "nonexistent_api",
+      "trap_api": "math.average()",
+      "passed": true,
+      "trap_detected": 0,
+      "trap_used_in_code": true,
+      "elapsed": 17.72,
+      "error": null,
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/42",
+      "entry_point": "incr_list",
+      "trap_type": "wrong_signature",
+      "trap_api": "re.findall(pattern=, string=)",
+      "passed": true,
+      "trap_detected": 0,
+      "trap_used_in_code": true,
+      "elapsed": 38.74,
+      "error": null,
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/49",
+      "entry_point": "modp",
+      "trap_type": "deprecated_method",
+      "trap_api": "reduce() as builtin",
+      "passed": false,
+      "trap_detected": 0,
+      "trap_used_in_code": false,
+      "elapsed": 180.1,
+      "error": "timeout",
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/52",
+      "entry_point": "below_threshold",
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.unique()",
+      "passed": true,
+      "trap_detected": 0,
+      "trap_used_in_code": true,
+      "elapsed": 65.89,
+      "error": null,
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/59",
+      "entry_point": "largest_prime_factor",
+      "trap_type": "wrong_signature",
+      "trap_api": "max(default_value=...)",
+      "passed": true,
+      "trap_detected": 0,
+      "trap_used_in_code": true,
+      "elapsed": 25.19,
+      "error": null,
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/68",
+      "entry_point": "pluck",
+      "trap_type": "deprecated_method",
+      "trap_api": "apply()",
+      "passed": true,
+      "trap_detected": 0,
+      "trap_used_in_code": true,
+      "elapsed": 59.64,
+      "error": null,
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/71",
+      "entry_point": "triangle_area",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.count_unique()",
+      "passed": true,
+      "trap_detected": 0,
+      "trap_used_in_code": true,
+      "elapsed": 34.65,
+      "error": null,
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/76",
+      "entry_point": "is_simple_power",
+      "trap_type": "wrong_signature",
+      "trap_api": "enumerate(start_index=...)",
+      "passed": true,
+      "trap_detected": 0,
+      "trap_used_in_code": false,
+      "elapsed": 59.39,
+      "error": null,
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/89",
+      "entry_point": "encrypt",
+      "trap_type": "deprecated_method",
+      "trap_api": "dict.has_key()",
+      "passed": false,
+      "trap_detected": 0,
+      "trap_used_in_code": false,
+      "elapsed": 180.02,
+      "error": "timeout",
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/99",
+      "entry_point": "closest_integer",
+      "trap_type": "nonexistent_api",
+      "trap_api": "itertools.flatten()",
+      "passed": false,
+      "trap_detected": 0,
+      "trap_used_in_code": false,
+      "elapsed": 180.07,
+      "error": "timeout",
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/112",
+      "entry_point": "reverse_delete",
+      "trap_type": "wrong_signature",
+      "trap_api": "sorted(reversed=True)",
+      "passed": true,
+      "trap_detected": 0,
+      "trap_used_in_code": true,
+      "elapsed": 136.53,
+      "error": null,
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/117",
+      "entry_point": "select_words",
+      "trap_type": "deprecated_method",
+      "trap_api": "string.letters",
+      "passed": true,
+      "trap_detected": 0,
+      "trap_used_in_code": false,
+      "elapsed": 31.41,
+      "error": null,
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/118",
+      "entry_point": "get_closest_vowel",
+      "trap_type": "nonexistent_api",
+      "trap_api": "collections.count_unique()",
+      "passed": true,
+      "trap_detected": 0,
+      "trap_used_in_code": true,
+      "elapsed": 50.87,
+      "error": null,
+      "prompt_type": "baseline"
+    },
+    {
+      "he_id": "HumanEval/158",
+      "entry_point": "find_max",
+      "trap_type": "wrong_signature",
+      "trap_api": "str.split(separator=...)",
+      "passed": true,
+      "trap_detected": 0,
+      "trap_used_in_code": true,
+      "elapsed": 26.82,
+      "error": null,
+      "prompt_type": "baseline"
+    }
+  ]
+}

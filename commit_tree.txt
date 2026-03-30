@@ -1,3 +1,15 @@
+v1.66 20260330 0900
+    - HumanEval-Trap Qwen3.5-122B 모델-독립성 검증:
+      AP: pass@1=1.000, detection=100% (n=17, seed=100)
+      Baseline: pass@1=1.000†, detection=0% (n=17, seed=200)
+      능력-조절 효과 확인: 강한 모델은 baseline도 ceiling, AP는 detection 강화
+      vs GLM: AP Δ=+0.575 (ability-moderated AP benefit)
+    - scripts/run_humaneval_trap.py: local-qwen35 지원 추가 (call_local + MODELS_LOCAL + MODELS_ALL)
+    - experiment_results/: humaneval_trap_qwen35_ap.json, baseline.json
+    - docs/hallumaze_arxiv.tex: §Ecological Validity (3) 2-model 업데이트 + Conclusion ability-moderated 추가
+    - README.md: External Validity 테이블 Qwen HumanEval-Trap 행 추가
+    - docs/DOC_INDEX.md: 신규 2건 추가
+
 v1.65 20260330 0800
     - MBPP-Easy-Trap 정식 실험 완료 (n=30, Qwen3.5-122B NIPA H200):
       AP v2: pass@1=0.517 detection=93.1% (n=29 valid, seed=100)

@@ -1,0 +1,277 @@
+{
+  "benchmark": "HumanEval-Trap",
+  "model": "local-qwen35",
+  "prompt_type": "ap_booster",
+  "n_target": 20,
+  "seed": 100,
+  "timestamp": "2026-03-30T12:45:13.994939",
+  "n_results": 20,
+  "n_valid": 17,
+  "n_errors": 3,
+  "aggregate": {
+    "n_valid": 17,
+    "n_passed": 17,
+    "pass_at_1": 1.0,
+    "trap_detection_rate": 1.0,
+    "trap_used_rate": 0.5294117647058824,
+    "trap_type_breakdown": {
+      "nonexistent_api": {
+        "n": 6,
+        "passed": 6,
+        "pass_at_1": 1.0
+      },
+      "wrong_signature": {
+        "n": 6,
+        "passed": 6,
+        "pass_at_1": 1.0
+      },
+      "deprecated_method": {
+        "n": 5,
+        "passed": 5,
+        "pass_at_1": 1.0
+      }
+    }
+  },
+  "results": [
+    {
+      "he_id": "HumanEval/12",
+      "entry_point": "longest",
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.flatten()",
+      "passed": true,
+      "trap_detected": 1,
+      "trap_used_in_code": false,
+      "elapsed": 27.09,
+      "error": null,
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/20",
+      "entry_point": "find_closest_elements",
+      "trap_type": "wrong_signature",
+      "trap_api": "sorted(reversed=True)",
+      "passed": true,
+      "trap_detected": 1,
+      "trap_used_in_code": true,
+      "elapsed": 44.03,
+      "error": null,
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/28",
+      "entry_point": "concatenate",
+      "trap_type": "deprecated_method",
+      "trap_api": "dict.has_key()",
+      "passed": true,
+      "trap_detected": 1,
+      "trap_used_in_code": false,
+      "elapsed": 17.34,
+      "error": null,
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/31",
+      "entry_point": "is_prime",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.reverse()",
+      "passed": true,
+      "trap_detected": 1,
+      "trap_used_in_code": false,
+      "elapsed": 32.44,
+      "error": null,
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/36",
+      "entry_point": "fizz_buzz",
+      "trap_type": "wrong_signature",
+      "trap_api": "str.split(separator=...)",
+      "passed": true,
+      "trap_detected": 1,
+      "trap_used_in_code": false,
+      "elapsed": 24.42,
+      "error": null,
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/37",
+      "entry_point": "sort_even",
+      "trap_type": "deprecated_method",
+      "trap_api": "string.letters",
+      "passed": true,
+      "trap_detected": 1,
+      "trap_used_in_code": true,
+      "elapsed": 38.64,
+      "error": null,
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/44",
+      "entry_point": "change_base",
+      "trap_type": "nonexistent_api",
+      "trap_api": "math.average()",
+      "passed": true,
+      "trap_detected": 1,
+      "trap_used_in_code": false,
+      "elapsed": 26.16,
+      "error": null,
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/45",
+      "entry_point": "triangle_area",
+      "trap_type": "wrong_signature",
+      "trap_api": "re.findall(pattern=, string=)",
+      "passed": true,
+      "trap_detected": 1,
+      "trap_used_in_code": true,
+      "elapsed": 28.44,
+      "error": null,
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/52",
+      "entry_point": "below_threshold",
+      "trap_type": "deprecated_method",
+      "trap_api": "reduce() as builtin",
+      "passed": true,
+      "trap_detected": 1,
+      "trap_used_in_code": true,
+      "elapsed": 28.12,
+      "error": null,
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/58",
+      "entry_point": "common",
+      "trap_type": "nonexistent_api",
+      "trap_api": "list.unique()",
+      "passed": true,
+      "trap_detected": 1,
+      "trap_used_in_code": false,
+      "elapsed": 26.58,
+      "error": null,
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/67",
+      "entry_point": "fruit_distribution",
+      "trap_type": "wrong_signature",
+      "trap_api": "max(default_value=...)",
+      "passed": true,
+      "trap_detected": 1,
+      "trap_used_in_code": true,
+      "elapsed": 65.33,
+      "error": null,
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/79",
+      "entry_point": "decimal_to_binary",
+      "trap_type": "deprecated_method",
+      "trap_api": "apply()",
+      "passed": true,
+      "trap_detected": 1,
+      "trap_used_in_code": true,
+      "elapsed": 40.52,
+      "error": null,
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/85",
+      "entry_point": "add",
+      "trap_type": "nonexistent_api",
+      "trap_api": "str.count_unique()",
+      "passed": true,
+      "trap_detected": 1,
+      "trap_used_in_code": true,
+      "elapsed": 24.33,
+      "error": null,
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/89",
+      "entry_point": "encrypt",
+      "trap_type": "wrong_signature",
+      "trap_api": "enumerate(start_index=...)",
+      "passed": true,
+      "trap_detected": 1,
+      "trap_used_in_code": true,
+      "elapsed": 55.48,
+      "error": null,
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/100",
+      "entry_point": "make_a_pile",
+      "trap_type": "deprecated_method",
+      "trap_api": "dict.has_key()",
+      "passed": true,
+      "trap_detected": 1,
+      "trap_used_in_code": false,
+      "elapsed": 34.13,
+      "error": null,
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/110",
+      "entry_point": "exchange",
+      "trap_type": "nonexistent_api",
+      "trap_api": "itertools.flatten()",
+      "passed": true,
+      "trap_detected": 1,
+      "trap_used_in_code": true,
+      "elapsed": 50.28,
+      "error": null,
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/116",
+      "entry_point": "sort_array",
+      "trap_type": "wrong_signature",
+      "trap_api": "sorted(reversed=True)",
+      "passed": false,
+      "trap_detected": 0,
+      "trap_used_in_code": false,
+      "elapsed": 180.03,
+      "error": "timeout",
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/117",
+      "entry_point": "select_words",
+      "trap_type": "deprecated_method",
+      "trap_api": "string.letters",
+      "passed": false,
+      "trap_detected": 0,
+      "trap_used_in_code": false,
+      "elapsed": 180.02,
+      "error": "timeout",
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/129",
+      "entry_point": "minPath",
+      "trap_type": "nonexistent_api",
+      "trap_api": "collections.count_unique()",
+      "passed": false,
+      "trap_detected": 0,
+      "trap_used_in_code": false,
+      "elapsed": 180.03,
+      "error": "timeout",
+      "prompt_type": "ap_booster"
+    },
+    {
+      "he_id": "HumanEval/136",
+      "entry_point": "largest_smallest_integers",
+      "trap_type": "wrong_signature",
+      "trap_api": "str.split(separator=...)",
+      "passed": true,
+      "trap_detected": 1,
+      "trap_used_in_code": false,
+      "elapsed": 153.8,
+      "error": null,
+      "prompt_type": "ap_booster"
+    }
+  ]
+}
