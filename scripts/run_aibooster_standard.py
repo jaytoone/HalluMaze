@@ -38,9 +38,9 @@ NIPA vLLM launch commands (H200 80GB):
     python -m vllm.entrypoints.openai.api_server \
         --model meta-llama/Llama-3.3-70B-Instruct --load-in-4bit \
         --dtype bfloat16 --gpu-memory-utilization 0.85 --port 18002
-    # [3] DeepSeek-Coder-V2-Lite — MoE 16B/2.4B active (~8GB FP8, 338 langs)
+    # [3] Qwen3-32B — 2025년 5월 출시, HF 최트렌딩 (300만+ dl, hybrid thinking)
     python -m vllm.entrypoints.openai.api_server \
-        --model deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct --dtype bfloat16 \
+        --model Qwen/Qwen3-32B --dtype bfloat16 \
         --gpu-memory-utilization 0.85 --port 18003
 """
 from __future__ import annotations
@@ -87,6 +87,7 @@ OPENROUTER_MODELS = {
     "glm-free":         {"id": "z-ai/glm-4.5-air:free",                  "display": "GLM-4.5-Air (free)"},
     "lfm-1b-free":      {"id": "liquid/lfm-2.5-1.2b-thinking:free",      "display": "LFM-1.2B-Thinking (free)"},
     "llama-70b-free":   {"id": "meta-llama/llama-3.3-70b-instruct:free", "display": "Llama 3.3 70B (free)"},
+    "qwen3-32b-free":   {"id": "qwen/qwen3-32b:free",                     "display": "Qwen3-32B (free)"},
     "qwen3-coder-free": {"id": "qwen/qwen3-coder:free",                   "display": "Qwen3-Coder (free)"},
     "gpt-4o-mini":      {"id": "openai/gpt-4o-mini",                     "display": "GPT-4o mini"},
 }
@@ -113,11 +114,11 @@ MODELS_LOCAL = {
         "display": "Llama-3.3-70B-INT4 (NIPA local)",
         "base_url": "http://localhost:18002/v1",
     },
-    # [3] DeepSeek-Coder-V2-Lite: MoE 16B/2.4B active (~8GB FP8), 338 langs, 128K ctx
-    #     python -m vllm.entrypoints.openai.api_server --model deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct --dtype bfloat16 --gpu-memory-utilization 0.85 --port 18003
-    "local-deepseek-lite": {
-        "id": "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
-        "display": "DeepSeek-Coder-V2-Lite (NIPA local)",
+    # [3] Qwen3-32B: 2025년 5월 출시, HF 최트렌딩 (300만+ 다운로드), hybrid thinking
+    #     python -m vllm.entrypoints.openai.api_server --model Qwen/Qwen3-32B --dtype bfloat16 --gpu-memory-utilization 0.85 --port 18003
+    "local-qwen3-32b": {
+        "id": "Qwen/Qwen3-32B",
+        "display": "Qwen3-32B (NIPA local)",
         "base_url": "http://localhost:18003/v1",
     },
 }
