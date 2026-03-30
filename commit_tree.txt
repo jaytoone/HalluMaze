@@ -1,3 +1,15 @@
+v1.68 20260330 1100
+    - Library hallucination 선행연구 인용 추가 (motivation 강화):
+      arXiv 2509.22202: fake library names accepted 99% → AP의 생태적 타당성
+      arXiv 2407.09726 (DAG): wrong docs 39% perf drop → AP 필요성 근거
+      arXiv 2503.22821 (API Misuse): KCH — non-existent params, deprecated calls
+    - docs/hallumaze.bib: 3개 신규 인용 추가 (libhall2025, dag2024, apimisuse2025)
+    - docs/hallumaze_arxiv.tex:
+      Abstract: "ecologically valid given that LLMs accept fake library names..." 추가
+      §HalluCode 동기: 3-citation 문단 추가
+      Contributions: "3 benchmarks × 3 model families" + p=0.031 반영
+    - External validity: 3 benchmark × 3 model 결과 모두 abstract/intro에 반영
+
 v1.67 20260330 1000
     - Croissant 포맷 + NeurIPS E&D Track 요건 반영:
       docs/hf_dataset_readme.md: Croissant JSON-LD 메타데이터 섹션 추가 (desk rejection 방지)

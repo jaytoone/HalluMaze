@@ -35,9 +35,9 @@ Models navigate grids containing ``mirage'' walls, requiring real-time hallucina
 Our \emph{Metacognitive Escape Index} (MEI) decomposes recovery into hallucination recovery rate, efficiency, awareness, and error rate~\citep{nelson1990metamemory}.
 Evaluating 13 LLMs across 780 trials reveals a universal deficit: all models fall significantly below a random walk ($p{<}0.001$ Bonferroni-corrected, $\delta{=}0.6$--$2.1$).
 Crucially, solve rate (SR) and metacognitive recovery (MEI) are orthogonal: Claude-Sonnet-4.6 leads SR ($60\%$, rank~1) yet ranks 8th on MEI ($0.545$), while Claude-Sonnet-4.5 leads MEI ($0.783$) at modest SR ($36.7\%$).
-We further introduce \textbf{HalluCode}, extending the paradigm to coding via false API hint injection (19 problems, 3 trap types).
+We further introduce \textbf{HalluCode}, extending the paradigm to coding via false API hint injection (19 problems, 3 trap types) --- ecologically valid given that LLMs accept fake library names in up to 99\% of tasks~\citep{libhall2025}.
 Adversarial Priming (AP)---a system prompt flagging potentially malicious hints---achieves CodeMEI$=$0.821 on GLM-4.5-Air and 0.371 on LFM-1.2B, outperforming a more complex 5-layer MARL-SL scaffold on both models (GLM vs.\ MARL-SL: $\Delta{=}+0.084$, $d{=}+2.25$, $p{<}0.001$; LFM vs.\ MARL-SL: $\Delta{=}+0.182$, $d{=}+0.57$, $p{=}0.038$).
-External validity is confirmed on public benchmarks: AP raises HumanEval pass@1 from 0.300 to 0.875 ($\Delta{=}{+}0.575$, $d{=}{+}1.16$); on MBPP, AP detection transfers (85.7\%) while task difficulty moderates pass@1 benefit.
+External validity is confirmed across three benchmarks and three model families: AP raises HumanEval pass@1 from 0.300 to 0.875 on GLM ($\Delta{=}{+}0.575$, $d{=}{+}1.16$); achieves 100\% detection on Qwen3.5-122B; on MBPP-Easy (pooled $n{=}42$/$45$), pass@1 improves significantly ($\Delta{=}+0.235$, $p{=}0.031$).
 Spearman correlation across 13 models ($\rho{=}{+}0.30$, $p{=}0.32$) confirms MEI is independent of coding ability---GPT-4o (HumanEval 90.2\%) ranks last on MEI (0.315), establishing HalluMaze as a distinct evaluation dimension.
 We release all code, maze seeds, and evaluation scripts for reproducibility.
 \end{abstract}
@@ -67,7 +67,7 @@ No existing benchmark captures this.
   \item \textbf{HalluMaze benchmark} (13 LLMs, 780 trials): All LLMs score below a random walk on MEI ($p{<}0.001$, $\delta{=}0.6$--$2.1$); SR and metacognitive recovery are orthogonal (Claude-Sonnet-4.6: SR rank~1 yet MEI rank~8).
   \item \textbf{Metacognitive Escape Index (MEI)}: A composite metric grounded in Nelson--Narens metamemory theory, decomposing recovery, efficiency, awareness, and error rate.
   \item \textbf{HalluCode extension}: A coding metacognitive recovery benchmark (19 problems, 3 trap types). Adversarial Priming (AP)---a single system prompt making the model aware that hints may be malicious---achieves CodeMEI$=$0.821 on GLM-4.5-Air and 0.371 on LFM-1.2B, outperforming a 5-layer MARL-SL scaffold on both models (GLM: $\Delta{=}+0.084$, $d{=}+2.25$, $p{<}0.001$; LFM: $\Delta{=}+0.182$, $d{=}+0.57$, $p{=}0.038$), demonstrating that \emph{awareness injection} dominates structural complexity.
-  \item \textbf{External validity (multi-benchmark + Spearman)}: AP Booster on HumanEval-Trap: pass@1$=$0.875 vs.\ 0.300 ($\Delta{=}{+}0.575$, $d{=}{+}1.16$). MBPP-Trap confirms AP detection transfers (85.7\%) with task difficulty as moderator. Spearman $\rho({\text{HumanEval}},\,{\text{MEI}}){=}{+}0.30$ ($p{=}0.32$, $n{=}13$) --- metacognitive recovery is \textbf{independent of coding ability}, with GPT-4o (HumanEval 90.2\%) ranking last on MEI.
+  \item \textbf{External validity (3 benchmarks × 3 model families)}: HumanEval-Trap: pass@1 rises from 0.300$\to$0.875 (GLM, $d{=}+1.16$) and trap detection is 100\% (Qwen3.5-122B). MBPP-Easy-Trap (pooled $n{=}42$/$45$): $\Delta{=}+0.235$, $p{=}0.031$ (statistically significant). Pass@1 benefit is ability-moderated: stronger models (Qwen) reach ceiling baseline; AP consistently achieves 87.5--100\% detection across all models. Spearman $\rho({\text{HumanEval}},\,{\text{MEI}}){=}{+}0.30$ ($p{=}0.32$, $n{=}13$) --- metacognitive recovery is \textbf{independent of coding ability}.
 \end{itemize}
 
 % =================================================================
@@ -308,6 +308,7 @@ This is consistent with \citet{huang2024selfcorrect}, who find that LLMs cannot 
 \subsection{Task Design \& Hypotheses}
 
 We extend the HalluMaze metacognitive recovery paradigm to the coding domain via \textbf{false API hint injection}.
+False API hints are ecologically valid: recent work shows LLMs accept fake library names in up to 99\% of tasks~\citep{libhall2025}, sub-optimal API documentation in prompts causes a 39\% absolute performance drop~\citep{dag2024}, and library member hallucinations (invalid API calls from valid libraries) constitute a pervasive failure mode~\citep{apimisuse2025}.
 Each HalluCode problem presents a Python task with a deliberately wrong hint: either a \textbf{nonexistent API} (10 problems), a \textbf{wrong method signature} (5 problems), or a \textbf{deprecated method} (4 problems).
 Models must detect the trap and produce correct executable code despite the misdirection.
 We evaluate three conditions:
