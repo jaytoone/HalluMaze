@@ -1,5 +1,20 @@
 {
-  "tried_strategies": [],
+  "tried_strategies": [
+    {
+      "goal": "HalluMaze + HalluCode 논문 arXiv/NeurIPS 제출 ready",
+      "score": 0.977,
+      "iteration": 9,
+      "outcome": "converged",
+      "weak_dim": "impact"
+    },
+    {
+      "goal": "AP Booster v2 설계 + MBPP-Easy 필터링 + 다벤치마크 일반화",
+      "score": 0.75,
+      "iteration": 10,
+      "outcome": "in_progress",
+      "weak_dim": "completeness (no experiment results yet)"
+    }
+  ],
   "dead_ends": [],
   "known_facts": [
     "GLM AP Booster n=19 complete: CodeMEI=0.821, SR=100%, HRR=84.2%",
@@ -15,12 +30,30 @@
     "MBPP-Trap: AP detection 85.7%, pass@1=0 for both (difficulty moderator confirmed)",
     "Spearman rho=+0.30 p=0.32 n=13 (MEI independent of HumanEval coding ability)",
     "HF post v4.1 ready: docs/hf_post_v4.md (MBPP + Spearman sections added)",
-    "v1.54 pushed to GitHub: all omc-live iter 1-3 results committed",
+    "v1.62 pushed to GitHub: all omc-live iter 1-9 results committed",
     "Bootstrap CI missing for HalluCode section (only MEI leaderboard has it)",
-    "LFM HumanEval-Trap: NOT YET RUN — 2nd model data point pending"
+    "LFM HumanEval-Trap: NOT YET RUN — 2nd model data point pending",
+    "AP Booster v2 script: scripts/run_mbpp_easy_trap.py (NEW, v1.63)",
+    "AP v2 easy filter: ref solution ≤7 lines AND ≤2 test assertions",
+    "AP v2 3-step prompt: DETECT → IDENTIFY STDLIB ALTERNATIVE → WRITE CODE",
+    "AP v2 imports from run_mbpp_trap (reuses infrastructure), runs cleanly",
+    "Paper Planned Extensions §8 added: AP v2 methodology documented",
+    "README Quick Start + repo structure updated for AP v2",
+    "3-benchmark AP generalization arc: HalluCode (custom) → HumanEval-Trap (public, matched) → MBPP-Easy-Trap (public, difficulty-filtered)"
   ],
-  "uncertain": [],
-  "dimensions_explored": {},
-  "session_count": 2,
+  "uncertain": [
+    {
+      "goal": "Run AP v2 experiment (MBPP-Easy, n=15)",
+      "score": null,
+      "reason": "Requires OpenRouter API call — not run yet. Expected: detection≥80%, pass@1>0 (difficulty unblocked)"
+    }
+  ],
+  "dimensions_explored": {
+    "quality": 0.977,
+    "completeness": 0.75,
+    "efficiency": 0.85,
+    "impact": 0.72
+  },
+  "session_count": 3,
   "initialized_at": "2026-03-29T14:16:00Z"
 }

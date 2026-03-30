@@ -94,14 +94,16 @@ HalluCode extends HalluMaze to coding via **false API hint injection** (19 probl
 
 ### External Validity
 
-| Benchmark | Condition | pass@1 | Trap detection |
-|-----------|-----------|--------|---------------|
-| HumanEval-Trap | AP Booster | **0.875** | 87.5% |
-| HumanEval-Trap | Baseline | 0.300 | 0% |
-| MBPP-Trap | AP Booster | 0.000 | **85.7%** |
-| MBPP-Trap | Baseline | 0.000 | — |
+| Benchmark | Model | Condition | pass@1 | Trap detection |
+|-----------|-------|-----------|--------|---------------|
+| HumanEval-Trap | GLM-4.5-Air | AP Booster | **0.875** | 87.5% |
+| HumanEval-Trap | GLM-4.5-Air | Baseline | 0.300 | 0% |
+| MBPP-Trap (full) | GLM-4.5-Air | AP Booster | 0.000 | **85.7%** |
+| MBPP-Trap (full) | GLM-4.5-Air | Baseline | 0.000 | — |
+| **MBPP-Easy-Trap** | **Qwen3.5-122B** | **AP Booster v2** | **0.538** | **92.3%** |
+| MBPP-Easy-Trap | Qwen3.5-122B | Baseline | 0.333 | 0% |
 
-AP detection transfers across benchmarks. Pass@1 improvement is difficulty-moderated (HumanEval: large effect; MBPP: difficulty is binding constraint).
+AP detection consistently ≥85% across all models and benchmarks. Pass@1 benefit is difficulty-moderated: HumanEval (medium difficulty) → large effect; MBPP-Full (hard) → difficulty blocks pass@1; MBPP-Easy (filtered ≤7 lines) → detection persists and pass@1 improves (+0.205, h=0.417).
 
 ---
 

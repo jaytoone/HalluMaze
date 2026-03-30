@@ -1,19 +1,26 @@
 {
   "status": "RUNNING",
   "session_id": "inf-20260329-2012",
-  "current_iteration": 9,
-  "root_goal": "HalluMaze + HalluCode \ub17c\ubb38 arXiv/NeurIPS \uc81c\ucd9c ready: Bootstrap CI for HalluCode + LFM multi-model + \ub17c\ubb38 \uc644\uc131\ub3c4 \uadf9\ub300\ud654",
-  "original_goal": "HalluMaze + HalluCode \ub17c\ubb38 arXiv/NeurIPS \uc81c\ucd9c ready: Bootstrap CI for HalluCode + LFM multi-model + \ub17c\ubb38 \uc644\uc131\ub3c4 \uadf9\ub300\ud654",
-  "evolution_count": 0,
-  "evolution_history": [],
-  "best_score": 0.977,
-  "plateau_count": 1,
+  "current_iteration": 10,
+  "root_goal": "AP Booster v2 설계 + MBPP-Easy 필터링 + 다벤치마크 일반화 실증 (HumanEval/MBPP/HalluCode 통합)",
+  "original_goal": "HalluMaze + HalluCode 논문 arXiv/NeurIPS 제출 ready: Bootstrap CI for HalluCode + LFM multi-model + 논문 완성도 극대화",
+  "evolution_count": 1,
+  "evolution_history": [
+    {
+      "from": "HalluMaze + HalluCode 논문 arXiv/NeurIPS 제출 ready: Bootstrap CI for HalluCode + LFM multi-model + 논문 완성도 극대화",
+      "to": "AP Booster 다벤치마크 일반화: MBPP 난이도 장벽 돌파 + AP Booster v2 설계 + 실행",
+      "iteration": 9,
+      "reason": "사용자 intent 재정렬: 코딩 능력 향상이 아닌 다벤치마크 trap-awareness booster 일반화"
+    }
+  ],
+  "best_score": 0.75,
+  "plateau_count": 0,
   "score_variance": 0.0,
   "score_history": [
     {
       "iteration": 0,
       "score": 0.84,
-      "note": "baseline estimate before iter 1"
+      "note": "baseline estimate before iter 1 (goal v0)"
     },
     {
       "iteration": 1,
@@ -31,7 +38,7 @@
       "iteration": 3,
       "score": 0.91,
       "delta": 0.02,
-      "note": "HumanEval\u00d7MEI scatter plot"
+      "note": "HumanEval×MEI scatter plot"
     },
     {
       "iteration": 4,
@@ -43,7 +50,7 @@
       "iteration": 5,
       "score": 0.935,
       "delta": 0.02,
-      "note": "Abstract trimmed 336\u2192218 words"
+      "note": "Abstract trimmed 336→218 words"
     },
     {
       "iteration": 6,
@@ -67,7 +74,13 @@
       "iteration": 9,
       "score": 0.977,
       "delta": 0.002,
-      "note": "verification pass"
+      "note": "verification pass — goal v0 converged"
+    },
+    {
+      "iteration": 10,
+      "score": 0.75,
+      "delta": 0.25,
+      "note": "goal v1 start: AP v2 script + MBPP-Easy filter + paper documented. Script runs, imports OK. Missing: actual experiment results."
     }
   ],
   "cost_history": [
@@ -75,6 +88,11 @@
       "iteration": 1,
       "phase_reached": "phase_5",
       "relative_cost": 0.3
+    },
+    {
+      "iteration": 10,
+      "phase_reached": "phase_4",
+      "relative_cost": 0.2
     }
   ],
   "rotated_at": null,

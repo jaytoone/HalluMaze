@@ -1,3 +1,15 @@
+v1.64 20260330 1115
+    - MBPP-Easy-Trap 실험 완료 (Qwen3.5-122B NIPA H200):
+      AP v2: pass@1=0.538 detection=92.3% (n=13)
+      Baseline: pass@1=0.333 detection=0% (n=15)
+      Δ=+0.205, Cohen h=0.417, p=0.24 (underpowered pilot)
+    - scripts/run_mbpp_easy_trap.py: local model 지원 (local-qwen35, local-nemotron)
+      + 함수명 자동 추출 (test_list 파싱) + easy filter 수정 (≤7 lines)
+    - experiment_results/: mbpp_easy_trap_qwen35_ap_v2.json, baseline.json, stats.json
+    - docs/hallumaze_arxiv.tex: §8 "Pilot completed" + Conclusion 업데이트
+    - README.md: External Validity 테이블에 MBPP-Easy 결과 추가
+    - docs/DOC_INDEX.md: 신규 실험 파일 3건 추가
+
 v1.63 20260329 2323
     - scripts/run_mbpp_easy_trap.py: AP Booster v2 + MBPP-Easy filter (NEW)
       3-step prompt: DETECT→IDENTIFY ALTERNATIVE→WRITE CODE

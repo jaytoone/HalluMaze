@@ -34,7 +34,10 @@
 | experiment_results/hallumaze_spearman_analysis.json | HalluMaze MEI × HumanEval Spearman ρ=+0.30 (p=0.32, n=13) — MEI는 코딩 능력(HumanEval)과 독립적. GPT-4o(HE=90.2%) → MEI rank 13. HalluMaze 고유성 입증 | 2026-03-29 |
 | scripts/analyze_hallumaze_coding_spearman.py | HalluMaze 13-model MEI × 공개 HumanEval pass@1 Spearman 분석 스크립트 | 2026-03-29 |
 | scripts/run_mbpp_trap.py | MBPP-Trap 실험 스크립트: MBPP datasets 로드 + 3-trap 주입 + AP/baseline pass@1 측정 | 2026-03-29 |
-| scripts/run_mbpp_easy_trap.py | AP Booster v2 + MBPP-Easy 필터: 3-step prompt(DETECT→ALTERNATIVE→CODE) + ref solution ≤7줄/≤2 assert 필터. 난이도 교란 제거 후 AP 효과 분리 측정 | 2026-03-29 |
+| scripts/run_mbpp_easy_trap.py | AP Booster v2 + MBPP-Easy 필터: 3-step prompt(DETECT→ALTERNATIVE→CODE) + ref solution ≤7줄 필터. 난이도 교란 제거 후 AP 효과 분리 측정 | 2026-03-29 |
+| experiment_results/mbpp_easy_trap_qwen35_ap_v2.json | MBPP-Easy-Trap AP v2 (Qwen3.5-122B NIPA H200, n=13 valid): pass@1=0.538, detection=92.3%. 난이도 unblock 확인. | 2026-03-30 |
+| experiment_results/mbpp_easy_trap_qwen35_baseline.json | MBPP-Easy-Trap Baseline (Qwen3.5-122B, n=15): pass@1=0.333. Δ=+0.205 vs AP v2 | 2026-03-30 |
+| experiment_results/mbpp_easy_stats.json | MBPP-Easy-Trap 통계: Bootstrap CI, Fisher exact p=0.24 (underpowered), Cohen h=0.417 | 2026-03-30 |
 | docs/hf_post_v4.md | HF 커뮤니티 포스트 v4 (HalluCode AP Booster 전용: 80-token prompt beats MARL-SL, GLM d=+2.25 p<0.001) | 2026-03-29 |
 | docs/hf_dataset_readme.md | HuggingFace Dataset 카드 — 13-model 리더보드, 파일 목록, 인용 정보 (HF 업로드 ready) | 2026-03-29 |
 | docs/hf_post_v3.md | HF 커뮤니티 포스트 v3 (Claude 4.x 확장 결과 포함, 13모델 리더보드) | 2026-03-26 |

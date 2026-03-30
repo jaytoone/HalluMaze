@@ -1,0 +1,23 @@
+{
+  "benchmark": "MBPP-Easy-Trap",
+  "model": "Qwen3.5-122B (NIPA H200)",
+  "ap_v2": {
+    "n": 13,
+    "pass_at_1": 0.538,
+    "trap_detection": 0.923
+  },
+  "baseline": {
+    "n": 15,
+    "pass_at_1": 0.333,
+    "trap_detection": 0.0
+  },
+  "delta_pass_at_1": 0.205,
+  "bootstrap_95ci": [
+    -0.159,
+    0.559
+  ],
+  "cohen_h": 0.417,
+  "fisher_exact_p": 0.2389,
+  "note": "Underpowered pilot (n<20 per condition). Effect size medium (h=0.417). Detection stable at 92.3%. Difficulty unblocked by easy filter.",
+  "timestamp": "2026-03-30T02:14:52.928350Z"
+}

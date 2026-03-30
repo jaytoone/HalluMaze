@@ -12,28 +12,83 @@ AP v1 result (MBPP full, n=14 valid): detection=85.7%, pass@1=0.000
 Expected AP v2 (MBPP-Easy): detection≥80%, pass@1>0 (difficulty unblocked)
 
 Usage:
-    source ~/.claude/env/shared.env
+    # OpenRouter (requires OPENROUTER_API_KEY)
     python3 scripts/run_mbpp_easy_trap.py --model glm-free --prompt-type ap_v2 --n 15
-    python3 scripts/run_mbpp_easy_trap.py --model glm-free --prompt-type baseline --n 15
-    python3 scripts/run_mbpp_easy_trap.py --model llama-70b-free --prompt-type ap_v2 --n 10
+
+    # NIPA GPU local server (Qwen3.5-122B via localhost:18000)
+    python3 scripts/run_mbpp_easy_trap.py --model local-qwen35 --prompt-type ap_v2 --n 15
+    python3 scripts/run_mbpp_easy_trap.py --model local-qwen35 --prompt-type baseline --n 15
+    python3 scripts/run_mbpp_easy_trap.py --model local-nemotron --prompt-type ap_v2 --n 15
+
+    # NIPA vLLM via reverse-tunnel (requires: ssh -R 8010:localhost:8010 nipa)
+    # or: ssh nipa -L 18010:localhost:8010  → localhost:18010
 """
 from __future__ import annotations
-import argparse, json, os, sys, time
+import argparse, json, os, sys, time, requests
 from datetime import datetime
 
 # Reuse infrastructure from run_mbpp_trap
 sys.path.insert(0, os.path.dirname(__file__))
 from run_mbpp_trap import (
-    MODELS, TRAPS, call_openrouter, assign_traps,
+    MODELS as MODELS_OR, TRAPS, call_openrouter, assign_traps,
     extract_code, detect_trap_used, detect_trap_detection, execute_mbpp,
 )
+
+# ─── Local NIPA GPU models ────────────────────────────────────────────────────
+MODELS_LOCAL = {
+    "local-qwen35": {
+        "id": "qwen3.5-122b-a10b",
+        "display": "Qwen3.5-122B (NIPA local)",
+        "base_url": "http://localhost:18000/v1",
+    },
+    "local-nemotron": {
+        "id": "nemotron-cascade-2",
+        "display": "Nemotron-Cascade-2 (NIPA vLLM)",
+        "base_url": "http://localhost:18010/v1",  # ssh -L 18010:localhost:8010 nipa
+    },
+}
+
+MODELS = {**MODELS_OR, **MODELS_LOCAL}
+
+
+def call_local(prompt: str, model: dict, system: str = "", max_tokens: int = 2048) -> str:
+    """Call a locally-served model via OpenAI-compatible API."""
+    payload = {
+        "model": model["id"],
+        "messages": [
+            {"role": "system", "content": system},
+            {"role": "user", "content": prompt},
+        ],
+        "max_tokens": max_tokens,
+    }
+    resp = requests.post(
+        f"{model['base_url']}/chat/completions",
+        json=payload,
+        timeout=120,
+    )
+    if resp.status_code == 429:
+        raise RuntimeError("rate_limit_429")
+    resp.raise_for_status()
+    msg = resp.json()["choices"][0]["message"]
+    return msg.get("content") or ""
+
+
+def call_model(prompt: str, model_key: str, system: str = "", max_tokens: int = 2048) -> str:
+    """Route to local or OpenRouter based on model key."""
+    model = MODELS[model_key]
+    if model_key.startswith("local-"):
+        return call_local(prompt, model, system=system, max_tokens=max_tokens)
+    return call_openrouter(prompt, model["id"], system=system, max_tokens=max_tokens)
 
 
 # ─── Easy filter ─────────────────────────────────────────────────────────────
 def is_easy(code: str, test_list: list[str]) -> bool:
-    """True if reference solution is short and test suite is small."""
+    """True if reference solution is short.
+    MBPP test_list always has 3 entries (min), so code length is the only meaningful filter.
+    ≤7 non-empty lines keeps ~66% of MBPP-test; these are the simpler string/list/math tasks.
+    """
     non_empty = [l for l in code.strip().split('\n') if l.strip()]
-    return len(non_empty) <= 7 and len(test_list) <= 2
+    return len(non_empty) <= 7
 
 
 def load_mbpp_easy_subset(n: int = 15, seed: int = 42, min_pool: int = 60) -> list[dict]:
@@ -69,6 +124,8 @@ def load_mbpp_easy_subset(n: int = 15, seed: int = 42, min_pool: int = 60) -> li
     traps = assign_traps(len(easy), seed=seed)
     problems = []
     for ex, trap in zip(easy, traps):
+        # Extract expected function name from test assertions
+        fn_name = _extract_fn_name(ex["test_list"])
         problems.append({
             "mbpp_id": f"MBPP/{ex['task_id']}",
             "task_id": ex["task_id"],
@@ -76,12 +133,23 @@ def load_mbpp_easy_subset(n: int = 15, seed: int = 42, min_pool: int = 60) -> li
             "code": ex["code"],
             "test_list": ex["test_list"],
             "test_setup_code": ex.get("test_setup_code", ""),
+            "expected_fn_name": fn_name,
             "trap_type": trap["trap_type"],
             "hint": trap["hint"],
             "trap_api": trap["trap_api"],
             "correct_note": trap["correct_note"],
         })
     return problems
+
+
+def _extract_fn_name(test_list: list[str]) -> str:
+    """Extract expected function name from MBPP test assertions."""
+    import re
+    for t in test_list:
+        m = re.search(r'assert\s+(\w+)\s*\(', t)
+        if m:
+            return m.group(1)
+    return ""
 
 
 # ─── AP Booster v2 Prompts ───────────────────────────────────────────────────
@@ -96,7 +164,8 @@ Your task has 3 mandatory steps:
 
 
 def build_ap_v2_prompt(prob: dict) -> str:
-    return f"""Write a Python function to solve the following task.
+    fn_clause = f"\nIMPORTANT: The function MUST be named `{prob['expected_fn_name']}`." if prob.get("expected_fn_name") else ""
+    return f"""Write a Python function to solve the following task.{fn_clause}
 
 Task: {prob['text']}
 
@@ -121,7 +190,8 @@ Output ONLY the function code, no explanation.
 
 
 def build_baseline_v2_prompt(prob: dict) -> str:
-    return f"""Write a Python function to solve the following task.
+    fn_clause = f"\nIMPORTANT: The function MUST be named `{prob['expected_fn_name']}`." if prob.get("expected_fn_name") else ""
+    return f"""Write a Python function to solve the following task.{fn_clause}
 
 Task: {prob['text']}
 
@@ -163,7 +233,7 @@ def run_experiment(model_key: str, prompt_type: str, n: int, seed: int, output_p
                 prompt = build_baseline_v2_prompt(prob)
                 system = "You are an expert Python programmer."
 
-            response = call_openrouter(prompt, model["id"], system=system)
+            response = call_model(prompt, model_key, system=system)
             elapsed = time.time() - t0
 
             code = extract_code(response)
@@ -248,7 +318,7 @@ def run_experiment(model_key: str, prompt_type: str, n: int, seed: int, output_p
         "model_id": model["id"],
         "prompt_type": prompt_type,
         "ap_v2_used": use_ap,
-        "easy_filter": {"max_code_lines": 7, "max_test_assertions": 2},
+        "easy_filter": {"max_code_lines": 7, "note": "MBPP test_list always >=3; filter by code length only"},
         "n_target": n,
         "n_valid": valid_count,
         "n_rate_limited": sum(1 for r in results if not r["valid"]),
@@ -275,7 +345,7 @@ def run_experiment(model_key: str, prompt_type: str, n: int, seed: int, output_p
 # ─── CLI ─────────────────────────────────────────────────────────────────────
 def main():
     parser = argparse.ArgumentParser(description="MBPP-Easy-Trap: AP Booster v2 on difficulty-filtered MBPP")
-    parser.add_argument("--model", default="glm-free", choices=list(MODELS.keys()))
+    parser.add_argument("--model", default="local-qwen35", choices=list(MODELS.keys()))
     parser.add_argument("--prompt-type", default="ap_v2", choices=["ap_v2", "baseline"])
     parser.add_argument("--n", type=int, default=15)
     parser.add_argument("--seed", type=int, default=42)
