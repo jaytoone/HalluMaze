@@ -72,7 +72,6 @@
 - [[projects/Miro/research/20260328-hallucode-cubic-evaluation|20260328-hallucode-cubic-evaluation]]
 - [[projects/Miro/research/20260327-hallumaze-extension-hallucode|20260327-hallumaze-extension-hallucode]]
 - [[projects/Miro/research/20260323-hallumaze-paper-draft|20260323-hallumaze-paper-draft]]
-- [[projects/Miro/research/20260331-ai-booster-coding-performance-research|20260331-ai-booster-coding-performance-research]]
 - [[projects/Miro/research/20260330-ap-benchmark-selection|20260330-ap-benchmark-selection]]
 - [[projects/Miro/research/20260330-ap-benchmark-diversification|20260330-ap-benchmark-diversification]]
 - [[projects/Miro/research/20260326-marl-sl-multi-model-validation|20260326-marl-sl-multi-model-validation]]

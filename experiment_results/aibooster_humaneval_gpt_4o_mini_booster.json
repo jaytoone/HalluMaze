@@ -1,0 +1,97 @@
+{
+  "experiment": "AI Booster v3 -- Standard HumanEval (no trap injection)",
+  "hypothesis": "H_AB: AI Booster middleware improves raw pass@1 on standard coding benchmarks",
+  "model": "GPT-4o mini",
+  "model_key": "gpt-4o-mini",
+  "mode": "booster",
+  "n_requested": 10,
+  "n_valid": 3,
+  "n_errors": 7,
+  "seed": 42,
+  "partial": false,
+  "pass_at_1": 1.0,
+  "passed": 3,
+  "timestamp": "2026-03-30T17:33:17.909782",
+  "results": [
+    {
+      "task_id": "HumanEval/61",
+      "entry_point": "correct_bracketing",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2185
+    },
+    {
+      "task_id": "HumanEval/104",
+      "entry_point": "unique_digits",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2300
+    },
+    {
+      "task_id": "HumanEval/105",
+      "entry_point": "by_length",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2839
+    },
+    {
+      "task_id": "HumanEval/42",
+      "entry_point": "incr_list",
+      "mode": "booster",
+      "passed": false,
+      "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/145",
+      "entry_point": "order_by_points",
+      "mode": "booster",
+      "passed": false,
+      "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/130",
+      "entry_point": "tri",
+      "mode": "booster",
+      "passed": false,
+      "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/88",
+      "entry_point": "sort_array",
+      "mode": "booster",
+      "passed": false,
+      "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/11",
+      "entry_point": "string_xor",
+      "mode": "booster",
+      "passed": false,
+      "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/137",
+      "entry_point": "compare_one",
+      "mode": "booster",
+      "passed": false,
+      "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/66",
+      "entry_point": "digitSum",
+      "mode": "booster",
+      "passed": false,
+      "error": "402 Client Error: Payment Required for url: https://openrouter.ai/api/v1/chat/completions",
+      "response_len": 0
+    }
+  ]
+}

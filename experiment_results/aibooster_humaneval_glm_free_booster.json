@@ -1,0 +1,257 @@
+{
+  "experiment": "AI Booster v3 -- Standard HumanEval (no trap injection)",
+  "hypothesis": "H_AB: AI Booster middleware improves raw pass@1 on standard coding benchmarks",
+  "model": "GLM-4.5-Air (free)",
+  "model_key": "glm-free",
+  "mode": "booster",
+  "n_requested": 30,
+  "n_valid": 24,
+  "n_errors": 6,
+  "seed": 42,
+  "partial": false,
+  "pass_at_1": 0.4583,
+  "passed": 11,
+  "timestamp": "2026-03-30T21:49:40.521286",
+  "results": [
+    {
+      "task_id": "HumanEval/61",
+      "entry_point": "correct_bracketing",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2342
+    },
+    {
+      "task_id": "HumanEval/104",
+      "entry_point": "unique_digits",
+      "mode": "booster",
+      "passed": false,
+      "exec_error": "No valid function definition for unique_digits",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/105",
+      "entry_point": "by_length",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1935
+    },
+    {
+      "task_id": "HumanEval/42",
+      "entry_point": "incr_list",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 712
+    },
+    {
+      "task_id": "HumanEval/145",
+      "entry_point": "order_by_points",
+      "mode": "booster",
+      "passed": false,
+      "exec_error": "No valid function definition for order_by_points",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/130",
+      "entry_point": "tri",
+      "mode": "booster",
+      "passed": false,
+      "error": "HTTPSConnectionPool(host='openrouter.ai', port=443): Read timed out. (read timeout=180)",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/88",
+      "entry_point": "sort_array",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1317
+    },
+    {
+      "task_id": "HumanEval/11",
+      "entry_point": "string_xor",
+      "mode": "booster",
+      "passed": false,
+      "error": "HTTPSConnectionPool(host='openrouter.ai', port=443): Read timed out. (read timeout=180)",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/137",
+      "entry_point": "compare_one",
+      "mode": "booster",
+      "passed": false,
+      "exec_error": "No valid function definition for compare_one",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/66",
+      "entry_point": "digitSum",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1205
+    },
+    {
+      "task_id": "HumanEval/30",
+      "entry_point": "get_positive",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1051
+    },
+    {
+      "task_id": "HumanEval/124",
+      "entry_point": "valid_date",
+      "mode": "booster",
+      "passed": false,
+      "exec_error": "No valid function definition for valid_date",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/154",
+      "entry_point": "cycpattern_check",
+      "mode": "booster",
+      "passed": false,
+      "error": "HTTPSConnectionPool(host='openrouter.ai', port=443): Read timed out. (read timeout=180)",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/18",
+      "entry_point": "how_many_times",
+      "mode": "booster",
+      "passed": false,
+      "exec_error": "No valid function definition for how_many_times",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/127",
+      "entry_point": "intersection",
+      "mode": "booster",
+      "passed": false,
+      "exec_error": "No valid function definition for intersection",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/121",
+      "entry_point": "solution",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1516
+    },
+    {
+      "task_id": "HumanEval/0",
+      "entry_point": "has_close_elements",
+      "mode": "booster",
+      "passed": false,
+      "exec_error": "No valid function definition for has_close_elements",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/17",
+      "entry_point": "parse_music",
+      "mode": "booster",
+      "passed": false,
+      "exec_error": "No valid function definition for parse_music",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/52",
+      "entry_point": "below_threshold",
+      "mode": "booster",
+      "passed": false,
+      "error": "no response",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/123",
+      "entry_point": "get_odd_collatz",
+      "mode": "booster",
+      "passed": false,
+      "exec_error": "No valid function definition for get_odd_collatz",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/38",
+      "entry_point": "decode_cyclic",
+      "mode": "booster",
+      "passed": false,
+      "error": "no response",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/72",
+      "entry_point": "will_it_fly",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1466
+    },
+    {
+      "task_id": "HumanEval/132",
+      "entry_point": "is_nested",
+      "mode": "booster",
+      "passed": false,
+      "exec_error": "No valid function definition for is_nested",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/95",
+      "entry_point": "check_dict_case",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 2224
+    },
+    {
+      "task_id": "HumanEval/2",
+      "entry_point": "truncate_number",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1370
+    },
+    {
+      "task_id": "HumanEval/19",
+      "entry_point": "sort_numbers",
+      "mode": "booster",
+      "passed": false,
+      "exec_error": "Traceback (most recent call last):\n  File \"/tmp/tmp_534m3tp.py\", line 44, in <module>\n    check(sort_numbers)\n  File \"/tmp/tmp_534m3tp.py\", line 38, in check\n    assert candidate('three') == 'three'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+      "response_len": 1753
+    },
+    {
+      "task_id": "HumanEval/76",
+      "entry_point": "is_simple_power",
+      "mode": "booster",
+      "passed": false,
+      "exec_error": "No valid function definition for is_simple_power",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/109",
+      "entry_point": "move_one_ball",
+      "mode": "booster",
+      "passed": false,
+      "exec_error": "No valid function definition for move_one_ball",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/67",
+      "entry_point": "fruit_distribution",
+      "mode": "booster",
+      "passed": false,
+      "error": "HTTPSConnectionPool(host='openrouter.ai', port=443): Read timed out. (read timeout=180)",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/159",
+      "entry_point": "eat",
+      "mode": "booster",
+      "passed": true,
+      "exec_error": "",
+      "response_len": 1001
+    }
+  ]
+}

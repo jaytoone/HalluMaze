@@ -1,0 +1,57 @@
+{
+  "experiment": "AI Booster v3 -- Standard HumanEval (no trap injection)",
+  "hypothesis": "H_AB: AI Booster middleware improves raw pass@1 on standard coding benchmarks",
+  "model": "Llama 3.3 70B (free)",
+  "model_key": "llama-70b-free",
+  "mode": "booster",
+  "n_requested": 5,
+  "n_valid": 0,
+  "n_errors": 5,
+  "seed": 42,
+  "partial": false,
+  "pass_at_1": 0.0,
+  "passed": 0,
+  "timestamp": "2026-03-30T17:29:53.558957",
+  "results": [
+    {
+      "task_id": "HumanEval/61",
+      "entry_point": "correct_bracketing",
+      "mode": "booster",
+      "passed": false,
+      "error": "no response",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/104",
+      "entry_point": "unique_digits",
+      "mode": "booster",
+      "passed": false,
+      "error": "no response",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/105",
+      "entry_point": "by_length",
+      "mode": "booster",
+      "passed": false,
+      "error": "no response",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/42",
+      "entry_point": "incr_list",
+      "mode": "booster",
+      "passed": false,
+      "error": "HTTPSConnectionPool(host='openrouter.ai', port=443): Read timed out. (read timeout=180)",
+      "response_len": 0
+    },
+    {
+      "task_id": "HumanEval/145",
+      "entry_point": "order_by_points",
+      "mode": "booster",
+      "passed": false,
+      "error": "no response",
+      "response_len": 0
+    }
+  ]
+}
