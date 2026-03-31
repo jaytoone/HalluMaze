@@ -1,7 +1,7 @@
 {
   "status": "RUNNING",
   "session_id": "inf-20260330-0003",
-  "current_iteration": 17,
+  "current_iteration": 18,
   "root_goal": "H_AB domain-specificity 확정 + 논문 완성도 극대화 → arXiv 제출 ready",
   "original_goal": "HalluMaze + HalluCode 논문 arXiv/NeurIPS 제출 ready: Bootstrap CI for HalluCode + LFM multi-model + 논문 완성도 극대화",
   "evolution_count": 5,
@@ -88,6 +88,12 @@
       "score": 0.93,
       "delta": 0.01,
       "note": "EFB (Execution Feedback Booster) n=100 on EvalPlus: pass@1=0.920 vs baseline=0.890 (Δ=+0.030, McNemar n01=4, n10=1, p=0.1875). Not significant — ceiling-limited (89% baseline, only 11 failures). Recovery rate=36% (4/11 recovered). Cohesive with ceiling effect story. Paper updated with EFB section + conclusion update. Script: scripts/run_execution_feedback_booster.py."
+    },
+    {
+      "iteration": 18,
+      "score": 0.94,
+      "delta": 0.01,
+      "note": "arXiv readiness audit complete. All 23 citations resolved. 11 sections, ~4130 words. 8 cross-refs all valid. No TODOs/placeholders. All files committed. Pending: GitHub push (diverged history, needs --force) + arXiv submission (requires user credentials). Repository clean."
     }
   ],
   "cost_history": [
@@ -97,7 +103,8 @@
     {"iteration": 14, "phase_reached": "phase_1", "relative_cost": 0.1, "note": "NIPA vLLM setup (multiple failures). Qwen2.5-Coder-32B downloaded + served."},
     {"iteration": 15, "phase_reached": "phase_5", "relative_cost": 0.4, "note": "Qwen2.5-Coder-32B n=30 booster+baseline complete. Ceiling effect confirmed."},
     {"iteration": 16, "phase_reached": "phase_5", "relative_cost": 0.5, "note": "EvalPlus n=30 + n=60 (both booster+baseline). H_AB definitively rejected. Paper updated."},
-    {"iteration": 17, "phase_reached": "phase_5", "relative_cost": 0.4, "note": "EFB n=100 + baseline n=100 on EvalPlus. p=0.1875 ceiling-limited. Paper updated with EFB section."}
+    {"iteration": 17, "phase_reached": "phase_5", "relative_cost": 0.4, "note": "EFB n=100 + baseline n=100 on EvalPlus. p=0.1875 ceiling-limited. Paper updated with EFB section."},
+    {"iteration": 18, "phase_reached": "phase_3", "relative_cost": 0.1, "note": "arXiv readiness audit. All citations verified. Repository clean. GitHub push + arXiv submission pending."}
   ],
   "known_facts": {
     "h_ab_rejected": "AI Booster does NOT improve standard coding benchmarks. EvalPlus n=60: Δ=0.000, McNemar p=0.69. H_AB definitively rejected.",
