@@ -1,7 +1,7 @@
 {
   "status": "RUNNING",
   "session_id": "inf-20260330-0003",
-  "current_iteration": 16,
+  "current_iteration": 17,
   "root_goal": "H_AB domain-specificity 확정 + 논문 완성도 극대화 → arXiv 제출 ready",
   "original_goal": "HalluMaze + HalluCode 논문 arXiv/NeurIPS 제출 ready: Bootstrap CI for HalluCode + LFM multi-model + 논문 완성도 극대화",
   "evolution_count": 5,
@@ -82,6 +82,12 @@
       "score": 0.92,
       "delta": 0.20,
       "note": "EvalPlus (HumanEval+, NeurIPS 2023) n=60 DEFINITIVE: booster=0.817 vs baseline=0.817 (Δ=0.000, McNemar n01=n10=2, p=0.69). H_AB REJECTED. AI Booster is trap-specific: standard EvalPlus Δ=0.000 confirms mechanism specificity. HumanEval-Trap Δ=+0.575, MBPP-Easy Δ=+0.235 (p=0.031) are genuine domain-specific effects. Paper updated with domain-specificity boundary condition section. Script: scripts/run_aibooster_evalplus.py."
+    },
+    {
+      "iteration": 17,
+      "score": 0.93,
+      "delta": 0.01,
+      "note": "EFB (Execution Feedback Booster) n=100 on EvalPlus: pass@1=0.920 vs baseline=0.890 (Δ=+0.030, McNemar n01=4, n10=1, p=0.1875). Not significant — ceiling-limited (89% baseline, only 11 failures). Recovery rate=36% (4/11 recovered). Cohesive with ceiling effect story. Paper updated with EFB section + conclusion update. Script: scripts/run_execution_feedback_booster.py."
     }
   ],
   "cost_history": [
@@ -90,7 +96,8 @@
     {"iteration": 13, "phase_reached": "phase_3", "relative_cost": 0.1, "note": "Script + model selection complete. No experiment run yet."},
     {"iteration": 14, "phase_reached": "phase_1", "relative_cost": 0.1, "note": "NIPA vLLM setup (multiple failures). Qwen2.5-Coder-32B downloaded + served."},
     {"iteration": 15, "phase_reached": "phase_5", "relative_cost": 0.4, "note": "Qwen2.5-Coder-32B n=30 booster+baseline complete. Ceiling effect confirmed."},
-    {"iteration": 16, "phase_reached": "phase_5", "relative_cost": 0.5, "note": "EvalPlus n=30 + n=60 (both booster+baseline). H_AB definitively rejected. Paper updated."}
+    {"iteration": 16, "phase_reached": "phase_5", "relative_cost": 0.5, "note": "EvalPlus n=30 + n=60 (both booster+baseline). H_AB definitively rejected. Paper updated."},
+    {"iteration": 17, "phase_reached": "phase_5", "relative_cost": 0.4, "note": "EFB n=100 + baseline n=100 on EvalPlus. p=0.1875 ceiling-limited. Paper updated with EFB section."}
   ],
   "known_facts": {
     "h_ab_rejected": "AI Booster does NOT improve standard coding benchmarks. EvalPlus n=60: Δ=0.000, McNemar p=0.69. H_AB definitively rejected.",
@@ -98,7 +105,8 @@
     "qwen25coder_ceiling": "Qwen2.5-Coder-32B on HumanEval: booster=0.833, baseline=0.800 (Δ=+0.033, p=1.0). On EvalPlus n=60: booster=baseline=0.817.",
     "nipa_vllm": "vLLM 0.17.1 at /home/work/venvs/vllm018/bin/python3. Qwen2.5-Coder-32B loaded on CUDA_VISIBLE_DEVICES=0, port 19001, enforce-eager, util=0.55.",
     "openrouter_blocked": "All free tier models rate-limited upstream. Account has no paid credits (402).",
-    "evalplus_installed": "evalplus package installed in /home/work/venvs/vllm018. 164 problems loaded via get_human_eval_plus()."
+    "evalplus_installed": "evalplus package installed in /home/work/venvs/vllm018. 164 problems loaded via get_human_eval_plus().",
+    "efb_ceiling_limited": "EFB (Execution Feedback Booster) on EvalPlus n=100: pass@1=0.920 vs baseline=0.890 (Δ=+0.030, McNemar n01=4, n10=1, p=0.1875). Not significant — only 11 failures at 89% baseline. Recovery rate=36%. Ceiling effect confirmed for both AI Booster and EFB on near-ceiling Qwen2.5-Coder-32B."
   },
   "rotated_at": null,
   "started_at": "2026-03-29T20:12:00Z"
