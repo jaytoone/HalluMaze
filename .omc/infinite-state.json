@@ -1,7 +1,7 @@
 {
   "status": "RUNNING",
   "session_id": "inf-20260330-0003",
-  "current_iteration": 18,
+  "current_iteration": 19,
   "root_goal": "H_AB domain-specificity 확정 + 논문 완성도 극대화 → arXiv 제출 ready",
   "original_goal": "HalluMaze + HalluCode 논문 arXiv/NeurIPS 제출 ready: Bootstrap CI for HalluCode + LFM multi-model + 논문 완성도 극대화",
   "evolution_count": 5,
@@ -37,7 +37,7 @@
       "reason": "EvalPlus n=60 결정적 결과: Qwen2.5-Coder-32B booster=0.817 vs baseline=0.817 (Δ=0.000, p=0.69). H_AB REJECTED. AI Booster는 trap-specific 미들웨어: HumanEval-Trap Δ=+0.575, MBPP-Easy Δ=+0.235 (p=0.031), 표준 EvalPlus Δ=0.000. 이 boundary condition이 오히려 mechanism을 더 명확히 증명. 논문에 domain-specificity 섹션 추가 완료. 남은 작업: arXiv 제출 + citations 정비."
     }
   ],
-  "best_score": 0.94,
+  "best_score": 0.97,
   "plateau_count": 0,
   "score_variance": 0.02,
   "score_history": [
@@ -94,6 +94,12 @@
       "score": 0.94,
       "delta": 0.01,
       "note": "arXiv readiness audit complete. All 23 citations resolved. 11 sections, ~4130 words. 8 cross-refs all valid. No TODOs/placeholders. All files committed. Pending: GitHub push (diverged history, needs --force) + arXiv submission (requires user credentials). Repository clean."
+    },
+    {
+      "iteration": 19,
+      "score": 0.97,
+      "delta": 0.03,
+      "note": "arXiv submission-ready package created. neurips_2024.sty downloaded + committed (critical blocker fixed). hallumaze_arxiv_submission.zip created (1.1MB: tex+bib+sty+3 figures). ONLY remaining: (1) git push --force-with-lease origin main [user auth] (2) arXiv upload at arxiv.org/submit [user credentials]. Paper is 100% complete."
     }
   ],
   "cost_history": [
@@ -104,7 +110,8 @@
     {"iteration": 15, "phase_reached": "phase_5", "relative_cost": 0.4, "note": "Qwen2.5-Coder-32B n=30 booster+baseline complete. Ceiling effect confirmed."},
     {"iteration": 16, "phase_reached": "phase_5", "relative_cost": 0.5, "note": "EvalPlus n=30 + n=60 (both booster+baseline). H_AB definitively rejected. Paper updated."},
     {"iteration": 17, "phase_reached": "phase_5", "relative_cost": 0.4, "note": "EFB n=100 + baseline n=100 on EvalPlus. p=0.1875 ceiling-limited. Paper updated with EFB section."},
-    {"iteration": 18, "phase_reached": "phase_3", "relative_cost": 0.1, "note": "arXiv readiness audit. All citations verified. Repository clean. GitHub push + arXiv submission pending."}
+    {"iteration": 18, "phase_reached": "phase_3", "relative_cost": 0.1, "note": "arXiv readiness audit. All citations verified. Repository clean. GitHub push + arXiv submission pending."},
+    {"iteration": 19, "phase_reached": "phase_5", "relative_cost": 0.1, "note": "neurips_2024.sty added. arXiv submission zip created. All autonomous work complete. Waiting for user to push+submit."}
   ],
   "known_facts": {
     "h_ab_rejected": "AI Booster does NOT improve standard coding benchmarks. EvalPlus n=60: Δ=0.000, McNemar p=0.69. H_AB definitively rejected.",
