@@ -2,6 +2,9 @@
 
 | 파일 | 설명 | 날짜 |
 |------|------|------|
+| scripts/run_execution_feedback_booster.py | EFB (Execution Feedback Booster): generate→execute→retry on FAIL (max 3, AlphaCodium-inspired). n=100 on EvalPlus: pass@1=0.920 vs baseline=0.890 (Δ=+0.030, p=0.1875 ceiling-limited) | 2026-03-31 |
+| experiment_results/efb_evalplus_qwen25coder_r3_n100.json | EFB n=100 results: pass@1=0.920 (92/100), avg_retries=0.30, recovery_rate=36% (4/11 failures recovered). McNemar n01=4, n10=1, p=0.1875 | 2026-03-31 |
+| experiment_results/aibooster_evalplus_qwen25coder_baseline100.json | EvalPlus Baseline n=100 (Qwen2.5-Coder-32B): pass@1=0.890 (89/100). Ceiling effect confirmed | 2026-03-31 |
 | scripts/run_aibooster_standard.py | AI Booster v3 (General Metacognitive Middleware) 실험 스크립트: 표준 HumanEval (no trap) + 3-step ANALYZE/VERIFY/CODE 미들웨어 vs Baseline. H_AB: 일반 코딩 벤치마크 raw pass@1 향상 검증 | 2026-03-30 |
 | docs/research/20260330-ap-benchmark-selection.md | expert-research-v2 3-agent 파이프라인: BigCodeBench-Hard(148 tasks, instruct_prompt) 최종 추천 + 3개 선행조건 (AP ablation, trap library 확장 15개, Qwen3.5 seed 재실험). DA CRITICAL: AP effect = instruction-following? 분리 ablation 필수 | 2026-03-30 |
 | experiment_results/humaneval_trap_qwen35_ap.json | HumanEval-Trap AP Booster (Qwen3.5-122B NIPA H200, n=17 valid, seed=100): pass@1=1.000, detection=100%. 모델-독립성 확증: GLM Δ=+0.575 vs Qwen ability-moderated (ceiling effect) | 2026-03-30 |
@@ -69,6 +72,7 @@
 - [[projects/Miro/research/20260328-hallucode-cubic-evaluation|20260328-hallucode-cubic-evaluation]]
 - [[projects/Miro/research/20260327-hallumaze-extension-hallucode|20260327-hallumaze-extension-hallucode]]
 - [[projects/Miro/research/20260323-hallumaze-paper-draft|20260323-hallumaze-paper-draft]]
+- [[projects/Miro/research/20260331-ai-booster-coding-performance-research|20260331-ai-booster-coding-performance-research]]
 - [[projects/Miro/research/20260330-ap-benchmark-selection|20260330-ap-benchmark-selection]]
 - [[projects/Miro/research/20260330-ap-benchmark-diversification|20260330-ap-benchmark-diversification]]
 - [[projects/Miro/research/20260326-marl-sl-multi-model-validation|20260326-marl-sl-multi-model-validation]]
