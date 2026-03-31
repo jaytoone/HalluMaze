@@ -68,19 +68,20 @@ pdflatex hallumaze_arxiv.tex
 
 ---
 
-## Paper Status (as of 2026-03-31)
+## Paper Status (as of 2026-03-31, iter 20)
 
 | Component | Status |
 |-----------|--------|
 | Sections (11) | ✅ Complete |
-| Word count (~4130) | ✅ Appropriate |
+| Word count (~4300) | ✅ Appropriate |
 | Citations (23) | ✅ All resolved |
 | Cross-references (8) | ✅ All valid |
 | Figures (3) | ✅ Present |
 | Experiment data | ✅ Committed |
 | EFB section | ✅ Added (iter 17) |
 | H_AB domain-specificity | ✅ Confirmed + documented |
-| neurips_2024.sty | ❌ MISSING |
+| neurips_2024.sty | ✅ Present (iter 19) |
+| GLM multi-model H_AB | ✅ Added (iter 20): Δ=-0.125, McNemar p=0.25 |
 
 ---
 
@@ -106,3 +107,7 @@ AI Booster domain specificity:
 
 ## Submission URL
 https://arxiv.org/submit
+
+## Related
+- [[projects/Miro/research/20260323-hallumaze-paper-draft|20260323-hallumaze-paper-draft]]
+- [[projects/Miro/research/20260327-hallumaze-extension-hallucode|20260327-hallumaze-extension-hallucode]]
